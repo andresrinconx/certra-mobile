@@ -1,31 +1,26 @@
 const express = require('express');
-const mysql = require('mysql');
+const fs = require('fs');
 
 const app = express();
 
-// Configuración de la conexión a la base de datos
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'datasis'
-});
-
 app.get('/sinv', (req, res) => {
-  // Consulta para obtener los registros de la tabla 'sinv'
-  const query = 'SELECT descrip, precio1 FROM sinv WHERE precio1 > 0 LIMIT 1000 ';
-
-  connection.query(query, (error, results) => {
-    if (error) {
-      console.error('Error al ejecutar la consulta: ' + error.stack);
+  // Leer el archivo JSON
+  fs.readFile('sinv.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error al leer el archivo JSON: ' + err);
       return;
     }
 
-    // Crear un objeto y asignar el arreglo a una propiedad
-    const data = { results };
+    // Parsear el archivo JSON
+    const jsonData = JSON.parse(data);
 
-    // Enviar el objeto como JSON en la respuesta
-    res.json(data);
+    // Crear un objeto con la propiedad "result"
+    const resultObj = {
+      result: jsonData
+    };
+
+    // Enviar el objeto como respuesta en formato JSON
+    res.json(resultObj);
   });
 });
 
