@@ -1,22 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import Inicio from './src/controllers/Inicio';
-import Carrito from './src/controllers/ui/Carrito';
-import Cart from './src/controllers/Cart';
+import Inicio from './src/components/views/Inicio';
+import Carrito from './src/components/ui/Carrito';
+import Cart from './src/components/views/Cart';
 
 const Stack = createNativeStackNavigator()
 
 const App = () => {
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const jsonData = require('./src/consultas/sinv.json'); // el require se usa para cargar archivos
-    setData(jsonData);
-  }, []);
+  const [ carrito, setCarrito ] = useState([])
+  const [ itemsCarrito, setItemsCarrito ] = useState(0)
 
   return(
     <>
@@ -25,7 +20,7 @@ const App = () => {
           initialRouteName='Inicio'
           screenOptions={{
             headerStyle: {
-              backgroundColor: '#002c5f'
+              backgroundColor: '#223C82'
             },
             headerTitleStyle: {
               fontWeight: 'bold',
@@ -35,29 +30,48 @@ const App = () => {
         >
           <Stack.Screen
             name='Inicio'
-            component={Inicio}
-            options={ ({navigation, route}) => ({
+            options={({ navigation, route }) => ({
               title: 'Inventario',
               headerTitleStyle: {
                 color: '#fff'
               },
-              headerRight: () => <Carrito 
-                                  navigation={navigation}
-                                  route={route}
-                                 />
-            }) }
-          />
+              headerRight: () => (
+                <Carrito
+                  navigation={navigation}
+                  route={route}
+                  carrito={carrito}
+                  itemsCarrito={itemsCarrito}
+                />
+              )
+            })}
+          >
+            {() => (
+              <Inicio
+                carrito={carrito}
+                setCarrito={setCarrito}
+                setItemsCarrito={setItemsCarrito}
+                itemsCarrito={itemsCarrito}
+              />
+            )}
+          </Stack.Screen>
+
           <Stack.Screen
             name='Cart'
-            component={Cart}
             options={{
-              title: 'Cart',
+              title: 'Carrito',
               headerTitleStyle: {
                 color: '#fff'
               },
               headerTintColor: '#fff', // color de la flecha
             }}
-          />
+          >
+            {() => (
+              <Cart
+                carrito={carrito}
+                itemsCarrito={itemsCarrito}
+              />
+            )}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </>

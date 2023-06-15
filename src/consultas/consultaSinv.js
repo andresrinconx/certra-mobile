@@ -5,7 +5,7 @@ const app = express();
 
 app.get('/sinv', (req, res) => {
   // Leer el archivo JSON
-  fs.readFile('sinv.json', 'utf8', (err, data) => {
+  fs.readFile('data.json', 'utf8', (err, data) => {
     if (err) {
       console.error('Error al leer el archivo JSON: ' + err);
       return;
