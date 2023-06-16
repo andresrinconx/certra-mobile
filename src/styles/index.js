@@ -7,6 +7,9 @@ const globalStyles = {
   texto: 'text-xl color-black mb-3',
   noProductos: 'font-bold text-2xl text-center',
   txtBtnInDc: 'color-white text-3xl text-center relative -top-1',
+
+  // inputs
+  inputContainer: 'bg-slate-50 rounded-2xl w-64 flex-row items-center',
   
   // btns
   btnInDc: 'bg-[#2794e8] rounded-full w-7 h-7',

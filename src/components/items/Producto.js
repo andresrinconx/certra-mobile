@@ -1,5 +1,5 @@
-import { View, Text, Pressable, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, Pressable, Image, TouchableOpacity, ToastAndroid } from 'react-native'
+import React, {useEffect} from 'react'
 
 import globalStyles from '../../styles'
 
@@ -14,9 +14,13 @@ const Producto = ({
   const { descrip, precio1 } = item
 
   const addToCart = () => {
+    // carrito
     const total = itemsCarrito + 1
     setItemsCarrito(total)
     setCarrito([...carrito, item])
+
+    // message
+    
   }
 
   return (
@@ -50,6 +54,7 @@ const Producto = ({
               >
                 <Text className='color-white text-center font-bold text-4'>Agregar</Text>
               </TouchableOpacity>
+
             </View>
           </View>
         ) : 
@@ -70,9 +75,9 @@ const Producto = ({
             </View>
 
             {/* btn */}
-            <View className='basis-[30%] justify-center'>
+            <View className='basis-[30%] justify-center items-center'>
               <TouchableOpacity
-                className='bg-[#2794e8] rounded-md p-[5px] mb-2'
+                className='bg-[#2794e8] rounded-md p-[10px] w-20- mb-2'
                 onPress={ () => addToCart() }
               >
                 <Text className='color-white text-center font-bold text-4'>Agregar</Text>

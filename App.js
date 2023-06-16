@@ -4,8 +4,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import Inicio from './src/components/views/Inicio';
-import Carrito from './src/components/ui/Carrito';
 import Cart from './src/components/views/Cart';
+import Login from './src/components/views/Login';
+
+import Carrito from './src/components/ui/Carrito';
 
 const Stack = createNativeStackNavigator()
 
@@ -17,7 +19,7 @@ const App = () => {
     <>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='Inicio'
+          initialRouteName='Login'
           screenOptions={{
             headerStyle: {
               backgroundColor: '#223C82'
@@ -29,12 +31,24 @@ const App = () => {
           }}
         >
           <Stack.Screen
+            name='Login'
+            component={Login}
+            options={{
+              title: 'Inicia Sesion',
+              headerTitleStyle: {
+                color: '#fff'
+              },
+              headerShown: false
+            }}
+          />
+          <Stack.Screen
             name='Inicio'
             options={({ navigation, route }) => ({
               title: 'Inventario',
               headerTitleStyle: {
                 color: '#fff'
               },
+              headerBackVisible: false,
               headerRight: () => (
                 <Carrito
                   navigation={navigation}
