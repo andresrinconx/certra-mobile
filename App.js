@@ -15,11 +15,7 @@ const Stack = createNativeStackNavigator()
 const App = () => {
   const [ carrito, setCarrito ] = useState([])
   const [ itemsCarrito, setItemsCarrito ] = useState(0)
-
-  const fea = () => {
-    const hola = 14324324 
-  }
-
+  
   return(
     <>
       <NavigationContainer>
