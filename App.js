@@ -16,10 +16,6 @@ const App = () => {
   const [ carrito, setCarrito ] = useState([])
   const [ itemsCarrito, setItemsCarrito ] = useState(0)
 
-  const v2 = () => {
-    const v2 = 'v2'
-  }
-
   return(
     <>
       <NavigationContainer>
