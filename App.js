@@ -11,7 +11,6 @@ import Carrito from './src/components/ui/Carrito';
 
 const Stack = createNativeStackNavigator()
 
-
 const App = () => {
   const [ carrito, setCarrito ] = useState([])
   const [ itemsCarrito, setItemsCarrito ] = useState(0)
