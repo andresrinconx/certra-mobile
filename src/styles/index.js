@@ -1,18 +1,46 @@
+import { StyleSheet } from 'react-native'
+
 const globalStyles = {
-  // general
-  main: 'bg-[#f9f9f9] flex-1',
-  contenedor: 'mx-3 mt-3 pb-8',
+  container: 'flex-1 mx-2',
 
-  // texts
-  texto: 'text-xl color-black mb-3',
-  noProductos: 'font-bold text-2xl text-center',
-  txtBtnInDc: 'color-white text-3xl text-center relative -top-1',
-
-  // inputs
-  inputContainer: 'bg-slate-50 rounded-2xl w-64 flex-row items-center',
-  
-  // btns
-  btnInDc: 'bg-[#2794e8] rounded-full w-7 h-7',
 }
 
-export default globalStyles
+const theme = {
+  turquesaClaro: '#3E82A0',
+  turquesaOscuro: '#005d81',
+  azul: '#213b83',
+  verde: '#99c821',
+  azulClaro: '#2797ec',
+}
+
+const styles = StyleSheet.create({
+  shadow: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.30,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  shadowHeader: {
+    backgroundColor: theme.turquesaOscuro,
+    shadowColor: '#000',
+    shadowOpacity: 0.30,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+})
+
+export {
+  globalStyles,
+  theme,
+  styles
+}
