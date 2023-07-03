@@ -7,10 +7,8 @@ import Loading from '../components/Loading'
 import ProductsList from '../components/ProductsList'
 
 const Home = ({
-  carrito, 
-  setCarrito, 
-  setItemsCarrito, 
-  itemsCarrito, 
+  cart, 
+  setCart, 
   type, 
   setType
 }) => {
@@ -80,10 +78,8 @@ const Home = ({
                   <ProductsList
                     key={item.descrip}
                     item={item}
-                    setCarrito={setCarrito}
-                    carrito={carrito}
-                    setItemsCarrito={setItemsCarrito}
-                    itemsCarrito={itemsCarrito}
+                    setCart={setCart}
+                    cart={cart}
                     type={type}
                   />
                 )

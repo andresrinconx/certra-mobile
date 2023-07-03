@@ -9,8 +9,8 @@ const theme = {
   turquesaClaro: '#3E82A0',
   turquesaOscuro: '#005d81',
   azul: '#213b83',
-  verde: '#99c821',
-  azulClaro: '#2797ec',
+  verde: '#a2d424',
+  azulClaro: '#2594ea',
 }
 
 const styles = StyleSheet.create({
