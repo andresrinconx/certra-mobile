@@ -17,7 +17,7 @@ const Login = () => {
   // obtener usuarios db
   useEffect(() => {
     const getUsers = async () => {
-      const url = 'http://10.0.2.2:4000/'
+      const url = 'http://192.168.88.235:4000/'
     
       try {
         const response = await fetch(url)
@@ -78,7 +78,7 @@ const Login = () => {
         {/* inputs */}
         <View className='top-14 space-y-2'>
           <View className='bg-white w-[340px] rounded-full flex-row items-center'>
-            <TextInput className='text-xl p-4 ml-3'
+            <TextInput className='text-xl p-4 ml-3 w-[85%]'
               placeholder='Usuario'
               value={usuario}
               onChangeText={setUsuario}
@@ -89,7 +89,7 @@ const Login = () => {
           </View>
 
           <View className='bg-white w-[340px] rounded-full flex-row items-center'>
-            <TextInput className='text-xl p-4 ml-3'
+            <TextInput className='text-xl p-4 ml-3 w-[85%]'
               secureTextEntry={true}
               placeholder='Contraseña'
               value={password}
@@ -100,8 +100,10 @@ const Login = () => {
             </View>
           </View>
 
-          <TouchableOpacity onPress={() => auth()} className={`bg-[${theme.verde}] w-[340px] top-8 p-3 rounded-full`}>
-            <Text className='color-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
+          <TouchableOpacity onPress={() => auth()} className={`w-[340px] top-8 p-3 rounded-full`}
+            style={{backgroundColor: theme.verde,}}
+          >
+            <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
           </TouchableOpacity>
         </View>
       </View>

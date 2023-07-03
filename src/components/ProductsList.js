@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity, Pressable, Modal } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { styles, theme } from '../styles'
-import { XMarkIcon } from 'react-native-heroicons/outline'
+import { XMarkIcon, MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProductsList = ({
@@ -45,8 +45,6 @@ const ProductsList = ({
   const addToCart = () => {
     setCart([...cart, item])
     setDisabledBtn(true)
-    // message
-    
   }
 
   const layout = (type) => {
@@ -57,25 +55,24 @@ const ProductsList = ({
         >  
           {/* img */}
           <View className='border-b-[#c0c0c0] border-b mb-2 justify-center items-center'>
-            <Image
-              className='w-32 h-32'
-              source={require('../assets/Acetaminofen.png')}
-            />
+            <Image className='w-32 h-32' source={require('../assets/Acetaminofen.png')} />
           </View>
           
           {/* texts & btn */}
           <View>
-            <Text className='color-black font-bold text-[18px] mb-1' numberOfLines={2}>
+            <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
               {descrip}
             </Text>
   
-            <Text className='font-bold text-[18px] color-[#bed03c] mb-2'>Bs. {precio1}</Text>  
+            <Text style={{color: theme.azul,}} className={`font-bold text-xl mb-2`}>
+              Bs. {precio1}
+            </Text>
   
             <TouchableOpacity onPress={() => addToCart()} className={`rounded-md p-[5px] mb-2`}
-              style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.azulClaro,}}
+              style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
               disabled={disabledBtn}
             >
-              <Text className='color-white text-center font-bold text-4'>Agregar</Text>
+              <Text className='color-white text-center font-bold text-4'>{disabledBtn ? 'Agregado' : 'Agregar'}</Text>
             </TouchableOpacity>  
           </View>
         </View>
@@ -89,20 +86,22 @@ const ProductsList = ({
     
             {/* textos item */}
             <View className='basis-[70%]'>
-              <Text className='color-black font-bold text-lg leading-6' numberOfLines={2}>
+              <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
                 {descrip}
               </Text>
       
-              <Text className='font-bold text-lg color-[#bed03c]'>Bs. {precio1}</Text>
+              <Text style={{color: theme.azul,}} className={`font-bold text-xl`}>
+                Bs. {precio1}
+              </Text>
             </View>
     
             {/* btn */}
             <View className='basis-[30%] justify-center items-center'>
               <TouchableOpacity onPress={() => addToCart()} className={`rounded-md p-[10px] w-20- mb-2`}
-                style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.azulClaro,}}
+                style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
                 disabled={disabledBtn}
               >
-                <Text className='color-white text-center font-bold text-4'>Agregar</Text>
+                <Text className='color-white text-center font-bold text-4'>{disabledBtn ? 'Agregado' : 'Agregar'}</Text>
               </TouchableOpacity>  
             </View>
           </View>
@@ -116,24 +115,35 @@ const ProductsList = ({
               <View className='flex-row'>
         
                 {/* textos item */}
-                <View className='basis-[70%]'>
-                  <Text className='color-black font-bold text-lg leading-6' numberOfLines={2}>
+                <View className='w-[68%]'>
+                  <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
                     {descrip}
                   </Text>
           
-                  <Text className='font-bold text-lg color-[#bed03c]'>Bs. {precio1}</Text>
+                  <Text style={{color: theme.azul,}} className={`font-bold text-xl mb-2`}>
+                    Bs. {precio1}
+                  </Text>
                 </View>
-        
+
+                {/* basis-[30%] flex-row justify-center items-center space-x-3 */}
                 {/* btns */}
-                <View className='basis-[30%] flex-row justify-center items-center space-x-3'>
-                  <TouchableOpacity onPress={() => decremento()} className={`bg-[${theme.azulClaro}] w-7 rounded-full`}>
-                    <Text className='text-white text-center font-bold text-xl'>-</Text>
+                <View className='w-[32%] flex-row items-center my-5'>
+                  <TouchableOpacity onPress={() => decremento()}
+                    style={{backgroundColor: theme.verde,}} 
+                    className='w-[35%] h-full flex justify-center items-center rounded-full'
+                  >
+                    <MinusSmallIcon size={20} color='white' />
                   </TouchableOpacity>
+                  
+                  <View className='w-[30%] h-full flex justify-center items-center'>
+                    <Text className='text-2xl'>{cantidad}</Text>
+                  </View>
 
-                  <Text className='color-black text-2xl mx-1'>{cantidad}</Text>
-
-                  <TouchableOpacity onPress={() => incremento()} className={`bg-[${theme.azulClaro}] w-7 rounded-full`}>
-                    <Text className='text-white text-center font-bold text-xl'>+</Text>
+                  <TouchableOpacity onPress={() => incremento()}
+                    style={{backgroundColor: theme.verde,}} 
+                    className='w-[35%] h-full flex justify-center items-center rounded-full'
+                  >
+                    <PlusSmallIcon size={20} color='white' />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -160,8 +170,8 @@ const ProductsList = ({
                   </View>
                   
                   <View>
-                    <Text className='color-black font-bold text-3xl mb-2'>{descrip}</Text>
-                    <Text className='font-bold text-3xl color-[#bed03c] mb-2'>Bs. {precio1}</Text>
+                    <Text className='text-black text-2xl mb-2'>{descrip}</Text>
+                    <Text style={{color: theme.azul,}} className='font-bold text-3xl'>Bs. {precio1}</Text>
                   </View>
                 </View>
               </View>

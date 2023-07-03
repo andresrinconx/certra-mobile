@@ -7,10 +7,10 @@ const globalStyles = {
 
 const theme = {
   turquesaClaro: '#3E82A0',
-  turquesaOscuro: '#005d81',
-  azul: '#213b83',
-  verde: '#a2d424',
-  azulClaro: '#2594ea',
+  turquesaOscuro: '#045675',
+  azul: '#1e3983',
+  verde: '#a6d926',
+  azulClaro: '#2f95e4',
 }
 
 const styles = StyleSheet.create({

@@ -49,7 +49,7 @@ const Navigation = ({
               screenOptions={{
                 headerShown: false,
                 headerTitleAlign: 'center',
-                headerStyle: {backgroundColor: `${theme.turquesaOscuro}`},
+                headerStyle: {backgroundColor: `${theme.turquesaClaro}`},
                 headerTitleStyle: {
                   color: '#fff', 
                   fontWeight: '800', 
