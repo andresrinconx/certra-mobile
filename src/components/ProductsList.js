@@ -17,7 +17,7 @@ const ProductsList = ({
 
   const { descrip, precio1 } = item  
 
-  // decremento e incremento
+  // decremento e incremento 
   const decremento = () => {
     if (cantidad !== 1) {
         const total = cantidad - 1
@@ -33,7 +33,7 @@ const ProductsList = ({
   const addToCart = () => {
     const total = itemsCarrito + 1
     setItemsCarrito(total)
-    
+
 
     setCarrito([...carrito, item])
   
