@@ -1,21 +1,33 @@
 import { View, Text, Image, TouchableOpacity, Pressable, Modal } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { styles, theme } from '../styles'
 import { XMarkIcon } from 'react-native-heroicons/outline'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProductsList = ({
-  setCarrito, 
-  carrito, 
-  setItemsCarrito, 
-  itemsCarrito,
+  setCart, 
+  cart, 
   type,
   cartList,
   item
 }) => {
   const [cantidad, setCantidad] = useState(1)
   const [modalVisible, setModalVisible] = useState(false)
+  const [disabledBtn, setDisabledBtn] = useState(false)
 
   const { descrip, precio1 } = item  
+
+  // agregar producto al carrito
+  useEffect(() => {
+    const addCartStorage = async () => {
+      try {
+        await AsyncStorage.setItem('cart', JSON.stringify(cart))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    addCartStorage()
+  }, [cart])
 
   // decremento e incremento 
   const decremento = () => {
@@ -31,12 +43,8 @@ const ProductsList = ({
 
   // agregar al carrito
   const addToCart = () => {
-    const total = itemsCarrito + 1
-    setItemsCarrito(total)
-
-
-    setCarrito([...carrito, item])
-  
+    setCart([...cart, item])
+    setDisabledBtn(true)
     // message
     
   }
@@ -63,8 +71,9 @@ const ProductsList = ({
   
             <Text className='font-bold text-[18px] color-[#bed03c] mb-2'>Bs. {precio1}</Text>  
   
-            <TouchableOpacity className={`bg-[${theme.azulClaro}] rounded-md p-[5px] mb-2`}
-              onPress={() => addToCart()}
+            <TouchableOpacity onPress={() => addToCart()} className={`rounded-md p-[5px] mb-2`}
+              style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.azulClaro,}}
+              disabled={disabledBtn}
             >
               <Text className='color-white text-center font-bold text-4'>Agregar</Text>
             </TouchableOpacity>  
@@ -89,8 +98,9 @@ const ProductsList = ({
     
             {/* btn */}
             <View className='basis-[30%] justify-center items-center'>
-              <TouchableOpacity className={`bg-[${theme.azulClaro}] rounded-md p-[10px] w-20- mb-2`}
-                onPress={() => addToCart()}
+              <TouchableOpacity onPress={() => addToCart()} className={`rounded-md p-[10px] w-20- mb-2`}
+                style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.azulClaro,}}
+                disabled={disabledBtn}
               >
                 <Text className='color-white text-center font-bold text-4'>Agregar</Text>
               </TouchableOpacity>  

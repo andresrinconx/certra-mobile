@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { KeyIcon, UserIcon } from 'react-native-heroicons/outline'
 
 import { globalStyles, theme } from '../styles'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Login = () => {
   const [usuario, setUsuario] = useState('')
@@ -30,7 +31,7 @@ const Login = () => {
   }, [])
 
   // autenticar usuario
-  const auth = () => {
+  const auth = async () => {
     // campos obligatorios
     if([usuario, password].includes('')) {
       Alert.alert(
@@ -43,8 +44,8 @@ const Login = () => {
       return
     }
 
+    // encontrar en la db
     const user = users.find(user => user.us_codigo === usuario && user.us_clave === password);
-
     if (user === undefined) {
       Alert.alert(
         'Error',
@@ -56,6 +57,7 @@ const Login = () => {
       return
     }
 
+    await AsyncStorage.setItem('login', JSON.stringify(true))
     navigation.navigate('Home')
   }
 
