@@ -79,9 +79,7 @@ const ProductsList = ({
       )
     } else if(type === 'list') { // --- list
       return (
-        <View className='mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
-          style={styles.shadow}
-        >
+        <View style={styles.shadow} className='flex justify-center h-24 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'>
           <View className='flex-row'>
     
             {/* textos item */}
@@ -97,7 +95,7 @@ const ProductsList = ({
     
             {/* btn */}
             <View className='basis-[30%] justify-center items-center'>
-              <TouchableOpacity onPress={() => addToCart()} className={`rounded-md p-[10px] w-20- mb-2`}
+              <TouchableOpacity onPress={() => addToCart()} className={`rounded-md p-[10px] w-20 mb-2`}
                 style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
                 disabled={disabledBtn}
               >
@@ -111,11 +109,11 @@ const ProductsList = ({
       return (
         <>
           <Pressable onLongPress={() => setModalVisible(true)}>
-            <View className='mr-[2px] ml-[1px] mb-2 mt-[1px] p-3' style={styles.shadow}>
-              <View className='flex-row'>
+            <View className='flex justify-center h-24 mr-[2px] ml-[1px] mb-2 mt-[1px]' style={styles.shadow}>
+              <View className='flex-row justify-center items-center'>
         
                 {/* textos item */}
-                <View className='w-[68%]'>
+                <View className='basis-[60%]'>
                   <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
                     {descrip}
                   </Text>
@@ -125,23 +123,22 @@ const ProductsList = ({
                   </Text>
                 </View>
 
-                {/* basis-[30%] flex-row justify-center items-center space-x-3 */}
                 {/* btns */}
-                <View className='w-[32%] flex-row items-center my-5'>
+                <View className='basis-[32%] flex-row items-center my-5'>
                   <TouchableOpacity onPress={() => decremento()}
                     style={{backgroundColor: theme.verde,}} 
-                    className='w-[35%] h-full flex justify-center items-center rounded-full'
+                    className='p-2 flex justify-center items-center rounded-full'
                   >
                     <MinusSmallIcon size={20} color='white' />
                   </TouchableOpacity>
                   
-                  <View className='w-[30%] h-full flex justify-center items-center'>
+                  <View className='w-[30%] flex justify-center items-center'>
                     <Text className='text-2xl'>{cantidad}</Text>
                   </View>
 
                   <TouchableOpacity onPress={() => incremento()}
                     style={{backgroundColor: theme.verde,}} 
-                    className='w-[35%] h-full flex justify-center items-center rounded-full'
+                    className='p-2 flex justify-center items-center rounded-full'
                   >
                     <PlusSmallIcon size={20} color='white' />
                   </TouchableOpacity>
