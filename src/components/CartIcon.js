@@ -14,7 +14,7 @@ const CartIcon = ({cart}) => {
         {cart.length > 0
           && (
             <View className='absolute -top-2 -right-2 bg-red-600 rounded-full w-5 h-5 justify-center items-center'>
-              <Text className='color-white text-sm'>
+              <Text className='color-white text-xs'>
                 {cart.length}
               </Text>
             </View>

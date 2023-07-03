@@ -65,7 +65,7 @@ const Cart = ({cart, setCart}) => {
                   {/* items */}
                   <View className='flex-row items-center justify-between'>
                     <Text className='text-xl my-3'>
-                      <Text className='font-bold'>{cart.length} </Text>items
+                      <Text className='font-bold'>{cart.length} items</Text>
                     </Text>
                     
                     <TouchableOpacity onPress={() => clearCart()} className=''>
@@ -90,7 +90,9 @@ const Cart = ({cart, setCart}) => {
 
         {/* btn */}
         <View className='absolute bottom-3 w-full z-50'>
-          <TouchableOpacity className={`bg-[${theme.azulClaro}] rounded-xl p-2`} onPress={ () => pay() }>
+          <TouchableOpacity onPress={() => pay()} className='rounded-xl p-2'
+            style={{backgroundColor: theme.verde,}}
+          >
             <Text className='color-white text-center font-bold text-xl'>Ir a Pagar</Text>
           </TouchableOpacity>
         </View>
