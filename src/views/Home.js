@@ -7,10 +7,8 @@ import Loading from '../components/Loading'
 import ProductsList from '../components/ProductsList'
 
 const Home = ({
-  carrito, 
-  setCarrito, 
-  setItemsCarrito, 
-  itemsCarrito, 
+  cart, 
+  setCart, 
   type, 
   setType
 }) => {
@@ -20,7 +18,7 @@ const Home = ({
   // obtener productos
   useEffect(() => {
     const obtenerProductos = async () => {
-      const url = 'http://10.0.2.2:3000/sinv'
+      const url = 'http://192.168.88.235:3000/sinv'
     
       try {
         setLoading(true)
@@ -53,7 +51,7 @@ const Home = ({
 
       {/* bar */}
       <View className='flex-row justify-between mt-4 mb-3 mx-3'>
-        <Text className={`text-[${theme.azul}] text-xl font-bold`}>Productos</Text>
+        <Text className={`text-black text-xl font-bold`}>Productos</Text>
 
         <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
           {icon(type)}
@@ -80,10 +78,8 @@ const Home = ({
                   <ProductsList
                     key={item.descrip}
                     item={item}
-                    setCarrito={setCarrito}
-                    carrito={carrito}
-                    setItemsCarrito={setItemsCarrito}
-                    itemsCarrito={itemsCarrito}
+                    setCart={setCart}
+                    cart={cart}
                     type={type}
                   />
                 )

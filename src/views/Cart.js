@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
 import ProductsList from '../components/ProductsList'
 
-const Cart = ({carrito, itemsCarrito, setCarrito}) => {
+const Cart = ({cart, setCart}) => {
   const [cartList, setCartList] = useState(false)
 
   const navigation = useNavigation()
@@ -24,7 +24,7 @@ const Cart = ({carrito, itemsCarrito, setCarrito}) => {
       [
         { text: 'Cancelar', style: 'cancel',},
         { text: 'Aceptar', onPress: () => {
-          setCarrito([])
+          setCart([])
         } },
       ]
     )
@@ -53,7 +53,7 @@ const Cart = ({carrito, itemsCarrito, setCarrito}) => {
       {/* content */}
       <View className={`${globalStyles.container}`}>
         <View className='pb-16'>
-          {carrito.length === 0
+          {cart.length === 0
             ? (
               <Text className='text-center font-bold text-2xl mt-5'>No hay productos</Text>
             ) : (
@@ -65,7 +65,7 @@ const Cart = ({carrito, itemsCarrito, setCarrito}) => {
                   {/* items */}
                   <View className='flex-row items-center justify-between'>
                     <Text className='text-xl my-3'>
-                      <Text className='font-bold'>{itemsCarrito} </Text>items
+                      <Text className='font-bold'>{cart.length} items</Text>
                     </Text>
                     
                     <TouchableOpacity onPress={() => clearCart()} className=''>
@@ -73,7 +73,7 @@ const Cart = ({carrito, itemsCarrito, setCarrito}) => {
                     </TouchableOpacity>
                   </View>
 
-                  {carrito.map((item) => {
+                  {cart.map((item) => {
                     return (
                       <ProductsList
                         key={item.descrip}
@@ -90,7 +90,9 @@ const Cart = ({carrito, itemsCarrito, setCarrito}) => {
 
         {/* btn */}
         <View className='absolute bottom-3 w-full z-50'>
-          <TouchableOpacity className={`bg-[${theme.azulClaro}] rounded-xl p-2`} onPress={ () => pay() }>
+          <TouchableOpacity onPress={() => pay()} className='rounded-xl p-2'
+            style={{backgroundColor: theme.verde,}}
+          >
             <Text className='color-white text-center font-bold text-xl'>Ir a Pagar</Text>
           </TouchableOpacity>
         </View>
