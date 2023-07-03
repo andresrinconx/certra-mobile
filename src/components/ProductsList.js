@@ -162,7 +162,7 @@ const ProductsList = ({
                 <TouchableOpacity onPress={() => setModalVisible(false)} className='absolute right-2 top-2'>
                   <XMarkIcon size={35} color='black' />
                 </TouchableOpacity>
-
+ 
                 {/* content */}
                 <View className='px-4 mt-8'>
                   <View className='border-b-[#D1D5DB] border-b mb-2 justify-center items-center'>
