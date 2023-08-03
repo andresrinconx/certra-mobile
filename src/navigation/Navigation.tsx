@@ -1,42 +1,20 @@
-import React, {useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-import { theme } from '../styles';
-
-import Home from '../views/Home';
-import Cart from '../views/Cart';
-import Login from '../views/Login';
-import CartIcon from '../components/CartIcon';
-import LogoScreen from '../components/LogoScreen';
-import LogOut from '../components/LogOut';
+import { theme } from '../styles'
+import Home from '../views/Home'
+import Cart from '../views/Cart'
+import Login from '../views/Login'
+import CartIcon from '../components/CartIcon'
+import LogoScreen from '../components/LogoScreen'
+import LogOut from '../components/LogOut'
+import useLogin from '../hooks/useLogin'
+import useCart from '../hooks/useCart'
 
 const Stack = createNativeStackNavigator()
 
-const Navigation = ({
-  cart,
-  setCart,
-  type,
-  setType,
-}) => {
-  const [login, setLogin] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  // obtener usuario logeado
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        setLoading(true)
-        const loginStorage = await AsyncStorage.getItem('login')
-        setLogin(loginStorage ? true : false)
-        setLoading(false)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUser()
-  }, [])
+const Navigation = () => {
+  const {login, loading} = useLogin()
+  const {cart, setCart, type, setType} = useCart()
 
   return (
     <>
@@ -72,7 +50,6 @@ const Navigation = ({
                   ),
                   headerLeft: () => (
                     <LogOut
-                      cart={cart}
                       setCart={setCart}
                     />
                   )
