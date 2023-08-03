@@ -38,8 +38,8 @@ const Cart = ({cart, setCart}) => {
   return (
     <>
       {/* header */}
-      <View className={`bg-[${theme.turquesaOscuro}] flex flex-row justify-between items-center py-3`}
-        style={styles.shadowHeader}
+      <View className={`flex flex-row justify-between items-center py-3`}
+        style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
         <View className='ml-4'>
           <TouchableOpacity onPress={() => {navigation.goBack()}} className=''>
