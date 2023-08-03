@@ -18,7 +18,7 @@ const Home = ({
   // obtener productos
   useEffect(() => {
     const obtenerProductos = async () => {
-      const url = 'http://192.168.88.235:3000/sinv'
+      const url = 'http://192.168.88.246:3000/sinv'
     
       try {
         setLoading(true)
