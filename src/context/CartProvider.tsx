@@ -12,7 +12,7 @@ const CartContext = createContext<{
   type: 'grid',
   setType: () => {}
 })
-
+ 
 export const CartProvider = ({children}: {children: React.ReactNode}) => {
   const [cart, setCart] = useState([])
   const [type, setType] = useState('grid')
