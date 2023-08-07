@@ -1,53 +1,19 @@
 import { View, Text, Image, TouchableOpacity, Pressable, Modal } from 'react-native'
-import React, {useState, useEffect} from 'react'
 import { styles, theme } from '../styles'
 import { XMarkIcon, MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import useInv from '../hooks/useInv'
 
-const ProductsList = ({
-  setCart, 
-  cart, 
-  type,
-  cartList,
-  item
-}) => {
-  const [cantidad, setCantidad] = useState(1)
-  const [modalVisible, setModalVisible] = useState(false)
-  const [disabledBtn, setDisabledBtn] = useState(false)
+const ProductsList = ({item}: {item: any}) => {
+  const {setCart, cart, type, setDisabledBtn, disabledBtn, setModalVisible, cantidad, modalVisible, incremento, decremento, cartList} = useInv()
+  const {descrip, precio1} = item
 
-  const { descrip, precio1 } = item  
-
-  // agregar producto al carrito
-  useEffect(() => {
-    const addCartStorage = async () => {
-      try {
-        await AsyncStorage.setItem('cart', JSON.stringify(cart))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    addCartStorage()
-  }, [cart])
-
-  // decremento e incremento 
-  const decremento = () => {
-    if (cantidad !== 1) {
-        const total = cantidad - 1
-        setCantidad(total)
-    }
-  }
-  const incremento = () => {
-    const total = cantidad + 1
-    setCantidad(total)
-  }
-
-  // agregar al carrito
+  // add to cart
   const addToCart = () => {
     setCart([...cart, item])
     setDisabledBtn(true)
   }
 
-  const layout = (type) => {
+  const layout = (type: string) => {
     if(type === 'grid') { // --- grid
       return (
         <View className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2'

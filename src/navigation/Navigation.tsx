@@ -8,13 +8,11 @@ import CartIcon from '../components/CartIcon'
 import LogoScreen from '../components/LogoScreen'
 import LogOut from '../components/LogOut'
 import useLogin from '../hooks/useLogin'
-import useCart from '../hooks/useInv'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
   const {login, loading} = useLogin()
-  const {cart, setCart, type, setType} = useCart()
 
   return (
     <>
@@ -44,25 +42,14 @@ const Navigation = () => {
                   title: 'Inventario',
                   headerBackVisible: false,
                   headerRight: () => (
-                    <CartIcon
-                      cart={cart}
-                    />
+                    <CartIcon />
                   ),
                   headerLeft: () => (
-                    <LogOut
-                      setCart={setCart}
-                    />
+                    <LogOut />
                   )
                 }}
               >
-                {() => (
-                  <Home
-                    cart={cart}
-                    setCart={setCart}
-                    type={type}
-                    setType={setType}
-                  />
-                )}
+                {() => (<Home />)}
               </Stack.Screen>
 
               <Stack.Screen name='Cart'
@@ -72,12 +59,7 @@ const Navigation = () => {
                   headerTintColor: '#fff',
                 }}
               >
-                {() => (
-                  <Cart
-                    cart={cart}
-                    setCart={setCart}
-                  />
-                )}
+                {() => (<Cart />)}
               </Stack.Screen>
             </Stack.Navigator>
           </NavigationContainer>
