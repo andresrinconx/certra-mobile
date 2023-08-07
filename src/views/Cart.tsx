@@ -1,39 +1,13 @@
-import { View, ScrollView, Text, TouchableOpacity, Alert } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import { View, ScrollView, Text, TouchableOpacity, Pressable, Modal, Image } from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
-
 import { globalStyles, theme, styles } from '../styles'
-import ProductsList from '../components/ProductsList'
+import useInv from '../hooks/useInv'
+import ProductsCart from '../components/ProductsCart'
 
-const Cart = ({cart, setCart}) => {
-  const [cartList, setCartList] = useState(false)
-
+const Cart = () => {
+  const {cart, clearCart, pay} = useInv()
   const navigation = useNavigation()
-
-  // list
-  useEffect(() => {
-    setCartList(true)
-  }, [])
-
-  // vaciar carrito
-  const clearCart = () => {
-    Alert.alert(
-      'Alerta',
-      '¿Seguro que quieres eliminar todos los productos del carrito?',
-      [
-        { text: 'Cancelar', style: 'cancel',},
-        { text: 'Aceptar', onPress: () => {
-          setCart([])
-        } },
-      ]
-    )
-  }
-
-  // pay
-  const pay = () => {
-    console.log('pagando...')    
-  }
 
   return (
     <>
@@ -42,7 +16,7 @@ const Cart = ({cart, setCart}) => {
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
         <View className='ml-4'>
-          <TouchableOpacity onPress={() => {navigation.goBack()}} className=''>
+          <TouchableOpacity onPress={() => {navigation.goBack()}}>
             <ArrowSmallRightIcon size={25} color='white' rotation={180} />
           </TouchableOpacity>
         </View>
@@ -62,10 +36,10 @@ const Cart = ({cart, setCart}) => {
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{paddingBottom: 10,}}
                 >
-                  {/* items */}
+                  {/* items and trash */}
                   <View className='flex-row items-center justify-between'>
                     <Text className='text-xl my-3'>
-                      <Text className='font-bold'>{cart.length} items</Text>
+                      <Text className='font-bold'>{cart.length} {cart.length == 1 ? 'item' : 'items'}</Text>
                     </Text>
                     
                     <TouchableOpacity onPress={() => clearCart()} className=''>
@@ -75,11 +49,7 @@ const Cart = ({cart, setCart}) => {
 
                   {cart.map((item) => {
                     return (
-                      <ProductsList
-                        key={item.descrip}
-                        item={item}
-                        cartList={cartList}
-                      />
+                      <ProductsCart key={item.descrip} item={item} />
                     )
                   })}
                 </ScrollView>
@@ -88,7 +58,7 @@ const Cart = ({cart, setCart}) => {
           }
         </View>
 
-        {/* btn */}
+        {/* btn pay */}
         <View className='absolute bottom-3 w-full z-50'>
           <TouchableOpacity onPress={() => pay()} className='rounded-xl p-2'
             style={{backgroundColor: theme.verde,}}
