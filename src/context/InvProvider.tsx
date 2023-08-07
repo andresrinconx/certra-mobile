@@ -2,15 +2,16 @@ import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
+import ProductoInterface from "../interfaces/ProductoInterface"
 import {URL_API} from '@env'
 
 const InvContext = createContext<{
-  cart: any[]
-  setCart: any
+  cart: ProductoInterface[]
+  setCart: (cart: ProductoInterface[]) => void
   type: string
-  setType: any
-  productos: any[]
-  setProductos: any
+  setType: (type: string) => void
+  productos: ProductoInterface[]
+  setProductos: (productos: ProductoInterface[]) => void
   loading: boolean
   setLoading: (loading: boolean) => void
   modalVisible: boolean
@@ -35,20 +36,15 @@ const InvContext = createContext<{
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
-  // --- Cart
-  const [productos, setProductos] = useState([])
-  const [cart, setCart] = useState([])
+  // cart
+  const [productos, setProductos] = useState<ProductoInterface[]>([])
+  const [cart, setCart] = useState<ProductoInterface[]>([])
   const [modalVisible, setModalVisible] = useState(false)
-
-  // --- Layout
+  // layout
   const [type, setType] = useState('grid')
   const [loading, setLoading] = useState(false)
 
-  /* 
-  --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  */
-
-  // --- Cart
+  // CART
   // get cart storage
   useEffect(() => {
     const getCartStorage = async () => {
@@ -65,13 +61,13 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
-      const url = `http://${URL_API}:3000/sinv`
+      const url = `${URL_API}Sinv`
     
       try {
         setLoading(true)
         const response = await fetch(url)
         const result = await response.json()
-        setProductos(result.result.data)
+        setProductos(result)
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -111,7 +107,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     console.log('pagando...')    
   }
 
-  // --- Layout
+  // LAYOUT
   // icon
   const icon = (type: string) => {
     if(type === 'grid') { // --- grid

@@ -13,10 +13,13 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  users: any[]
-  setUsers: any
+  users: UserInterface[]
+  setUsers: (users: UserInterface[]) => void
   auth: () => void
   logOut: () => void
+  isAuth: boolean
+  setIsAuth: (isAuth: boolean) => void
+  myUser: UserInterface
 }>({
   login: false,
   setLogin: () => {},
@@ -30,14 +33,80 @@ const LoginContext = createContext<{
   setUsers: () => {},
   auth: () => {},
   logOut: () => {},
+  isAuth: false,
+  setIsAuth: () => {},
+  myUser: {
+    us_codigo: '',
+    us_clave: '',
+    activo: '',
+    almacen: '',
+    cajero: '',
+    cedula: '',
+    clavec: '',
+    clipro: '',
+    direc: '',
+    emailc: '',
+    emailp: '',
+    especial: null,
+    id: '',
+    pers: '',
+    propio: '',
+    remoto: '',
+    sucursal: '',
+    supervisor: '',
+    tele1: '',
+    tele2: '',
+    tipo: '',
+    us_fechae: null,
+    us_fechas: null,
+    us_horae: null,
+    us_horas: null,
+    us_nombre: '',
+    uuid: '',
+    vendedor: '',
+  },
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
-  const [login, setLogin] = useState(false)
-  const [loading, setLoading] = useState(false)
+  // api
+  const [users, setUsers] = useState<UserInterface[]>([]) // espera que users sea un arreglo de objetos UserInterface
+  const [myUser, setMyUser] = useState<UserInterface>({
+    us_codigo: '',
+    us_clave: '',
+    activo: '',
+    almacen: '',
+    cajero: '',
+    cedula: '',
+    clavec: '',
+    clipro: '',
+    direc: '',
+    emailc: '',
+    emailp: '',
+    especial: null,
+    id: '',
+    pers: '',
+    propio: '',
+    remoto: '',
+    sucursal: '',
+    supervisor: '',
+    tele1: '',
+    tele2: '',
+    tipo: '',
+    us_fechae: null,
+    us_fechas: null,
+    us_horae: null,
+    us_horas: null,
+    us_nombre: '',
+    uuid: '',
+    vendedor: '',
+  })
+  // inputs
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
-  const [users, setUsers] = useState([])
+  // auth
+  const [isAuth, setIsAuth] = useState(false)
+  const [login, setLogin] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   // get logged user
   useEffect(() => {
@@ -45,7 +114,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       try {
         setLoading(true)
         const loginStorage = await AsyncStorage.getItem('login')
-        setLogin(loginStorage ? true : false)
+        setLogin(loginStorage === 'true' ? true : false)
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -85,7 +154,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
 
     // find in the db
-    const actualUser = users.find((userDb: UserInterface) => userDb.us_codigo === user && userDb.us_clave === password);
+    const actualUser = users.find((userDb: UserInterface) => userDb.us_codigo === user && userDb.us_clave === password)
     if (actualUser === undefined) {
       Alert.alert(
         'Error',
@@ -99,11 +168,17 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
 
     // success 
     await AsyncStorage.setItem('login', JSON.stringify(true))
+    setIsAuth(true)
+    setMyUser(actualUser)
   }
 
   // log out
   const logOut = async () => {
     await AsyncStorage.setItem('login', JSON.stringify(false))
+    setUser('')
+    setPassword('')
+    setLogin(false)
+    setIsAuth(false)
   }
   
   return (
@@ -119,7 +194,10 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       users,
       setUsers,
       auth,
-      logOut
+      logOut,
+      isAuth,
+      setIsAuth,
+      myUser,
     }}>
       {children}
     </LoginContext.Provider>

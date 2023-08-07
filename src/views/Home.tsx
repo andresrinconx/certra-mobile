@@ -1,14 +1,27 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
-import { globalStyles } from '../styles'
+import { globalStyles, styles } from '../styles'
 import Loading from '../components/Loading'
 import ProductsList from '../components/ProductsList'
 import useInv from '../hooks/useInv'
+import useLogin from '../hooks/useLogin'
 
 const Home = () => {
   const {type, setType, productos, loading, icon} = useInv()
+  const {myUser} = useLogin()
+  const {us_codigo} = myUser
 
   return (
     <View className={`${globalStyles.container}`}>
+      {/* user */}
+      <View className='flex items-center'>
+        <View className='mt-3 bg-white px-2 py-1 w-2/4 rounded-xl'
+          style={styles.shadow}
+        >
+          <Text className='text-xl text-center'>Hola
+            <Text className='text-2xl font-bold'>{' '}{us_codigo}</Text>
+          </Text>
+        </View>
+      </View>
 
       {/* bar */}
       <View className='flex-row justify-between mt-4 mb-3 mx-3'>
