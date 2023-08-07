@@ -12,7 +12,7 @@ const LogOut = () => {
   const handleLogOut = () => {
     logOut()
     setCart([])
-    navigation.navigate('Login')
+    navigation.navigate('Home')
   }
 
   return (

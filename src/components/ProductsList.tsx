@@ -2,8 +2,9 @@ import {useState} from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { styles, theme } from '../styles'
 import useInv from '../hooks/useInv'
+import ProductoInterface from '../interfaces/ProductoInterface'
 
-const ProductsList = ({item}: {item: any}) => {
+const ProductsList = ({item}: {item: ProductoInterface}) => {
   const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
 
   const {setCart, cart, type} = useInv()
@@ -63,7 +64,7 @@ const ProductsList = ({item}: {item: any}) => {
     
             {/* btn */}
             <View className='basis-[30%] justify-center items-center'>
-              <TouchableOpacity onPress={() => addToCart()} className={`rounded-md p-[10px] w-20 mb-2`}
+              <TouchableOpacity onPress={handleAddToCart} className={`rounded-md p-[10px] w-20 mb-2`}
                 style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
                 disabled={disabledBtn}
               >

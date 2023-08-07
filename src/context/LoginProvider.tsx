@@ -13,8 +13,8 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  users: any[]
-  setUsers: any
+  users: UserInterface[]
+  setUsers: (users: UserInterface[]) => void
   auth: () => void
   logOut: () => void
   isAuth: boolean
@@ -37,10 +37,15 @@ const LoginContext = createContext<{
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
-  const [users, setUsers] = useState([])
+  // api
+  const [users, setUsers] = useState<UserInterface[]>([]) // espera que users sea un arreglo de objetos UserInterface
+  const [myUser, setMyUser] = useState({})
+
+  // inputs
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
 
+  // auth
   const [isAuth, setIsAuth] = useState(false)
   const [login, setLogin] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -51,7 +56,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       try {
         setLoading(true)
         const loginStorage = await AsyncStorage.getItem('login')
-        setLogin(loginStorage ? true : false)
+        setLogin(loginStorage === 'true' ? true : false)
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -111,6 +116,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // log out
   const logOut = async () => {
     await AsyncStorage.setItem('login', JSON.stringify(false))
+    setLogin(false)
   }
   
   return (

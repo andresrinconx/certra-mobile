@@ -2,15 +2,16 @@ import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
+import ProductoInterface from "../interfaces/ProductoInterface"
 import {URL_API} from '@env'
 
 const InvContext = createContext<{
-  cart: any[]
-  setCart: any
+  cart: ProductoInterface[]
+  setCart: (cart: ProductoInterface[]) => void
   type: string
-  setType: any
-  productos: any[]
-  setProductos: any
+  setType: (type: string) => void
+  productos: ProductoInterface[]
+  setProductos: (productos: ProductoInterface[]) => void
   loading: boolean
   setLoading: (loading: boolean) => void
   modalVisible: boolean
@@ -36,17 +37,15 @@ const InvContext = createContext<{
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // --- Cart
-  const [productos, setProductos] = useState([])
-  const [cart, setCart] = useState([])
+  const [productos, setProductos] = useState<ProductoInterface[]>([])
+  const [cart, setCart] = useState<ProductoInterface[]>([])
   const [modalVisible, setModalVisible] = useState(false)
 
   // --- Layout
   const [type, setType] = useState('grid')
   const [loading, setLoading] = useState(false)
 
-  /* 
-  --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  */
+  /* --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- */
 
   // --- Cart
   // get cart storage
@@ -65,7 +64,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
-      const url = `http://${URL_API}:3000/sinv`
+      const url = `http://192.168.88.243:3000/sinv`
     
       try {
         setLoading(true)

@@ -3,8 +3,9 @@ import { View, Text, Pressable, Modal, Image, TouchableOpacity } from 'react-nat
 import { XMarkIcon, MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import { theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
+import ProductoInterface from '../interfaces/ProductoInterface'
 
-const ProductsCart = ({item}: {item: any}) => {
+const ProductsCart = ({item}: {item: ProductoInterface}) => {
   const [cantidad, setCantidad] = useState(1)
 
   const {modalVisible, setModalVisible} = useInv()
