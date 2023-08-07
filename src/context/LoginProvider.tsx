@@ -85,7 +85,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       const url = `${URL_API}Scli`
     
       try {
-        console.log('result') 
+        console.log('result')
         const response = await fetch(url)
         const result = await response.json()
       } catch (error) {
