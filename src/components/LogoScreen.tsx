@@ -1,5 +1,4 @@
 import { View, Image } from 'react-native'
-import React from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { theme } from '../styles';
 

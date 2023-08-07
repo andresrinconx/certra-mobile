@@ -1,20 +1,22 @@
-import React from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import { ArrowLeftOnRectangleIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import useInv from '../hooks/useInv';
+import useLogin from '../hooks/useLogin';
 
-const LogOut = ({setCart}) => {
+const LogOut = () => {
+  const {setCart} = useInv()
+  const {logOut} = useLogin()
   const navigation = useNavigation()
   
-  const logOut = async () => {
-    await AsyncStorage.setItem('login', JSON.stringify(false))
+  const handleLogOut = () => {
+    logOut()
     setCart([])
     navigation.navigate('Login')
   }
 
   return (
-    <TouchableOpacity onPressOut={() => logOut()}>
+    <TouchableOpacity onPressOut={handleLogOut}>
       <View>
         <ArrowLeftOnRectangleIcon size={30} color='white' />
       </View>

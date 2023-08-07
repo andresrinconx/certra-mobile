@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {Alert} from 'react-native'
 import UserInterface from "../interfaces/UserInterface"
+import {URL_API} from '@env'
 
 const LoginContext = createContext<{
   login: boolean
@@ -15,6 +16,7 @@ const LoginContext = createContext<{
   users: any[]
   setUsers: any
   auth: () => void
+  logOut: () => void
 }>({
   login: false,
   setLogin: () => {},
@@ -26,7 +28,8 @@ const LoginContext = createContext<{
   setPassword: () => {},
   users: [],
   setUsers: () => {},
-  auth: () => {}
+  auth: () => {},
+  logOut: () => {},
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
@@ -54,7 +57,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // get users from db
   useEffect(() => {
     const getUsers = async () => {
-      const url = 'http://192.168.88.246:4000'
+      const url = `http://${URL_API}:4000`
     
       try {
         const response = await fetch(url)
@@ -97,6 +100,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     // success 
     await AsyncStorage.setItem('login', JSON.stringify(true))
   }
+
+  // log out
+  const logOut = async () => {
+    await AsyncStorage.setItem('login', JSON.stringify(false))
+  }
   
   return (
     <LoginContext.Provider value={{
@@ -110,7 +118,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       setPassword,
       users,
       setUsers,
-      auth
+      auth,
+      logOut
     }}>
       {children}
     </LoginContext.Provider>
