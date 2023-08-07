@@ -36,18 +36,15 @@ const InvContext = createContext<{
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
-  // --- Cart
+  // cart
   const [productos, setProductos] = useState<ProductoInterface[]>([])
   const [cart, setCart] = useState<ProductoInterface[]>([])
   const [modalVisible, setModalVisible] = useState(false)
-
-  // --- Layout
+  // layout
   const [type, setType] = useState('grid')
   const [loading, setLoading] = useState(false)
 
-  /* --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- */
-
-  // --- Cart
+  // CART
   // get cart storage
   useEffect(() => {
     const getCartStorage = async () => {
@@ -64,13 +61,13 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
-      const url = `http://192.168.88.243:3000/sinv`
+      const url = `${URL_API}Sinv`
     
       try {
         setLoading(true)
         const response = await fetch(url)
         const result = await response.json()
-        setProductos(result.result.data)
+        setProductos(result)
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -110,7 +107,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     console.log('pagando...')    
   }
 
-  // --- Layout
+  // LAYOUT
   // icon
   const icon = (type: string) => {
     if(type === 'grid') { // --- grid

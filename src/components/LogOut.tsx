@@ -1,8 +1,8 @@
 import { View, TouchableOpacity } from 'react-native'
 import { ArrowLeftOnRectangleIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
-import useInv from '../hooks/useInv';
-import useLogin from '../hooks/useLogin';
+import useInv from '../hooks/useInv'
+import useLogin from '../hooks/useLogin'
 
 const LogOut = () => {
   const {setCart} = useInv()
@@ -12,7 +12,7 @@ const LogOut = () => {
   const handleLogOut = () => {
     logOut()
     setCart([])
-    navigation.navigate('Home')
+    navigation.navigate('Login')
   }
 
   return (

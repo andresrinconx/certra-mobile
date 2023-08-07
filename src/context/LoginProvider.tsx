@@ -19,6 +19,7 @@ const LoginContext = createContext<{
   logOut: () => void
   isAuth: boolean
   setIsAuth: (isAuth: boolean) => void
+  myUser: UserInterface
 }>({
   login: false,
   setLogin: () => {},
@@ -33,18 +34,75 @@ const LoginContext = createContext<{
   auth: () => {},
   logOut: () => {},
   isAuth: false,
-  setIsAuth: () => {}
+  setIsAuth: () => {},
+  myUser: {
+    us_codigo: '',
+    us_clave: '',
+    activo: '',
+    almacen: '',
+    cajero: '',
+    cedula: '',
+    clavec: '',
+    clipro: '',
+    direc: '',
+    emailc: '',
+    emailp: '',
+    especial: null,
+    id: '',
+    pers: '',
+    propio: '',
+    remoto: '',
+    sucursal: '',
+    supervisor: '',
+    tele1: '',
+    tele2: '',
+    tipo: '',
+    us_fechae: null,
+    us_fechas: null,
+    us_horae: null,
+    us_horas: null,
+    us_nombre: '',
+    uuid: '',
+    vendedor: '',
+  },
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // api
   const [users, setUsers] = useState<UserInterface[]>([]) // espera que users sea un arreglo de objetos UserInterface
-  const [myUser, setMyUser] = useState({})
-
+  const [myUser, setMyUser] = useState<UserInterface>({
+    us_codigo: '',
+    us_clave: '',
+    activo: '',
+    almacen: '',
+    cajero: '',
+    cedula: '',
+    clavec: '',
+    clipro: '',
+    direc: '',
+    emailc: '',
+    emailp: '',
+    especial: null,
+    id: '',
+    pers: '',
+    propio: '',
+    remoto: '',
+    sucursal: '',
+    supervisor: '',
+    tele1: '',
+    tele2: '',
+    tipo: '',
+    us_fechae: null,
+    us_fechas: null,
+    us_horae: null,
+    us_horas: null,
+    us_nombre: '',
+    uuid: '',
+    vendedor: '',
+  })
   // inputs
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
-
   // auth
   const [isAuth, setIsAuth] = useState(false)
   const [login, setLogin] = useState(false)
@@ -96,7 +154,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
 
     // find in the db
-    const actualUser = users.find((userDb: UserInterface) => userDb.us_codigo === user && userDb.us_clave === password);
+    const actualUser = users.find((userDb: UserInterface) => userDb.us_codigo === user && userDb.us_clave === password)
     if (actualUser === undefined) {
       Alert.alert(
         'Error',
@@ -111,12 +169,16 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     // success 
     await AsyncStorage.setItem('login', JSON.stringify(true))
     setIsAuth(true)
+    setMyUser(actualUser)
   }
 
   // log out
   const logOut = async () => {
     await AsyncStorage.setItem('login', JSON.stringify(false))
+    setUser('')
+    setPassword('')
     setLogin(false)
+    setIsAuth(false)
   }
   
   return (
@@ -134,7 +196,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       auth,
       logOut,
       isAuth,
-      setIsAuth
+      setIsAuth,
+      myUser,
     }}>
       {children}
     </LoginContext.Provider>
