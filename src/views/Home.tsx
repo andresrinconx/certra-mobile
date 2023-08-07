@@ -8,18 +8,16 @@ import useLogin from '../hooks/useLogin'
 const Home = () => {
   const {type, setType, productos, loading, icon} = useInv()
   const {myUser} = useLogin()
-  const {us_codigo} = myUser
+  const {us_nombre} = myUser
 
   return (
     <View className={`${globalStyles.container}`}>
       {/* user */}
       <View className='flex items-center'>
-        <View className='mt-3 bg-white px-2 py-1 w-2/4 rounded-xl'
+        <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
           style={styles.shadow}
         >
-          <Text className='text-xl text-center'>Hola
-            <Text className='text-2xl font-bold'>{' '}{us_codigo}</Text>
-          </Text>
+          <Text className='text-2xl font-bold text-center'>{us_nombre}</Text>
         </View>
       </View>
 

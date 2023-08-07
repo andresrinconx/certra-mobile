@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect } from "react"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {Alert} from 'react-native'
-import UserInterface from "../interfaces/UserInterface"
+import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
+import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import {URL_API} from '@env'
 
 const LoginContext = createContext<{
@@ -13,13 +14,11 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  users: UserInterface[]
-  setUsers: (users: UserInterface[]) => void
   auth: () => void
   logOut: () => void
   isAuth: boolean
   setIsAuth: (isAuth: boolean) => void
-  myUser: UserInterface
+  myUser: any
 }>({
   login: false,
   setLogin: () => {},
@@ -29,77 +28,18 @@ const LoginContext = createContext<{
   setUser: () => {},
   password: '',
   setPassword: () => {},
-  users: [],
-  setUsers: () => {},
   auth: () => {},
   logOut: () => {},
   isAuth: false,
   setIsAuth: () => {},
-  myUser: {
-    us_codigo: '',
-    us_clave: '',
-    activo: '',
-    almacen: '',
-    cajero: '',
-    cedula: '',
-    clavec: '',
-    clipro: '',
-    direc: '',
-    emailc: '',
-    emailp: '',
-    especial: null,
-    id: '',
-    pers: '',
-    propio: '',
-    remoto: '',
-    sucursal: '',
-    supervisor: '',
-    tele1: '',
-    tele2: '',
-    tipo: '',
-    us_fechae: null,
-    us_fechas: null,
-    us_horae: null,
-    us_horas: null,
-    us_nombre: '',
-    uuid: '',
-    vendedor: '',
-  },
+  myUser: {},
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // api
-  const [users, setUsers] = useState<UserInterface[]>([]) // espera que users sea un arreglo de objetos UserInterface
-  const [myUser, setMyUser] = useState<UserInterface>({
-    us_codigo: '',
-    us_clave: '',
-    activo: '',
-    almacen: '',
-    cajero: '',
-    cedula: '',
-    clavec: '',
-    clipro: '',
-    direc: '',
-    emailc: '',
-    emailp: '',
-    especial: null,
-    id: '',
-    pers: '',
-    propio: '',
-    remoto: '',
-    sucursal: '',
-    supervisor: '',
-    tele1: '',
-    tele2: '',
-    tipo: '',
-    us_fechae: null,
-    us_fechas: null,
-    us_horae: null,
-    us_horas: null,
-    us_nombre: '',
-    uuid: '',
-    vendedor: '',
-  })
+  const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
+  const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
+  const [myUser, setMyUser] = useState<any>({})
   // inputs
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
@@ -123,7 +63,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUser()
   }, [])
 
-  // get users from db
+  // get usersFromUsuario
   useEffect(() => {
     const getUsers = async () => {
       const url = `${URL_API}Usuario`
@@ -131,7 +71,23 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       try {
         const response = await fetch(url)
         const result = await response.json()
-        setUsers(result)
+        setUsersFromUsuario(result)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getUsers()
+  }, [])
+
+  // get usersFromScli
+  useEffect(() => {
+    const getUsers = async () => {
+      const url = `${URL_API}Scli`
+    
+      try {
+        console.log('result')
+        const response = await fetch(url)
+        const result = await response.json()
       } catch (error) {
         console.log(error)
       }
@@ -153,30 +109,40 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       return
     }
 
-    // find in the db
-    const actualUser = users.find((userDb: UserInterface) => userDb.us_codigo === user && userDb.us_clave === password)
-    if (actualUser === undefined) {
-      Alert.alert(
-        'Error',
-        'Usuario y contraseña incorrectos',
-        [
-          { text: 'OK' },
-        ]
-      )
-      return
-    }
+    // find in the table 'Usuario'
+    const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => userDb.us_codigo === user && userDb.us_clave === password)
 
-    // success 
-    await AsyncStorage.setItem('login', JSON.stringify(true))
-    setIsAuth(true)
-    setMyUser(actualUser)
+    if (userFromUsuario === undefined) {
+      // find in the table 'Scli'
+      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => userDb.cliente === user && userDb.clave === password)
+      if (userFromScli === undefined) {
+        Alert.alert(
+          'Error',
+          'Usuario y contraseña incorrectos',
+          [
+            { text: 'OK' },
+          ]
+        )
+        return
+      } else {
+        // success
+        await AsyncStorage.setItem('login', JSON.stringify(true))
+        setIsAuth(true)
+        setMyUser(userFromScli)
+      }
+    } else {
+      // success
+      await AsyncStorage.setItem('login', JSON.stringify(true))
+      setIsAuth(true)
+      setMyUser(userFromUsuario)
+    }
   }
 
   // log out
   const logOut = async () => {
-    await AsyncStorage.setItem('login', JSON.stringify(false))
     setUser('')
     setPassword('')
+    await AsyncStorage.setItem('login', JSON.stringify(false))
     setLogin(false)
     setIsAuth(false)
   }
@@ -191,8 +157,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       setUser,
       password,
       setPassword,
-      users,
-      setUsers,
       auth,
       logOut,
       isAuth,
