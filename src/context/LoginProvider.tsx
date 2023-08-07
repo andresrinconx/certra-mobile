@@ -57,7 +57,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // get users from db
   useEffect(() => {
     const getUsers = async () => {
-      const url = `http://${URL_API}:4000`
+      const url = `${URL_API}Usuario`
     
       try {
         const response = await fetch(url)
