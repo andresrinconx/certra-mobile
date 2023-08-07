@@ -1,9 +1,9 @@
-import { View, ScrollView, Text, TouchableOpacity, Alert } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Pressable, Modal, Image } from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
-import ProductsList from '../components/ProductsList'
 import useInv from '../hooks/useInv'
+import ProductsCart from '../components/ProductsCart'
 
 const Cart = () => {
   const {cart, clearCart, pay} = useInv()
@@ -16,7 +16,7 @@ const Cart = () => {
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
         <View className='ml-4'>
-          <TouchableOpacity onPress={() => {navigation.goBack()}} className=''>
+          <TouchableOpacity onPress={() => {navigation.goBack()}}>
             <ArrowSmallRightIcon size={25} color='white' rotation={180} />
           </TouchableOpacity>
         </View>
@@ -36,7 +36,7 @@ const Cart = () => {
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{paddingBottom: 10,}}
                 >
-                  {/* items */}
+                  {/* items and trash */}
                   <View className='flex-row items-center justify-between'>
                     <Text className='text-xl my-3'>
                       <Text className='font-bold'>{cart.length} {cart.length == 1 ? 'item' : 'items'}</Text>
@@ -49,7 +49,7 @@ const Cart = () => {
 
                   {cart.map((item) => {
                     return (
-                      <ProductsList key={item.descrip} item={item} />
+                      <ProductsCart key={item.descrip} item={item} />
                     )
                   })}
                 </ScrollView>
@@ -58,7 +58,7 @@ const Cart = () => {
           }
         </View>
 
-        {/* btn */}
+        {/* btn pay */}
         <View className='absolute bottom-3 w-full z-50'>
           <TouchableOpacity onPress={() => pay()} className='rounded-xl p-2'
             style={{backgroundColor: theme.verde,}}
