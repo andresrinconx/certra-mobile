@@ -1,4 +1,4 @@
-export default interface UserInterface {
+export default interface UserFromUsuarioInterface {
   us_codigo: string
   us_clave: string
   activo: string
