@@ -1,5 +1,4 @@
-import { View, ActivityIndicator} from 'react-native'
-import React from 'react'
+import { ActivityIndicator} from 'react-native'
 import { theme } from '../styles'
 
 const Loading = () => {
