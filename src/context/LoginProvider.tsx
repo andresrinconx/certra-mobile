@@ -17,6 +17,8 @@ const LoginContext = createContext<{
   setUsers: any
   auth: () => void
   logOut: () => void
+  isAuth: boolean
+  setIsAuth: (isAuth: boolean) => void
 }>({
   login: false,
   setLogin: () => {},
@@ -30,14 +32,18 @@ const LoginContext = createContext<{
   setUsers: () => {},
   auth: () => {},
   logOut: () => {},
+  isAuth: false,
+  setIsAuth: () => {}
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
-  const [login, setLogin] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [users, setUsers] = useState([])
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
-  const [users, setUsers] = useState([])
+
+  const [isAuth, setIsAuth] = useState(false)
+  const [login, setLogin] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   // get logged user
   useEffect(() => {
@@ -99,6 +105,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
 
     // success 
     await AsyncStorage.setItem('login', JSON.stringify(true))
+    setIsAuth(true)
   }
 
   // log out
@@ -119,7 +126,9 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       users,
       setUsers,
       auth,
-      logOut
+      logOut,
+      isAuth,
+      setIsAuth
     }}>
       {children}
     </LoginContext.Provider>

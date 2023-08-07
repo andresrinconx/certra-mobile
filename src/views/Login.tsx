@@ -6,12 +6,14 @@ import useLogin from '../hooks/useLogin'
 import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
-  const {user, setUser, password, setPassword, auth} = useLogin()
+  const {user, setUser, password, setPassword, auth, isAuth} = useLogin()
   const navigation = useNavigation()
 
   const handleSubmit = () => {
     auth()
-    navigation.navigate('Home')
+    if(isAuth) {
+      navigation.navigate('Home')
+    }
   }
 
   return (
