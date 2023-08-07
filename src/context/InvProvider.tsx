@@ -13,16 +13,8 @@ const InvContext = createContext<{
   setProductos: any
   loading: boolean
   setLoading: (loading: boolean) => void
-  cantidad: number
-  setCantidad: (cantidad: number) => void
   modalVisible: boolean
   setModalVisible: (modalVisible: boolean) => void
-  disabledBtn: boolean
-  setDisabledBtn: (disabledBtn: boolean) => void
-  incremento: () => void
-  decremento: () => void
-  cartList: boolean
-  setCartList: (cartList: boolean) => void
   icon: (type: string) => any
   clearCart: () => void
   pay: () => void
@@ -35,16 +27,8 @@ const InvContext = createContext<{
   setProductos: () => {},
   loading: false,
   setLoading: () => {},
-  cantidad: 1,
-  setCantidad: () => {},
   modalVisible: false,
   setModalVisible: () => {},
-  disabledBtn: false,
-  setDisabledBtn: () => {},
-  incremento: () => {},
-  decremento: () => {},
-  cartList: false,
-  setCartList: () => {},
   icon: () => {},
   clearCart: () => {},
   pay: () => {},
@@ -54,10 +38,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // --- Cart
   const [productos, setProductos] = useState([])
   const [cart, setCart] = useState([])
-  const [cantidad, setCantidad] = useState(1)
   const [modalVisible, setModalVisible] = useState(false)
-  const [disabledBtn, setDisabledBtn] = useState(false)
-  const [cartList, setCartList] = useState(false)
 
   // --- Layout
   const [type, setType] = useState('grid')
@@ -111,23 +92,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     cartStorage()
   }, [cart])
 
-  // incremento y decremento
-  const incremento = () => {
-    const total = cantidad + 1
-    setCantidad(total)
-  }
-  const decremento = () => {
-    if (cantidad !== 1) {
-      const total = cantidad - 1
-      setCantidad(total)
-    }
-  }
-
-  // list
-  useEffect(() => {
-    setCartList(true)
-  }, [])
-
   // clear cart
   const clearCart = () => {
     Alert.alert(
@@ -171,16 +135,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setProductos,
       loading,
       setLoading,
-      cantidad,
-      setCantidad,
       modalVisible,
       setModalVisible,
-      disabledBtn,
-      setDisabledBtn,
-      incremento,
-      decremento,
-      cartList,
-      setCartList,
       icon,
       clearCart,
       pay
