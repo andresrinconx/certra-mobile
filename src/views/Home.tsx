@@ -22,7 +22,7 @@ const Home = () => {
       {/* Grid || List */}
       <View className='flex-1 justify-center items-center'>
         {loading
-          ? (
+          ? ( 
             <Loading />
           ) : (
             <FlatList
