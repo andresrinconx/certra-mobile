@@ -8,7 +8,7 @@ import CartIcon from '../components/CartIcon'
 import LogoScreen from '../components/LogoScreen'
 import LogOut from '../components/LogOut'
 import useLogin from '../hooks/useLogin'
-import useCart from '../hooks/useCart'
+import useCart from '../hooks/useInv'
 
 const Stack = createNativeStackNavigator()
 
