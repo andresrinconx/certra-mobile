@@ -23,7 +23,6 @@ const InvContext = createContext<{
   icon: (type: string) => any
   clearCart: () => void
   pay: () => void
-  search: () => void
 }>({
   cart: [],
   setCart: () => {},
@@ -42,7 +41,6 @@ const InvContext = createContext<{
   icon: () => {},
   clearCart: () => {},
   pay: () => {},
-  search: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -121,11 +119,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     console.log('pagando...')    
   }
 
-  // search
-  const search = () => {
-    setModalSearch(true)
-  }
-
   // LAYOUT
   // icon
   const icon = (type: string) => {
@@ -157,7 +150,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       pay,
       setModalSearch,
       modalSearch,
-      search,
       searchedProducts,
       setSearchedProducts
     }}>
