@@ -85,9 +85,9 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       const url = `${URL_API}Scli`
     
       try {
-        console.log('result') 
         const response = await fetch(url)
         const result = await response.json()
+        setUsersFromScli(result)
       } catch (error) {
         console.log(error)
       }
@@ -110,11 +110,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
 
     // find in the table 'Usuario'
-    const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => userDb.us_codigo === user && userDb.us_clave === password)
+    const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
 
     if (userFromUsuario === undefined) {
       // find in the table 'Scli'
-      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => userDb.cliente === user && userDb.clave === password)
+      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
       if (userFromScli === undefined) {
         Alert.alert(
           'Error',

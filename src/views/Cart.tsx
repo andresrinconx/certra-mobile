@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, TouchableOpacity, Pressable, Modal, Image } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity} from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
