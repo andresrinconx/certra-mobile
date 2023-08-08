@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { KeyIcon, UserIcon } from 'react-native-heroicons/outline'
@@ -11,10 +12,13 @@ const Login = () => {
 
   const handleSubmit = () => {
     auth()
+  }
+
+  useEffect(() => {
     if(isAuth) {
       navigation.navigate('Home')
     }
-  }
+  }, [isAuth])
 
   return (
     <LinearGradient

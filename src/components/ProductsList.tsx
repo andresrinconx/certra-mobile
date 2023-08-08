@@ -6,7 +6,7 @@ import ProductoInterface from '../interfaces/ProductoInterface'
 
 const ProductsList = ({item}: {item: ProductoInterface}) => {
   const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
-
+  
   const {setCart, cart, type} = useInv()
   const {descrip, precio1} = item
 

@@ -3,12 +3,12 @@ import { ShoppingCartIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import useInv from '../hooks/useInv'
 
-const CartIcon = () => {
+const GoToCart = () => {
   const {cart} = useInv()
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity onPressOut={() => navigation.navigate('Cart')}>
+    <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
       <View>
         <ShoppingCartIcon size={30} color='white' />
 
@@ -27,4 +27,4 @@ const CartIcon = () => {
   )
 }
 
-export default CartIcon
+export default GoToCart

@@ -4,9 +4,7 @@ import { theme } from '../styles'
 import Home from '../views/Home'
 import Cart from '../views/Cart'
 import Login from '../views/Login'
-import CartIcon from '../components/CartIcon'
 import LogoScreen from '../components/LogoScreen'
-import LogOut from '../components/LogOut'
 import useLogin from '../hooks/useLogin'
 
 const Stack = createNativeStackNavigator()
@@ -34,19 +32,13 @@ const Navigation = () => {
                 
               }}
             >
-              <Stack.Screen name='Login' component={Login} options={{title: 'Login'}} />
+              <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login' }}/>
 
               <Stack.Screen name='Home'
                 options={{
-                  headerShown: true,
+                  headerShown: false,
                   title: 'Inventario',
                   headerBackVisible: false,
-                  headerRight: () => (
-                    <CartIcon />
-                  ),
-                  headerLeft: () => (
-                    <LogOut />
-                  )
                 }}
               >
                 {() => (<Home />)}
