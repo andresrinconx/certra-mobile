@@ -12,7 +12,6 @@ import Search from '../components/Search'
 const Home = () => {
   const {type, setType, products, loading, icon} = useInv()
   const {myUser} = useLogin()
-  const {us_nombre, nombre} = myUser
   const navigation = useNavigation()
 
   return (
@@ -22,7 +21,7 @@ const Home = () => {
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
         <View className='w-1/3 ml-4'>
-          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+          <TouchableOpacity>
             <LogOut />
           </TouchableOpacity>
         </View>
@@ -49,7 +48,7 @@ const Home = () => {
           <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
             style={styles.shadow}
           >
-            <Text className='text-2xl font-bold text-center'>{us_nombre ?? nombre}</Text>
+            <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
           </View>
         </View>
 

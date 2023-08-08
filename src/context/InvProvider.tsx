@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
 import {URL_API} from '@env'
+import { getDataStorage, setDataStorage } from "../utils/helpers"
 
 const InvContext = createContext<{
   cart: ProductoInterface[]
@@ -60,7 +60,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getCartStorage = async () => {
       try {
-        const cartStorage = await AsyncStorage.getItem('cart')
+        const cartStorage = await getDataStorage('cart')
         setCart(cartStorage ? JSON.parse(cartStorage) : [])
       } catch (error) {
         console.log(error)
@@ -79,7 +79,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         const response = await fetch(url)
         const result = await response.json()
         setProducts(result)
-        console.log('resultado')
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -92,7 +91,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const cartStorage = async () => {
       try {
-        await AsyncStorage.setItem('cart', JSON.stringify(cart))
+        await setDataStorage('cart', cart)
       } catch (error) {
         console.log(error)
       }

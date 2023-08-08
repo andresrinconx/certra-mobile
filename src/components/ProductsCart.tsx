@@ -50,7 +50,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
               </TouchableOpacity>
               
               <View className='w-[30%] flex justify-center items-center'>
-                <Text className='text-2xl'>{cantidad}</Text>
+                <Text className='text-2xl text-gray-700'>{cantidad}</Text>
               </View>
 
               <TouchableOpacity onPress={() => incremento()}

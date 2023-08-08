@@ -35,7 +35,10 @@ const Search = () => {
   
   return (
     <>
-      <TouchableOpacity onPress={() => setModalSearch(true)}>
+      <TouchableOpacity onPress={() => {
+        setModalSearch(true)
+        setSearchedProducts([])
+      }}>
         <View>
           <MagnifyingGlassIcon size={30} color='white' />
         </View>
