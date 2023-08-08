@@ -1,30 +1,5 @@
 export default interface UserFromUsuarioInterface {
   us_codigo: string
   us_clave: string
-  activo: string
-  almacen: string
-  cajero: string
-  cedula: string
-  clavec: string
-  clipro: string
-  direc: string
-  emailc: string
-  emailp: string
-  especial: null
-  id: string
-  pers: string
-  propio: string
-  remoto: string
-  sucursal: string
-  supervisor: string
-  tele1: string
-  tele2: string
-  tipo: string
-  us_fechae: null
-  us_fechas: null
-  us_horae: null
-  us_horas: null
   us_nombre: string
-  uuid: string
-  vendedor: string
 }

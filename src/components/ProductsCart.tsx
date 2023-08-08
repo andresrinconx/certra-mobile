@@ -8,7 +8,7 @@ import ProductoInterface from '../interfaces/ProductoInterface'
 const ProductsCart = ({item}: {item: ProductoInterface}) => {
   const [cantidad, setCantidad] = useState(1)
 
-  const {modalVisible, setModalVisible} = useInv()
+  const {modalProduct, setModalProduct} = useInv()
   const {descrip, precio1} = item
 
   // incremento y decremento
@@ -25,7 +25,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
 
   return (
     <>
-      <Pressable onLongPress={() => setModalVisible(true)}>
+      <Pressable onLongPress={() => setModalProduct(true)}>
         <View className='flex justify-center h-24 mr-[2px] ml-[1px] mb-2 mt-[1px]' style={styles.shadow}>
           <View className='flex-row justify-center items-center'>
 
@@ -64,16 +64,16 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
         </View>
       </Pressable>
 
-      <Modal visible={modalVisible}
+      <Modal visible={modalProduct}
         animationType='slide'
         transparent={true}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={() => setModalProduct(false)}
       >
         <View className='flex-1 justify-center items-center' style={{backgroundColor: 'rgba(0, 0, 0, 0.5)',}}>
           <View className='bg-white rounded-xl w-[92%] h-[60%]'>
 
             {/* close */}
-            <TouchableOpacity onPress={() => setModalVisible(false)} className='absolute right-2 top-2'>
+            <TouchableOpacity onPress={() => setModalProduct(false)} className='absolute right-2 top-2'>
               <XMarkIcon size={35} color='black' />
             </TouchableOpacity>
 

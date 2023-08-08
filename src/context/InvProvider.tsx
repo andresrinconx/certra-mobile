@@ -10,36 +10,49 @@ const InvContext = createContext<{
   setCart: (cart: ProductoInterface[]) => void
   type: string
   setType: (type: string) => void
-  productos: ProductoInterface[]
-  setProductos: (productos: ProductoInterface[]) => void
+  products: ProductoInterface[]
+  setProducts: (products: ProductoInterface[]) => void
+  searchedProducts: ProductoInterface[]
+  setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
   loading: boolean
   setLoading: (loading: boolean) => void
-  modalVisible: boolean
-  setModalVisible: (modalVisible: boolean) => void
+  modalProduct: boolean
+  setModalProduct: (modalProduct: boolean) => void
+  modalSearch: boolean
+  setModalSearch: (modalSearch: boolean) => void
   icon: (type: string) => any
   clearCart: () => void
   pay: () => void
+  search: () => void
 }>({
   cart: [],
   setCart: () => {},
   type: 'grid',
   setType: () => {},
-  productos: [],
-  setProductos: () => {},
+  products: [],
+  setProducts: () => {},
+  searchedProducts: [],
+  setSearchedProducts: () => {},
   loading: false,
   setLoading: () => {},
-  modalVisible: false,
-  setModalVisible: () => {},
+  modalProduct: false,
+  setModalProduct: () => {},
+  modalSearch: false,
+  setModalSearch: () => {},
   icon: () => {},
   clearCart: () => {},
   pay: () => {},
+  search: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // cart
-  const [productos, setProductos] = useState<ProductoInterface[]>([])
+  const [products, setProducts] = useState<ProductoInterface[]>([])
   const [cart, setCart] = useState<ProductoInterface[]>([])
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalProduct, setModalProduct] = useState(false)
+  // search
+  const [modalSearch, setModalSearch] = useState(false)
+  const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   // layout
   const [type, setType] = useState('grid')
   const [loading, setLoading] = useState(false)
@@ -67,7 +80,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         setLoading(true)
         const response = await fetch(url)
         const result = await response.json()
-        setProductos(result)
+        setProducts(result)
+        console.log('resultado')
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -107,6 +121,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     console.log('pagando...')    
   }
 
+  // search
+  const search = () => {
+    setModalSearch(true)
+  }
+
   // LAYOUT
   // icon
   const icon = (type: string) => {
@@ -127,15 +146,20 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setCart,
       type,
       setType,
-      productos,
-      setProductos,
+      products,
+      setProducts,
       loading,
       setLoading,
-      modalVisible,
-      setModalVisible,
+      modalProduct,
+      setModalProduct,
       icon,
       clearCart,
-      pay
+      pay,
+      setModalSearch,
+      modalSearch,
+      search,
+      searchedProducts,
+      setSearchedProducts
     }}>
       {children}
     </InvContext.Provider>
