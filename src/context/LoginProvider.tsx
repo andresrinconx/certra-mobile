@@ -8,8 +8,6 @@ import { getDataStorage, setDataStorage } from "../utils/helpers"
 const LoginContext = createContext<{
   login: boolean
   setLogin: (login: boolean) => void
-  loading: boolean
-  setLoading: (loading: boolean) => void
   user: string
   setUser: (user: string) => void
   password: string
@@ -21,8 +19,6 @@ const LoginContext = createContext<{
 }>({
   login: false,
   setLogin: () => {},
-  loading: false,
-  setLoading: () => {},
   user: '',
   setUser: () => {},
   password: '',
@@ -43,13 +39,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   const [password, setPassword] = useState('')
   // auth
   const [login, setLogin] = useState(false)
-  const [loading, setLoading] = useState(false)
 
   // get logged user
   useEffect(() => {
     const getUser = async () => {
       try {
-        setLoading(true)
         // login
         const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
@@ -57,8 +51,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         // user
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
-        
-        setLoading(false)
       } catch (error) {
         console.log(error)
       }
@@ -154,8 +146,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     <LoginContext.Provider value={{
       login,
       setLogin,
-      loading,
-      setLoading,
       user,
       setUser,
       password,
