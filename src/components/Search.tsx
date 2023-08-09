@@ -7,6 +7,7 @@ import { debounce } from 'lodash'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import { fetchSinv } from '../api/inv'
 import ProductsSearch from './ProductsSearch'
+import { globalStyles, styles } from '../styles'
 
 const Search = () => {
   const {modalSearch, setModalSearch, searchedProducts, setSearchedProducts} = useInv()
@@ -25,10 +26,12 @@ const Search = () => {
     if(value.length > 2) {
       fetchSinv({searchTerm: value})
         .then((data: ProductoInterface[]) => setSearchedProducts(data))
+    } else {
+      setSearchedProducts([])
     }
   }
 
-  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
+  const handleTextDebounce = useCallback(debounce(handleSearch, 200), [])
   // useCallback ejecuta la funcion callback cada vez que se llame la funcion en si
       // puede tener un arreglo de dependencias al igual que useEffect
     // debounce retrasa la ejecucion de esa funcion un numero de milisegundos
@@ -53,9 +56,12 @@ const Search = () => {
             <TouchableOpacity onPress={() => setModalSearch(false)} className='mr-2'>
               <ArrowSmallRightIcon size={30} color='black' rotation={180} />
             </TouchableOpacity>
-            <View className='w-80 bg-gray-200 rounded-full'>
-              <TextInput className='mx-4 text-base'
+            <View className='w-80 rounded-full'
+              style={styles.shadow}
+            >
+              <TextInput className='mx-4 text-base text-gray-700'
                 placeholder='Buscar Inventario'
+                placeholderTextColor='gray'
                 ref={textInputRef}
                 onChangeText={handleTextDebounce}
               />
