@@ -1,10 +1,10 @@
-import { ActivityIndicator} from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import { theme } from '../styles'
 
-const Loading = () => {
+const LoaderHome = () => {
   return (
     <ActivityIndicator size='large' color={theme.azul} />
   )
 }
 
-export default Loading
+export default LoaderHome
