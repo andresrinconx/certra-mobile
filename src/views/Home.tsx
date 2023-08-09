@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
-import LoaderHome from '../components/LoaderHome'
 import ProductsList from '../components/ProductsList'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
@@ -10,86 +9,78 @@ import LogOut from '../components/LogOut'
 import Search from '../components/Search'
 
 const Home = () => {
-  const {type, setType, products, loading, icon} = useInv()
+  const {type, setType, products, icon} = useInv()
   const {myUser} = useLogin()
   const navigation = useNavigation()
 
   return (
     <>
-      {loading
-        ? (
-          <View className='flex-1 flex-row justify-center items-center'>
-            <LoaderHome />
+      {/* header */}
+      <View className={`flex flex-row justify-between items-center py-3`}
+        style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
+      >
+        <View className='w-1/3 ml-4'>
+          <TouchableOpacity>
+            <LogOut />
+          </TouchableOpacity>
+        </View>
+
+        <Text className='w-1/3 font-bold text-2xl text-white'>Inventario</Text>
+
+        <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
+          <View className=''>
+            <TouchableOpacity onPress={() => {navigation.goBack()}}>
+              <Search />
+            </TouchableOpacity>
           </View>
-        ) : (
-          <>
-            {/* header */}
-            <View className={`flex flex-row justify-between items-center py-3`}
-              style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
-            >
-              <View className='w-1/3 ml-4'>
-                <TouchableOpacity>
-                  <LogOut />
-                </TouchableOpacity>
-              </View>
+          <View className=''>
+            <TouchableOpacity onPress={() => {navigation.goBack()}}>
+              <GoToCart />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
 
-              <Text className='w-1/3 font-bold text-2xl text-white'>Inventario</Text>
+      <View className='px-3'>
+        {/* user */}
+        <View className='flex items-center'>
+          <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
+            style={styles.shadow}
+          >
+            <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
+          </View>
+        </View>
 
-              <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
-                <View className=''>
-                  <TouchableOpacity onPress={() => {navigation.goBack()}}>
-                    <Search />
-                  </TouchableOpacity>
-                </View>
-                <View className=''>
-                  <TouchableOpacity onPress={() => {navigation.goBack()}}>
-                    <GoToCart />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
+        {/* bar */}
+        <View className='flex-row justify-between mt-4 mb-3 mx-3'>
+          <Text className={`text-black text-xl font-bold`}>Productos</Text>
 
-            <View className={`${globalStyles.container}`}>
-              {/* user */}
-              <View className='flex items-center'>
-                <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
-                  style={styles.shadow}
-                >
-                  <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
-                </View>
-              </View>
+          <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
+            {icon(type)}
+          </TouchableOpacity>
+        </View>
+      </View>
 
-              {/* bar */}
-              <View className='flex-row justify-between mt-4 mb-3 mx-3'>
-                <Text className={`text-black text-xl font-bold`}>Productos</Text>
-
-                <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
-                  {icon(type)}
-                </TouchableOpacity>
-              </View>
-
-              {/* Grid || List */}
-              <View className='flex-1 justify-center items-center'>
-                <FlatList
-                  data={products}
-                  key={type === 'grid' ? 'grid' : 'list'}
-                  numColumns={type === 'grid' ? 2 : 1}
-                  contentContainerStyle={{
-                    paddingBottom: 10,
-                  }}
-                  showsVerticalScrollIndicator={false}
-                  keyExtractor={(item) => item.descrip}
-                  renderItem={({item}) => {
-                    return (
-                      <ProductsList key={item.descrip} item={item} />
-                    )
-                  }} 
-                />
-              </View>
-            </View>
-          </>
-        )
-      }
+      {/* Grid || List */}
+      <View className={`${globalStyles.container}`}>
+        <View className='flex-1 justify-center items-center'>
+          <FlatList
+            data={products}
+            key={type === 'grid' ? 'grid' : 'list'}
+            numColumns={type === 'grid' ? 2 : 1}
+            contentContainerStyle={{
+              paddingBottom: 10,
+            }}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => item.descrip}
+            renderItem={({item}) => {
+              return (
+                <ProductsList key={item.descrip} item={item} />
+              )
+            }} 
+          />
+        </View>
+      </View>
     </>
   )
 }
