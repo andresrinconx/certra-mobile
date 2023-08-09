@@ -3,16 +3,20 @@ import { ArrowLeftOnRectangleIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
+import { setDataStorage } from '../utils/helpers'
 
 const LogOut = () => {
   const {setCart} = useInv()
-  const {logOut} = useLogin()
+  const {logOut, setMyUser} = useLogin()
   const navigation = useNavigation()
   
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     logOut()
     setCart([])
     navigation.navigate('Login')
+    setMyUser({})
+    await setDataStorage('login', false)
+    await setDataStorage('myUser', {})
   }
 
   return (

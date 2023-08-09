@@ -29,7 +29,7 @@ const Cart = () => {
         <View className='pb-16'>
           {cart.length === 0
             ? (
-              <Text className='text-center font-bold text-2xl mt-5'>No hay productos</Text>
+              <Text className='text-center font-bold text-2xl mt-5 text-gray-700'>No hay productos</Text>
             ) : (
               <>
                 <ScrollView
@@ -38,7 +38,7 @@ const Cart = () => {
                 >
                   {/* items and trash */}
                   <View className='flex-row items-center justify-between'>
-                    <Text className='text-xl my-3'>
+                    <Text className='text-xl my-3 text-gray-700'>
                       <Text className='font-bold'>{cart.length} {cart.length == 1 ? 'item' : 'items'}</Text>
                     </Text>
                     

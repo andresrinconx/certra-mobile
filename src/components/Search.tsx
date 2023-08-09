@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react'
-import { View, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native'
+import { View, ScrollView, TouchableOpacity, Modal, TextInput, BackHandler, AppState, AppStateStatus, Keyboard } from 'react-native'
 import { MagnifyingGlassIcon } from 'react-native-heroicons/mini'
 import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
 import useInv from '../hooks/useInv'
@@ -7,11 +7,13 @@ import { debounce } from 'lodash'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import { fetchSinv } from '../api/inv'
 import ProductsSearch from './ProductsSearch'
+import { styles } from '../styles'
 
 const Search = () => {
   const {modalSearch, setModalSearch, searchedProducts, setSearchedProducts} = useInv()
   const textInputRef = useRef<TextInput | null>(null) // hace referencia al input
 
+  // SCREEN
   // show keyboard
   useEffect(() => {
     setTimeout(() => {
@@ -20,22 +22,53 @@ const Search = () => {
       }
     }, 100)
   }, [modalSearch])
+  // hide keyboard
+  const handleScroll = () => {
+    // Cerrar el teclado
+    Keyboard.dismiss()
+  }
 
+  // back handler
+  const handleAppStateChange = (nextAppState: AppStateStatus) => {
+    if (nextAppState === 'background') {
+      BackHandler.exitApp()
+    }
+  }
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (AppState.currentState === 'active') {
+        BackHandler.exitApp()
+      }
+      return true
+    })
+
+    AppState.addEventListener('change', handleAppStateChange)
+
+    return () => {
+      backHandler.remove()
+    }
+  }, [])
+
+  // SEARCH
   const handleSearch = (value: string) => {
     if(value.length > 2) {
       fetchSinv({searchTerm: value})
         .then((data: ProductoInterface[]) => setSearchedProducts(data))
+    } else {
+      setSearchedProducts([])
     }
   }
-
-  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
+  const handleTextDebounce = useCallback(debounce(handleSearch, 200), [])
   // useCallback ejecuta la funcion callback cada vez que se llame la funcion en si
       // puede tener un arreglo de dependencias al igual que useEffect
     // debounce retrasa la ejecucion de esa funcion un numero de milisegundos
   
   return (
     <>
-      <TouchableOpacity onPress={() => setModalSearch(true)}>
+      <TouchableOpacity onPress={() => {
+        setModalSearch(true)
+        setSearchedProducts([])
+      }}>
         <View>
           <MagnifyingGlassIcon size={30} color='white' />
         </View>
@@ -50,9 +83,12 @@ const Search = () => {
             <TouchableOpacity onPress={() => setModalSearch(false)} className='mr-2'>
               <ArrowSmallRightIcon size={30} color='black' rotation={180} />
             </TouchableOpacity>
-            <View className='w-80 bg-gray-200 rounded-full'>
-              <TextInput className='mx-4 text-base'
+            <View className='w-80 rounded-full'
+              style={styles.shadow}
+            >
+              <TextInput className='mx-4 text-base text-gray-700'
                 placeholder='Buscar Inventario'
+                placeholderTextColor='gray'
                 ref={textInputRef}
                 onChangeText={handleTextDebounce}
               />
@@ -63,6 +99,7 @@ const Search = () => {
           <ScrollView className='mx-3'
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 10,}}
+            onScroll={handleScroll}
           >
             {searchedProducts?.length > 0
               && (
