@@ -140,6 +140,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     setUser('')
     setPassword('')
     setLogin(false)
+    // ...
   }
   
   return (

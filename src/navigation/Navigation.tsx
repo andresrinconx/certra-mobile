@@ -14,8 +14,8 @@ const Navigation = () => {
   const {login} = useLogin()
   const {loading} = useInv()
 
-  return (
-    loading
+  return ( // change this logic
+    loading && login
       ? (
         <LoaderHome />
       ) : (

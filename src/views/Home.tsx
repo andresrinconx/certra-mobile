@@ -73,6 +73,7 @@ const Home = () => {
             }}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.descrip}
+            overScrollMode='never'
             renderItem={({item}) => {
               return (
                 <ProductsList key={item.descrip} item={item} />

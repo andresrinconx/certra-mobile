@@ -35,6 +35,7 @@ const Cart = () => {
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{paddingBottom: 10,}}
+                  overScrollMode='never'
                 >
                   {/* items and trash */}
                   <View className='flex-row items-center justify-between'>

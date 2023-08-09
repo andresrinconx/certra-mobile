@@ -99,6 +99,7 @@ const Search = () => {
           <ScrollView className='mx-3'
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 10,}}
+            overScrollMode='never'
             onScroll={handleScroll}
           >
             {searchedProducts?.length > 0
