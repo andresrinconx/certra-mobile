@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import {useEffect} from 'react'
+import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
 import ProductsList from '../components/ProductsList'
 import useInv from '../hooks/useInv'
@@ -7,11 +8,22 @@ import GoToCart from '../components/GoToCart'
 import { useNavigation } from '@react-navigation/native'
 import LogOut from '../components/LogOut'
 import Search from '../components/Search'
+import ProductsLoader from '../components/ProductsLoader'
+import { items } from '../utils/constants'
 
 const Home = () => {
-  const {type, setType, products, icon} = useInv()
+  const {type, setType, products, icon, loadingProducts} = useInv()
   const {myUser} = useLogin()
   const navigation = useNavigation()
+
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
+  }, [])
 
   return (
     <>
@@ -62,26 +74,49 @@ const Home = () => {
       </View>
 
       {/* Grid || List */}
-      <View className={`${globalStyles.container}`}>
-        <View className='flex-1 justify-center items-center'>
-          <FlatList
-            data={products}
-            key={type === 'grid' ? 'grid' : 'list'}
-            numColumns={type === 'grid' ? 2 : 1}
-            contentContainerStyle={{
-              paddingBottom: 10,
-            }}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.descrip}
-            overScrollMode='never'
-            renderItem={({item}) => {
-              return (
-                <ProductsList key={item.descrip} item={item} />
-              )
-            }} 
-          />
+      {loadingProducts
+        ? (
+          <View className={`${globalStyles.container}`}>
+            <View className='flex-1 justify-center items-center'>
+              <FlatList
+                data={items}
+                numColumns={2}
+                contentContainerStyle={{
+                  paddingBottom: 10,
+                }}
+                showsVerticalScrollIndicator={false}
+                // keyExtractor={(item) => item.id}
+                overScrollMode='never'
+                renderItem={({item}) => {
+                  return (
+                    <ProductsLoader key={item.id} />
+                  )
+                }} 
+              />
+            </View>
+          </View>
+      ) : (
+        <View className={`${globalStyles.container}`}>
+          <View className='flex-1 justify-center items-center'>
+            <FlatList
+              data={products}
+              key={type === 'grid' ? 'grid' : 'list'}
+              numColumns={type === 'grid' ? 2 : 1}
+              contentContainerStyle={{
+                paddingBottom: 10,
+              }}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item) => item.descrip}
+              overScrollMode='never'
+              renderItem={({item}) => {
+                return (
+                  <ProductsList key={item.descrip} item={item} />
+                )
+              }} 
+            />
+          </View>
         </View>
-      </View>
+      )}
     </>
   )
 }

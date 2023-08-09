@@ -14,8 +14,8 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  loading: boolean
-  setLoading: (loading: boolean) => void
+  loadingProducts: boolean
+  setLoadingProducts: (loadingProducts: boolean) => void
   modalProduct: boolean
   setModalProduct: (modalProduct: boolean) => void
   modalSearch: boolean
@@ -32,8 +32,8 @@ const InvContext = createContext<{
   setProducts: () => {},
   searchedProducts: [],
   setSearchedProducts: () => {},
-  loading: false,
-  setLoading: () => {},
+  loadingProducts: false,
+  setLoadingProducts: () => {},
   modalProduct: false,
   setModalProduct: () => {},
   modalSearch: false,
@@ -53,7 +53,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   // layout
   const [type, setType] = useState('grid')
-  const [loading, setLoading] = useState(false)
+  const [loadingProducts, setLoadingProducts] = useState(false)
 
   // CART
   // get cart storage
@@ -75,11 +75,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       const url = `${URL_API}Sinv`
     
       try {
-        setLoading(true)
+        setLoadingProducts(true)
         const response = await fetch(url)
         const result = await response.json()
         setProducts(result)
-        setLoading(false)
+        setLoadingProducts(false)
       } catch (error) {
         console.log(error)
       }
@@ -140,8 +140,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setType,
       products,
       setProducts,
-      loading,
-      setLoading,
+      loadingProducts,
+      setLoadingProducts,
       modalProduct,
       setModalProduct,
       icon,

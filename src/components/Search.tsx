@@ -28,27 +28,6 @@ const Search = () => {
     Keyboard.dismiss()
   }
 
-  // back handler
-  const handleAppStateChange = (nextAppState: AppStateStatus) => {
-    if (nextAppState === 'background') {
-      BackHandler.exitApp()
-    }
-  }
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (AppState.currentState === 'active') {
-        BackHandler.exitApp()
-      }
-      return true
-    })
-
-    AppState.addEventListener('change', handleAppStateChange)
-
-    return () => {
-      backHandler.remove()
-    }
-  }, [])
-
   // SEARCH
   const handleSearch = (value: string) => {
     if(value.length > 2) {
