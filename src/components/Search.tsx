@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react'
-import { View, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native'
+import { View, ScrollView, TouchableOpacity, Modal, TextInput, BackHandler, AppState, AppStateStatus, Keyboard } from 'react-native'
 import { MagnifyingGlassIcon } from 'react-native-heroicons/mini'
 import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
 import useInv from '../hooks/useInv'
@@ -7,12 +7,13 @@ import { debounce } from 'lodash'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import { fetchSinv } from '../api/inv'
 import ProductsSearch from './ProductsSearch'
-import { globalStyles, styles } from '../styles'
+import { styles } from '../styles'
 
 const Search = () => {
   const {modalSearch, setModalSearch, searchedProducts, setSearchedProducts} = useInv()
   const textInputRef = useRef<TextInput | null>(null) // hace referencia al input
 
+  // SCREEN
   // show keyboard
   useEffect(() => {
     setTimeout(() => {
@@ -21,7 +22,34 @@ const Search = () => {
       }
     }, 100)
   }, [modalSearch])
+  // hide keyboard
+  const handleScroll = () => {
+    // Cerrar el teclado
+    Keyboard.dismiss()
+  }
 
+  // back handler
+  const handleAppStateChange = (nextAppState: AppStateStatus) => {
+    if (nextAppState === 'background') {
+      BackHandler.exitApp()
+    }
+  }
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (AppState.currentState === 'active') {
+        BackHandler.exitApp()
+      }
+      return true
+    })
+
+    AppState.addEventListener('change', handleAppStateChange)
+
+    return () => {
+      backHandler.remove()
+    }
+  }, [])
+
+  // SEARCH
   const handleSearch = (value: string) => {
     if(value.length > 2) {
       fetchSinv({searchTerm: value})
@@ -30,7 +58,6 @@ const Search = () => {
       setSearchedProducts([])
     }
   }
-
   const handleTextDebounce = useCallback(debounce(handleSearch, 200), [])
   // useCallback ejecuta la funcion callback cada vez que se llame la funcion en si
       // puede tener un arreglo de dependencias al igual que useEffect
@@ -72,6 +99,7 @@ const Search = () => {
           <ScrollView className='mx-3'
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 10,}}
+            onScroll={handleScroll}
           >
             {searchedProducts?.length > 0
               && (
