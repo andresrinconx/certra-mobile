@@ -8,7 +8,7 @@ import GoToCart from '../components/GoToCart'
 import { useNavigation } from '@react-navigation/native'
 import LogOut from '../components/LogOut'
 import Search from '../components/Search'
-import ProductsLoader from '../components/ProductsLoader'
+import LoaderProductsGrid from '../components/LoaderProductsGrid'
 import { items } from '../utils/constants'
 
 const Home = () => {
@@ -89,7 +89,7 @@ const Home = () => {
                 overScrollMode='never'
                 renderItem={({item}) => {
                   return (
-                    <ProductsLoader key={item.id} />
+                    <LoaderProductsGrid key={item.id} />
                   )
                 }} 
               />

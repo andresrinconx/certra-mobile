@@ -8,9 +8,11 @@ import ProductoInterface from '../interfaces/ProductoInterface'
 import { fetchSinv } from '../api/inv'
 import ProductsSearch from './ProductsSearch'
 import { styles } from '../styles'
+import { items } from '../utils/constants'
+import LoaderProductsSearch from './LoaderProductsSearch'
 
 const Search = () => {
-  const {modalSearch, setModalSearch, searchedProducts, setSearchedProducts} = useInv()
+  const {modalSearch, setModalSearch, searchedProducts, setSearchedProducts, setLoadingSearchedProducts, loadingSearchedProducts} = useInv()
   const textInputRef = useRef<TextInput | null>(null) // hace referencia al input
 
   // SCREEN
@@ -29,10 +31,15 @@ const Search = () => {
   }
 
   // SEARCH
-  const handleSearch = (value: string) => {
+  const handleSearch = async (value: string) => {
     if(value.length > 2) {
-      fetchSinv({searchTerm: value})
-        .then((data: ProductoInterface[]) => setSearchedProducts(data))
+      setLoadingSearchedProducts(true)
+      // fetching...
+      // fetchSinv({searchTerm: value})
+        // .then((data: ProductoInterface[]) => setSearchedProducts(data))
+      const data = await fetchSinv({searchTerm: value})
+      setSearchedProducts(data)
+      setLoadingSearchedProducts(false)
     } else {
       setSearchedProducts([])
     }
@@ -83,13 +90,24 @@ const Search = () => {
           >
             {searchedProducts?.length > 0
               && (
-                <View className='mb-20'>
-                  {searchedProducts.map((product: ProductoInterface) => {
-                    return (
-                      <ProductsSearch key={product.descrip} product={product} />
-                    )
-                  })}
-                </View>
+                loadingSearchedProducts
+                  ? (
+                  <View className='mb-20'>
+                    {items.map((item) => {
+                      return (
+                        <LoaderProductsSearch key={item.id} />
+                      )
+                    })}
+                  </View>
+                ) : (
+                  <View className='mb-20'>
+                    {searchedProducts.map((product: ProductoInterface) => {
+                      return (
+                        <ProductsSearch key={product.descrip} product={product} />
+                      )
+                    })}
+                  </View>
+                )
               )
             }
           </ScrollView>

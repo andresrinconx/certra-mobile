@@ -16,6 +16,8 @@ const InvContext = createContext<{
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
   loadingProducts: boolean
   setLoadingProducts: (loadingProducts: boolean) => void
+  loadingSearchedProducts: boolean
+  setLoadingSearchedProducts: (loadingSearchedProducts: boolean) => void
   modalProduct: boolean
   setModalProduct: (modalProduct: boolean) => void
   modalSearch: boolean
@@ -34,6 +36,8 @@ const InvContext = createContext<{
   setSearchedProducts: () => {},
   loadingProducts: false,
   setLoadingProducts: () => {},
+  loadingSearchedProducts: false,
+  setLoadingSearchedProducts: () => {},
   modalProduct: false,
   setModalProduct: () => {},
   modalSearch: false,
@@ -54,6 +58,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // layout
   const [type, setType] = useState('grid')
   const [loadingProducts, setLoadingProducts] = useState(false)
+  const [loadingSearchedProducts, setLoadingSearchedProducts] = useState(false)
 
   // CART
   // get cart storage
@@ -142,6 +147,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setProducts,
       loadingProducts,
       setLoadingProducts,
+      loadingSearchedProducts,
+      setLoadingSearchedProducts,
       modalProduct,
       setModalProduct,
       icon,
