@@ -1,9 +1,9 @@
-import { View, ScrollView, Text, TouchableOpacity} from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, BackHandler} from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
-import ProductsCart from '../components/ProductsCart'
+import ProductsCart from '../components/products/ProductsCart'
 
 const Cart = () => {
   const {cart, clearCart, pay} = useInv()
@@ -35,6 +35,7 @@ const Cart = () => {
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{paddingBottom: 10,}}
+                  overScrollMode='never'
                 >
                   {/* items and trash */}
                   <View className='flex-row items-center justify-between'>
@@ -49,7 +50,7 @@ const Cart = () => {
 
                   {cart.map((item) => {
                     return (
-                      <ProductsCart key={item.descrip} item={item} />
+                      <ProductsCart key={item.id} item={item} />
                     )
                   })}
                 </ScrollView>

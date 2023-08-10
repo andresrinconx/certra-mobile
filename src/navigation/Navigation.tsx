@@ -5,19 +5,18 @@ import Home from '../views/Home'
 import Cart from '../views/Cart'
 import Login from '../views/Login'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
-import LoaderHome from '../components/LoaderHome'
+import WhiteScreen from '../components/loaders/WhiteScreen'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const {login} = useLogin()
-  const {loading} = useInv()
+  const {login, loadingLogin} = useLogin()
 
   return (
-    loading
-      ? (
-        <LoaderHome />
+    <>
+      {loadingLogin
+        ? (
+        <WhiteScreen />
       ) : (
         <NavigationContainer>
           <Stack.Navigator initialRouteName={login ? 'Home' : 'Login'}
@@ -57,7 +56,8 @@ const Navigation = () => {
           </Stack.Navigator>
         </NavigationContainer>
       )
-    
+      }
+    </>
   )
 }
 

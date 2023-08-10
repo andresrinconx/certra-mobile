@@ -1,5 +1,5 @@
 import { ActivityIndicator } from 'react-native'
-import { theme } from '../styles'
+import { theme } from '../../styles'
 
 const Loader = () => {
   return (

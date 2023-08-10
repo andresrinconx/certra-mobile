@@ -1,8 +1,8 @@
 import { View, Image } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { theme } from '../styles';
+import { theme } from '../../styles'
 
-const LogoScreen = () => {
+const LoaderLogoScreen = () => {
   return (
     <LinearGradient
       colors={[`${theme.turquesaOscuro}`, `${theme.turquesaClaro}`]}
@@ -17,4 +17,4 @@ const LogoScreen = () => {
   )
 }
 
-export default LogoScreen
+export default LoaderLogoScreen
