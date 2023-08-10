@@ -10,7 +10,7 @@ import { items } from '../utils/constants'
 import ProductsViews from '../components/products/ProductsViews'
 import IconUser from '../components/icons/IconUser'
 import SelectCustomer from '../components/SelectCustomer'
-import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu'
+import { Menu, MenuOptions, MenuOption, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
 import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
@@ -31,7 +31,7 @@ const Home = () => {
   }, [])
 
   return (
-    <>
+    <MenuProvider>
       {/* header */}
       <View className={`flex flex-row justify-between items-center py-3`}
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
@@ -41,13 +41,11 @@ const Home = () => {
         <View className='mr-4 flex flex-row gap-3 ml-5'>
           <View><IconSearch/></View>
           <View><IconCart/></View>
-          <View>
-            <IconLogOut />
-          </View>
           <Menu>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
               <IconUser />
             </MenuTrigger>
+
             <MenuOptions customStyles={{optionsContainer: { width: '60%' }}}>
               <View className='flex flex-row items-center gap-3 w-full top-3 -right-3'>
                 <View className='flex flex-row items-center justify-center w-8 h-8 rounded-full p-5' style={styles.shadow}>
@@ -55,26 +53,14 @@ const Home = () => {
                 </View>
                 <Text className='w-40 font-bold text-gray-700 text-base'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
               </View>
-              <View className='px-3 py-5'>
-                <Text className=''>Cerrar</Text>
+
+              <View className='px-3 mt-5 py-3 flex flex-row justify-end border-t border-t-slate-300'>
+                <IconLogOut />
               </View>
             </MenuOptions>
           </Menu>
         </View>
       </View>
-
-      {/* user */}
-      <View className='px-3'>
-        <View className='flex items-center'>
-          <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
-            style={styles.shadow}
-          >
-            <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* !!condition!! */}
 
       {/* Sel Customer */}
       <SelectCustomer />
@@ -130,7 +116,7 @@ const Home = () => {
           </View>
         </View>
       )}
-    </>
+    </MenuProvider>
   )
 }
 

@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, Text } from 'react-native'
 import { ArrowLeftOnRectangleIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import useInv from '../../hooks/useInv'
@@ -23,8 +23,9 @@ const IconLogOut = () => {
 
   return (
     <TouchableOpacity onPressOut={handleLogOut}>
-      <View>
-        <ArrowLeftOnRectangleIcon size={30} color='white' />
+      <View className='flex flex-row items-center gap-1'>
+        <ArrowLeftOnRectangleIcon size={30} color='black' />
+        <Text className='text-gray-700 font-bold text-xm'>Cerrar Sesión</Text>
       </View>
     </TouchableOpacity>
   )

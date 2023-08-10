@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 
 const IconUser = () => {
