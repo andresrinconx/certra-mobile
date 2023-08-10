@@ -10,15 +10,12 @@ import { items } from '../utils/constants'
 import ProductsViews from '../components/products/ProductsViews'
 import IconUser from '../components/icons/IconUser'
 import SelectCustomer from '../components/SelectCustomer'
-import { Menu, MenuOptions, MenuOption, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
+import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
 import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
-  const {myUser} = useLogin()
-
-  // mostrar datos si es usuario o si es scli
-  // revisar
+  const {myUser, login} = useLogin()
 
   // back HANDLER
   useEffect(() => {
