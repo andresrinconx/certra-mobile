@@ -3,7 +3,7 @@ import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
-import ProductsCart from '../components/ProductsCart'
+import ProductsCart from '../components/products/ProductsCart'
 
 const Cart = () => {
   const {cart, clearCart, pay} = useInv()

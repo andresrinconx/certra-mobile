@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback } from 'react'
 import { View, Modal, ScrollView, TouchableOpacity, TextInput, Keyboard } from 'react-native'
 import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from '../../interfaces/ProductoInterface'
-import ProductsSearch from './../ProductsSearch'
+import ProductsSearch from '../products/ProductsSearch'
 import { styles } from '../../styles'
 import { items } from '../../utils/constants'
 import LoaderProductsSearch from './../loaders/LoaderProductsSearch'
@@ -67,6 +67,9 @@ const ModalSearch = () => {
               ref={textInputRef}
               onChangeText={handleTextDebounce}
             />
+            <View className=''>
+              
+            </View>
           </View>
         </View>
 

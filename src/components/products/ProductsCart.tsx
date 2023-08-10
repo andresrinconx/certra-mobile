@@ -1,10 +1,10 @@
 import {useState} from 'react'
 import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
-import { theme, styles } from '../styles'
-import useInv from '../hooks/useInv'
-import ProductoInterface from '../interfaces/ProductoInterface'
-import ModalProductCart from './modals/ModalProductCart'
+import { theme, styles } from '../../styles'
+import useInv from '../../hooks/useInv'
+import ProductoInterface from '../../interfaces/ProductoInterface'
+import ModalProductCart from '../modals/ModalProductCart'
 
 const ProductsCart = ({item}: {item: ProductoInterface}) => {
   const [cantidad, setCantidad] = useState(1)

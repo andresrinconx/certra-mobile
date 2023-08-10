@@ -1,8 +1,8 @@
 import {useState} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { styles, theme } from '../styles'
-import ProductoInterface from '../interfaces/ProductoInterface'
-import useInv from '../hooks/useInv'
+import { styles, theme } from '../../styles'
+import ProductoInterface from '../../interfaces/ProductoInterface'
+import useInv from '../../hooks/useInv'
 
 const ProductsSearch = ({product}: {product: ProductoInterface}) => {
   const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
