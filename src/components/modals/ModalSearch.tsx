@@ -1,16 +1,18 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { View, Modal, ScrollView, TouchableOpacity, TextInput, Keyboard } from 'react-native'
 import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
+import {XMarkIcon} from 'react-native-heroicons/mini'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 import ProductsSearch from '../products/ProductsSearch'
 import { styles } from '../../styles'
 import { items } from '../../utils/constants'
 import LoaderProductsSearch from './../loaders/LoaderProductsSearch'
 import useInv from '../../hooks/useInv'
-import { debounce } from 'lodash'
 import { fetchSinv } from '../../api/inv'
 
 const ModalSearch = () => {
+  const [value, setValue] = useState('')
+  
   const {searchedProducts, loadingSearchedProducts, modalSearch, setModalSearch, setLoadingSearchedProducts, setSearchedProducts} = useInv()
   const textInputRef = useRef<TextInput | null>(null) // hace referencia al input
 
@@ -30,12 +32,17 @@ const ModalSearch = () => {
   }
 
   // SEARCH
+  useEffect(() => {
+    if(value === '') {
+      setSearchedProducts([])
+    }
+  }, [value])
+
   const handleSearch = async (value: string) => {
+    setValue(value)
     if(value.length > 2) {
       setLoadingSearchedProducts(true)
       // fetching...
-      // fetchSinv({searchTerm: value})
-        // .then((data: ProductoInterface[]) => setSearchedProducts(data))
       const data = await fetchSinv({searchTerm: value})
       setSearchedProducts(data)
       setLoadingSearchedProducts(false)
@@ -43,10 +50,6 @@ const ModalSearch = () => {
       setSearchedProducts([])
     }
   }
-  const handleTextDebounce = useCallback(debounce(handleSearch, 200), [])
-  // useCallback ejecuta la funcion callback cada vez que se llame la funcion en si
-      // puede tener un arreglo de dependencias al igual que useEffect
-    // debounce retrasa la ejecucion de esa funcion un numero de milisegundos
 
   return (
     <Modal visible={modalSearch}
@@ -58,18 +61,24 @@ const ModalSearch = () => {
           <TouchableOpacity onPress={() => setModalSearch(false)} className='mr-2'>
             <ArrowSmallRightIcon size={30} color='black' rotation={180} />
           </TouchableOpacity>
-          <View className='w-80 rounded-full'
+          <View className='w-80 flex flex-row items-center justify-between rounded-full'
             style={styles.shadow}
           >
             <TextInput className='mx-4 text-base text-gray-700'
               placeholder='Buscar Inventario'
               placeholderTextColor='gray'
               ref={textInputRef}
-              onChangeText={handleTextDebounce}
+              value={value}
+              onChangeText={handleSearch}
             />
-            <View className=''>
-              
-            </View>
+            {
+              value
+                && (
+                <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
+                  <XMarkIcon size={25} color='black' />
+                </TouchableOpacity>
+              )
+            }
           </View>
         </View>
 
