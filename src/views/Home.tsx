@@ -76,7 +76,7 @@ const Home = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Grid || List */}
+      {/* Products */}
       {loadingProducts
         ? (
           <View className={`${globalStyles.container}`}>
