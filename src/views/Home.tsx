@@ -9,6 +9,8 @@ import IconSearch from '../components/icons/IconSearch'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 import ProductsViews from '../components/products/ProductsViews'
+import IconUser from '../components/icons/IconUser'
+import SelectCustomer from '../components/SelectCustomer'
 
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
@@ -33,19 +35,12 @@ const Home = () => {
       <View className={`flex flex-row justify-between items-center py-3`}
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
-        <View className='w-1/3 ml-4'>
-          <IconLogOut />
-        </View>
-
-        <Text className='w-1/3 font-bold text-2xl text-white'>Inventario</Text>
-
-        <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
-          <View className=''>
-            <IconSearch />
-          </View>
-          <View className=''>
-            <IconCart />
-          </View>
+        <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
+        {/* icons */}
+        <View className='mr-4 flex flex-row gap-2 ml-5'>
+          <View><IconSearch/></View>
+          <View><IconCart/></View>
+          <View><IconUser/></View>
         </View>
       </View>
 
@@ -60,12 +55,10 @@ const Home = () => {
         </View>
       </View>
 
-      {/* !!condition!! */} 
+      {/* !!condition!! */}
 
       {/* Sel Customer */}
-      <View className=''>
-        <Text className=''>sel</Text>
-      </View>
+      <SelectCustomer />
 
       {/* bar */}
       <View className='flex-row justify-between mt-4 mb-3 mx-3 px-3'>
