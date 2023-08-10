@@ -4,6 +4,7 @@ import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import {URL_API} from '@env'
 import { getDataStorage, setDataStorage } from "../utils/helpers"
+import { fetchTableData } from "../api/inv"
 
 const LoginContext = createContext<{
   login: boolean
@@ -13,7 +14,6 @@ const LoginContext = createContext<{
   password: string
   setPassword: (password: string) => void
   auth: () => void
-  logOut: () => void
   myUser: any
   setMyUser: (myUser: any) => void
   loadingLogin: boolean
@@ -26,7 +26,6 @@ const LoginContext = createContext<{
   password: '',
   setPassword: () => {},
   auth: () => {},
-  logOut: () => {},
   myUser: {},
   setMyUser: () => {},
   loadingLogin: false,
@@ -65,31 +64,23 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUser()
   }, [])
 
-  // get usersFromUsuario
+  // get usersFromUsuario & usersFromScli
   useEffect(() => {
     const getUsers = async () => {
-      const url = `${URL_API}Usuario`
-    
       try {
-        const response = await fetch(url)
-        const result = await response.json()
-        setUsersFromUsuario(result)
+        const data = await fetchTableData('Usuario')
+        setUsersFromUsuario(data)
       } catch (error) {
         console.log(error)
       }
     }
     getUsers()
   }, [])
-
-  // get usersFromScli
   useEffect(() => {
     const getUsers = async () => {
-      const url = `${URL_API}Scli`
-    
       try {
-        const response = await fetch(url)
-        const result = await response.json()
-        setUsersFromScli(result)
+        const data = await fetchTableData('Scli')
+        setUsersFromScli(data)
       } catch (error) {
         console.log(error)
       }
@@ -142,14 +133,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
   }
 
-  // log out
-  const logOut = async () => {
-    setUser('')
-    setPassword('')
-    setLogin(false)
-    // ...
-  }
-  
   return (
     <LoginContext.Provider value={{
       login,
@@ -159,7 +142,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       password,
       setPassword,
       auth,
-      logOut,
       myUser,
       setMyUser,
       loadingLogin,

@@ -7,20 +7,23 @@ import { setDataStorage } from '../../utils/helpers'
 
 const IconLogOut = () => {
   const {setCart} = useInv()
-  const {logOut, setMyUser} = useLogin()
+  const {setMyUser, setUser, setPassword, setLogin} = useLogin()
   const navigation = useNavigation()
   
   const handleLogOut = async () => {
-    logOut()
-    navigation.navigate('Login')
-    await setDataStorage('login', false)
-    await setDataStorage('myUser', {})
-    setCart([])
-    setMyUser({})
+    console.log('here')
+    // setUser('')
+    // setPassword('')
+    // setLogin(false)
+    // navigation.navigate('Login')
+    // await setDataStorage('login', false)
+    // await setDataStorage('myUser', {})
+    // setCart([])
+    // setMyUser({})
   }
 
   return (
-    <TouchableOpacity onPressOut={handleLogOut}>
+    <TouchableOpacity onPress={() => console.log('pressss')}>
       <View>
         <ArrowLeftOnRectangleIcon size={30} color='white' />
       </View>

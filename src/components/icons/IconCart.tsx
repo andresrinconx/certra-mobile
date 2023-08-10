@@ -21,7 +21,6 @@ const IconCart = () => {
             </View>
           )
         }
-
       </View>
     </TouchableOpacity>
   )

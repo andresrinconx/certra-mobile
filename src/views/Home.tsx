@@ -5,7 +5,7 @@ import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { useNavigation } from '@react-navigation/native'
 import IconCart from '../components/icons/IconCart'
-import LogOut from '../components/icons/IconLogOut'
+import IconLogOut from '../components/icons/IconLogOut'
 import IconSearch from '../components/icons/IconSearch'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
@@ -33,23 +33,17 @@ const Home = () => {
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
         <View className='w-1/3 ml-4'>
-          <TouchableOpacity>
-            <LogOut />
-          </TouchableOpacity>
+          <IconLogOut />
         </View>
 
         <Text className='w-1/3 font-bold text-2xl text-white'>Inventario</Text>
 
         <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
           <View className=''>
-            <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <IconSearch />
-            </TouchableOpacity>
+            <IconSearch />
           </View>
           <View className=''>
-            <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <IconCart />
-            </TouchableOpacity>
+            <IconCart />
           </View>
         </View>
       </View>
