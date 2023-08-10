@@ -44,7 +44,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // auth
   const [login, setLogin] = useState(false)
   const [loadingLogin, setLoadingLogin] = useState(false)
- 
+
   // get logged user
   useEffect(() => {
     const getUser = async () => {
