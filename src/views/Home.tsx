@@ -4,10 +4,10 @@ import { globalStyles, theme, styles } from '../styles'
 import ProductsList from '../components/ProductsList'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import GoToCart from '../components/GoToCart'
 import { useNavigation } from '@react-navigation/native'
+import IconCart from '../components/icons/IconCart'
 import LogOut from '../components/LogOut'
-import Search from '../components/Search'
+import IconSearch from '../components/icons/IconSearch'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 
@@ -16,7 +16,7 @@ const Home = () => {
   const {myUser} = useLogin()
   const navigation = useNavigation()
 
-  // back handler
+  // back HANDLER
   useEffect(() => {
     const backAction = () => {
       BackHandler.exitApp()
@@ -43,12 +43,12 @@ const Home = () => {
         <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
           <View className=''>
             <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <Search />
+              <IconSearch />
             </TouchableOpacity>
           </View>
           <View className=''>
             <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <GoToCart />
+              <IconCart />
             </TouchableOpacity>
           </View>
         </View>

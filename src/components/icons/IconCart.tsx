@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import { ShoppingCartIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
-import useInv from '../hooks/useInv'
+import useInv from '../../hooks/useInv'
 
-const GoToCart = () => {
+const IconCart = () => {
   const {cart} = useInv()
   const navigation = useNavigation()
 
@@ -27,4 +27,4 @@ const GoToCart = () => {
   )
 }
 
-export default GoToCart
+export default IconCart

@@ -51,12 +51,14 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // cart
   const [products, setProducts] = useState<ProductoInterface[]>([])
   const [cart, setCart] = useState<ProductoInterface[]>([])
-  const [modalProduct, setModalProduct] = useState(false)
   // search
-  const [modalSearch, setModalSearch] = useState(false)
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   // layout
   const [type, setType] = useState('grid')
+  // modals
+  const [modalSearch, setModalSearch] = useState(false)
+  const [modalProduct, setModalProduct] = useState(false)
+  // loaders
   const [loadingProducts, setLoadingProducts] = useState(false)
   const [loadingSearchedProducts, setLoadingSearchedProducts] = useState(false)
 
