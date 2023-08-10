@@ -1,7 +1,6 @@
 import {useEffect} from 'react'
 import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
-import ProductsList from '../components/ProductsList'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { useNavigation } from '@react-navigation/native'
@@ -10,6 +9,7 @@ import LogOut from '../components/icons/IconLogOut'
 import IconSearch from '../components/icons/IconSearch'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
+import ProductsViews from '../components/products/ProductsViews'
 
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
@@ -109,7 +109,7 @@ const Home = () => {
               overScrollMode='never'
               renderItem={({item}) => {
                 return (
-                  <ProductsList key={item.id} item={item} />
+                  <ProductsViews key={item.id} item={item} />
                 )
               }} 
             />
