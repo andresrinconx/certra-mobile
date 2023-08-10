@@ -85,7 +85,6 @@ const Home = () => {
                   paddingBottom: 10,
                 }}
                 showsVerticalScrollIndicator={false}
-                // keyExtractor={(item) => item.id}
                 overScrollMode='never'
                 renderItem={({item}) => {
                   return (
@@ -106,11 +105,10 @@ const Home = () => {
                 paddingBottom: 10,
               }}
               showsVerticalScrollIndicator={false}
-              keyExtractor={(item) => item.descrip}
               overScrollMode='never'
               renderItem={({item}) => {
                 return (
-                  <ProductsList key={item.descrip} item={item} />
+                  <ProductsList key={item.id} item={item} />
                 )
               }} 
             />

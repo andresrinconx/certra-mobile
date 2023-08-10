@@ -103,7 +103,7 @@ const Search = () => {
                   <View className='mb-20'>
                     {searchedProducts.map((product: ProductoInterface) => {
                       return (
-                        <ProductsSearch key={product.descrip} product={product} />
+                        <ProductsSearch key={product.id} product={product} />
                       )
                     })}
                   </View>

@@ -52,7 +52,7 @@ const ProductsList = ({item}: {item: ProductoInterface}) => {
           <View className='flex-row'>
     
             {/* textos item */}
-            <View className='basis-[70%]'>
+            <View className='basis-[65%]'>
               <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
                 {descrip}
               </Text>
@@ -63,8 +63,8 @@ const ProductsList = ({item}: {item: ProductoInterface}) => {
             </View>
     
             {/* btn */}
-            <View className='basis-[30%] justify-center items-center'>
-              <TouchableOpacity onPress={handleAddToCart} className={`rounded-md p-[10px] w-20 mb-2`}
+            <View className='basis-[35%] justify-center items-center'>
+              <TouchableOpacity onPress={handleAddToCart} className={`rounded-md p-[10px] w-24 mb-2`}
                 style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
                 disabled={disabledBtn}
               >

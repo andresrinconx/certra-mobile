@@ -1,4 +1,3 @@
-import {useEffect} from 'react'
 import { View, ScrollView, Text, TouchableOpacity, BackHandler} from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
@@ -51,7 +50,7 @@ const Cart = () => {
 
                   {cart.map((item) => {
                     return (
-                      <ProductsCart key={item.descrip} item={item} />
+                      <ProductsCart key={item.id} item={item} />
                     )
                   })}
                 </ScrollView>
