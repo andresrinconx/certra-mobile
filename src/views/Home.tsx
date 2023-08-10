@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-nativ
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import { useNavigation } from '@react-navigation/native'
 import IconCart from '../components/icons/IconCart'
 import IconLogOut from '../components/icons/IconLogOut'
 import IconSearch from '../components/icons/IconSearch'
@@ -14,7 +13,9 @@ import ProductsViews from '../components/products/ProductsViews'
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
   const {myUser} = useLogin()
-  const navigation = useNavigation()
+
+  // mostrar datos si es usuario o si es scli
+  // revisar
 
   // back HANDLER
   useEffect(() => {
@@ -48,8 +49,8 @@ const Home = () => {
         </View>
       </View>
 
+      {/* user */}
       <View className='px-3'>
-        {/* user */}
         <View className='flex items-center'>
           <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
             style={styles.shadow}
@@ -57,15 +58,22 @@ const Home = () => {
             <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
           </View>
         </View>
+      </View>
 
-        {/* bar */}
-        <View className='flex-row justify-between mt-4 mb-3 mx-3'>
-          <Text className={`text-black text-xl font-bold`}>Productos</Text>
+      {/* !!condition!! */}
 
-          <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
-            {icon(type)}
-          </TouchableOpacity>
-        </View>
+      {/* Sel Customer */}
+      <View className=''>
+        <Text className=''>sel</Text>
+      </View>
+
+      {/* bar */}
+      <View className='flex-row justify-between mt-4 mb-3 mx-3 px-3'>
+        <Text className={`text-black text-xl font-bold`}>Productos</Text>
+
+        <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
+          {icon(type)}
+        </TouchableOpacity>
       </View>
 
       {/* Grid || List */}

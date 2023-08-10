@@ -68,19 +68,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const data = await fetchTableData('Usuario')
-        setUsersFromUsuario(data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUsers()
-  }, [])
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const data = await fetchTableData('Scli')
-        setUsersFromScli(data)
+        const dataUsuario = fetchTableData('Usuario')
+        const dataScli = fetchTableData('Scli')
+        const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todaas al mismo tiempo
+        setUsersFromUsuario(usuario)
+        setUsersFromScli(scli)
       } catch (error) {
         console.log(error)
       }
@@ -104,7 +96,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
 
     // find in the table 'Usuario'
     const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
-
     if (userFromUsuario === undefined) {
       // find in the table 'Scli'
       const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
@@ -118,14 +109,14 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         )
         return
       } else {
-        // success
+        // success from Scli
         setLogin(true)
         setMyUser(userFromScli)
         await setDataStorage('login', true)
         await setDataStorage('myUser', userFromScli)
       }
     } else {
-      // success
+      // success from Usuario
       setLogin(true)
       setMyUser(userFromUsuario)
       await setDataStorage('login', true)

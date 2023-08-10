@@ -8,7 +8,7 @@ export const fetchTableData = async (table: string) => {
   try {
     const response = await fetch(generalEndpointUrl)
     const result = await response.json()
-    return result // the JSON
+    return result
   } catch (error) {
     console.log(error)
   }
