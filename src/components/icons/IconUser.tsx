@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import useLogin from '../../hooks/useLogin'
 
 const IconUser = () => {
@@ -6,7 +6,7 @@ const IconUser = () => {
 
   return (
     <View className='flex flex-row items-center justify-center w-8 h-8 rounded-full'>
-      <Text className='text-center font-bold text-gray-700 text-base'>{'AR'}</Text>
+      <Text className='text-center font-bold text-gray-700 text-base'>{myUser.letters}</Text>
     </View>
   )
 }

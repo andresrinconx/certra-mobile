@@ -80,6 +80,16 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUsers()
   }, [])
 
+  // get two first letters of the user
+  const firstTwoLetters = (fullName: string) => {
+    const palabras = fullName.split(' ')
+    let letters = ''
+    for (let i = 0; i < 2; i++) {
+      letters += palabras[i][0]
+    }
+    return letters
+  }
+
   // auth
   const auth = async () => {
     // required fields
@@ -111,14 +121,16 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       } else {
         // success from Scli
         setLogin(true)
-        setMyUser(userFromScli)
+        const letters = firstTwoLetters(userFromScli.nombre)
+        setMyUser({...userFromScli, letters})
         await setDataStorage('login', true)
         await setDataStorage('myUser', userFromScli)
       }
     } else {
       // success from Usuario
       setLogin(true)
-      setMyUser(userFromUsuario)
+      const letters = firstTwoLetters(userFromUsuario.us_nombre)
+      setMyUser({...userFromUsuario, letters})
       await setDataStorage('login', true)
       await setDataStorage('myUser', userFromUsuario)
     }
