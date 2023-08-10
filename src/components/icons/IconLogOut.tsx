@@ -11,19 +11,18 @@ const IconLogOut = () => {
   const navigation = useNavigation()
   
   const handleLogOut = async () => {
-    console.log('here')
-    // setUser('')
-    // setPassword('')
-    // setLogin(false)
-    // navigation.navigate('Login')
-    // await setDataStorage('login', false)
-    // await setDataStorage('myUser', {})
-    // setCart([])
-    // setMyUser({})
+    setUser('')
+    setPassword('')
+    setLogin(false)
+    navigation.navigate('Login')
+    await setDataStorage('login', false)
+    await setDataStorage('myUser', {})
+    setCart([])
+    setMyUser({})
   }
 
   return (
-    <TouchableOpacity onPress={() => console.log('pressss')}>
+    <TouchableOpacity onPressOut={handleLogOut}>
       <View>
         <ArrowLeftOnRectangleIcon size={30} color='white' />
       </View>
