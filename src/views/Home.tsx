@@ -8,7 +8,7 @@ import GoToCart from '../components/GoToCart'
 import { useNavigation } from '@react-navigation/native'
 import LogOut from '../components/LogOut'
 import Search from '../components/Search'
-import LoaderProductsGrid from '../components/LoaderProductsGrid'
+import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 
 const Home = () => {
@@ -16,6 +16,7 @@ const Home = () => {
   const {myUser} = useLogin()
   const navigation = useNavigation()
 
+  // back handler
   useEffect(() => {
     const backAction = () => {
       BackHandler.exitApp()

@@ -5,7 +5,7 @@ import Home from '../views/Home'
 import Cart from '../views/Cart'
 import Login from '../views/Login'
 import useLogin from '../hooks/useLogin'
-import WhiteScreen from '../components/WhiteScreen'
+import WhiteScreen from '../components/loaders/WhiteScreen'
 
 const Stack = createNativeStackNavigator()
 

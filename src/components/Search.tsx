@@ -9,7 +9,7 @@ import { fetchSinv } from '../api/inv'
 import ProductsSearch from './ProductsSearch'
 import { styles } from '../styles'
 import { items } from '../utils/constants'
-import LoaderProductsSearch from './LoaderProductsSearch'
+import LoaderProductsSearch from './loaders/LoaderProductsSearch'
 
 const Search = () => {
   const {modalSearch, setModalSearch, searchedProducts, setSearchedProducts, setLoadingSearchedProducts, loadingSearchedProducts} = useInv()
