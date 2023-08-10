@@ -3,9 +3,8 @@ import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-nativ
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import { useNavigation } from '@react-navigation/native'
 import IconCart from '../components/icons/IconCart'
-import LogOut from '../components/icons/IconLogOut'
+import IconLogOut from '../components/icons/IconLogOut'
 import IconSearch from '../components/icons/IconSearch'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
@@ -14,7 +13,9 @@ import ProductsViews from '../components/products/ProductsViews'
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
   const {myUser} = useLogin()
-  const navigation = useNavigation()
+
+  // mostrar datos si es usuario o si es scli
+  // revisar
 
   // back HANDLER
   useEffect(() => {
@@ -33,29 +34,23 @@ const Home = () => {
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
         <View className='w-1/3 ml-4'>
-          <TouchableOpacity>
-            <LogOut />
-          </TouchableOpacity>
+          <IconLogOut />
         </View>
 
         <Text className='w-1/3 font-bold text-2xl text-white'>Inventario</Text>
 
         <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
           <View className=''>
-            <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <IconSearch />
-            </TouchableOpacity>
+            <IconSearch />
           </View>
           <View className=''>
-            <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <IconCart />
-            </TouchableOpacity>
+            <IconCart />
           </View>
         </View>
       </View>
 
+      {/* user */}
       <View className='px-3'>
-        {/* user */}
         <View className='flex items-center'>
           <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
             style={styles.shadow}
@@ -63,18 +58,25 @@ const Home = () => {
             <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
           </View>
         </View>
-
-        {/* bar */}
-        <View className='flex-row justify-between mt-4 mb-3 mx-3'>
-          <Text className={`text-black text-xl font-bold`}>Productos</Text>
-
-          <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
-            {icon(type)}
-          </TouchableOpacity>
-        </View>
       </View>
 
-      {/* Grid || List */}
+      {/* !!condition!! */} 
+
+      {/* Sel Customer */}
+      <View className=''>
+        <Text className=''>sel</Text>
+      </View>
+
+      {/* bar */}
+      <View className='flex-row justify-between mt-4 mb-3 mx-3 px-3'>
+        <Text className={`text-black text-xl font-bold`}>Productos</Text>
+
+        <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
+          {icon(type)}
+        </TouchableOpacity>
+      </View>
+
+      {/* Products */}
       {loadingProducts
         ? (
           <View className={`${globalStyles.container}`}>
