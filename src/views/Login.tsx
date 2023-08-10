@@ -7,18 +7,18 @@ import useLogin from '../hooks/useLogin'
 import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
-  const {user, setUser, password, setPassword, auth, isAuth} = useLogin()
+  const {user, setUser, password, setPassword, auth, login} = useLogin()
   const navigation = useNavigation()
 
-  const handleSubmit = () => {
+  const handleSignIn = () => {
     auth()
   }
 
   useEffect(() => {
-    if(isAuth) {
+    if(login) {
       navigation.navigate('Home')
     }
-  }, [isAuth])
+  }, [login])
 
   return (
     <LinearGradient
@@ -61,7 +61,7 @@ const Login = () => {
             </View>
           </View>
 
-          <TouchableOpacity onPress={handleSubmit} className={`w-[340px] top-8 p-3 rounded-full`}
+          <TouchableOpacity onPress={handleSignIn} className={`w-[340px] top-8 p-3 rounded-full`}
             style={{backgroundColor: theme.verde,}}
           >
             <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>

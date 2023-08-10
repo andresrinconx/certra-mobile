@@ -1,19 +1,30 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import {useEffect} from 'react'
+import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
-import Loading from '../components/Loading'
-import ProductsList from '../components/ProductsList'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import GoToCart from '../components/GoToCart'
 import { useNavigation } from '@react-navigation/native'
-import LogOut from '../components/LogOut'
-import Search from '../components/Search'
+import IconCart from '../components/icons/IconCart'
+import LogOut from '../components/icons/IconLogOut'
+import IconSearch from '../components/icons/IconSearch'
+import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
+import { items } from '../utils/constants'
+import ProductsViews from '../components/products/ProductsViews'
 
 const Home = () => {
-  const {type, setType, products, loading, icon} = useInv()
+  const {type, setType, products, icon, loadingProducts} = useInv()
   const {myUser} = useLogin()
-  const {us_nombre, nombre} = myUser
   const navigation = useNavigation()
+
+  // back HANDLER
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
+  }, [])
 
   return (
     <>
@@ -22,7 +33,7 @@ const Home = () => {
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
         <View className='w-1/3 ml-4'>
-          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+          <TouchableOpacity>
             <LogOut />
           </TouchableOpacity>
         </View>
@@ -32,24 +43,24 @@ const Home = () => {
         <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
           <View className=''>
             <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <Search />
+              <IconSearch />
             </TouchableOpacity>
           </View>
           <View className=''>
             <TouchableOpacity onPress={() => {navigation.goBack()}}>
-              <GoToCart />
+              <IconCart />
             </TouchableOpacity>
           </View>
         </View>
       </View>
 
-      <View className={`${globalStyles.container}`}>
+      <View className='px-3'>
         {/* user */}
         <View className='flex items-center'>
           <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
             style={styles.shadow}
           >
-            <Text className='text-2xl font-bold text-center'>{us_nombre ?? nombre}</Text>
+            <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
           </View>
         </View>
 
@@ -61,32 +72,50 @@ const Home = () => {
             {icon(type)}
           </TouchableOpacity>
         </View>
+      </View>
 
-        {/* Grid || List */}
-        <View className='flex-1 justify-center items-center'>
-          {loading
-            ? (
-              <Loading />
-            ) : (
+      {/* Grid || List */}
+      {loadingProducts
+        ? (
+          <View className={`${globalStyles.container}`}>
+            <View className='flex-1 justify-center items-center'>
               <FlatList
-                data={products}
-                key={type === 'grid' ? 'grid' : 'list'}
-                numColumns={type === 'grid' ? 2 : 1}
+                data={items}
+                numColumns={2}
                 contentContainerStyle={{
                   paddingBottom: 10,
                 }}
                 showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item.descrip}
+                overScrollMode='never'
                 renderItem={({item}) => {
                   return (
-                    <ProductsList key={item.descrip} item={item} />
+                    <LoaderProductsGrid key={item.id} />
                   )
                 }} 
               />
-            )
-          }
+            </View>
+          </View>
+      ) : (
+        <View className={`${globalStyles.container}`}>
+          <View className='flex-1 justify-center items-center'>
+            <FlatList
+              data={products}
+              key={type === 'grid' ? 'grid' : 'list'}
+              numColumns={type === 'grid' ? 2 : 1}
+              contentContainerStyle={{
+                paddingBottom: 10,
+              }}
+              showsVerticalScrollIndicator={false}
+              overScrollMode='never'
+              renderItem={({item}) => {
+                return (
+                  <ProductsViews key={item.id} item={item} />
+                )
+              }} 
+            />
+          </View>
         </View>
-      </View>
+      )}
     </>
   )
 }

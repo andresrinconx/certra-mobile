@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
 import {URL_API} from '@env'
+import { getDataStorage, setDataStorage } from "../utils/helpers"
 
 const InvContext = createContext<{
   cart: ProductoInterface[]
@@ -14,8 +14,10 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  loading: boolean
-  setLoading: (loading: boolean) => void
+  loadingProducts: boolean
+  setLoadingProducts: (loadingProducts: boolean) => void
+  loadingSearchedProducts: boolean
+  setLoadingSearchedProducts: (loadingSearchedProducts: boolean) => void
   modalProduct: boolean
   setModalProduct: (modalProduct: boolean) => void
   modalSearch: boolean
@@ -32,8 +34,10 @@ const InvContext = createContext<{
   setProducts: () => {},
   searchedProducts: [],
   setSearchedProducts: () => {},
-  loading: false,
-  setLoading: () => {},
+  loadingProducts: false,
+  setLoadingProducts: () => {},
+  loadingSearchedProducts: false,
+  setLoadingSearchedProducts: () => {},
   modalProduct: false,
   setModalProduct: () => {},
   modalSearch: false,
@@ -47,20 +51,23 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // cart
   const [products, setProducts] = useState<ProductoInterface[]>([])
   const [cart, setCart] = useState<ProductoInterface[]>([])
-  const [modalProduct, setModalProduct] = useState(false)
   // search
-  const [modalSearch, setModalSearch] = useState(false)
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   // layout
   const [type, setType] = useState('grid')
-  const [loading, setLoading] = useState(false)
+  // modals
+  const [modalSearch, setModalSearch] = useState(false)
+  const [modalProduct, setModalProduct] = useState(false)
+  // loaders
+  const [loadingProducts, setLoadingProducts] = useState(false)
+  const [loadingSearchedProducts, setLoadingSearchedProducts] = useState(false)
 
   // CART
   // get cart storage
   useEffect(() => {
     const getCartStorage = async () => {
       try {
-        const cartStorage = await AsyncStorage.getItem('cart')
+        const cartStorage = await getDataStorage('cart')
         setCart(cartStorage ? JSON.parse(cartStorage) : [])
       } catch (error) {
         console.log(error)
@@ -75,12 +82,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       const url = `${URL_API}Sinv`
     
       try {
-        setLoading(true)
+        setLoadingProducts(true)
         const response = await fetch(url)
         const result = await response.json()
         setProducts(result)
-        console.log('resultado')
-        setLoading(false)
+        setLoadingProducts(false)
       } catch (error) {
         console.log(error)
       }
@@ -92,7 +98,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const cartStorage = async () => {
       try {
-        await AsyncStorage.setItem('cart', JSON.stringify(cart))
+        await setDataStorage('cart', cart)
       } catch (error) {
         console.log(error)
       }
@@ -141,8 +147,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setType,
       products,
       setProducts,
-      loading,
-      setLoading,
+      loadingProducts,
+      setLoadingProducts,
+      loadingSearchedProducts,
+      setLoadingSearchedProducts,
       modalProduct,
       setModalProduct,
       icon,

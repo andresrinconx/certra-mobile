@@ -1,14 +1,15 @@
 import {useState} from 'react'
-import { View, Text, Pressable, Modal, Image, TouchableOpacity } from 'react-native'
-import { XMarkIcon, MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
-import { theme, styles } from '../styles'
-import useInv from '../hooks/useInv'
-import ProductoInterface from '../interfaces/ProductoInterface'
+import { View, Text, Pressable, TouchableOpacity } from 'react-native'
+import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
+import { theme, styles } from '../../styles'
+import useInv from '../../hooks/useInv'
+import ProductoInterface from '../../interfaces/ProductoInterface'
+import ModalProductCart from '../modals/ModalProductCart'
 
 const ProductsCart = ({item}: {item: ProductoInterface}) => {
   const [cantidad, setCantidad] = useState(1)
 
-  const {modalProduct, setModalProduct} = useInv()
+  const {setModalProduct} = useInv()
   const {descrip, precio1} = item
 
   // incremento y decremento
@@ -50,7 +51,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
               </TouchableOpacity>
               
               <View className='w-[30%] flex justify-center items-center'>
-                <Text className='text-2xl'>{cantidad}</Text>
+                <Text className='text-2xl text-gray-700'>{cantidad}</Text>
               </View>
 
               <TouchableOpacity onPress={() => incremento()}
@@ -64,33 +65,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
         </View>
       </Pressable>
 
-      <Modal visible={modalProduct}
-        animationType='slide'
-        transparent={true}
-        onRequestClose={() => setModalProduct(false)}
-      >
-        <View className='flex-1 justify-center items-center' style={{backgroundColor: 'rgba(0, 0, 0, 0.5)',}}>
-          <View className='bg-white rounded-xl w-[92%] h-[60%]'>
-
-            {/* close */}
-            <TouchableOpacity onPress={() => setModalProduct(false)} className='absolute right-2 top-2'>
-              <XMarkIcon size={35} color='black' />
-            </TouchableOpacity>
-
-            {/* content */}
-            <View className='px-4 mt-8'>
-              <View className='border-b-[#D1D5DB] border-b mb-2 justify-center items-center'>
-                <Image source={require('../assets/Acetaminofen.png')} style={{width: 240, height: 240,}} />
-              </View>
-              
-              <View>
-                <Text className='text-black text-2xl mb-2'>{descrip}</Text>
-                <Text style={{color: theme.azul,}} className='font-bold text-3xl'>Bs. {precio1}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal> 
+      <ModalProductCart item={item} />
     </>
   )
 }

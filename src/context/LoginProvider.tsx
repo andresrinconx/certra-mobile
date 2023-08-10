@@ -1,38 +1,36 @@
 import { createContext, useState, useEffect } from "react"
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import {Alert} from 'react-native'
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import {URL_API} from '@env'
+import { getDataStorage, setDataStorage } from "../utils/helpers"
 
 const LoginContext = createContext<{
   login: boolean
   setLogin: (login: boolean) => void
-  loading: boolean
-  setLoading: (loading: boolean) => void
   user: string
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
   auth: () => void
   logOut: () => void
-  isAuth: boolean
-  setIsAuth: (isAuth: boolean) => void
   myUser: any
+  setMyUser: (myUser: any) => void
+  loadingLogin: boolean
+  setLoadingLogin: (loadingLogin: boolean) => void
 }>({
   login: false,
   setLogin: () => {},
-  loading: false,
-  setLoading: () => {},
   user: '',
   setUser: () => {},
   password: '',
   setPassword: () => {},
   auth: () => {},
   logOut: () => {},
-  isAuth: false,
-  setIsAuth: () => {},
   myUser: {},
+  setMyUser: () => {},
+  loadingLogin: false,
+  setLoadingLogin: () => {},
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
@@ -44,18 +42,22 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
   // auth
-  const [isAuth, setIsAuth] = useState(false)
   const [login, setLogin] = useState(false)
-  const [loading, setLoading] = useState(false)
-
+  const [loadingLogin, setLoadingLogin] = useState(false)
+ 
   // get logged user
   useEffect(() => {
     const getUser = async () => {
       try {
-        setLoading(true)
-        const loginStorage = await AsyncStorage.getItem('login')
+        // login
+        setLoadingLogin(true)
+        const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
-        setLoading(false)
+        setLoadingLogin(false)
+        
+        // user
+        const myUserStorage = await getDataStorage('myUser')
+        setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
       } catch (error) {
         console.log(error)
       }
@@ -85,7 +87,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       const url = `${URL_API}Scli`
     
       try {
-        console.log('result') 
         const response = await fetch(url)
         const result = await response.json()
         setUsersFromScli(result)
@@ -127,15 +128,17 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         return
       } else {
         // success
-        await AsyncStorage.setItem('login', JSON.stringify(true))
-        setIsAuth(true)
+        setLogin(true)
         setMyUser(userFromScli)
+        await setDataStorage('login', true)
+        await setDataStorage('myUser', userFromScli)
       }
     } else {
       // success
-      await AsyncStorage.setItem('login', JSON.stringify(true))
-      setIsAuth(true)
+      setLogin(true)
       setMyUser(userFromUsuario)
+      await setDataStorage('login', true)
+      await setDataStorage('myUser', userFromUsuario)
     }
   }
 
@@ -143,26 +146,24 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   const logOut = async () => {
     setUser('')
     setPassword('')
-    await AsyncStorage.setItem('login', JSON.stringify(false))
     setLogin(false)
-    setIsAuth(false)
+    // ...
   }
   
   return (
     <LoginContext.Provider value={{
       login,
       setLogin,
-      loading,
-      setLoading,
       user,
       setUser,
       password,
       setPassword,
       auth,
       logOut,
-      isAuth,
-      setIsAuth,
       myUser,
+      setMyUser,
+      loadingLogin,
+      setLoadingLogin
     }}>
       {children}
     </LoginContext.Provider>

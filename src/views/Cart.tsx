@@ -1,9 +1,9 @@
-import { View, ScrollView, Text, TouchableOpacity} from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, BackHandler} from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
-import ProductsCart from '../components/ProductsCart'
+import ProductsCart from '../components/products/ProductsCart'
 
 const Cart = () => {
   const {cart, clearCart, pay} = useInv()
@@ -29,16 +29,17 @@ const Cart = () => {
         <View className='pb-16'>
           {cart.length === 0
             ? (
-              <Text className='text-center font-bold text-2xl mt-5'>No hay productos</Text>
+              <Text className='text-center font-bold text-2xl mt-5 text-gray-700'>No hay productos</Text>
             ) : (
               <>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{paddingBottom: 10,}}
+                  overScrollMode='never'
                 >
                   {/* items and trash */}
                   <View className='flex-row items-center justify-between'>
-                    <Text className='text-xl my-3'>
+                    <Text className='text-xl my-3 text-gray-700'>
                       <Text className='font-bold'>{cart.length} {cart.length == 1 ? 'item' : 'items'}</Text>
                     </Text>
                     
@@ -49,7 +50,7 @@ const Cart = () => {
 
                   {cart.map((item) => {
                     return (
-                      <ProductsCart key={item.descrip} item={item} />
+                      <ProductsCart key={item.id} item={item} />
                     )
                   })}
                 </ScrollView>

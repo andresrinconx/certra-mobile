@@ -4,58 +4,58 @@ import { theme } from '../styles'
 import Home from '../views/Home'
 import Cart from '../views/Cart'
 import Login from '../views/Login'
-import LogoScreen from '../components/LogoScreen'
 import useLogin from '../hooks/useLogin'
+import WhiteScreen from '../components/loaders/WhiteScreen'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const {login, loading} = useLogin()
+  const {login, loadingLogin} = useLogin()
 
   return (
     <>
-      {loading
+      {loadingLogin
         ? (
-          <LogoScreen />
-        ) : (
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName={login ? 'Home' : 'Login'}
-              screenOptions={{
+        <WhiteScreen />
+      ) : (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={login ? 'Home' : 'Login'}
+            screenOptions={{
+              headerShown: false,
+              headerTitleAlign: 'center',
+              headerStyle: {backgroundColor: `${theme.turquesaClaro}`},
+              headerTitleStyle: {
+                color: '#fff', 
+                fontWeight: '800', 
+                fontSize: 24,
+              },
+              
+            }}
+          >
+            <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login' }}/>
+
+            <Stack.Screen name='Home'
+              options={{
                 headerShown: false,
-                headerTitleAlign: 'center',
-                headerStyle: {backgroundColor: `${theme.turquesaClaro}`},
-                headerTitleStyle: {
-                  color: '#fff', 
-                  fontWeight: '800', 
-                  fontSize: 24,
-                },
-                
+                title: 'Inventario',
+                headerBackVisible: false,
               }}
             >
-              <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login' }}/>
+              {() => (<Home />)}
+            </Stack.Screen>
 
-              <Stack.Screen name='Home'
-                options={{
-                  headerShown: false,
-                  title: 'Inventario',
-                  headerBackVisible: false,
-                }}
-              >
-                {() => (<Home />)}
-              </Stack.Screen>
-
-              <Stack.Screen name='Cart'
-                options={{
-                  headerShown: false, 
-                  title: 'cart',
-                  headerTintColor: '#fff',
-                }}
-              >
-                {() => (<Cart />)}
-              </Stack.Screen>
-            </Stack.Navigator>
-          </NavigationContainer>
-        )
+            <Stack.Screen name='Cart'
+              options={{
+                headerShown: false, 
+                title: 'cart',
+                headerTintColor: '#fff',
+              }}
+            >
+              {() => (<Cart />)}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+      )
       }
     </>
   )
