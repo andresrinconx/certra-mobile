@@ -60,7 +60,7 @@ const Home = () => {
         </View>
       </View>
 
-      {/* !!condition!! */}
+      {/* !!condition!! */} 
 
       {/* Sel Customer */}
       <View className=''>
