@@ -4,6 +4,7 @@ import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import {URL_API} from '@env'
 import { getDataStorage, setDataStorage } from "../utils/helpers"
+import { fetchTableData } from "../api/inv"
 
 const LoginContext = createContext<{
   login: boolean
@@ -13,7 +14,6 @@ const LoginContext = createContext<{
   password: string
   setPassword: (password: string) => void
   auth: () => void
-  logOut: () => void
   myUser: any
   setMyUser: (myUser: any) => void
   loadingLogin: boolean
@@ -26,7 +26,6 @@ const LoginContext = createContext<{
   password: '',
   setPassword: () => {},
   auth: () => {},
-  logOut: () => {},
   myUser: {},
   setMyUser: () => {},
   loadingLogin: false,
@@ -44,7 +43,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // auth
   const [login, setLogin] = useState(false)
   const [loadingLogin, setLoadingLogin] = useState(false)
- 
+
   // get logged user
   useEffect(() => {
     const getUser = async () => {
@@ -65,31 +64,15 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUser()
   }, [])
 
-  // get usersFromUsuario
+  // get usersFromUsuario & usersFromScli
   useEffect(() => {
     const getUsers = async () => {
-      const url = `${URL_API}Usuario`
-    
       try {
-        const response = await fetch(url)
-        const result = await response.json()
-        setUsersFromUsuario(result)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUsers()
-  }, [])
-
-  // get usersFromScli
-  useEffect(() => {
-    const getUsers = async () => {
-      const url = `${URL_API}Scli`
-    
-      try {
-        const response = await fetch(url)
-        const result = await response.json()
-        setUsersFromScli(result)
+        const dataUsuario = fetchTableData('Usuario')
+        const dataScli = fetchTableData('Scli')
+        const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todaas al mismo tiempo
+        setUsersFromUsuario(usuario)
+        setUsersFromScli(scli)
       } catch (error) {
         console.log(error)
       }
@@ -113,7 +96,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
 
     // find in the table 'Usuario'
     const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
-
     if (userFromUsuario === undefined) {
       // find in the table 'Scli'
       const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
@@ -127,14 +109,14 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         )
         return
       } else {
-        // success
+        // success from Scli
         setLogin(true)
         setMyUser(userFromScli)
         await setDataStorage('login', true)
         await setDataStorage('myUser', userFromScli)
       }
     } else {
-      // success
+      // success from Usuario
       setLogin(true)
       setMyUser(userFromUsuario)
       await setDataStorage('login', true)
@@ -142,14 +124,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
   }
 
-  // log out
-  const logOut = async () => {
-    setUser('')
-    setPassword('')
-    setLogin(false)
-    // ...
-  }
-  
   return (
     <LoginContext.Provider value={{
       login,
@@ -159,7 +133,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       password,
       setPassword,
       auth,
-      logOut,
       myUser,
       setMyUser,
       loadingLogin,

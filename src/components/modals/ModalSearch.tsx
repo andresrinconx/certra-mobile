@@ -58,7 +58,10 @@ const ModalSearch = () => {
       <View>
         {/* searching */}
         <View className='flex flex-row items-center p-3'>
-          <TouchableOpacity onPress={() => setModalSearch(false)} className='mr-2'>
+          <TouchableOpacity className='mr-2' onPress={() => {
+            setModalSearch(false)
+            setValue('')
+          }}>
             <ArrowSmallRightIcon size={30} color='black' rotation={180} />
           </TouchableOpacity>
           <View className='w-80 flex flex-row items-center justify-between rounded-full'

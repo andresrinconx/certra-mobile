@@ -2,8 +2,8 @@ import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
-import {URL_API} from '@env'
 import { getDataStorage, setDataStorage } from "../utils/helpers"
+import { fetchTableData } from "../api/inv"
 
 const InvContext = createContext<{
   cart: ProductoInterface[]
@@ -79,13 +79,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
-      const url = `${URL_API}Sinv`
-    
       try {
         setLoadingProducts(true)
-        const response = await fetch(url)
-        const result = await response.json()
-        setProducts(result)
+        const data = await fetchTableData('Sinv')
+        setProducts(data)
         setLoadingProducts(false)
       } catch (error) {
         console.log(error)

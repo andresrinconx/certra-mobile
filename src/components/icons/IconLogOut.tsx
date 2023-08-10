@@ -7,11 +7,13 @@ import { setDataStorage } from '../../utils/helpers'
 
 const IconLogOut = () => {
   const {setCart} = useInv()
-  const {logOut, setMyUser} = useLogin()
+  const {setMyUser, setUser, setPassword, setLogin} = useLogin()
   const navigation = useNavigation()
   
   const handleLogOut = async () => {
-    logOut()
+    setUser('')
+    setPassword('')
+    setLogin(false)
     navigation.navigate('Login')
     await setDataStorage('login', false)
     await setDataStorage('myUser', {})
