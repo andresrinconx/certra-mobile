@@ -11,6 +11,7 @@ import ProductsViews from '../components/products/ProductsViews'
 import IconUser from '../components/icons/IconUser'
 import SelectCustomer from '../components/SelectCustomer'
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu'
+import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
@@ -40,16 +41,22 @@ const Home = () => {
         <View className='mr-4 flex flex-row gap-3 ml-5'>
           <View><IconSearch/></View>
           <View><IconCart/></View>
+          <View>
+            <IconLogOut />
+          </View>
           <Menu>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
               <IconUser />
             </MenuTrigger>
             <MenuOptions customStyles={{optionsContainer: { width: '60%' }}}>
-              <View className='flex flex-row items-center p-3 gap-3'>
+              <View className='flex flex-row items-center gap-3 w-full top-3 -right-3'>
                 <View className='flex flex-row items-center justify-center w-8 h-8 rounded-full p-5' style={styles.shadow}>
                   <IconUser />
                 </View>
-                <Text className='font-bold text-gray-700 text-base'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
+                <Text className='w-40 font-bold text-gray-700 text-base'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
+              </View>
+              <View className='px-3 py-5'>
+                <Text className=''>Cerrar</Text>
               </View>
             </MenuOptions>
           </Menu>
