@@ -71,7 +71,7 @@ const SelectCustomer = () => {
       >
         {searchedCustomers?.length !== 0 ? (
           loadingSearchedItems ? (
-            <View className='mb-20'>
+            <View className='mb-20'> 
               {items.map((item) => {
                 return (
                   <LoaderCustomersSearch key={item.id} />
