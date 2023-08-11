@@ -26,19 +26,11 @@ const SelectCustomer = () => {
     }
   }, [value])
 
-  useEffect(() => {
-    console.log(searchedCustomers)
-  }, [searchedCustomers])
-
   const handleSearch = async (value: string) => {
     setValue(value)
     if(value.length > 2) {
       setLoadingSearchedItems(true)
       // fetching...
-      // const url = `http://192.168.230.19/app/scli/search/CENTRO`
-      // const data = await fetch(url)
-      // const result = await data.json()
-      // setSearchedCustomers(result)
       const data = await fetchSearchedItems({searchTerm: value, table: 'scli'})
       setSearchedCustomers(data)
       setLoadingSearchedItems(false)
@@ -64,9 +56,8 @@ const SelectCustomer = () => {
           />
         </View>
 
-        {value != ''
-          && (
-          <TouchableOpacity onPress={() => ''} className='relative right-3'>
+        {value != '' && (
+          <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
             <XMarkIcon size={25} color='black' />
           </TouchableOpacity>
         )}
@@ -78,31 +69,29 @@ const SelectCustomer = () => {
         showsVerticalScrollIndicator={false}
         onScroll={handleScroll}
       >
-        {searchedCustomers?.length > 0 ? (
-            loadingSearchedItems
-              ? (
-              <View className='mb-20'>
-                {items.map((item) => {
-                  return (
-                    <LoaderCustomersSearch key={item.id} />
-                  )
-                })}
-              </View>
-            ) : (
-              <View className='mb-20'>
-                {searchedCustomers.map((customer: UserFromScliInterface) => {
-                  return (
-                    <CustomersSearch key={customer.cliente} customer={customer}/>
-                  )
-                })}
-              </View>
-            )
+        {searchedCustomers?.length !== 0 ? (
+          loadingSearchedItems ? (
+            <View className='mb-20'>
+              {items.map((item) => {
+                return (
+                  <LoaderCustomersSearch key={item.id} />
+                )
+              })}
+            </View>
           ) : (
-            <View className='flex flex-row items-center justify-center py-6'>
-              <Text className='text-2xl text-gray-700'>No hay resultados</Text>
+            <View className='mb-5'>
+              {searchedCustomers.map((customer: UserFromScliInterface) => {
+                return (
+                  <CustomersSearch key={customer.cliente} customer={customer}/>
+                )
+              })}
             </View>
           )
-        }
+        ) : (
+          <View className='flex flex-row items-center justify-center py-6'>
+            <Text className='text-2xl text-gray-700'>No hay resultados</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   )
