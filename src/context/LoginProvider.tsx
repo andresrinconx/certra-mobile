@@ -2,7 +2,6 @@ import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
-import {URL_API} from '@env'
 import { getDataStorage, setDataStorage } from "../utils/helpers"
 import { fetchTableData } from "../api/inv"
 
@@ -50,12 +49,12 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       try {
         // login
         setLoadingLogin(true)
-        const loginStorage = await getDataStorage('Login')
+        const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
         setLoadingLogin(false)
         
         // user
-        const myUserStorage = await getDataStorage('MyUser')
+        const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
       } catch (error) {
         console.log(error)
@@ -68,8 +67,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const dataUsuario = fetchTableData('usuario')
-        const dataScli = fetchTableData('scli')
+        const dataUsuario = fetchTableData('Usuario')
+        const dataScli = fetchTableData('Scli')
         const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todaas al mismo tiempo
         setUsersFromUsuario(usuario)
         setUsersFromScli(scli)
