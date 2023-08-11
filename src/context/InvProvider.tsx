@@ -4,6 +4,7 @@ import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
 import { getDataStorage, setDataStorage } from "../utils/helpers"
 import { fetchTableData } from "../api/inv"
+import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 
 const InvContext = createContext<{
   cart: ProductoInterface[]
@@ -16,8 +17,8 @@ const InvContext = createContext<{
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
   loadingProducts: boolean
   setLoadingProducts: (loadingProducts: boolean) => void
-  loadingSearchedProducts: boolean
-  setLoadingSearchedProducts: (loadingSearchedProducts: boolean) => void
+  loadingSearchedItems: boolean
+  setLoadingSearchedItems: (loadingSearchedItems: boolean) => void
   modalProduct: boolean
   setModalProduct: (modalProduct: boolean) => void
   modalSearch: boolean
@@ -25,6 +26,8 @@ const InvContext = createContext<{
   icon: (type: string) => any
   clearCart: () => void
   pay: () => void
+  searchedCustomers: UserFromScliInterface[]
+  setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -36,8 +39,8 @@ const InvContext = createContext<{
   setSearchedProducts: () => {},
   loadingProducts: false,
   setLoadingProducts: () => {},
-  loadingSearchedProducts: false,
-  setLoadingSearchedProducts: () => {},
+  loadingSearchedItems: false,
+  setLoadingSearchedItems: () => {},
   modalProduct: false,
   setModalProduct: () => {},
   modalSearch: false,
@@ -45,6 +48,8 @@ const InvContext = createContext<{
   icon: () => {},
   clearCart: () => {},
   pay: () => {},
+  searchedCustomers: [],
+  setSearchedCustomers: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -53,6 +58,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [cart, setCart] = useState<ProductoInterface[]>([])
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
+  const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
   // layout
   const [type, setType] = useState('grid')
   // modals
@@ -60,7 +66,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [modalProduct, setModalProduct] = useState(false)
   // loaders
   const [loadingProducts, setLoadingProducts] = useState(false)
-  const [loadingSearchedProducts, setLoadingSearchedProducts] = useState(false)
+  const [loadingSearchedItems, setLoadingSearchedItems] = useState(false)
 
   // CART
   // get cart storage
@@ -146,8 +152,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setProducts,
       loadingProducts,
       setLoadingProducts,
-      loadingSearchedProducts,
-      setLoadingSearchedProducts,
+      loadingSearchedItems,
+      setLoadingSearchedItems,
       modalProduct,
       setModalProduct,
       icon,
@@ -156,7 +162,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setModalSearch,
       modalSearch,
       searchedProducts,
-      setSearchedProducts
+      setSearchedProducts,
+      searchedCustomers,
+      setSearchedCustomers
     }}>
       {children}
     </InvContext.Provider>

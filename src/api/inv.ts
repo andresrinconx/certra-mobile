@@ -1,7 +1,7 @@
 import {URL_API, URL_API_2} from '@env'
 
 const tableDataEndpoint = (table: string) => `${URL_API}${table}`
-const searchedProductsEndpoint = (params: {searchTerm: string}) => `${URL_API}Sinv/search/${params.searchTerm}`
+const searchedItemsEndpoint = (params: {searchTerm: string, table: string}) => `${URL_API}${params.table}/search/${params.searchTerm}`
 
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table)
@@ -14,10 +14,10 @@ export const fetchTableData = async (table: string) => {
   }
 }
 
-export const fetchSinv = async (params: {searchTerm: string}) => {
-  const searchedProductsUrl = searchedProductsEndpoint(params)
+export const fetchSearchedItems = async (params: {searchTerm: string, table: string}) => {
+  const searchedItemsUrl = searchedItemsEndpoint(params)
   try {
-    const response = await fetch(searchedProductsUrl)
+    const response = await fetch(searchedItemsUrl)
     const result = await response.json()
     return result
   } catch (error) {
