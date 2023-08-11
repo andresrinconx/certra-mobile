@@ -14,28 +14,29 @@ import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup
 import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
-  const [showProducts, setShowProducts] = useState(false)
-  
-  const {type, setType, products, icon, loadingProducts} = useInv()
+  const {type, setType, products, icon, loadingProducts, showProducts, setShowProducts} = useInv()
   const {myUser} = useLogin()
   const userMenuRef = useRef<Menu>(null)
 
-  // user from
+  // myUser data management
   useEffect(() => {
     if(myUser.from === 'scli') {
       setShowProducts(true)
     } else {
       setShowProducts(false)
     }
-  }, [myUser])
 
+    if(myUser.customer) {
+      setShowProducts(true)
+    }
+  }, [myUser])
+  
   // close User Menu
   const closeUserMenu = () => {
     if (userMenuRef.current) {
       userMenuRef.current.close()
     }
   }
-
   // back HANDLER
   useEffect(() => {
     const backAction = () => {
@@ -55,8 +56,8 @@ const Home = () => {
         <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
         {/* icons */}
         <View className='mr-4 flex flex-row gap-3 ml-5'>
-          <View><IconSearch/></View>
-          <View><IconCart/></View>
+          {showProducts && (<View><IconSearch/></View>)}
+          {showProducts && (<View><IconCart/></View>)}
 
           <Menu ref={userMenuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
@@ -79,9 +80,11 @@ const Home = () => {
         </View>
       </View>
 
-      {!showProducts ? ( // usuario
-        <SelectCustomer />
-      ) : ( // scli
+      {/* select customer */}
+      <SelectCustomer />
+
+      {/* Products */}
+      {showProducts && ( // usuario
         <>
           <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
             <Text className={`text-black text-xl font-bold`}>Productos</Text>

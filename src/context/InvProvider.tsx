@@ -28,6 +28,8 @@ const InvContext = createContext<{
   pay: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
+  showProducts: boolean
+  setShowProducts: (showProducts: boolean) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -50,6 +52,8 @@ const InvContext = createContext<{
   pay: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
+  showProducts: false,
+  setShowProducts: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -60,6 +64,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
   // layout
+  const [showProducts, setShowProducts] = useState(false)
   const [type, setType] = useState('grid')
   // modals
   const [modalSearch, setModalSearch] = useState(false)
@@ -164,7 +169,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       searchedProducts,
       setSearchedProducts,
       searchedCustomers,
-      setSearchedCustomers
+      setSearchedCustomers,
+      showProducts,
+      setShowProducts
     }}>
       {children}
     </InvContext.Provider>
