@@ -8,22 +8,22 @@ import { styles } from '../../styles'
 import { items } from '../../utils/constants'
 import LoaderProductsSearch from './../loaders/LoaderProductsSearch'
 import useInv from '../../hooks/useInv'
-import { fetchSinv } from '../../api/inv'
+import { fetchSearchedItems } from '../../api/inv'
 
 const ModalSearch = () => {
   const [value, setValue] = useState('')
   
-  const {searchedProducts, loadingSearchedProducts, modalSearch, setModalSearch, setLoadingSearchedProducts, setSearchedProducts} = useInv()
-  const textInputRef = useRef<TextInput | null>(null) // hace referencia al input
+  const {searchedProducts, loadingSearchedItems, modalSearch, setModalSearch, setLoadingSearchedItems, setSearchedProducts} = useInv()
+  const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
   // show keyboard
   useEffect(() => {
     setTimeout(() => {
       if (modalSearch && textInputRef.current) {
-        textInputRef.current.focus() // lo selecciona y enfoca
+        textInputRef.current.focus()
       }
-    }, 100)
+    }, 300)
   }, [modalSearch])
   // hide keyboard
   const handleScroll = () => {
@@ -41,11 +41,11 @@ const ModalSearch = () => {
   const handleSearch = async (value: string) => {
     setValue(value)
     if(value.length > 2) {
-      setLoadingSearchedProducts(true)
+      setLoadingSearchedItems(true)
       // fetching...
-      const data = await fetchSinv({searchTerm: value})
+      const data = await fetchSearchedItems({searchTerm: value, table: 'Sinv'})
       setSearchedProducts(data)
-      setLoadingSearchedProducts(false)
+      setLoadingSearchedItems(false)
     } else {
       setSearchedProducts([])
     }
@@ -94,7 +94,7 @@ const ModalSearch = () => {
         >
           {searchedProducts?.length > 0
             && (
-              loadingSearchedProducts
+              loadingSearchedItems
                 ? (
                 <View className='mb-20'>
                   {items.map((item) => {

@@ -1,21 +1,29 @@
-import {useEffect} from 'react'
+import {useEffect, useRef} from 'react'
 import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import IconCart from '../components/icons/IconCart'
-import IconLogOut from '../components/icons/IconLogOut'
 import IconSearch from '../components/icons/IconSearch'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 import ProductsViews from '../components/products/ProductsViews'
+import IconUser from '../components/icons/IconUser'
+import SelectCustomer from '../components/SelectCustomer'
+import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
+import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
   const {myUser} = useLogin()
+  const userMenuRef = useRef<Menu>(null)
 
-  // mostrar datos si es usuario o si es scli
-  // revisar
+  // close User Menu
+  const closeUserMenu = () => {
+    if (userMenuRef.current) {
+      userMenuRef.current.close()
+    }
+  }
 
   // back HANDLER
   useEffect(() => {
@@ -28,56 +36,52 @@ const Home = () => {
   }, [])
 
   return (
-    <>
+    <MenuProvider>
       {/* header */}
       <View className={`flex flex-row justify-between items-center py-3`}
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
       >
-        <View className='w-1/3 ml-4'>
-          <IconLogOut />
-        </View>
+        <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
+        {/* icons */}
+        <View className='mr-4 flex flex-row gap-3 ml-5'>
+          <View><IconSearch/></View>
+          <View><IconCart/></View>
 
-        <Text className='w-1/3 font-bold text-2xl text-white'>Inventario</Text>
+          <Menu ref={userMenuRef}>
+            <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
+              <IconUser />
+            </MenuTrigger>
 
-        <View className='w-1/3 mr-4 flex flex-row gap-2 ml-5'>
-          <View className=''>
-            <IconSearch />
-          </View>
-          <View className=''>
-            <IconCart />
-          </View>
+            <MenuOptions customStyles={{optionsContainer: { width: '60%' }}}>
+              <View className='flex flex-row items-center gap-3 w-full top-3 -right-3'>
+                <View className='flex flex-row items-center justify-center w-8 h-8 rounded-full p-5' style={styles.shadow}>
+                  <IconUser />
+                </View>
+                <Text className='w-40 font-bold text-gray-700 text-base'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
+              </View>
+
+              <View className='px-3 mt-5 py-3 flex flex-row justify-end border-t border-t-slate-300'>
+                <IconLogOut closeUserMenu={closeUserMenu} />
+              </View>
+            </MenuOptions>
+          </Menu>
         </View>
       </View>
-
-      {/* user */}
-      <View className='px-3'>
-        <View className='flex items-center'>
-          <View className='mt-3 bg-white px-2 py-1 w-3/4 rounded-xl'
-            style={styles.shadow}
-          >
-            <Text className='text-2xl font-bold text-center text-gray-700'>{myUser?.us_nombre ?? myUser?.nombre}</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* !!condition!! */} 
 
       {/* Sel Customer */}
-      <View className=''>
-        <Text className=''>sel</Text>
-      </View>
+      <SelectCustomer />
 
-      {/* bar */}
-      <View className='flex-row justify-between mt-4 mb-3 mx-3 px-3'>
+      {/* Bar */}
+      {/* <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
         <Text className={`text-black text-xl font-bold`}>Productos</Text>
 
         <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
           {icon(type)}
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       {/* Products */}
-      {loadingProducts
+      {/* {loadingProducts
         ? (
           <View className={`${globalStyles.container}`}>
             <View className='flex-1 justify-center items-center'>
@@ -117,8 +121,8 @@ const Home = () => {
             />
           </View>
         </View>
-      )}
-    </>
+      )} */}
+    </MenuProvider>
   )
 }
 

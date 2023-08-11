@@ -2,7 +2,6 @@ import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
-import {URL_API} from '@env'
 import { getDataStorage, setDataStorage } from "../utils/helpers"
 import { fetchTableData } from "../api/inv"
 
@@ -80,6 +79,16 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUsers()
   }, [])
 
+  // get two first letters of the user
+  const firstTwoLetters = (fullName: string) => {
+    const palabras = fullName.split(' ')
+    let letters = ''
+    for (let i = 0; i < 2; i++) {
+      letters += palabras[i][0]
+    }
+    return letters
+  }
+
   // auth
   const auth = async () => {
     // required fields
@@ -111,16 +120,18 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       } else {
         // success from Scli
         setLogin(true)
-        setMyUser(userFromScli)
+        const letters = firstTwoLetters(userFromScli.nombre)
+        setMyUser({...userFromScli, letters})
         await setDataStorage('login', true)
-        await setDataStorage('myUser', userFromScli)
+        await setDataStorage('myUser', {...userFromScli, letters})
       }
     } else {
       // success from Usuario
       setLogin(true)
-      setMyUser(userFromUsuario)
+      const letters = firstTwoLetters(userFromUsuario.us_nombre)
+      setMyUser({...userFromUsuario, letters})
       await setDataStorage('login', true)
-      await setDataStorage('myUser', userFromUsuario)
+      await setDataStorage('myUser', {...userFromUsuario, letters})
     }
   }
 
