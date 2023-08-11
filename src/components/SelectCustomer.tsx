@@ -48,7 +48,7 @@ const SelectCustomer = () => {
             <MagnifyingGlassIcon size={20} color='gray' />
           </View>
 
-          <TextInput className='text-base text-gray-700 ml-1'
+          <TextInput className='text-base text-gray-700 ml-1 w-72'
             placeholder='Buscar un cliente'
             placeholderTextColor='gray'
             value={value}

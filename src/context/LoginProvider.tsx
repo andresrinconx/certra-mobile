@@ -51,11 +51,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         setLoadingLogin(true)
         const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
-        setLoadingLogin(false)
         
         // user
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
+        setLoadingLogin(false)
       } catch (error) {
         console.log(error)
       }
@@ -78,6 +78,20 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
     getUsers()
   }, [])
+
+  // add myUser storage
+  useEffect(() => {
+    if(myUser.letters) {
+      const cartStorage = async () => {
+        try {
+          await setDataStorage('myUser', myUser)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      cartStorage()
+    }
+  }, [myUser])
 
   // get two first letters of the user
   const firstTwoLetters = (fullName: string) => {
