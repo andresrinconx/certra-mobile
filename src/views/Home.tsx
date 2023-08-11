@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import {useEffect, useRef} from 'react'
 import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
@@ -15,7 +15,15 @@ import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
-  const {myUser, login} = useLogin()
+  const {myUser} = useLogin()
+  const menuRef = useRef<Menu>(null)
+
+  // close User Menu
+  const closeUserMenu = () => {
+    if (menuRef.current) {
+      menuRef.current.close()
+    }
+  }
 
   // back HANDLER
   useEffect(() => {
@@ -38,7 +46,8 @@ const Home = () => {
         <View className='mr-4 flex flex-row gap-3 ml-5'>
           <View><IconSearch/></View>
           <View><IconCart/></View>
-          <Menu>
+
+          <Menu ref={menuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
               <IconUser />
             </MenuTrigger>
@@ -52,7 +61,7 @@ const Home = () => {
               </View>
 
               <View className='px-3 mt-5 py-3 flex flex-row justify-end border-t border-t-slate-300'>
-                <IconLogOut />
+                <IconLogOut closeUserMenu={closeUserMenu} />
               </View>
             </MenuOptions>
           </Menu>

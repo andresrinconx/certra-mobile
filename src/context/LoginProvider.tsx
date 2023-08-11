@@ -68,8 +68,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const dataUsuario = fetchTableData('Usuario')
-        const dataScli = fetchTableData('Scli')
+        const dataUsuario = fetchTableData('usuario')
+        const dataScli = fetchTableData('scli')
         const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todaas al mismo tiempo
         setUsersFromUsuario(usuario)
         setUsersFromScli(scli)
@@ -124,7 +124,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         const letters = firstTwoLetters(userFromScli.nombre)
         setMyUser({...userFromScli, letters})
         await setDataStorage('login', true)
-        await setDataStorage('myUser', userFromScli)
+        await setDataStorage('myUser', {...userFromScli, letters})
       }
     } else {
       // success from Usuario
@@ -132,7 +132,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
       setMyUser({...userFromUsuario, letters})
       await setDataStorage('login', true)
-      await setDataStorage('myUser', userFromUsuario)
+      await setDataStorage('myUser', {...userFromUsuario, letters})
     }
   }
 
