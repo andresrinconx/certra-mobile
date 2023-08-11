@@ -32,7 +32,7 @@ const SelectCustomer = () => {
       setLoadingSearchedItems(true)
       // fetching...
       const data = await fetchSearchedItems({searchTerm: value, table: 'scli'})
-      setSearchedCustomers(data)
+      setSearchedCustomers(data.message === undefined ? data : [])
       setLoadingSearchedItems(false)
     } else {
       setSearchedCustomers([])
@@ -40,7 +40,7 @@ const SelectCustomer = () => {
   }
 
   return (
-    <View className='mx-7'>
+    <View className='mx-5'>
       {/* searching */}
       <View className='w-full flex flex-row items-center justify-between rounded-md mt-5' style={styles.shadow}>
         <View className='flex flex-row items-center'>
@@ -71,7 +71,7 @@ const SelectCustomer = () => {
       >
         {searchedCustomers?.length !== 0 ? (
           loadingSearchedItems ? (
-            <View className='mb-20'> 
+            <View className='mb-5'> 
               {items.map((item) => {
                 return (
                   <LoaderCustomersSearch key={item.id} />
@@ -82,7 +82,7 @@ const SelectCustomer = () => {
             <View className='mb-5'>
               {searchedCustomers.map((customer: UserFromScliInterface) => {
                 return (
-                  <CustomersSearch key={customer.cliente} customer={customer}/>
+                  <CustomersSearch key={customer.cliente} customer={customer} />
                 )
               })}
             </View>
