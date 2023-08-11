@@ -14,16 +14,16 @@ const ModalSearch = () => {
   const [value, setValue] = useState('')
   
   const {searchedProducts, loadingSearchedProducts, modalSearch, setModalSearch, setLoadingSearchedProducts, setSearchedProducts} = useInv()
-  const textInputRef = useRef<TextInput | null>(null) // hace referencia al input
+  const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
   // show keyboard
   useEffect(() => {
     setTimeout(() => {
       if (modalSearch && textInputRef.current) {
-        textInputRef.current.focus() // lo selecciona y enfoca
+        textInputRef.current.focus()
       }
-    }, 100)
+    }, 300)
   }, [modalSearch])
   // hide keyboard
   const handleScroll = () => {

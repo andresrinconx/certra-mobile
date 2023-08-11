@@ -1,14 +1,17 @@
-import {useRef} from 'react'
 import { View, Text } from 'react-native'
-import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
+import { Menu, MenuOptions, MenuTrigger } from 'react-native-popup-menu'
 import {ChevronDownIcon} from 'react-native-heroicons/mini'
 import { styles } from '../styles'
+import ModalSearch from './modals/ModalSearch'
+import useInv from '../hooks/useInv'
 
 const SelectCustomer = () => {
+  const {setModalSearch, setSearchedProducts} = useInv()
+
   return (
     <View className='px-12 my-4'>
       <Menu>
-        <MenuTrigger style={[styles.shadow, {borderRadius: 4, paddingVertical: 8}]}>
+        <MenuTrigger style={[styles.shadow, {borderRadius: 4, paddingVertical: 8}]} onPress={() => setModalSearch(true)}>
           <View className='flex flex-row items-center justify-center'>
             <Text className='text-xl'>Seleccionar un cliente</Text>
             <ChevronDownIcon size={25} color='black' />
@@ -16,9 +19,7 @@ const SelectCustomer = () => {
         </MenuTrigger>
 
         <MenuOptions customStyles={{optionsContainer: { width: '60%' }}}>
-          <View className=''>
-            <Text className=''>hola</Text>
-          </View>
+          <ModalSearch />
         </MenuOptions>
       </Menu>
     </View>

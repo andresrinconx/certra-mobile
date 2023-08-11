@@ -50,12 +50,12 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       try {
         // login
         setLoadingLogin(true)
-        const loginStorage = await getDataStorage('login')
+        const loginStorage = await getDataStorage('Login')
         setLogin(loginStorage === 'true' ? true : false)
         setLoadingLogin(false)
         
         // user
-        const myUserStorage = await getDataStorage('myUser')
+        const myUserStorage = await getDataStorage('MyUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
       } catch (error) {
         console.log(error)
