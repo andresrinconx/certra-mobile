@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
@@ -14,9 +14,20 @@ import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup
 import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
+  const [showProducts, setShowProducts] = useState(false)
+  
   const {type, setType, products, icon, loadingProducts} = useInv()
   const {myUser} = useLogin()
   const userMenuRef = useRef<Menu>(null)
+
+  // user from
+  useEffect(() => {
+    if(myUser.from === 'scli') {
+      setShowProducts(true)
+    } else {
+      setShowProducts(false)
+    }
+  }, [myUser])
 
   // close User Menu
   const closeUserMenu = () => {
@@ -68,60 +79,61 @@ const Home = () => {
         </View>
       </View>
 
-      {/* Sel Customer */}
-      <SelectCustomer />
+      {!showProducts ? ( // usuario
+        <SelectCustomer />
+      ) : ( // scli
+        <>
+          <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
+            <Text className={`text-black text-xl font-bold`}>Productos</Text>
 
-      {/* Bar */}
-      {/* <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
-        <Text className={`text-black text-xl font-bold`}>Productos</Text>
+            <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
+              {icon(type)}
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
-          {icon(type)}
-        </TouchableOpacity>
-      </View> */}
-
-      {/* Products */}
-      {/* {loadingProducts
-        ? (
-          <View className={`${globalStyles.container}`}>
-            <View className='flex-1 justify-center items-center'>
-              <FlatList
-                data={items}
-                numColumns={2}
-                contentContainerStyle={{
-                  paddingBottom: 10,
-                }}
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-                renderItem={({item}) => {
-                  return (
-                    <LoaderProductsGrid key={item.id} />
-                  )
-                }} 
-              />
+          {loadingProducts
+            ? (
+              <View className={`${globalStyles.container}`}>
+                <View className='flex-1 justify-center items-center'>
+                  <FlatList
+                    data={items}
+                    numColumns={2}
+                    contentContainerStyle={{
+                      paddingBottom: 10,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                    renderItem={({item}) => {
+                      return (
+                        <LoaderProductsGrid key={item.id} />
+                      )
+                    }} 
+                  />
+                </View>
+              </View>
+          ) : (
+            <View className={`${globalStyles.container}`}>
+              <View className='flex-1 justify-center items-center'>
+                <FlatList
+                  data={products}
+                  key={type === 'grid' ? 'grid' : 'list'}
+                  numColumns={type === 'grid' ? 2 : 1}
+                  contentContainerStyle={{
+                    paddingBottom: 10,
+                  }}
+                  showsVerticalScrollIndicator={false}
+                  overScrollMode='never'
+                  renderItem={({item}) => {
+                    return (
+                      <ProductsViews key={item.id} item={item} />
+                    )
+                  }} 
+                />
+              </View>
             </View>
-          </View>
-      ) : (
-        <View className={`${globalStyles.container}`}>
-          <View className='flex-1 justify-center items-center'>
-            <FlatList
-              data={products}
-              key={type === 'grid' ? 'grid' : 'list'}
-              numColumns={type === 'grid' ? 2 : 1}
-              contentContainerStyle={{
-                paddingBottom: 10,
-              }}
-              showsVerticalScrollIndicator={false}
-              overScrollMode='never'
-              renderItem={({item}) => {
-                return (
-                  <ProductsViews key={item.id} item={item} />
-                )
-              }} 
-            />
-          </View>
-        </View>
-      )} */}
+          )}
+        </>
+      )}
     </MenuProvider>
   )
 }

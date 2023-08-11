@@ -135,7 +135,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         // success from Scli
         setLogin(true)
         const letters = firstTwoLetters(userFromScli.nombre)
-        setMyUser({...userFromScli, letters})
+        setMyUser({
+          ...userFromScli, 
+          letters, 
+          from: 'scli'
+        })
         await setDataStorage('login', true)
         await setDataStorage('myUser', {...userFromScli, letters})
       }
@@ -143,7 +147,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       // success from Usuario
       setLogin(true)
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
-      setMyUser({...userFromUsuario, letters})
+      setMyUser({
+        ...userFromUsuario, 
+        letters, 
+        from: 'usuario'
+      })
       await setDataStorage('login', true)
       await setDataStorage('myUser', {...userFromUsuario, letters})
     }
