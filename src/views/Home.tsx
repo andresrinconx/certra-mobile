@@ -16,12 +16,12 @@ import IconLogOut from '../components/icons/IconLogOut'
 const Home = () => {
   const {type, setType, products, icon, loadingProducts} = useInv()
   const {myUser} = useLogin()
-  const menuRef = useRef<Menu>(null)
+  const userMenuRef = useRef<Menu>(null)
 
   // close User Menu
   const closeUserMenu = () => {
-    if (menuRef.current) {
-      menuRef.current.close()
+    if (userMenuRef.current) {
+      userMenuRef.current.close()
     }
   }
 
@@ -47,7 +47,7 @@ const Home = () => {
           <View><IconSearch/></View>
           <View><IconCart/></View>
 
-          <Menu ref={menuRef}>
+          <Menu ref={userMenuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
               <IconUser />
             </MenuTrigger>
@@ -71,17 +71,17 @@ const Home = () => {
       {/* Sel Customer */}
       <SelectCustomer />
 
-      {/* bar */}
-      <View className='flex-row justify-between mt-4 mb-3 mx-3 px-3'>
+      {/* Bar */}
+      {/* <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
         <Text className={`text-black text-xl font-bold`}>Productos</Text>
 
         <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
           {icon(type)}
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       {/* Products */}
-      {loadingProducts
+      {/* {loadingProducts
         ? (
           <View className={`${globalStyles.container}`}>
             <View className='flex-1 justify-center items-center'>
@@ -121,7 +121,7 @@ const Home = () => {
             />
           </View>
         </View>
-      )}
+      )} */}
     </MenuProvider>
   )
 }
