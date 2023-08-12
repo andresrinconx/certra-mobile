@@ -87,14 +87,24 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         setCart(cartStorage ? JSON.parse(cartStorage) : [])
 
         // flowControl
-        // const flowControlStorage = await getDataStorage('flowControl')
-        // setFlowControl(flowControlStorage && JSON.parse(flowControlStorage))
+        const flowControlStorage = await getDataStorage('flowControl')
+        setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : {
+          showProducts: false, 
+          showSelectCustomer: false, 
+          showSelectSearch: false, 
+          showSelectResults: false, 
+          showSelectLabel: false,
+        })
       } catch (error) {
         console.log(error)
       }
     }
     getCartStorage()
   }, [])
+
+  useEffect(() => {
+    console.log(flowControl)
+  }, [flowControl])
 
   // SET STORAGE
   // cart

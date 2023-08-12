@@ -43,7 +43,9 @@ const SelectCustomer = () => {
   const handleSearch = async (value: string) => {
     setValue(value)
     if(value.length > 2) {
-      setFlowControl({...flowControl, showSelectResults: true})
+      if(!flowControl.showSelectResults) {
+        setFlowControl({...flowControl, showSelectResults: true})
+      }
       setLoaders({...loaders, loadingSearchedItems: true})
       // fetching...
       const data = await fetchSearchedItems({searchTerm: value, table: 'scli'})

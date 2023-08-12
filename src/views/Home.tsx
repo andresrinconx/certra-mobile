@@ -22,11 +22,10 @@ const Home = () => {
   // myUser data management
   useEffect(() => {
     // user from
-    if(myUser.from === 'scli') {
+    if(myUser.from === 'usuario') {
+      setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
+    } else { // myUser.from === 'scli'
       setFlowControl({...flowControl, showProducts: true, showSelectCustomer: false})
-    } else { // myUser.from === 'usuario'
-      setFlowControl({...flowControl, showProducts: false})
-      setFlowControl({...flowControl, showSelectCustomer: true, showSelectSearch: true})
     }
   }, [myUser])
   
