@@ -26,7 +26,7 @@ const Login = () => {
       end={{ x: 0, y: 1 }}
       style={{ flex: 1 }}
     >
-      <View className='flex-1 items-center mt-24 mx-7'>
+      <View className='flex-1 items-center mt-20 mx-7'>
 
         {/* Inicia Sesión */}
         <View>
@@ -80,7 +80,7 @@ const Login = () => {
           </View>
 
           {/* btn */}
-          <View className='top-32'>
+          <View className='top-36'>
             <TouchableOpacity onPress={() => auth()} className='w-full p-3 rounded-full'
               style={{backgroundColor: theme.verde,}}
             >
