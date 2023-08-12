@@ -12,11 +12,13 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  auth: () => void
   myUser: any
   setMyUser: (myUser: any) => void
   loaders: {loadingLogin: boolean, loadingAuth: boolean,}
   setLoaders: (loaders: {loadingLogin: boolean, loadingAuth: boolean,}) => void
+  firstTwoLetters: (fullName: string) => string
+  usersFromUsuario: UserFromUsuarioInterface[]
+  usersFromScli: UserFromScliInterface[]
 }>({
   login: false,
   setLogin: () => {},
@@ -24,11 +26,13 @@ const LoginContext = createContext<{
   setUser: () => {},
   password: '',
   setPassword: () => {},
-  auth: () => {},
   myUser: {},
   setMyUser: () => {},
   loaders: {loadingLogin: false, loadingAuth: false,},
   setLoaders: () => {},
+  firstTwoLetters: () => '',
+  usersFromUsuario: [],
+  usersFromScli: [],
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
@@ -108,72 +112,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     return letters
   }
 
-  // auth
-  const auth = async () => {
-    // required fields
-    if([user, password].includes('')) {
-      Alert.alert(
-        'Error',
-        'Todos los campos son obligatorios',
-        [
-          { text: 'OK' },
-        ]
-      )
-      return
-    }
-
-    setLoaders({...loaders, loadingAuth: true})
-    // find in the table 'Usuario'
-    const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
-    if (userFromUsuario === undefined) {
-      // find in the table 'Scli'
-      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
-      if (userFromScli === undefined) {
-        setLoaders({...loaders, loadingAuth: false})
-        Alert.alert(
-          'Error',
-          'Usuario y contraseña incorrectos',
-          [
-            { text: 'OK' },
-          ]
-        )
-        return
-      } else {
-        // success from Scli
-        const letters = firstTwoLetters(userFromScli.nombre)
-        setMyUser({
-          ...userFromScli, 
-          letters, 
-          from: 'scli'
-        })
-        await setDataStorage('login', true)
-        await setDataStorage('myUser', {
-          ...userFromScli, 
-          letters, 
-          from: 'scli'
-        })
-        setLoaders({...loaders, loadingAuth: false})
-        setLogin(true)
-      }
-    } else {
-      // success from Usuario
-      const letters = firstTwoLetters(userFromUsuario.us_nombre)
-      setMyUser({
-        ...userFromUsuario, 
-        letters, 
-        from: 'usuario'
-      })
-      await setDataStorage('login', true)
-      await setDataStorage('myUser', {
-        ...userFromUsuario, 
-        letters,
-        from: 'usuario'
-      })
-      setLoaders({...loaders, loadingAuth: false})
-      setLogin(true)
-    }
-  }
-
   return (
     <LoginContext.Provider value={{
       login,
@@ -182,11 +120,13 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       setUser,
       password,
       setPassword,
-      auth,
       myUser,
       setMyUser,
       loaders,
-      setLoaders
+      setLoaders,
+      firstTwoLetters,
+      usersFromScli,
+      usersFromUsuario
     }}>
       {children}
     </LoginContext.Provider>
