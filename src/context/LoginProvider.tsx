@@ -32,37 +32,39 @@ const LoginContext = createContext<{
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
+  // user
+  const [login, setLogin] = useState(false)
+  const [myUser, setMyUser] = useState<any>({})
   // api
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
-  const [myUser, setMyUser] = useState<any>({})
   // inputs
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
-  // auth
-  const [login, setLogin] = useState(false)
+  // loaders
   const [loadingLogin, setLoadingLogin] = useState(false)
 
-  // get logged user
+  // get storage (logged user, myUser)
   useEffect(() => {
     const getUser = async () => {
       try {
-        // login
         setLoadingLogin(true)
+
+        // login
         const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
-        setLoadingLogin(false)
-        
-        // user
+        // myUser
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
+
+        setLoadingLogin(false)
       } catch (error) {
         console.log(error)
       }
     }
     getUser()
   }, [])
-
+  
   // get usersFromUsuario & usersFromScli
   useEffect(() => {
     const getUsers = async () => {
@@ -79,6 +81,20 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUsers()
   }, [])
 
+  // add myUser storage
+  useEffect(() => {
+    if(myUser.letters) {
+      const cartStorage = async () => {
+        try {
+          await setDataStorage('myUser', myUser)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      cartStorage()
+    }
+  }, [myUser])
+  
   // get two first letters of the user
   const firstTwoLetters = (fullName: string) => {
     const palabras = fullName.split(' ')
@@ -121,17 +137,33 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         // success from Scli
         setLogin(true)
         const letters = firstTwoLetters(userFromScli.nombre)
-        setMyUser({...userFromScli, letters})
+        setMyUser({
+          ...userFromScli, 
+          letters, 
+          from: 'scli'
+        })
         await setDataStorage('login', true)
-        await setDataStorage('myUser', {...userFromScli, letters})
+        await setDataStorage('myUser', {
+          ...userFromScli, 
+          letters, 
+          from: 'scli'
+        })
       }
     } else {
       // success from Usuario
       setLogin(true)
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
-      setMyUser({...userFromUsuario, letters})
+      setMyUser({
+        ...userFromUsuario, 
+        letters, 
+        from: 'usuario'
+      })
       await setDataStorage('login', true)
-      await setDataStorage('myUser', {...userFromUsuario, letters})
+      await setDataStorage('myUser', {
+        ...userFromUsuario, 
+        letters,
+        from: 'usuario'
+      })
     }
   }
 

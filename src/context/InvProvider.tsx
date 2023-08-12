@@ -15,10 +15,6 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  loadingProducts: boolean
-  setLoadingProducts: (loadingProducts: boolean) => void
-  loadingSearchedItems: boolean
-  setLoadingSearchedItems: (loadingSearchedItems: boolean) => void
   modalProduct: boolean
   setModalProduct: (modalProduct: boolean) => void
   modalSearch: boolean
@@ -28,6 +24,10 @@ const InvContext = createContext<{
   pay: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
+  flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}
+  setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}) => void
+  loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}
+  setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -37,10 +37,6 @@ const InvContext = createContext<{
   setProducts: () => {},
   searchedProducts: [],
   setSearchedProducts: () => {},
-  loadingProducts: false,
-  setLoadingProducts: () => {},
-  loadingSearchedItems: false,
-  setLoadingSearchedItems: () => {},
   modalProduct: false,
   setModalProduct: () => {},
   modalSearch: false,
@@ -50,6 +46,10 @@ const InvContext = createContext<{
   pay: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
+  flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false,},
+  setFlowControl: () => {},
+  loaders: {loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, loadingStorageInv: false,},
+  setLoaders: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -61,20 +61,41 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
   // layout
   const [type, setType] = useState('grid')
+  const [flowControl, setFlowControl] = useState({
+    showProducts: false, 
+    showSelectCustomer: false, 
+    showSelectSearch: false, 
+    showSelectResults: false, 
+    showSelectLabel: false,
+    selected: false,
+  })
   // modals
   const [modalSearch, setModalSearch] = useState(false)
   const [modalProduct, setModalProduct] = useState(false)
   // loaders
-  const [loadingProducts, setLoadingProducts] = useState(false)
-  const [loadingSearchedItems, setLoadingSearchedItems] = useState(false)
+  const [loaders, setLoaders] = useState({
+    loadingProducts: false, 
+    loadingSearchedItems: false,
+    loadingSlectedCustomer: false,
+    loadingStorageInv: false,
+  })
 
-  // CART
-  // get cart storage
+  // get storage (cart, flowControl)
   useEffect(() => {
     const getCartStorage = async () => {
       try {
+        setLoaders({...loaders, loadingStorageInv: true})
+
+        // cart
         const cartStorage = await getDataStorage('cart')
         setCart(cartStorage ? JSON.parse(cartStorage) : [])
+        // flowControl
+        const flowControlStorage = await getDataStorage('flowControl')
+        setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
+
+        setTimeout(() => {
+          setLoaders({...loaders, loadingStorageInv: false})
+        }, 1000)
       } catch (error) {
         console.log(error)
       }
@@ -82,22 +103,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     getCartStorage()
   }, [])
 
-  // get products api
-  useEffect(() => {
-    const obtenerProductos = async () => {
-      try {
-        setLoadingProducts(true)
-        const data = await fetchTableData('Sinv')
-        setProducts(data)
-        setLoadingProducts(false)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    obtenerProductos()
-  }, [])
-
-  // add cart storage
+  // SET STORAGE
+  // cart
   useEffect(() => {
     const cartStorage = async () => {
       try {
@@ -108,6 +115,40 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     }
     cartStorage()
   }, [cart])
+
+  useEffect(() => {
+    console.log(flowControl)
+  }, [flowControl])
+
+  // flow control
+  useEffect(() => {
+    // set storage when a customer is selected
+    if(flowControl.selected || (flowControl.showProducts && !flowControl.showSelectCustomer)) {
+      const flowControlStorage = async () => {
+        try {
+          await setDataStorage('flowControl', flowControl)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      flowControlStorage()
+    }
+  }, [flowControl])
+
+  // get products api
+  useEffect(() => {
+    const obtenerProductos = async () => {
+      try {
+        setLoaders({...loaders, loadingProducts: true})
+        const data = await fetchTableData('Sinv')
+        setProducts(data)
+        setLoaders({...loaders, loadingProducts: false})
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    obtenerProductos()
+  }, [])
 
   // clear cart
   const clearCart = () => {
@@ -150,10 +191,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setType,
       products,
       setProducts,
-      loadingProducts,
-      setLoadingProducts,
-      loadingSearchedItems,
-      setLoadingSearchedItems,
       modalProduct,
       setModalProduct,
       icon,
@@ -164,7 +201,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       searchedProducts,
       setSearchedProducts,
       searchedCustomers,
-      setSearchedCustomers
+      setSearchedCustomers,
+      flowControl,
+      setFlowControl,
+      loaders,
+      setLoaders
     }}>
       {children}
     </InvContext.Provider>

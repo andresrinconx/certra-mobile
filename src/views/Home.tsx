@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
@@ -12,19 +12,33 @@ import IconUser from '../components/icons/IconUser'
 import SelectCustomer from '../components/SelectCustomer'
 import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
 import IconLogOut from '../components/icons/IconLogOut'
+import Loader from '../components/loaders/Loader'
 
 const Home = () => {
-  const {type, setType, products, icon, loadingProducts} = useInv()
+  const {type, setType, products, icon, loaders, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()
   const userMenuRef = useRef<Menu>(null)
 
+  // flowControl
+  useEffect(() => {
+    if(!flowControl.selected) { // is not selected
+      if(myUser.from === 'usuario') {
+        console.log('ejecutando usuario')
+        setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
+      } else { // myUser.from === 'scli'
+        console.log('ejecutando scli')
+        setFlowControl({...flowControl, showProducts: true, showSelectCustomer: false})
+      }
+    }
+  }, [myUser])
+  
+  // SCREEN
   // close User Menu
   const closeUserMenu = () => {
     if (userMenuRef.current) {
       userMenuRef.current.close()
     }
   }
-
   // back HANDLER
   useEffect(() => {
     const backAction = () => {
@@ -44,8 +58,8 @@ const Home = () => {
         <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
         {/* icons */}
         <View className='mr-4 flex flex-row gap-3 ml-5'>
-          <View><IconSearch/></View>
-          <View><IconCart/></View>
+          {flowControl.showProducts && (<View><IconSearch/></View>)}
+          {flowControl.showProducts && (<View><IconCart/></View>)}
 
           <Menu ref={userMenuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
@@ -68,60 +82,67 @@ const Home = () => {
         </View>
       </View>
 
-      {/* Sel Customer */}
-      <SelectCustomer />
-
-      {/* Bar */}
-      {/* <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
-        <Text className={`text-black text-xl font-bold`}>Productos</Text>
-
-        <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
-          {icon(type)}
-        </TouchableOpacity>
-      </View> */}
-
-      {/* Products */}
-      {/* {loadingProducts
-        ? (
-          <View className={`${globalStyles.container}`}>
-            <View className='flex-1 justify-center items-center'>
-              <FlatList
-                data={items}
-                numColumns={2}
-                contentContainerStyle={{
-                  paddingBottom: 10,
-                }}
-                showsVerticalScrollIndicator={false}
-                overScrollMode='never'
-                renderItem={({item}) => {
-                  return (
-                    <LoaderProductsGrid key={item.id} />
-                  )
-                }} 
-              />
-            </View>
-          </View>
-      ) : (
-        <View className={`${globalStyles.container}`}>
-          <View className='flex-1 justify-center items-center'>
-            <FlatList
-              data={products}
-              key={type === 'grid' ? 'grid' : 'list'}
-              numColumns={type === 'grid' ? 2 : 1}
-              contentContainerStyle={{
-                paddingBottom: 10,
-              }}
-              showsVerticalScrollIndicator={false}
-              overScrollMode='never'
-              renderItem={({item}) => {
-                return (
-                  <ProductsViews key={item.id} item={item} />
-                )
-              }} 
-            />
-          </View>
+      {loaders.loadingSlectedCustomer ? (
+        <View className='flex-1 flex-row items-center justify-center'>
+          <Loader />
         </View>
-      )} */}
+      ) : (
+        <>
+          <SelectCustomer />
+          {flowControl.showProducts && (
+            <>
+              <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
+                <Text className={`text-black text-xl font-bold`}>Productos</Text>
+    
+                <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
+                  {icon(type)}
+                </TouchableOpacity>
+              </View>
+    
+              {loaders.loadingProducts || loaders.loadingStorageInv ? (
+                <View className={`${globalStyles.container}`}>
+                  <View className='flex-1 justify-center items-center'>
+                    <FlatList
+                      data={items}
+                      numColumns={2}
+                      contentContainerStyle={{
+                        paddingBottom: 10,
+                      }}
+                      showsVerticalScrollIndicator={false}
+                      overScrollMode='never'
+                      renderItem={({item}) => {
+                        return (
+                          <LoaderProductsGrid key={item.id} />
+                        )
+                      }} 
+                    />
+                  </View>
+                </View>
+              ) : (
+                <View className={`${globalStyles.container}`}>
+                  <View className='flex-1 justify-center items-center'>
+                    <FlatList
+                      data={products}
+                      key={type === 'grid' ? 'grid' : 'list'}
+                      numColumns={type === 'grid' ? 2 : 1}
+                      contentContainerStyle={{
+                        paddingBottom: 10,
+                      }}
+                      showsVerticalScrollIndicator={false}
+                      overScrollMode='never'
+                      renderItem={({item}) => {
+                        return (
+                          <ProductsViews key={item.id} item={item} />
+                        )
+                      }} 
+                    />
+                  </View>
+                </View>
+              )}
+            </>
+          )}
+        </>
+      )}
     </MenuProvider>
   )
 }

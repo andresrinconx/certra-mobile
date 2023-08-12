@@ -13,7 +13,7 @@ import { fetchSearchedItems } from '../../api/inv'
 const ModalSearch = () => {
   const [value, setValue] = useState('')
   
-  const {searchedProducts, loadingSearchedItems, modalSearch, setModalSearch, setLoadingSearchedItems, setSearchedProducts} = useInv()
+  const {searchedProducts, loaders, setLoaders, modalSearch, setModalSearch, setSearchedProducts} = useInv()
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
@@ -41,11 +41,11 @@ const ModalSearch = () => {
   const handleSearch = async (value: string) => {
     setValue(value)
     if(value.length > 2) {
-      setLoadingSearchedItems(true)
+      setLoaders({...loaders, loadingSearchedItems: true})
       // fetching...
       const data = await fetchSearchedItems({searchTerm: value, table: 'Sinv'})
       setSearchedProducts(data)
-      setLoadingSearchedItems(false)
+      setLoaders({...loaders, loadingSearchedItems: false})
     } else {
       setSearchedProducts([])
     }
@@ -94,7 +94,7 @@ const ModalSearch = () => {
         >
           {searchedProducts?.length > 0
             && (
-              loadingSearchedItems
+              loaders.loadingSearchedItems
                 ? (
                 <View className='mb-20'>
                   {items.map((item) => {
