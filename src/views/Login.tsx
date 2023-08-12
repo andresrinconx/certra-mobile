@@ -5,10 +5,12 @@ import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/mini'
 import { theme } from '../styles'
 import useLogin from '../hooks/useLogin'
 import { useNavigation } from '@react-navigation/native'
+import Loader from '../components/loaders/Loader'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const {user, setUser, password, setPassword, auth, login} = useLogin()
+
+  const {user, setUser, password, setPassword, auth, login, loaders} = useLogin()
   const navigation = useNavigation()
 
   useEffect(() => {
@@ -32,6 +34,7 @@ const Login = () => {
         </View>
 
         <View className='space-y-3 top-28'>
+
           {/* username */}
           <View className='space-y-1'>
             <View className='ml-2'>
@@ -81,7 +84,15 @@ const Login = () => {
             <TouchableOpacity onPress={() => auth()} className='w-full p-3 rounded-full'
               style={{backgroundColor: theme.verde,}}
             >
-              <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
+              {!loaders.loadingAuth && (
+                <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
+              )}
+
+              {loaders.loadingAuth && (
+                <View className=''>
+                  <Loader />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
         </View>

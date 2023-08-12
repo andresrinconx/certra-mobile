@@ -122,12 +122,14 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       return
     }
 
+    setLoaders({...loaders, loadingAuth: true})
     // find in the table 'Usuario'
     const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
     if (userFromUsuario === undefined) {
       // find in the table 'Scli'
       const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
       if (userFromScli === undefined) {
+        setLoaders({...loaders, loadingAuth: false})
         Alert.alert(
           'Error',
           'Usuario y contraseña incorrectos',
@@ -138,7 +140,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         return
       } else {
         // success from Scli
-        setLogin(true)
         const letters = firstTwoLetters(userFromScli.nombre)
         setMyUser({
           ...userFromScli, 
@@ -151,10 +152,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
           letters, 
           from: 'scli'
         })
+        setLoaders({...loaders, loadingAuth: false})
+        setLogin(true)
       }
     } else {
       // success from Usuario
-      setLogin(true)
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
       setMyUser({
         ...userFromUsuario, 
@@ -167,6 +169,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         letters,
         from: 'usuario'
       })
+      setLoaders({...loaders, loadingAuth: false})
+      setLogin(true)
     }
   }
 
