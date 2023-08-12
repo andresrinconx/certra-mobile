@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/mini'
 import { theme } from '../styles'
@@ -26,14 +26,14 @@ const Login = () => {
       end={{ x: 0, y: 1 }}
       style={{ flex: 1 }}
     >
-      <View className='flex-1 items-center mt-28 mx-7'>
+      <View className='flex-1 items-center mt-24 mx-7'>
 
         {/* Inicia Sesión */}
-        <View className=''>
-          <Text className='font-bold text-white text-4xl'>Iniciar Sesión</Text>
+        <View>
+          <Image source={require('../assets/user.png')} style={{width: 150, height: 150,}} />
         </View>
 
-        <View className='space-y-3 top-28'>
+        <View className='space-y-3 top-16'>
 
           {/* username */}
           <View className='space-y-1'>
