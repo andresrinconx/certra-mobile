@@ -14,6 +14,9 @@ const SelectCustomer = () => {
   const [value, setValue] = useState('')
   const {searchedCustomers, setSearchedCustomers, loadingSearchedItems, setLoadingSearchedItems, showProducts} = useInv()
 
+  // 
+
+  // SCREEN
   const handleScroll = () => {
     // Cerrar el teclado
     Keyboard.dismiss()
@@ -25,7 +28,6 @@ const SelectCustomer = () => {
       setSearchedCustomers([])
     }
   }, [value])
-
   const handleSearch = async (value: string) => {
     setValue(value)
     if(value.length > 2) {
@@ -41,10 +43,10 @@ const SelectCustomer = () => {
 
   return (
     <>
-      {!showProducts && (
+      {showProducts && (
         <View className='mx-5'>
-          {/* searching */}
 
+          {/* searching */}
           <View className='w-full flex flex-row items-center justify-between rounded-md mt-5' style={styles.shadow}>
             <View className='flex flex-row items-center'>
               <View className='ml-3'>
