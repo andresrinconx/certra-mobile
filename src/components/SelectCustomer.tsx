@@ -52,13 +52,17 @@ const SelectCustomer = () => {
     }
   }
 
+  useEffect(() => {
+    console.log(flowControl)
+  }, [flowControl])
+
   return (
     <>
-      {flowControl.showSelectCustomer && (
+      {flowControl.showSelectCustomer ? (
         <View className='mx-5'>
 
           {/* search */}
-          {flowControl.showSelectCustomer && (
+          {flowControl.showSelectSearch ? (
             <View className='w-full flex flex-row items-center justify-between rounded-md mt-5' style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
@@ -80,10 +84,10 @@ const SelectCustomer = () => {
                 </TouchableOpacity>
               )}
             </View>
-          )}
+          ):null}
 
           {/* results */}
-          {flowControl.showSelectCustomer && (
+          {flowControl.showSelectResults ? (
             <ScrollView className='bg-white mt-2 max-h-[83%] rounded-md p-3' 
               style={styles.shadow}
               showsVerticalScrollIndicator={false}
@@ -113,9 +117,9 @@ const SelectCustomer = () => {
                 </View>
               )}
             </ScrollView>
-          )}
+          ):null}
         </View>
-      )}
+      ):null}
     </>
   )
 }
