@@ -1,18 +1,15 @@
-import {useEffect} from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
+import {useState, useEffect} from 'react'
+import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { KeyIcon, UserIcon } from 'react-native-heroicons/outline'
-import { globalStyles, theme } from '../styles'
+import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/mini'
+import { theme } from '../styles'
 import useLogin from '../hooks/useLogin'
 import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false)
   const {user, setUser, password, setPassword, auth, login} = useLogin()
   const navigation = useNavigation()
-
-  const handleSignIn = () => {
-    auth()
-  }
 
   useEffect(() => {
     if(login) {
@@ -22,51 +19,73 @@ const Login = () => {
 
   return (
     <LinearGradient
-      colors={[`${theme.turquesaOscuro}`, `${theme.turquesaClaro}`]}
+      colors={[`${theme.turquesaClaro}`, '#fff']}
       start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.5, y: 0.4 }}
+      end={{ x: 0.2, y: 0.7 }}
       style={{ flex: 1 }}
     >
-      <View className={`${globalStyles.container} items-center justify-center -top-12`}>
+      <View className='flex-1 items-center mt-28 mx-7'>
 
-        {/* icon */}
-        <View>
-          <Image source={require('../assets/user.png')} style={{width: 150, height: 150,}} />
+        {/* Inicia Sesión */}
+        <View className=''>
+          <Text className='font-bold text-white text-4xl'>Iniciar Sesión</Text>
         </View>
 
-        {/* inputs */}
-        <View className='top-14 space-y-2'>
-          <View className='bg-white w-[340px] rounded-full flex-row items-center'>
-            <TextInput className='text-xl text-black p-4 ml-3 w-[85%]'
-              placeholder='Usuario'
-              placeholderTextColor='#999'
-              value={user}
-              onChangeText={setUser}
-            />
-            <View className='absolute right-4'>
-              <UserIcon size={25} color='black' />
+        <View className='space-y-3 top-28'>
+          {/* username */}
+          <View className='space-y-1'>
+            <View className='ml-2'>
+              <Text className='text-gray-700 font-bold text-lg'>Usuario</Text>
+            </View>
+
+            <View className='bg-white w-full rounded-2xl flex-row items-center'>
+              <TextInput className='text-xl text-black p-4 ml-1 w-full'
+                placeholder='Escribe tu nombre de usuario'
+                placeholderTextColor='#999'
+                value={user}
+                onChangeText={setUser}
+              />
             </View>
           </View>
 
-          <View className='bg-white w-[340px] rounded-full flex-row items-center'>
-            <TextInput className='text-xl text-black p-4 ml-3 w-[85%]'
-              secureTextEntry={true}
-              placeholder='Contraseña'
-              placeholderTextColor='#999'
-              value={password}
-              onChangeText={setPassword}
-            />
-            <View className='absolute right-4'>
-              <KeyIcon size={25} color='black' />
+          {/* password */}
+          <View className='space-y-1'>
+            <View className='ml-2'>
+              <Text className='text-gray-700 font-bold text-lg'>Contraseña</Text>
+            </View>
+
+            <View className='bg-white w-full rounded-2xl flex-row items-center'>
+              <TextInput className='text-xl text-black p-4 ml-1 w-full'
+                secureTextEntry={!showPassword}
+                placeholder='Ingresa tu contraseña'
+                placeholderTextColor='#999'
+                value={password}
+                onChangeText={setPassword}
+              />
+              {!showPassword && (
+                <TouchableOpacity onPress={() => setShowPassword(true)} className='absolute right-4'>
+                  <EyeIcon size={25} color='#999' />
+                </TouchableOpacity>
+              )}
+
+              {showPassword && (
+                <TouchableOpacity onPress={() => setShowPassword(false)} className='absolute right-4'>
+                  <EyeSlashIcon size={25} color='#999' />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
-          <TouchableOpacity onPress={handleSignIn} className={`w-[340px] top-8 p-3 rounded-full`}
-            style={{backgroundColor: theme.verde,}}
-          >
-            <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
-          </TouchableOpacity>
+          {/* btn */}
+          <View className='top-32'>
+            <TouchableOpacity onPress={() => auth()} className='w-full p-3 rounded-full'
+              style={{backgroundColor: theme.verde,}}
+            >
+              <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
       </View>
     </LinearGradient>
   )

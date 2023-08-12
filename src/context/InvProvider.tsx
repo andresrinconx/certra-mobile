@@ -116,10 +116,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     cartStorage()
   }, [cart])
 
-  useEffect(() => {
-    console.log(flowControl)
-  }, [flowControl])
-
   // flow control
   useEffect(() => {
     // set storage when a customer is selected
