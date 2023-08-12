@@ -33,7 +33,7 @@ const LoginContext = createContext<{
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // user
-  const [login, setLogin] = useState(false)
+  const [login, setLogin] = useState(false) // go to login or go to home
   const [myUser, setMyUser] = useState<any>({})
   // api
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
