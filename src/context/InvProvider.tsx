@@ -64,8 +64,14 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
   // layout
-  const [flowControl, setFlowControl] = useState({showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,})
   const [type, setType] = useState('grid')
+  const [flowControl, setFlowControl] = useState({
+    showProducts: false, 
+    showSelectCustomer: false, 
+    showSelectSearch: false, 
+    showSelectResults: false, 
+    showSelectLabel: false,
+  })
   // modals
   const [modalSearch, setModalSearch] = useState(false)
   const [modalProduct, setModalProduct] = useState(false)

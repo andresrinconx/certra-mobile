@@ -70,7 +70,7 @@ const SelectCustomer = () => {
           {flowControl.showSelectLabel && (
             <View className='mb-3'>
               <Text className='text-gray-700 text-xl font-bold'>Cliente</Text>
-              <Text className='text-gray-500 text-base'>{myUser.customer.nombre}</Text>
+              <Text className='text-gray-500 text-base'>{myUser?.customer?.nombre}</Text>
             </View>
           )}
           {flowControl.showSelectSearch ? (

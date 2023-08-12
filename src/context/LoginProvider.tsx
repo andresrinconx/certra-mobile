@@ -32,18 +32,19 @@ const LoginContext = createContext<{
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
+  // user
+  const [login, setLogin] = useState(false)
+  const [myUser, setMyUser] = useState<any>({})
   // api
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
-  const [myUser, setMyUser] = useState<any>({})
   // inputs
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
-  // auth
-  const [login, setLogin] = useState(false)
+  // loaders
   const [loadingLogin, setLoadingLogin] = useState(false)
 
-  // get storage (logged user, myUser, flowControl)
+  // get storage (logged user, myUser)
   useEffect(() => {
     const getUser = async () => {
       try {

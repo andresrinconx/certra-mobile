@@ -21,7 +21,7 @@ const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
     await setDataStorage('cart', [])
     // await setDataStorage('flowControl', {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,})
     setCart([])
-    // setFlowControl({showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,})
+    setFlowControl({showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,})
     setMyUser({})
   }
 
