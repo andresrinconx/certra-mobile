@@ -6,7 +6,7 @@ import useLogin from '../../hooks/useLogin'
 import { setDataStorage } from '../../utils/helpers'
 
 const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
-  const {setCart} = useInv()
+  const {setCart, setFlowControl} = useInv()
   const {setMyUser, setUser, setPassword, setLogin} = useLogin()
   const navigation = useNavigation()
   
@@ -18,7 +18,10 @@ const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
     navigation.navigate('Login')
     await setDataStorage('login', false)
     await setDataStorage('myUser', {})
+    await setDataStorage('cart', [])
+    await setDataStorage('flowControl', {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false,})
     setCart([])
+    setFlowControl({showProducts: true, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false,})
     setMyUser({})
   }
 

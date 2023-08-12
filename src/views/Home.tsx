@@ -14,23 +14,27 @@ import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup
 import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
-  const {type, setType, products, icon, loadingProducts, showProducts, setShowProducts} = useInv()
+  const {type, setType, products, icon, loadingProducts, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()
   const userMenuRef = useRef<Menu>(null)
 
   // myUser data management
   useEffect(() => {
+    // user from
     if(myUser.from === 'scli') {
-      setShowProducts(true)
-    } else {
-      setShowProducts(false)
+      setFlowControl({...flowControl, showProducts: true})
+    } else { // myUser.from === 'usuario'
+      setFlowControl({...flowControl, showProducts: false})
+      setFlowControl({...flowControl, showSelectCustomer: true})
     }
 
+    // customer selected
     if(myUser.customer) {
-      setShowProducts(true)
+      // setFlowControl({...flowControl, showProducts: true})
     }
   }, [myUser])
   
+  // SCREEN
   // close User Menu
   const closeUserMenu = () => {
     if (userMenuRef.current) {
@@ -56,8 +60,8 @@ const Home = () => {
         <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
         {/* icons */}
         <View className='mr-4 flex flex-row gap-3 ml-5'>
-          {showProducts && (<View><IconSearch/></View>)}
-          {showProducts && (<View><IconCart/></View>)}
+          {flowControl.showProducts && (<View><IconSearch/></View>)}
+          {flowControl.showProducts && (<View><IconCart/></View>)}
 
           <Menu ref={userMenuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
@@ -84,7 +88,7 @@ const Home = () => {
       <SelectCustomer />
 
       {/* Products */}
-      {showProducts && ( // usuario
+      {flowControl.showProducts && ( // usuario
         <>
           <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
             <Text className={`text-black text-xl font-bold`}>Productos</Text>

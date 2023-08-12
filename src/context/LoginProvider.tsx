@@ -43,7 +43,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   const [login, setLogin] = useState(false)
   const [loadingLogin, setLoadingLogin] = useState(false)
 
-  // get logged user
+  // get storage (logged user, myUser, flowControl)
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -52,7 +52,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
         
-        // user
+        // myUser
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
         setLoadingLogin(false)
@@ -62,7 +62,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
     getUser()
   }, [])
-
+  
   // get usersFromUsuario & usersFromScli
   useEffect(() => {
     const getUsers = async () => {
@@ -92,7 +92,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       cartStorage()
     }
   }, [myUser])
-
+  
   // get two first letters of the user
   const firstTwoLetters = (fullName: string) => {
     const palabras = fullName.split(' ')
