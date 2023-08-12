@@ -56,6 +56,7 @@ const SelectCustomer = () => {
       setSearchedCustomers(data.message === undefined ? data : [])
       setLoadingSearchedItems(false)
     } else {
+      setFlowControl({...flowControl, showSelectResults: false})
       setSearchedCustomers([])
     }
   }
@@ -89,7 +90,11 @@ const SelectCustomer = () => {
               </View>
 
               {value != '' && (
-                <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
+                <TouchableOpacity className='relative right-3'
+                  onPress={() => {
+                    setValue('')
+                    setFlowControl({...flowControl, showSelectResults: false})
+                  }}>
                   <XMarkIcon size={25} color='black' />
                 </TouchableOpacity>
               )}

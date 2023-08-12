@@ -25,7 +25,7 @@ const Home = () => {
       setFlowControl({...flowControl, showProducts: true})
     } else { // myUser.from === 'usuario'
       setFlowControl({...flowControl, showProducts: false})
-      setFlowControl({...flowControl, showSelectCustomer: true, showSelectSearch: true, showSelectResults: true,})
+      setFlowControl({...flowControl, showSelectCustomer: true, showSelectSearch: true})
     }
   }, [myUser])
   
