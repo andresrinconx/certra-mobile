@@ -110,16 +110,16 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }, [cart])
 
   // flow control
-  // useEffect(() => {
-  //   const flowControlStorage = async () => {
-  //     try {
-  //       await setDataStorage('flowControl', flowControl)
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   flowControlStorage()
-  // }, [flowControl])
+  useEffect(() => {
+    const flowControlStorage = async () => {
+      try {
+        await setDataStorage('flowControl', flowControl)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    flowControlStorage()
+  }, [flowControl])
 
   // get products api
   useEffect(() => {

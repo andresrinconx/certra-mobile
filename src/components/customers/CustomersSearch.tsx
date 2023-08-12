@@ -21,7 +21,7 @@ const CustomersSearch = ({customer, setValue}: {customer: UserFromScliInterface,
           setValue('')
           setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true,})
           setLoaders({...loaders, loadingSlectedCustomer: false})
-        }, 200)
+        }, 100)
       }}
     >
       <Text className='text-black font-bold text-sm'>{cliente}</Text>
