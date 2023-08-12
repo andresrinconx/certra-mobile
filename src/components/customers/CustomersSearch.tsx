@@ -4,7 +4,7 @@ import UserFromScliInterface from '../../interfaces/UserFromScliInterface'
 import useLogin from '../../hooks/useLogin'
 import useInv from '../../hooks/useInv'
 
-const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
+const CustomersSearch = ({customer, setValue}: {customer: UserFromScliInterface, setValue: (value: string) => void}) => {
   const {setMyUser, myUser} = useLogin()
   const {flowControl, setFlowControl} = useInv()
   const {cliente, nombre} = customer
@@ -15,6 +15,7 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
       style={styles.shadow}
       onPress={() => {
         setMyUser({...myUser, customer})
+        setValue('')
         setTimeout(() => {
           setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true,})
         }, 100);
