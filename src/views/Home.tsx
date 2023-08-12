@@ -14,7 +14,7 @@ import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup
 import IconLogOut from '../components/icons/IconLogOut'
 
 const Home = () => {
-  const {type, setType, products, icon, loadingProducts, flowControl, setFlowControl} = useInv()
+  const {type, setType, products, icon, loaders, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()
   const userMenuRef = useRef<Menu>(null)
 
@@ -93,7 +93,7 @@ const Home = () => {
             </TouchableOpacity>
           </View>
 
-          {loadingProducts
+          {loaders.loadingProducts
             ? (
               <View className={`${globalStyles.container}`}>
                 <View className='flex-1 justify-center items-center'>

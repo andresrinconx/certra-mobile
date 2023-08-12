@@ -15,10 +15,6 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  loadingProducts: boolean
-  setLoadingProducts: (loadingProducts: boolean) => void
-  loadingSearchedItems: boolean
-  setLoadingSearchedItems: (loadingSearchedItems: boolean) => void
   modalProduct: boolean
   setModalProduct: (modalProduct: boolean) => void
   modalSearch: boolean
@@ -30,6 +26,8 @@ const InvContext = createContext<{
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
   flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}
   setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}) => void
+  loaders: {loadingProducts: boolean, loadingSearchedItems: boolean,}
+  setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean,}) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -39,10 +37,6 @@ const InvContext = createContext<{
   setProducts: () => {},
   searchedProducts: [],
   setSearchedProducts: () => {},
-  loadingProducts: false,
-  setLoadingProducts: () => {},
-  loadingSearchedItems: false,
-  setLoadingSearchedItems: () => {},
   modalProduct: false,
   setModalProduct: () => {},
   modalSearch: false,
@@ -54,6 +48,8 @@ const InvContext = createContext<{
   setSearchedCustomers: () => {},
   flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,},
   setFlowControl: () => {},
+  loaders: {loadingProducts: false, loadingSearchedItems: false,},
+  setLoaders: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -76,8 +72,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [modalSearch, setModalSearch] = useState(false)
   const [modalProduct, setModalProduct] = useState(false)
   // loaders
-  const [loadingProducts, setLoadingProducts] = useState(false)
-  const [loadingSearchedItems, setLoadingSearchedItems] = useState(false)
+  const [loaders, setLoaders] = useState({
+    loadingProducts: false, 
+    loadingSearchedItems: false,
+  })
 
   // get storage (cart, flowControl)
   useEffect(() => {
@@ -126,10 +124,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const obtenerProductos = async () => {
       try {
-        setLoadingProducts(true)
+        setLoaders({...loaders, loadingProducts: true})
         const data = await fetchTableData('Sinv')
         setProducts(data)
-        setLoadingProducts(false)
+        setLoaders({...loaders, loadingProducts: false})
       } catch (error) {
         console.log(error)
       }
@@ -178,10 +176,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setType,
       products,
       setProducts,
-      loadingProducts,
-      setLoadingProducts,
-      loadingSearchedItems,
-      setLoadingSearchedItems,
       modalProduct,
       setModalProduct,
       icon,
@@ -194,7 +188,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       searchedCustomers,
       setSearchedCustomers,
       flowControl,
-      setFlowControl
+      setFlowControl,
+      loaders,
+      setLoaders
     }}>
       {children}
     </InvContext.Provider>

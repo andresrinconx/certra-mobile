@@ -13,7 +13,7 @@ import useLogin from '../hooks/useLogin'
 
 const SelectCustomer = () => {
   const [value, setValue] = useState('')
-  const {searchedCustomers, setSearchedCustomers, loadingSearchedItems, setLoadingSearchedItems, flowControl, setFlowControl} = useInv()
+  const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -50,11 +50,11 @@ const SelectCustomer = () => {
     setValue(value)
     if(value.length > 2) {
       setFlowControl({...flowControl, showSelectResults: true})
-      setLoadingSearchedItems(true)
+      setLoaders({...loaders, loadingSearchedItems: true})
       // fetching...
       const data = await fetchSearchedItems({searchTerm: value, table: 'scli'})
       setSearchedCustomers(data.message === undefined ? data : [])
-      setLoadingSearchedItems(false)
+      setLoaders({...loaders, loadingSearchedItems: false})
     } else {
       setFlowControl({...flowControl, showSelectResults: false})
       setSearchedCustomers([])
@@ -109,7 +109,7 @@ const SelectCustomer = () => {
               onScroll={handleScroll}
             >
               {/* loadingSearchedItems */}
-              {loadingSearchedItems ? (
+              {loaders.loadingSearchedItems ? (
                 <View className='mb-5'> 
                   {items.map((item) => {
                     return (
