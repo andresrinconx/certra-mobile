@@ -24,10 +24,10 @@ const InvContext = createContext<{
   pay: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
-  flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}
-  setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}) => void
-  loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean,}
-  setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean,}) => void
+  flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}
+  setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}) => void
+  loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}
+  setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -46,9 +46,9 @@ const InvContext = createContext<{
   pay: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
-  flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,},
+  flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false,},
   setFlowControl: () => {},
-  loaders: {loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false,},
+  loaders: {loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, loadingStorageInv: false,},
   setLoaders: () => {},
 })
 
@@ -67,6 +67,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     showSelectSearch: false, 
     showSelectResults: false, 
     showSelectLabel: false,
+    selected: false,
   })
   // modals
   const [modalSearch, setModalSearch] = useState(false)
@@ -76,35 +77,31 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     loadingProducts: false, 
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
+    loadingStorageInv: false,
   })
 
   // get storage (cart, flowControl)
   useEffect(() => {
     const getCartStorage = async () => {
       try {
+        setLoaders({...loaders, loadingStorageInv: true})
+
         // cart
         const cartStorage = await getDataStorage('cart')
         setCart(cartStorage ? JSON.parse(cartStorage) : [])
-
         // flowControl
         const flowControlStorage = await getDataStorage('flowControl')
-        setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : {
-          showProducts: false, 
-          showSelectCustomer: false, 
-          showSelectSearch: false, 
-          showSelectResults: false, 
-          showSelectLabel: false,
-        })
+        setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
+
+        setTimeout(() => {
+          setLoaders({...loaders, loadingStorageInv: false})
+        }, 800)
       } catch (error) {
         console.log(error)
       }
     }
     getCartStorage()
   }, [])
-
-  useEffect(() => {
-    console.log(flowControl)
-  }, [flowControl])
 
   // SET STORAGE
   // cart
@@ -121,14 +118,16 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // flow control
   useEffect(() => {
-    const flowControlStorage = async () => {
-      try {
-        await setDataStorage('flowControl', flowControl)
-      } catch (error) {
-        console.log(error)
+    if(flowControl.selected) {
+      const flowControlStorage = async () => {
+        try {
+          await setDataStorage('flowControl', flowControl)
+        } catch (error) {
+          console.log(error)
+        }
       }
+      flowControlStorage()
     }
-    flowControlStorage()
   }, [flowControl])
 
   // get products api

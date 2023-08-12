@@ -19,13 +19,14 @@ const Home = () => {
   const {myUser} = useLogin()
   const userMenuRef = useRef<Menu>(null)
 
-  // myUser data management
+  // flowControl
   useEffect(() => {
-    // user from
-    if(myUser.from === 'usuario') {
-      setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
-    } else { // myUser.from === 'scli'
-      setFlowControl({...flowControl, showProducts: true, showSelectCustomer: false})
+    if(!flowControl.selected) {
+      if(myUser.from === 'usuario') {
+        setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
+      } else { // myUser.from === 'scli'
+        setFlowControl({...flowControl, showProducts: true, showSelectCustomer: false})
+      }
     }
   }, [myUser])
   
@@ -96,26 +97,25 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
     
-              {loaders.loadingProducts
-                ? (
-                  <View className={`${globalStyles.container}`}>
-                    <View className='flex-1 justify-center items-center'>
-                      <FlatList
-                        data={items}
-                        numColumns={2}
-                        contentContainerStyle={{
-                          paddingBottom: 10,
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        overScrollMode='never'
-                        renderItem={({item}) => {
-                          return (
-                            <LoaderProductsGrid key={item.id} />
-                          )
-                        }} 
-                      />
-                    </View>
+              {loaders.loadingProducts || loaders.loadingStorageInv ? (
+                <View className={`${globalStyles.container}`}>
+                  <View className='flex-1 justify-center items-center'>
+                    <FlatList
+                      data={items}
+                      numColumns={2}
+                      contentContainerStyle={{
+                        paddingBottom: 10,
+                      }}
+                      showsVerticalScrollIndicator={false}
+                      overScrollMode='never'
+                      renderItem={({item}) => {
+                        return (
+                          <LoaderProductsGrid key={item.id} />
+                        )
+                      }} 
+                    />
                   </View>
+                </View>
               ) : (
                 <View className={`${globalStyles.container}`}>
                   <View className='flex-1 justify-center items-center'>

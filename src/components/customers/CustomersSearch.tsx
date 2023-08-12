@@ -19,7 +19,7 @@ const CustomersSearch = ({customer, setValue}: {customer: UserFromScliInterface,
           setMyUser({...myUser, customer})
           setCart([])
           setValue('')
-          setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true,})
+          setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true, selected: true})
           setLoaders({...loaders, loadingSlectedCustomer: false})
         }, 100)
       }}

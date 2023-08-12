@@ -48,14 +48,15 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        // login
         setLoadingLogin(true)
+
+        // login
         const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
-        
         // myUser
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
+        
         setLoadingLogin(false)
       } catch (error) {
         console.log(error)
