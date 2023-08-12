@@ -95,7 +95,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
         setTimeout(() => {
           setLoaders({...loaders, loadingStorageInv: false})
-        }, 800)
+        }, 1000)
       } catch (error) {
         console.log(error)
       }
@@ -116,9 +116,14 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     cartStorage()
   }, [cart])
 
+  useEffect(() => {
+    console.log(flowControl)
+  }, [flowControl])
+
   // flow control
   useEffect(() => {
-    if(flowControl.selected) {
+    // set storage when a customer is selected
+    if(flowControl.selected || (flowControl.showProducts && !flowControl.showSelectCustomer)) {
       const flowControlStorage = async () => {
         try {
           await setDataStorage('flowControl', flowControl)

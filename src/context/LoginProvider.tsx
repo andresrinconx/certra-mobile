@@ -56,7 +56,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         // myUser
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
-        
+
         setLoadingLogin(false)
       } catch (error) {
         console.log(error)
@@ -143,7 +143,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
           from: 'scli'
         })
         await setDataStorage('login', true)
-        await setDataStorage('myUser', {...userFromScli, letters})
+        await setDataStorage('myUser', {
+          ...userFromScli, 
+          letters, 
+          from: 'scli'
+        })
       }
     } else {
       // success from Usuario
@@ -155,7 +159,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         from: 'usuario'
       })
       await setDataStorage('login', true)
-      await setDataStorage('myUser', {...userFromUsuario, letters})
+      await setDataStorage('myUser', {
+        ...userFromUsuario, 
+        letters,
+        from: 'usuario'
+      })
     }
   }
 
