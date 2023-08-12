@@ -11,7 +11,7 @@ const CustomersSearch = ({customer, setValue}: {customer: UserFromScliInterface,
 
   return (
     <TouchableOpacity 
-      className='bg-blue-200 mb-3 p-2 mx-1' 
+      className='bg-blue-200 mb-3 p-2 mx-1'
       style={styles.shadow}
       onPress={() => {
         setMyUser({...myUser, customer})

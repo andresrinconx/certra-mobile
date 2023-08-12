@@ -18,11 +18,11 @@ const SelectCustomer = () => {
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
-  useEffect(() => {
-    if(value.length > 0) {
-      setFlowControl({...flowControl, showSelectResults: true})
-    }
-  }, [value])
+  // useEffect(() => {
+  //   if(value.length > 0) {
+  //     setFlowControl({...flowControl, showSelectResults: true})
+  //   }
+  // }, [value])
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
     return () => {
@@ -49,6 +49,7 @@ const SelectCustomer = () => {
   const handleSearch = async (value: string) => {
     setValue(value)
     if(value.length > 2) {
+      setFlowControl({...flowControl, showSelectResults: true})
       setLoadingSearchedItems(true)
       // fetching...
       const data = await fetchSearchedItems({searchTerm: value, table: 'scli'})
