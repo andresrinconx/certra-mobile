@@ -21,7 +21,7 @@ const Login = () => {
     <LinearGradient
       colors={[`${theme.turquesaClaro}`, '#fff']}
       start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.2, y: 0.7 }}
+      end={{ x: 0, y: 1 }}
       style={{ flex: 1 }}
     >
       <View className='flex-1 items-center mt-28 mx-7'>
