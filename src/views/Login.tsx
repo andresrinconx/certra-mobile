@@ -90,7 +90,7 @@ const Login = () => {
 
               {loaders.loadingAuth && (
                 <View className=''>
-                  <Loader />
+                  <Loader color='white' />
                 </View>
               )}
             </TouchableOpacity>
