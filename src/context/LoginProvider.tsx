@@ -15,8 +15,8 @@ const LoginContext = createContext<{
   auth: () => void
   myUser: any
   setMyUser: (myUser: any) => void
-  loadingLogin: boolean
-  setLoadingLogin: (loadingLogin: boolean) => void
+  loaders: {loadingLogin: boolean, loadingAuth: boolean,}
+  setLoaders: (loaders: {loadingLogin: boolean, loadingAuth: boolean,}) => void
 }>({
   login: false,
   setLogin: () => {},
@@ -27,13 +27,13 @@ const LoginContext = createContext<{
   auth: () => {},
   myUser: {},
   setMyUser: () => {},
-  loadingLogin: false,
-  setLoadingLogin: () => {},
+  loaders: {loadingLogin: false, loadingAuth: false,},
+  setLoaders: () => {},
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // user
-  const [login, setLogin] = useState(false)
+  const [login, setLogin] = useState(false) // go to login or go to home
   const [myUser, setMyUser] = useState<any>({})
   // api
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
@@ -42,13 +42,16 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
   // loaders
-  const [loadingLogin, setLoadingLogin] = useState(false)
+  const [loaders, setLoaders] = useState({
+    loadingLogin: false,
+    loadingAuth: false,
+  })
 
   // get storage (logged user, myUser)
   useEffect(() => {
     const getUser = async () => {
       try {
-        setLoadingLogin(true)
+        setLoaders({...loaders, loadingLogin: true})
 
         // login
         const loginStorage = await getDataStorage('login')
@@ -57,7 +60,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
 
-        setLoadingLogin(false)
+        setLoaders({...loaders, loadingLogin: false})
       } catch (error) {
         console.log(error)
       }
@@ -119,12 +122,14 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       return
     }
 
+    setLoaders({...loaders, loadingAuth: true})
     // find in the table 'Usuario'
     const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
     if (userFromUsuario === undefined) {
       // find in the table 'Scli'
       const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
       if (userFromScli === undefined) {
+        setLoaders({...loaders, loadingAuth: false})
         Alert.alert(
           'Error',
           'Usuario y contraseña incorrectos',
@@ -135,7 +140,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         return
       } else {
         // success from Scli
-        setLogin(true)
         const letters = firstTwoLetters(userFromScli.nombre)
         setMyUser({
           ...userFromScli, 
@@ -148,10 +152,11 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
           letters, 
           from: 'scli'
         })
+        setLoaders({...loaders, loadingAuth: false})
+        setLogin(true)
       }
     } else {
       // success from Usuario
-      setLogin(true)
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
       setMyUser({
         ...userFromUsuario, 
@@ -164,6 +169,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         letters,
         from: 'usuario'
       })
+      setLoaders({...loaders, loadingAuth: false})
+      setLogin(true)
     }
   }
 
@@ -178,8 +185,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       auth,
       myUser,
       setMyUser,
-      loadingLogin,
-      setLoadingLogin
+      loaders,
+      setLoaders
     }}>
       {children}
     </LoginContext.Provider>

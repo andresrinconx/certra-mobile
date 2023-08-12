@@ -10,11 +10,11 @@ import LoaderLogoScreen from '../components/loaders/LoaderLogoScreen'
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const {login, loadingLogin} = useLogin()
+  const {login, loaders} = useLogin()
 
   return (
     <>
-      {loadingLogin ? (
+      {loaders.loadingLogin ? (
         <LoaderLogoScreen />
       ) : (
         <NavigationContainer>

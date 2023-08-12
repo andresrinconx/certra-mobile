@@ -23,10 +23,8 @@ const Home = () => {
   useEffect(() => {
     if(!flowControl.selected) { // is not selected
       if(myUser.from === 'usuario') {
-        console.log('ejecutando usuario')
         setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
       } else { // myUser.from === 'scli'
-        console.log('ejecutando scli')
         setFlowControl({...flowControl, showProducts: true, showSelectCustomer: false})
       }
     }
