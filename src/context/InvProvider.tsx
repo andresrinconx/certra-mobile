@@ -28,8 +28,8 @@ const InvContext = createContext<{
   pay: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
-  flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean,}
-  setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean,}) => void
+  flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}
+  setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -52,7 +52,7 @@ const InvContext = createContext<{
   pay: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
-  flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false,},
+  flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,},
   setFlowControl: () => {},
 })
 
@@ -64,7 +64,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
   // layout
-  const [flowControl, setFlowControl] = useState({showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false,})
+  const [flowControl, setFlowControl] = useState({showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,})
   const [type, setType] = useState('grid')
   // modals
   const [modalSearch, setModalSearch] = useState(false)
@@ -83,7 +83,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
         // flowControl
         // const flowControlStorage = await getDataStorage('flowControl')
-        // setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false,})
+        // setFlowControl(flowControlStorage && JSON.parse(flowControlStorage))
       } catch (error) {
         console.log(error)
       }
@@ -105,16 +105,16 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }, [cart])
 
   // flow control
-  useEffect(() => {
-    const flowControlStorage = async () => {
-      try {
-        await setDataStorage('flowControl', flowControl)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    flowControlStorage()
-  }, [flowControl])
+  // useEffect(() => {
+  //   const flowControlStorage = async () => {
+  //     try {
+  //       await setDataStorage('flowControl', flowControl)
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   flowControlStorage()
+  // }, [flowControl])
 
   // get products api
   useEffect(() => {

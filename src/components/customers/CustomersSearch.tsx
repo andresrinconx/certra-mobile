@@ -16,7 +16,7 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
       onPress={() => {
         setMyUser({...myUser, customer})
         setTimeout(() => {
-          setFlowControl({...flowControl, showSelectResults: false, showProducts: true})
+          setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true,})
         }, 100);
       }}
     >

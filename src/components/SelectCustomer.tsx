@@ -16,18 +16,18 @@ const SelectCustomer = () => {
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
-  // useEffect(() => {
-  //   const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
-  //   return () => {
-  //     keyboardDidHideListener.remove()
-  //   }
-  // }, [])
-  // const removeInputFocus = () => {
-  //   if (textInputRef.current) {
-  //     textInputRef.current.blur()
-  //   }
-  //   setFlowControl({...flowControl, anotherSelect: false})
-  // }
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
+    return () => {
+      keyboardDidHideListener.remove()
+    }
+  }, [])
+  const removeInputFocus = () => {
+    if (textInputRef.current) {
+      textInputRef.current.blur()
+    }
+    // setFlowControl({...flowControl, anotherSelect: false})
+  }
   const handleScroll = () => {
     // Cerrar el teclado
     Keyboard.dismiss()
@@ -52,18 +52,19 @@ const SelectCustomer = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(flowControl)
-  }, [flowControl])
-
   return (
     <>
       {flowControl.showSelectCustomer ? (
-        <View className='mx-5'>
 
+        <View className='mx-5 mt-5'>
           {/* search */}
+          {flowControl.showSelectLabel && (
+            <View className='mb-1'>
+              <Text className='text-gray-700 font-bold text-lg'>Cliente</Text>
+            </View>
+          )}
           {flowControl.showSelectSearch ? (
-            <View className='w-full flex flex-row items-center justify-between rounded-md mt-5' style={styles.shadow}>
+            <View className='w-full flex flex-row items-center justify-between rounded-md' style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
                   <MagnifyingGlassIcon size={20} color='gray' />
