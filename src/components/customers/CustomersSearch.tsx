@@ -6,22 +6,22 @@ import useInv from '../../hooks/useInv'
 
 const CustomersSearch = ({customer, setValue}: {customer: UserFromScliInterface, setValue: (value: string) => void}) => {
   const {setMyUser, myUser} = useLogin()
-  const {flowControl, setFlowControl, setCart} = useInv()
+  const {flowControl, setFlowControl, setCart, loaders, setLoaders} = useInv()
   const {cliente, nombre} = customer
 
   return (
     <TouchableOpacity 
-      className='bg-blue-200 mb-3 p-2 mx-1'
+      className='mb-3 p-2 mx-1'
       style={styles.shadow}
       onPress={() => {
-        // loader
-        setMyUser({...myUser, customer})
-        setCart([])
-        setValue('')
+        setLoaders({...loaders, loadingSlectedCustomer: true})
         setTimeout(() => {
+          setMyUser({...myUser, customer})
+          setCart([])
+          setValue('')
           setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true,})
-        }, 100);
-        // loader
+          setLoaders({...loaders, loadingSlectedCustomer: false})
+        }, 200)
       }}
     >
       <Text className='text-black font-bold text-sm'>{cliente}</Text>

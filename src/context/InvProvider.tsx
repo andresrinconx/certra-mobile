@@ -26,8 +26,8 @@ const InvContext = createContext<{
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
   flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}
   setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean,}) => void
-  loaders: {loadingProducts: boolean, loadingSearchedItems: boolean,}
-  setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean,}) => void
+  loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean,}
+  setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean,}) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -48,7 +48,7 @@ const InvContext = createContext<{
   setSearchedCustomers: () => {},
   flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false,},
   setFlowControl: () => {},
-  loaders: {loadingProducts: false, loadingSearchedItems: false,},
+  loaders: {loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false,},
   setLoaders: () => {},
 })
 
@@ -75,6 +75,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [loaders, setLoaders] = useState({
     loadingProducts: false, 
     loadingSearchedItems: false,
+    loadingSlectedCustomer: false,
   })
 
   // get storage (cart, flowControl)

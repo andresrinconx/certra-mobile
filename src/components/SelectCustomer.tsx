@@ -18,11 +18,6 @@ const SelectCustomer = () => {
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
-  // useEffect(() => {
-  //   if(value.length > 0) {
-  //     setFlowControl({...flowControl, showSelectResults: true})
-  //   }
-  // }, [value])
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
     return () => {
@@ -33,7 +28,6 @@ const SelectCustomer = () => {
     if (textInputRef.current) {
       textInputRef.current.blur()
     }
-    // setFlowControl({...flowControl, showSelectResults: false})
   }
   const handleScroll = () => {
     // Cerrar el teclado
