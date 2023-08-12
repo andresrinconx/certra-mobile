@@ -35,7 +35,7 @@ const Login = () => {
           {/* username */}
           <View className='space-y-1'>
             <View className='ml-2'>
-              <Text className='text-gray-700 font-bold text-lg'>Usuario</Text>
+              <Text className='text-gray-600 font-bold text-lg'>Usuario</Text>
             </View>
 
             <View className='bg-white w-full rounded-2xl flex-row items-center'>
@@ -51,7 +51,7 @@ const Login = () => {
           {/* password */}
           <View className='space-y-1'>
             <View className='ml-2'>
-              <Text className='text-gray-700 font-bold text-lg'>Contraseña</Text>
+              <Text className='text-gray-600 font-bold text-lg'>Contraseña</Text>
             </View>
 
             <View className='bg-white w-full rounded-2xl flex-row items-center'>
