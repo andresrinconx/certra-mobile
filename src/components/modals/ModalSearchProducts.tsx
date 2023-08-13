@@ -8,7 +8,7 @@ import { styles, theme } from '../../styles'
 import { items } from '../../utils/constants'
 import LoaderProductsSearch from '../loaders/LoaderProductsSearch'
 import useInv from '../../hooks/useInv'
-import { fetchSearchedItems } from '../../api/inv'
+import { fetchSearchedItems } from '../../utils/api'
 
 const ModalSearch = () => {
   const [value, setValue] = useState('')

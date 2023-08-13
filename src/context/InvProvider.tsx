@@ -3,7 +3,7 @@ import {Alert} from 'react-native'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
 import { getDataStorage, setDataStorage } from "../utils/helpers"
-import { fetchTableData } from "../api/inv"
+import { fetchTableData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 
 const InvContext = createContext<{
