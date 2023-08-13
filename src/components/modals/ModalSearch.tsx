@@ -4,7 +4,7 @@ import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
 import {XMarkIcon} from 'react-native-heroicons/mini'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 import ProductsSearch from '../products/ProductsSearch'
-import { styles } from '../../styles'
+import { styles, theme } from '../../styles'
 import { items } from '../../utils/constants'
 import LoaderProductsSearch from './../loaders/LoaderProductsSearch'
 import useInv from '../../hooks/useInv'
@@ -73,6 +73,7 @@ const ModalSearch = () => {
               ref={textInputRef}
               value={value}
               onChangeText={handleSearch}
+              selectionColor={theme.turquesaClaro}
             />
             {
               value
@@ -91,6 +92,7 @@ const ModalSearch = () => {
           contentContainerStyle={{paddingBottom: 10,}}
           overScrollMode='never'
           onScroll={handleScroll}
+          keyboardShouldPersistTaps="handled"
         >
           {searchedProducts?.length > 0
             && (

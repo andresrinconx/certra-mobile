@@ -64,8 +64,10 @@ const Login = () => {
           letters, 
           from: 'scli'
         })
-        setLoaders({...loaders, loadingAuth: false})
-        setLogin(true)
+        setTimeout(() => {
+          setLoaders({...loaders, loadingAuth: false})
+          setLogin(true)
+        }, 500);
       }
     } else { // success from Usuario
       setIncorrectCredentials(false)
@@ -81,8 +83,10 @@ const Login = () => {
         letters,
         from: 'usuario'
       })
-      setLoaders({...loaders, loadingAuth: false})
-      setLogin(true)
+      setTimeout(() => {
+        setLoaders({...loaders, loadingAuth: false})
+        setLogin(true)
+      }, 500);
     }
   }
 
@@ -120,6 +124,7 @@ const Login = () => {
                 placeholderTextColor='#999'
                 value={user}
                 onChangeText={setUser}
+                selectionColor={theme.turquesaClaro}
               />
             </View>
 
@@ -143,6 +148,7 @@ const Login = () => {
                 placeholderTextColor='#999'
                 value={password}
                 onChangeText={setPassword}
+                selectionColor={theme.turquesaClaro}
               />
               {!showPassword && (
                 <TouchableOpacity onPress={() => setShowPassword(true)} className='absolute right-4'>
