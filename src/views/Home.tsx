@@ -9,7 +9,7 @@ import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 import ProductsViews from '../components/products/ProductsViews'
 import IconUser from '../components/icons/IconUser'
-import SelectCustomer from '../components/SelectCustomer'
+import SelectCustomer from '../components/customers/SelectCustomer'
 import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
 import IconLogOut from '../components/icons/IconLogOut'
 import Loader from '../components/loaders/Loader'
@@ -97,7 +97,7 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
     
-              {loaders.loadingProducts || loaders.loadingStorageInv ? (
+              {loaders.loadingProducts ? (
                 <View className={`${globalStyles.container}`}>
                   <View className='flex-1 justify-center items-center'>
                     <FlatList

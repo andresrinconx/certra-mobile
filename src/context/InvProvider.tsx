@@ -89,18 +89,12 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getCartStorage = async () => {
       try {
-        setLoaders({...loaders, loadingStorageInv: true})
-
         // cart
         const cartStorage = await getDataStorage('cart')
         setCart(cartStorage ? JSON.parse(cartStorage) : [])
         // flowControl
         const flowControlStorage = await getDataStorage('flowControl')
         setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
-
-        setTimeout(() => {
-          setLoaders({...loaders, loadingStorageInv: false})
-        }, 1000)
       } catch (error) {
         console.log(error)
       }

@@ -1,14 +1,14 @@
 import {useEffect, useRef} from 'react'
 import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList } from 'react-native'
-import { styles, theme } from '../styles'
+import { styles, theme } from '../../styles'
 import {XMarkIcon, MagnifyingGlassIcon} from 'react-native-heroicons/mini'
 import {UserIcon} from 'react-native-heroicons/outline'
-import useInv from '../hooks/useInv'
-import { fetchSearchedItems } from '../api/inv'
-import { items } from '../utils/constants'
-import LoaderCustomersSearch from './loaders/LoaderCustomersSearch'
-import CustomersSearch from './customers/CustomersSearch'
-import useLogin from '../hooks/useLogin'
+import useInv from '../../hooks/useInv'
+import { fetchSearchedItems } from '../../api/inv'
+import { items } from '../../utils/constants'
+import LoaderCustomersSearch from '../loaders/LoaderCustomersSearch'
+import CustomersSearch from './CustomersSearch'
+import useLogin from '../../hooks/useLogin'
 
 const SelectCustomer = () => {
   const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers} = useInv()
