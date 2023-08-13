@@ -102,7 +102,7 @@ const SelectCustomer = () => {
 
           {/* results */}
           {flowControl?.showSelectResults ? (
-            <View className={`bg-white mt-2 rounded-md px-3 pt-3 ${flowControl.showSelectLabel ? 'max-h-[75%]' : 'max-h-[87%]'}`}
+            <View className={`bg-white mt-2 rounded-md px-3 pt-3 ${flowControl.showSelectLabel ? 'max-h-[78%]' : 'max-h-[87%]'}`}
               style={styles.shadow}
             >
               {/* loadingSearchedItems */}
