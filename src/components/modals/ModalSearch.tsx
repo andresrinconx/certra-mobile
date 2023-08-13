@@ -75,14 +75,11 @@ const ModalSearch = () => {
               onChangeText={handleSearch}
               selectionColor={theme.turquesaClaro}
             />
-            {
-              value
-                && (
-                <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
-                  <XMarkIcon size={25} color='black' />
-                </TouchableOpacity>
-              )
-            }
+            {value && (
+              <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
+                <XMarkIcon size={25} color='black' />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
 
@@ -94,28 +91,26 @@ const ModalSearch = () => {
           onScroll={handleScroll}
           keyboardShouldPersistTaps="handled"
         >
-          {searchedProducts?.length > 0
-            && (
-              loaders.loadingSearchedItems
-                ? (
-                <View className='mb-20'>
-                  {items.map((item) => {
-                    return (
-                      <LoaderProductsSearch key={item.id} />
-                    )
-                  })}
-                </View>
-              ) : (
-                <View className='mb-20'>
-                  {searchedProducts.map((product: ProductoInterface) => {
-                    return (
-                      <ProductsSearch key={product.id} product={product} />
-                    )
-                  })}
-                </View>
-              )
+          {searchedProducts?.length > 0 && (
+            loaders.loadingSearchedItems
+              ? (
+              <View className='mb-20'>
+                {items.map((item) => {
+                  return (
+                    <LoaderProductsSearch key={item.id} />
+                  )
+                })}
+              </View>
+            ) : (
+              <View className='mb-20'>
+                {searchedProducts.map((product: ProductoInterface) => {
+                  return (
+                    <ProductsSearch key={product.id} product={product} />
+                  )
+                })}
+              </View>
             )
-          }
+          )}
         </ScrollView>
       </View>
     </Modal> 

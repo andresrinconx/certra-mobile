@@ -28,6 +28,8 @@ const InvContext = createContext<{
   setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}) => void
   loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}
   setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}) => void
+  valueSearchCustomers: string
+  setValueSearchCustomers: (valueSearchCustomers: string) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -50,6 +52,8 @@ const InvContext = createContext<{
   setFlowControl: () => {},
   loaders: {loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, loadingStorageInv: false,},
   setLoaders: () => {},
+  valueSearchCustomers: '',
+  setValueSearchCustomers: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -59,6 +63,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
+  const [valueSearchCustomers, setValueSearchCustomers] = useState('')
   // layout
   const [type, setType] = useState('grid')
   const [flowControl, setFlowControl] = useState({
@@ -201,7 +206,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       flowControl,
       setFlowControl,
       loaders,
-      setLoaders
+      setLoaders,
+      valueSearchCustomers,
+      setValueSearchCustomers
     }}>
       {children}
     </InvContext.Provider>

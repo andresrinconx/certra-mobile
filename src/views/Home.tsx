@@ -87,7 +87,7 @@ const Home = () => {
       ) : (
         <>
           <SelectCustomer />
-          {flowControl.showProducts && (
+          {flowControl.showProducts && !flowControl.showSelectResults ? (
             <>
               <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
                 <Text className={`text-black text-xl font-bold`}>Productos</Text>
@@ -138,7 +138,7 @@ const Home = () => {
                 </View>
               )}
             </>
-          )}
+          ):null}
         </>
       )}
     </MenuProvider>

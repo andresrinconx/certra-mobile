@@ -12,8 +12,7 @@ import CustomersSearch from './customers/CustomersSearch'
 import useLogin from '../hooks/useLogin'
 
 const SelectCustomer = () => {
-  const [value, setValue] = useState('')
-  const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl} = useInv()
+  const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers} = useInv()
   const {myUser} = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -36,19 +35,20 @@ const SelectCustomer = () => {
 
   // SEARCH
   useEffect(() => {
-    if(value === '') {
+    if(valueSearchCustomers === '') {
       setSearchedCustomers([])
     }
-  }, [value])
-  const handleSearch = async (value: string) => {
-    setValue(value)
-    if(value.length > 2) {
+    
+  }, [valueSearchCustomers])
+  const handleSearch = async (valueSearchCustomers: string) => {
+    setValueSearchCustomers(valueSearchCustomers)
+    if(valueSearchCustomers.length > 2) {
       if(!flowControl.showSelectResults) {
         setFlowControl({...flowControl, showSelectResults: true})
       }
       setLoaders({...loaders, loadingSearchedItems: true})
       // fetching...
-      const data = await fetchSearchedItems({searchTerm: value, table: 'scli'})
+      const data = await fetchSearchedItems({searchTerm: valueSearchCustomers, table: 'scli'})
       setSearchedCustomers(data.message === undefined ? data : [])
       setLoaders({...loaders, loadingSearchedItems: false})
     } else {
@@ -80,16 +80,16 @@ const SelectCustomer = () => {
                   ref={textInputRef}
                   placeholder='Buscar un cliente'
                   placeholderTextColor='gray'
-                  value={value}
+                  value={valueSearchCustomers}
                   onChangeText={handleSearch}
                   selectionColor={theme.turquesaClaro}
                 />
               </View>
 
-              {value != '' && (
+              {valueSearchCustomers != '' && (
                 <TouchableOpacity className='relative right-3'
                   onPress={() => {
-                    setValue('')
+                    setValueSearchCustomers('')
                     setFlowControl({...flowControl, showSelectResults: false})
                   }}>
                   <XMarkIcon size={25} color='black' />
@@ -124,7 +124,7 @@ const SelectCustomer = () => {
                   <View className='mb-5'>
                     {searchedCustomers.map((customer: UserFromScliInterface) => {
                       return (
-                        <CustomersSearch key={customer.cliente} customer={customer} setValue={setValue} />
+                        <CustomersSearch key={customer.cliente} customer={customer} />
                       )
                     })}
                   </View>
