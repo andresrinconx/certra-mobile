@@ -21,7 +21,6 @@ const InvContext = createContext<{
   setModalSearch: (modalSearch: boolean) => void
   icon: (type: string) => any
   clearCart: () => void
-  pay: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
   flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}
@@ -45,7 +44,6 @@ const InvContext = createContext<{
   setModalSearch: () => {},
   icon: () => {},
   clearCart: () => {},
-  pay: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
   flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false,},
@@ -85,6 +83,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     loadingStorageInv: false,
   })
 
+  // ----- STORAGE
   // get storage (cart, flowControl)
   useEffect(() => {
     const getCartStorage = async () => {
@@ -102,8 +101,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     getCartStorage()
   }, [])
 
-  // SET STORAGE
-  // cart
+  // set cart
   useEffect(() => {
     const cartStorage = async () => {
       try {
@@ -115,7 +113,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     cartStorage()
   }, [cart])
 
-  // flow control
+  // set flow control
   useEffect(() => {
     // set storage when a customer is selected
     if(flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
@@ -130,6 +128,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     }
   }, [flowControl])
 
+  // ----- API
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -145,6 +144,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     obtenerProductos()
   }, [])
 
+  // ----- ACTIONS
   // clear cart
   const clearCart = () => {
     Alert.alert(
@@ -159,12 +159,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     )
   }
 
-  // pay
-  const pay = () => {
-    console.log('pagando...')    
-  }
-
-  // LAYOUT
+  // ----- LAYOUT
   // icon
   const icon = (type: string) => {
     if(type === 'grid') { // --- grid
@@ -190,7 +185,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setModalProduct,
       icon,
       clearCart,
-      pay,
       setModalSearch,
       modalSearch,
       searchedProducts,

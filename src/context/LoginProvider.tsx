@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react"
-import {Alert} from 'react-native'
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { getDataStorage, setDataStorage } from "../utils/helpers"
@@ -51,6 +50,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     loadingAuth: false,
   })
 
+  // ---- STORAGE
   // get storage (logged user, myUser)
   useEffect(() => {
     const getUser = async () => {
@@ -72,6 +72,21 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUser()
   }, [])
   
+  // add myUser storage
+  useEffect(() => {
+    if(myUser.letters) {
+      const cartStorage = async () => {
+        try {
+          await setDataStorage('myUser', myUser)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      cartStorage()
+    }
+  }, [myUser])
+
+  // ----- API
   // get usersFromUsuario & usersFromScli
   useEffect(() => {
     const getUsers = async () => {
@@ -88,20 +103,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUsers()
   }, [])
 
-  // add myUser storage
-  useEffect(() => {
-    if(myUser.letters) {
-      const cartStorage = async () => {
-        try {
-          await setDataStorage('myUser', myUser)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-      cartStorage()
-    }
-  }, [myUser])
-  
+  // ----- ACTIONS
   // get two first letters of the user
   const firstTwoLetters = (fullName: string) => {
     const palabras = fullName.split(' ')
