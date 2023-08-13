@@ -121,7 +121,7 @@ const SelectCustomer = () => {
                     <Text className='text-2xl text-gray-700'>No hay resultados</Text>
                   </View>
                 ) : (
-                  <View className='mb-5'>
+                  <View className='last-of-type:mb-10'>
                     {searchedCustomers.map((customer: UserFromScliInterface) => {
                       return (
                         <CustomersSearch key={customer.cliente} customer={customer} />

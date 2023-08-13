@@ -124,7 +124,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // flow control
   useEffect(() => {
     // set storage when a customer is selected
-    if(flowControl.selected || (flowControl.showProducts && !flowControl.showSelectCustomer)) {
+    if(flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
       const flowControlStorage = async () => {
         try {
           await setDataStorage('flowControl', flowControl)

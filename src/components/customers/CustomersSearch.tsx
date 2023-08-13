@@ -11,7 +11,7 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
 
   return (
     <TouchableOpacity 
-      className='mb-3 p-2 mx-1'
+      className='mb-3 p-2 mx-1 last-of-type:mb-10'
       style={styles.shadow}
       onPress={() => {
         setLoaders({...loaders, loadingSlectedCustomer: true})
