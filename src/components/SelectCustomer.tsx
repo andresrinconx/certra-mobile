@@ -1,5 +1,5 @@
-import {useState, useEffect, useRef} from 'react'
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Keyboard } from 'react-native'
+import {useEffect, useRef} from 'react'
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Keyboard, FlatList } from 'react-native'
 import { styles, theme } from '../styles'
 import {XMarkIcon} from 'react-native-heroicons/mini'
 import { MagnifyingGlassIcon } from 'react-native-heroicons/mini'
@@ -100,37 +100,49 @@ const SelectCustomer = () => {
 
           {/* results */}
           {flowControl?.showSelectResults ? (
-            <ScrollView className='bg-white mt-2 max-h-[79%] rounded-md p-3' 
+            <View className={`bg-white mt-2 rounded-md px-3 pt-3 ${flowControl.showSelectLabel ? 'max-h-[75%]' : 'max-h-[87%]'}`}
               style={styles.shadow}
-              showsVerticalScrollIndicator={false}
-              onScroll={handleScroll}
-              keyboardShouldPersistTaps="handled"
             >
               {/* loadingSearchedItems */}
               {loaders.loadingSearchedItems ? (
-                <View className='mb-5'> 
-                  {items.map((item) => {
+                <FlatList
+                  data={items}
+                  numColumns={1}
+                  onScroll={handleScroll}
+                  contentContainerStyle={{
+                    paddingBottom: 5,
+                  }}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item}) => {
                     return (
                       <LoaderCustomersSearch key={item.id} />
                     )
-                  })}
-                </View>
+                  }} 
+                />
               ) : (
                 searchedCustomers?.length === 0 ? (
-                  <View className='flex flex-row items-center justify-center py-6'>
+                  <View className='flex flex-row items-center justify-center py-8 -mt-3'>
                     <Text className='text-2xl text-gray-700'>No hay resultados</Text>
                   </View>
                 ) : (
-                  <View className='my-2'>
-                    {searchedCustomers.map((customer: UserFromScliInterface) => {
+                  <FlatList
+                    data={searchedCustomers}
+                    numColumns={1}
+                    onScroll={handleScroll}
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{
+                      paddingBottom: 5,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({item}) => {
                       return (
-                        <CustomersSearch key={customer.cliente} customer={customer} />
+                        <CustomersSearch key={item.rifci} customer={item} />
                       )
-                    })}
-                  </View>
+                    }} 
+                  />
                 )
               )}
-            </ScrollView>
+            </View>
           ):null}
         </View>
       ):null}
