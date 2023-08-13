@@ -1,8 +1,8 @@
 import {useEffect, useRef} from 'react'
 import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList } from 'react-native'
 import { styles, theme } from '../styles'
-import {XMarkIcon} from 'react-native-heroicons/mini'
-import { MagnifyingGlassIcon } from 'react-native-heroicons/mini'
+import {XMarkIcon, MagnifyingGlassIcon} from 'react-native-heroicons/mini'
+import {UserIcon} from 'react-native-heroicons/outline'
 import useInv from '../hooks/useInv'
 import { fetchSearchedItems } from '../api/inv'
 import { items } from '../utils/constants'
@@ -72,7 +72,7 @@ const SelectCustomer = () => {
             <View className='w-full flex flex-row items-center justify-between rounded-md' style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
-                  <MagnifyingGlassIcon size={20} color='gray' />
+                  <UserIcon size={20} color='gray' />
                 </View>
 
                 <TextInput className='text-base text-gray-700 ml-1 w-72'
