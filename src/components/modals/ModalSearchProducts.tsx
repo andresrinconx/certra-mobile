@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { View, Modal, ScrollView, TouchableOpacity, TextInput, Keyboard } from 'react-native'
+import { View, Modal, ScrollView, TouchableOpacity, TextInput, Keyboard, FlatList } from 'react-native'
 import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
 import {XMarkIcon} from 'react-native-heroicons/mini'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 import ProductsSearch from '../products/ProductsSearch'
-import { styles } from '../../styles'
+import { styles, theme } from '../../styles'
 import { items } from '../../utils/constants'
-import LoaderProductsSearch from './../loaders/LoaderProductsSearch'
+import LoaderProductsSearch from '../loaders/LoaderProductsSearch'
 import useInv from '../../hooks/useInv'
-import { fetchSearchedItems } from '../../api/inv'
+import { fetchSearchedItems } from '../../utils/api'
 
 const ModalSearch = () => {
   const [value, setValue] = useState('')
@@ -56,7 +56,7 @@ const ModalSearch = () => {
       onRequestClose={() => setModalSearch(false)}
     >
       <View>
-        {/* searching */}
+        {/* arrow & input */}
         <View className='flex flex-row items-center p-3'>
           <TouchableOpacity className='mr-2' onPress={() => {
             setModalSearch(false)
@@ -73,48 +73,53 @@ const ModalSearch = () => {
               ref={textInputRef}
               value={value}
               onChangeText={handleSearch}
+              selectionColor={theme.turquesaClaro}
             />
-            {
-              value
-                && (
-                <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
-                  <XMarkIcon size={25} color='black' />
-                </TouchableOpacity>
-              )
-            }
+            {value && (
+              <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
+                <XMarkIcon size={25} color='black' />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
 
         {/* results */}
-        <ScrollView className='mx-3'
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 10,}}
-          overScrollMode='never'
-          onScroll={handleScroll}
-        >
-          {searchedProducts?.length > 0
-            && (
-              loaders.loadingSearchedItems
-                ? (
-                <View className='mb-20'>
-                  {items.map((item) => {
-                    return (
-                      <LoaderProductsSearch key={item.id} />
-                    )
-                  })}
-                </View>
-              ) : (
-                <View className='mb-20'>
-                  {searchedProducts.map((product: ProductoInterface) => {
-                    return (
-                      <ProductsSearch key={product.id} product={product} />
-                    )
-                  })}
-                </View>
-              )
+        <View className='mx-3'>
+          {loaders.loadingSearchedItems ? (
+            <FlatList
+              data={items}
+              numColumns={1}
+              onScroll={handleScroll}
+              contentContainerStyle={{
+                paddingBottom: 5,
+              }}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                return (
+                  <LoaderProductsSearch key={item.id} />
+                )
+              }} 
+            />
+          ) : (
+            searchedProducts?.length > 0 && (
+              <FlatList
+                data={searchedProducts}
+                numColumns={1}
+                onScroll={handleScroll}
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={{
+                  paddingBottom: 5,
+                }}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => {
+                  return (
+                    <ProductsSearch key={item.id} product={item} />
+                  )
+                }} 
+              />
             )
-          }
-        </ScrollView>
+          )}
+        </View>
       </View>
     </Modal> 
   )

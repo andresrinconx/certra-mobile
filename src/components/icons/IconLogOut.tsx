@@ -3,10 +3,10 @@ import { ArrowLeftOnRectangleIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import { setDataStorage } from '../../utils/helpers'
+import { setDataStorage } from '../../utils/asyncStorage'
 
 const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
-  const {setCart, setFlowControl} = useInv()
+  const {setCart, setFlowControl, setValueSearchCustomers} = useInv()
   const {setMyUser, setUser, setPassword, setLogin} = useLogin()
   const navigation = useNavigation()
   
@@ -30,6 +30,7 @@ const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
       selected: false,
     })
     setMyUser({})
+    setValueSearchCustomers('')
   }
 
   return (

@@ -4,21 +4,21 @@ import UserFromScliInterface from '../../interfaces/UserFromScliInterface'
 import useLogin from '../../hooks/useLogin'
 import useInv from '../../hooks/useInv'
 
-const CustomersSearch = ({customer, setValue}: {customer: UserFromScliInterface, setValue: (value: string) => void}) => {
+const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
   const {setMyUser, myUser} = useLogin()
-  const {flowControl, setFlowControl, setCart, loaders, setLoaders} = useInv()
+  const {flowControl, setFlowControl, setCart, loaders, setLoaders, setValueSearchCustomers} = useInv()
   const {cliente, nombre} = customer
 
   return (
-    <TouchableOpacity 
-      className='mb-3 p-2 mx-1'
+    <TouchableOpacity
+      className='p-2 mx-1 mb-2'
       style={styles.shadow}
       onPress={() => {
         setLoaders({...loaders, loadingSlectedCustomer: true})
         setTimeout(() => {
           setMyUser({...myUser, customer})
           setCart([])
-          setValue('')
+          setValueSearchCustomers('')
           setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true, selected: true})
           setLoaders({...loaders, loadingSlectedCustomer: false})
         }, 100)

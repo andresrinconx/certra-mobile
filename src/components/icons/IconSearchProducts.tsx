@@ -1,9 +1,9 @@
 import { View, TouchableOpacity } from 'react-native'
 import { MagnifyingGlassIcon } from 'react-native-heroicons/mini'
 import useInv from '../../hooks/useInv'
-import ModalSearch from '../modals/ModalSearch'
+import ModalSearchProducts from '../modals/ModalSearchProducts'
 
-const IconSearch = () => {
+const IconSearchProducts = () => {
   const {setModalSearch, setSearchedProducts} = useInv()
   
   return (
@@ -17,9 +17,9 @@ const IconSearch = () => {
         </View>
       </TouchableOpacity>
 
-      <ModalSearch />
+      <ModalSearchProducts />
     </>
   )
 }
 
-export default IconSearch
+export default IconSearchProducts

@@ -2,8 +2,8 @@ import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
-import { getDataStorage, setDataStorage } from "../utils/helpers"
-import { fetchTableData } from "../api/inv"
+import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
+import { fetchTableData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 
 const InvContext = createContext<{
@@ -21,13 +21,14 @@ const InvContext = createContext<{
   setModalSearch: (modalSearch: boolean) => void
   icon: (type: string) => any
   clearCart: () => void
-  pay: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
   flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}
   setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}) => void
   loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}
   setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}) => void
+  valueSearchCustomers: string
+  setValueSearchCustomers: (valueSearchCustomers: string) => void
 }>({
   cart: [],
   setCart: () => {},
@@ -43,13 +44,14 @@ const InvContext = createContext<{
   setModalSearch: () => {},
   icon: () => {},
   clearCart: () => {},
-  pay: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
   flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false,},
   setFlowControl: () => {},
   loaders: {loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, loadingStorageInv: false,},
   setLoaders: () => {},
+  valueSearchCustomers: '',
+  setValueSearchCustomers: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -59,6 +61,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
+  const [valueSearchCustomers, setValueSearchCustomers] = useState('')
   // layout
   const [type, setType] = useState('grid')
   const [flowControl, setFlowControl] = useState({
@@ -80,22 +83,17 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     loadingStorageInv: false,
   })
 
+  // ----- STORAGE
   // get storage (cart, flowControl)
   useEffect(() => {
     const getCartStorage = async () => {
       try {
-        setLoaders({...loaders, loadingStorageInv: true})
-
         // cart
         const cartStorage = await getDataStorage('cart')
         setCart(cartStorage ? JSON.parse(cartStorage) : [])
         // flowControl
         const flowControlStorage = await getDataStorage('flowControl')
         setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
-
-        setTimeout(() => {
-          setLoaders({...loaders, loadingStorageInv: false})
-        }, 1000)
       } catch (error) {
         console.log(error)
       }
@@ -103,8 +101,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     getCartStorage()
   }, [])
 
-  // SET STORAGE
-  // cart
+  // set cart
   useEffect(() => {
     const cartStorage = async () => {
       try {
@@ -116,10 +113,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     cartStorage()
   }, [cart])
 
-  // flow control
+  // set flow control
   useEffect(() => {
     // set storage when a customer is selected
-    if(flowControl.selected || (flowControl.showProducts && !flowControl.showSelectCustomer)) {
+    if(flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
       const flowControlStorage = async () => {
         try {
           await setDataStorage('flowControl', flowControl)
@@ -131,6 +128,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     }
   }, [flowControl])
 
+  // ----- API
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -146,6 +144,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     obtenerProductos()
   }, [])
 
+  // ----- ACTIONS
   // clear cart
   const clearCart = () => {
     Alert.alert(
@@ -160,12 +159,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     )
   }
 
-  // pay
-  const pay = () => {
-    console.log('pagando...')    
-  }
-
-  // LAYOUT
+  // ----- LAYOUT
   // icon
   const icon = (type: string) => {
     if(type === 'grid') { // --- grid
@@ -191,7 +185,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setModalProduct,
       icon,
       clearCart,
-      pay,
       setModalSearch,
       modalSearch,
       searchedProducts,
@@ -201,7 +194,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       flowControl,
       setFlowControl,
       loaders,
-      setLoaders
+      setLoaders,
+      valueSearchCustomers,
+      setValueSearchCustomers
     }}>
       {children}
     </InvContext.Provider>

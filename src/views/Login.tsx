@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {EyeIcon, EyeSlashIcon, ExclamationTriangleIcon} from 'react-native-heroicons/mini'
 import { theme } from '../styles'
@@ -8,7 +8,8 @@ import { useNavigation } from '@react-navigation/native'
 import Loader from '../components/loaders/Loader'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
-import { setDataStorage } from '../utils/helpers'
+import { setDataStorage } from '../utils/asyncStorage'
+import { firstTwoLetters } from '../utils/helpers'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -18,7 +19,7 @@ const Login = () => {
     password: false,
   })
 
-  const {user, setUser, password, setPassword, login, loaders, setLoaders, firstTwoLetters, usersFromUsuario, usersFromScli, setMyUser, setLogin} = useLogin()
+  const {user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin} = useLogin()
   const navigation = useNavigation()
 
   const auth = async () => {
@@ -54,35 +55,39 @@ const Login = () => {
         setIncorrectCredentials(false)
         const letters = firstTwoLetters(userFromScli.nombre)
         setMyUser({
-          ...userFromScli, 
+          ...userFromScli,
+          from: 'scli',
           letters, 
-          from: 'scli'
         })
         await setDataStorage('login', true)
         await setDataStorage('myUser', {
-          ...userFromScli, 
+          ...userFromScli,
+          from: 'scli',
           letters, 
-          from: 'scli'
         })
-        setLoaders({...loaders, loadingAuth: false})
-        setLogin(true)
+        setTimeout(() => {
+          setLoaders({...loaders, loadingAuth: false})
+          setLogin(true)
+        }, 500)
       }
     } else { // success from Usuario
       setIncorrectCredentials(false)
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
       setMyUser({
-        ...userFromUsuario, 
+        ...userFromUsuario,
+        from: 'usuario',
         letters, 
-        from: 'usuario'
       })
       await setDataStorage('login', true)
       await setDataStorage('myUser', {
-        ...userFromUsuario, 
+        ...userFromUsuario,
+        from: 'usuario',
         letters,
-        from: 'usuario'
       })
-      setLoaders({...loaders, loadingAuth: false})
-      setLogin(true)
+      setTimeout(() => {
+        setLoaders({...loaders, loadingAuth: false})
+        setLogin(true)
+      }, 500)
     }
   }
 
@@ -120,6 +125,7 @@ const Login = () => {
                 placeholderTextColor='#999'
                 value={user}
                 onChangeText={setUser}
+                selectionColor={theme.turquesaClaro}
               />
             </View>
 
@@ -143,6 +149,7 @@ const Login = () => {
                 placeholderTextColor='#999'
                 value={password}
                 onChangeText={setPassword}
+                selectionColor={theme.turquesaClaro}
               />
               {!showPassword && (
                 <TouchableOpacity onPress={() => setShowPassword(true)} className='absolute right-4'>

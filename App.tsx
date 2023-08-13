@@ -1,4 +1,4 @@
-import Navigation from './src/navigation/Navigation'
+import Navigation from './src/components/Navigation'
 import { InvProvider } from './src/context/InvProvider'
 import { LoginProvider } from './src/context/LoginProvider'
 
