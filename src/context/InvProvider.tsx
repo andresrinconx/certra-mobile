@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
 import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
-import { getDataStorage, setDataStorage } from "../utils/helpers"
+import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 

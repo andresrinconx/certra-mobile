@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {EyeIcon, EyeSlashIcon, ExclamationTriangleIcon} from 'react-native-heroicons/mini'
 import { theme } from '../styles'
@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import Loader from '../components/loaders/Loader'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
-import { setDataStorage } from '../utils/helpers'
+import { setDataStorage } from '../utils/asyncStorage'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
