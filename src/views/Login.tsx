@@ -9,6 +9,7 @@ import Loader from '../components/loaders/Loader'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import { setDataStorage } from '../utils/asyncStorage'
+import { firstTwoLetters } from '../utils/helpers'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -18,7 +19,7 @@ const Login = () => {
     password: false,
   })
 
-  const {user, setUser, password, setPassword, login, loaders, setLoaders, firstTwoLetters, usersFromUsuario, usersFromScli, setMyUser, setLogin} = useLogin()
+  const {user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin} = useLogin()
   const navigation = useNavigation()
 
   const auth = async () => {
@@ -54,39 +55,39 @@ const Login = () => {
         setIncorrectCredentials(false)
         const letters = firstTwoLetters(userFromScli.nombre)
         setMyUser({
-          ...userFromScli, 
+          ...userFromScli,
+          from: 'scli',
           letters, 
-          from: 'scli'
         })
         await setDataStorage('login', true)
         await setDataStorage('myUser', {
-          ...userFromScli, 
+          ...userFromScli,
+          from: 'scli',
           letters, 
-          from: 'scli'
         })
         setTimeout(() => {
           setLoaders({...loaders, loadingAuth: false})
           setLogin(true)
-        }, 500);
+        }, 500)
       }
     } else { // success from Usuario
       setIncorrectCredentials(false)
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
       setMyUser({
-        ...userFromUsuario, 
+        ...userFromUsuario,
+        from: 'usuario',
         letters, 
-        from: 'usuario'
       })
       await setDataStorage('login', true)
       await setDataStorage('myUser', {
-        ...userFromUsuario, 
+        ...userFromUsuario,
+        from: 'usuario',
         letters,
-        from: 'usuario'
       })
       setTimeout(() => {
         setLoaders({...loaders, loadingAuth: false})
         setLogin(true)
-      }, 500);
+      }, 500)
     }
   }
 
