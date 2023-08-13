@@ -1,7 +1,7 @@
-import {URL_API, URL_API_2} from '@env'
+import {API_LOCAL, API_REMOTE} from '@env'
 
-const tableDataEndpoint = (table: string) => `${URL_API_2}${table}`
-const searchedItemsEndpoint = (params: {searchTerm: string, table: string}) => `${URL_API_2}${params.table}/search/${params.searchTerm}`
+const tableDataEndpoint = (table: string) => `${API_REMOTE}${table}`
+const searchedItemsEndpoint = (params: {searchTerm: string, table: string}) => `${API_REMOTE}${params.table}/search/${params.searchTerm}`
 
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table)

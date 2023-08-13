@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react"
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { getDataStorage, setDataStorage } from "../utils/helpers"
-import { fetchTableData } from "../api/inv"
+import { fetchTableData } from "../utils/api"
 
 const LoginContext = createContext<{
   login: boolean
