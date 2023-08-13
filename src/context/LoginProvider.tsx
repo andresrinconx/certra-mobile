@@ -1,9 +1,8 @@
 import { createContext, useState, useEffect } from "react"
-import {Alert} from 'react-native'
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
-import { getDataStorage, setDataStorage } from "../utils/helpers"
-import { fetchTableData } from "../api/inv"
+import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
+import { fetchTableData } from "../utils/api"
 
 const LoginContext = createContext<{
   login: boolean
@@ -12,11 +11,12 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  auth: () => void
   myUser: any
   setMyUser: (myUser: any) => void
-  loadingLogin: boolean
-  setLoadingLogin: (loadingLogin: boolean) => void
+  loaders: {loadingLogin: boolean, loadingAuth: boolean,}
+  setLoaders: (loaders: {loadingLogin: boolean, loadingAuth: boolean,}) => void
+  usersFromUsuario: UserFromUsuarioInterface[]
+  usersFromScli: UserFromScliInterface[]
 }>({
   login: false,
   setLogin: () => {},
@@ -24,17 +24,21 @@ const LoginContext = createContext<{
   setUser: () => {},
   password: '',
   setPassword: () => {},
-  auth: () => {},
   myUser: {},
   setMyUser: () => {},
-  loadingLogin: false,
-  setLoadingLogin: () => {},
+  loaders: {loadingLogin: false, loadingAuth: false,},
+  setLoaders: () => {},
+  usersFromUsuario: [],
+  usersFromScli: [],
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // user
-  const [login, setLogin] = useState(false)
-  const [myUser, setMyUser] = useState<any>({})
+  const [login, setLogin] = useState(false) // go to login or go to home
+  const [myUser, setMyUser] = useState<any>({
+    from: '',
+    letters: '',
+  })
   // api
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
@@ -42,13 +46,17 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
   // loaders
-  const [loadingLogin, setLoadingLogin] = useState(false)
+  const [loaders, setLoaders] = useState({
+    loadingLogin: false,
+    loadingAuth: false,
+  })
 
+  // ---- STORAGE
   // get storage (logged user, myUser)
   useEffect(() => {
     const getUser = async () => {
       try {
-        setLoadingLogin(true)
+        setLoaders({...loaders, loadingLogin: true})
 
         // login
         const loginStorage = await getDataStorage('login')
@@ -57,7 +65,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
 
-        setLoadingLogin(false)
+        setLoaders({...loaders, loadingLogin: false})
       } catch (error) {
         console.log(error)
       }
@@ -65,6 +73,21 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUser()
   }, [])
   
+  // add myUser storage
+  useEffect(() => {
+    if(myUser.letters) {
+      const cartStorage = async () => {
+        try {
+          await setDataStorage('myUser', myUser)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      cartStorage()
+    }
+  }, [myUser])
+
+  // ----- API
   // get usersFromUsuario & usersFromScli
   useEffect(() => {
     const getUsers = async () => {
@@ -81,91 +104,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     getUsers()
   }, [])
 
-  // add myUser storage
-  useEffect(() => {
-    if(myUser.letters) {
-      const cartStorage = async () => {
-        try {
-          await setDataStorage('myUser', myUser)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-      cartStorage()
-    }
-  }, [myUser])
-  
-  // get two first letters of the user
-  const firstTwoLetters = (fullName: string) => {
-    const palabras = fullName.split(' ')
-    let letters = ''
-    for (let i = 0; i < 2; i++) {
-      letters += palabras[i][0]
-    }
-    return letters
-  }
+  // ----- ACTIONS
 
-  // auth
-  const auth = async () => {
-    // required fields
-    if([user, password].includes('')) {
-      Alert.alert(
-        'Error',
-        'Todos los campos son obligatorios',
-        [
-          { text: 'OK' },
-        ]
-      )
-      return
-    }
-
-    // find in the table 'Usuario'
-    const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
-    if (userFromUsuario === undefined) {
-      // find in the table 'Scli'
-      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
-      if (userFromScli === undefined) {
-        Alert.alert(
-          'Error',
-          'Usuario y contraseña incorrectos',
-          [
-            { text: 'OK' },
-          ]
-        )
-        return
-      } else {
-        // success from Scli
-        setLogin(true)
-        const letters = firstTwoLetters(userFromScli.nombre)
-        setMyUser({
-          ...userFromScli, 
-          letters, 
-          from: 'scli'
-        })
-        await setDataStorage('login', true)
-        await setDataStorage('myUser', {
-          ...userFromScli, 
-          letters, 
-          from: 'scli'
-        })
-      }
-    } else {
-      // success from Usuario
-      setLogin(true)
-      const letters = firstTwoLetters(userFromUsuario.us_nombre)
-      setMyUser({
-        ...userFromUsuario, 
-        letters, 
-        from: 'usuario'
-      })
-      await setDataStorage('login', true)
-      await setDataStorage('myUser', {
-        ...userFromUsuario, 
-        letters,
-        from: 'usuario'
-      })
-    }
-  }
 
   return (
     <LoginContext.Provider value={{
@@ -175,11 +115,12 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       setUser,
       password,
       setPassword,
-      auth,
       myUser,
       setMyUser,
-      loadingLogin,
-      setLoadingLogin
+      loaders,
+      setLoaders,
+      usersFromScli,
+      usersFromUsuario
     }}>
       {children}
     </LoginContext.Provider>

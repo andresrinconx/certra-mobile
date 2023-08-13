@@ -4,12 +4,12 @@ import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import IconCart from '../components/icons/IconCart'
-import IconSearch from '../components/icons/IconSearch'
+import IconSearchProducts from '../components/icons/IconSearchProducts'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 import ProductsViews from '../components/products/ProductsViews'
 import IconUser from '../components/icons/IconUser'
-import SelectCustomer from '../components/SelectCustomer'
+import SelectCustomer from '../components/customers/SelectCustomer'
 import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
 import IconLogOut from '../components/icons/IconLogOut'
 import Loader from '../components/loaders/Loader'
@@ -21,12 +21,10 @@ const Home = () => {
 
   // flowControl
   useEffect(() => {
-    if(!flowControl.selected) { // is not selected
+    if(!flowControl?.selected) { // is not selected
       if(myUser.from === 'usuario') {
-        console.log('ejecutando usuario')
         setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
       } else { // myUser.from === 'scli'
-        console.log('ejecutando scli')
         setFlowControl({...flowControl, showProducts: true, showSelectCustomer: false})
       }
     }
@@ -58,8 +56,8 @@ const Home = () => {
         <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
         {/* icons */}
         <View className='mr-4 flex flex-row gap-3 ml-5'>
-          {flowControl.showProducts && (<View><IconSearch/></View>)}
-          {flowControl.showProducts && (<View><IconCart/></View>)}
+          {flowControl?.showProducts && (<View><IconSearchProducts/></View>)}
+          {flowControl?.showProducts && (<View><IconCart/></View>)}
 
           <Menu ref={userMenuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
@@ -89,17 +87,17 @@ const Home = () => {
       ) : (
         <>
           <SelectCustomer />
-          {flowControl.showProducts && (
+          {flowControl?.showProducts && !flowControl?.showSelectResults ? (
             <>
               <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
-                <Text className={`text-black text-xl font-bold`}>Productos</Text>
+                <Text className={`text-gray-700 text-xl font-bold`}>Productos</Text>
     
                 <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
                   {icon(type)}
                 </TouchableOpacity>
               </View>
     
-              {loaders.loadingProducts || loaders.loadingStorageInv ? (
+              {loaders.loadingProducts ? (
                 <View className={`${globalStyles.container}`}>
                   <View className='flex-1 justify-center items-center'>
                     <FlatList
@@ -140,7 +138,7 @@ const Home = () => {
                 </View>
               )}
             </>
-          )}
+          ):null}
         </>
       )}
     </MenuProvider>

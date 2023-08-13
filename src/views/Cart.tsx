@@ -6,7 +6,7 @@ import useInv from '../hooks/useInv'
 import ProductsCart from '../components/products/ProductsCart'
 
 const Cart = () => {
-  const {cart, clearCart, pay} = useInv()
+  const {cart, clearCart} = useInv()
   const navigation = useNavigation()
 
   return (
@@ -61,7 +61,7 @@ const Cart = () => {
 
         {/* btn pay */}
         <View className='absolute bottom-3 w-full z-50'>
-          <TouchableOpacity onPress={() => pay()} className='rounded-xl p-2'
+          <TouchableOpacity onPress={() => ''} className='rounded-xl p-2'
             style={{backgroundColor: theme.verde,}}
           >
             <Text className='color-white text-center font-bold text-xl'>Ir a Pagar</Text>
