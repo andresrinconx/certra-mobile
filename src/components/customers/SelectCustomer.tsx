@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react'
 import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList } from 'react-native'
 import { styles, theme } from '../../styles'
-import {XMarkIcon, MagnifyingGlassIcon} from 'react-native-heroicons/mini'
+import {XMarkIcon} from 'react-native-heroicons/mini'
 import {UserIcon} from 'react-native-heroicons/outline'
 import useInv from '../../hooks/useInv'
 import { fetchSearchedItems } from '../../utils/api'
