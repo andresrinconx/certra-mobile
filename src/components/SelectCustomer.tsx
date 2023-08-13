@@ -59,17 +59,17 @@ const SelectCustomer = () => {
 
   return (
     <>
-      {flowControl.showSelectCustomer ? (
+      {flowControl?.showSelectCustomer ? (
 
         <View className='mx-5 mt-5'>
           {/* search */}
-          {flowControl.showSelectLabel && (
+          {flowControl?.showSelectLabel && (
             <View className='mb-3'>
               <Text className='text-gray-700 text-xl font-bold'>Cliente</Text>
               <Text className='text-gray-500 text-base'>{myUser?.customer?.nombre}</Text>
             </View>
           )}
-          {flowControl.showSelectSearch ? (
+          {flowControl?.showSelectSearch ? (
             <View className='w-full flex flex-row items-center justify-between rounded-md' style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
@@ -99,8 +99,8 @@ const SelectCustomer = () => {
           ):null}
 
           {/* results */}
-          {flowControl.showSelectResults ? (
-            <ScrollView className='bg-white mt-2 max-h-[80%] rounded-md p-3' 
+          {flowControl?.showSelectResults ? (
+            <ScrollView className='bg-white mt-2 max-h-[79%] rounded-md p-3' 
               style={styles.shadow}
               showsVerticalScrollIndicator={false}
               onScroll={handleScroll}
@@ -121,7 +121,7 @@ const SelectCustomer = () => {
                     <Text className='text-2xl text-gray-700'>No hay resultados</Text>
                   </View>
                 ) : (
-                  <View className='last-of-type:mb-10'>
+                  <View className='my-2'>
                     {searchedCustomers.map((customer: UserFromScliInterface) => {
                       return (
                         <CustomersSearch key={customer.cliente} customer={customer} />

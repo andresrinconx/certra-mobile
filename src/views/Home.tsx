@@ -21,7 +21,7 @@ const Home = () => {
 
   // flowControl
   useEffect(() => {
-    if(!flowControl.selected) { // is not selected
+    if(!flowControl?.selected) { // is not selected
       if(myUser.from === 'usuario') {
         setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
       } else { // myUser.from === 'scli'
@@ -56,8 +56,8 @@ const Home = () => {
         <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
         {/* icons */}
         <View className='mr-4 flex flex-row gap-3 ml-5'>
-          {flowControl.showProducts && (<View><IconSearch/></View>)}
-          {flowControl.showProducts && (<View><IconCart/></View>)}
+          {flowControl?.showProducts && (<View><IconSearch/></View>)}
+          {flowControl?.showProducts && (<View><IconCart/></View>)}
 
           <Menu ref={userMenuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
@@ -87,7 +87,7 @@ const Home = () => {
       ) : (
         <>
           <SelectCustomer />
-          {flowControl.showProducts && !flowControl.showSelectResults ? (
+          {flowControl?.showProducts && !flowControl?.showSelectResults ? (
             <>
               <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
                 <Text className={`text-black text-xl font-bold`}>Productos</Text>

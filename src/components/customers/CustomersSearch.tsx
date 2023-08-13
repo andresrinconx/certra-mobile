@@ -10,8 +10,8 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
   const {cliente, nombre} = customer
 
   return (
-    <TouchableOpacity 
-      className='mb-3 p-2 mx-1 last-of-type:mb-10'
+    <TouchableOpacity
+      className='p-2 mx-1 mb-2'
       style={styles.shadow}
       onPress={() => {
         setLoaders({...loaders, loadingSlectedCustomer: true})
