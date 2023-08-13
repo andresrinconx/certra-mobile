@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { View, Modal, ScrollView, TouchableOpacity, TextInput, Keyboard } from 'react-native'
+import { View, Modal, ScrollView, TouchableOpacity, TextInput, Keyboard, FlatList } from 'react-native'
 import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
 import {XMarkIcon} from 'react-native-heroicons/mini'
 import ProductoInterface from '../../interfaces/ProductoInterface'
@@ -56,7 +56,7 @@ const ModalSearch = () => {
       onRequestClose={() => setModalSearch(false)}
     >
       <View>
-        {/* searching */}
+        {/* arrow & input */}
         <View className='flex flex-row items-center p-3'>
           <TouchableOpacity className='mr-2' onPress={() => {
             setModalSearch(false)
@@ -84,34 +84,42 @@ const ModalSearch = () => {
         </View>
 
         {/* results */}
-        <ScrollView className='mx-3'
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 10,}}
-          overScrollMode='never'
-          onScroll={handleScroll}
-          keyboardShouldPersistTaps="handled"
-        >
-          {searchedProducts?.length > 0 && (
-            loaders.loadingSearchedItems
-              ? (
-              <View className='mb-20'>
-                {items.map((item) => {
+        <View className='mx-3'>
+          {loaders.loadingSearchedItems ? (
+            <FlatList
+              data={items}
+              numColumns={1}
+              onScroll={handleScroll}
+              contentContainerStyle={{
+                paddingBottom: 5,
+              }}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                return (
+                  <LoaderProductsSearch key={item.id} />
+                )
+              }} 
+            />
+          ) : (
+            searchedProducts?.length > 0 && (
+              <FlatList
+                data={searchedProducts}
+                numColumns={1}
+                onScroll={handleScroll}
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={{
+                  paddingBottom: 5,
+                }}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => {
                   return (
-                    <LoaderProductsSearch key={item.id} />
+                    <ProductsSearch key={item.id} product={item} />
                   )
-                })}
-              </View>
-            ) : (
-              <View className='mb-20'>
-                {searchedProducts.map((product: ProductoInterface) => {
-                  return (
-                    <ProductsSearch key={product.id} product={product} />
-                  )
-                })}
-              </View>
+                }} 
+              />
             )
           )}
-        </ScrollView>
+        </View>
       </View>
     </Modal> 
   )

@@ -61,13 +61,16 @@ const SelectCustomer = () => {
       {flowControl?.showSelectCustomer ? (
 
         <View className='mx-5 mt-5'>
-          {/* search */}
+
+          {/* label */}
           {flowControl?.showSelectLabel && (
             <View className='mb-3'>
               <Text className='text-gray-700 text-xl font-bold'>Cliente</Text>
               <Text className='text-gray-500 text-base'>{myUser?.customer?.nombre}</Text>
             </View>
           )}
+
+          {/* input */}
           {flowControl?.showSelectSearch ? (
             <View className='w-full flex flex-row items-center justify-between rounded-md' style={styles.shadow}>
               <View className='flex flex-row items-center'>
