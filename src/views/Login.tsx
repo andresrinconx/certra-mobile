@@ -172,9 +172,9 @@ const Login = () => {
           </View>
 
           {/* Incorrect Credentials */}
-          <View>
+          <View className='mx-7 top-5'>
             {incorrectCredentials && (
-              <View className='mx-10 flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
+              <View className='flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
                 <View className='bg-[#f3c1c0] p-2 rounded-full'>
                   <ExclamationTriangleIcon size={20} color='#a54e54' />
                 </View>
