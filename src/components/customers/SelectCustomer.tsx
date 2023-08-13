@@ -1,19 +1,17 @@
-import {useState, useEffect, useRef} from 'react'
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Keyboard } from 'react-native'
-import { styles } from '../styles'
-import {XMarkIcon} from 'react-native-heroicons/mini'
-import { MagnifyingGlassIcon } from 'react-native-heroicons/mini'
-import useInv from '../hooks/useInv'
-import { fetchSearchedItems } from '../api/inv'
-import { items } from '../utils/constants'
-import LoaderCustomersSearch from './loaders/LoaderCustomersSearch'
-import UserFromScliInterface from '../interfaces/UserFromScliInterface'
-import CustomersSearch from './customers/CustomersSearch'
-import useLogin from '../hooks/useLogin'
+import {useEffect, useRef} from 'react'
+import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList } from 'react-native'
+import { styles, theme } from '../../styles'
+import {XMarkIcon, MagnifyingGlassIcon} from 'react-native-heroicons/mini'
+import {UserIcon} from 'react-native-heroicons/outline'
+import useInv from '../../hooks/useInv'
+import { fetchSearchedItems } from '../../utils/api'
+import { items } from '../../utils/constants'
+import LoaderCustomersSearch from '../loaders/LoaderCustomersSearch'
+import CustomersSearch from './CustomersSearch'
+import useLogin from '../../hooks/useLogin'
 
 const SelectCustomer = () => {
-  const [value, setValue] = useState('')
-  const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl} = useInv()
+  const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers} = useInv()
   const {myUser} = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -36,19 +34,20 @@ const SelectCustomer = () => {
 
   // SEARCH
   useEffect(() => {
-    if(value === '') {
+    if(valueSearchCustomers === '') {
       setSearchedCustomers([])
     }
-  }, [value])
-  const handleSearch = async (value: string) => {
-    setValue(value)
-    if(value.length > 2) {
+  }, [valueSearchCustomers])
+  
+  const handleSearch = async (valueSearchCustomers: string) => {
+    setValueSearchCustomers(valueSearchCustomers)
+    if(valueSearchCustomers.length > 2) {
       if(!flowControl.showSelectResults) {
         setFlowControl({...flowControl, showSelectResults: true})
       }
       setLoaders({...loaders, loadingSearchedItems: true})
       // fetching...
-      const data = await fetchSearchedItems({searchTerm: value, table: 'scli'})
+      const data = await fetchSearchedItems({searchTerm: valueSearchCustomers, table: 'scli'})
       setSearchedCustomers(data.message === undefined ? data : [])
       setLoaders({...loaders, loadingSearchedItems: false})
     } else {
@@ -59,36 +58,40 @@ const SelectCustomer = () => {
 
   return (
     <>
-      {flowControl.showSelectCustomer ? (
+      {flowControl?.showSelectCustomer ? (
 
         <View className='mx-5 mt-5'>
-          {/* search */}
-          {flowControl.showSelectLabel && (
+
+          {/* label */}
+          {flowControl?.showSelectLabel && (
             <View className='mb-3'>
               <Text className='text-gray-700 text-xl font-bold'>Cliente</Text>
               <Text className='text-gray-500 text-base'>{myUser?.customer?.nombre}</Text>
             </View>
           )}
-          {flowControl.showSelectSearch ? (
+
+          {/* input */}
+          {flowControl?.showSelectSearch ? (
             <View className='w-full flex flex-row items-center justify-between rounded-md' style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
-                  <MagnifyingGlassIcon size={20} color='gray' />
+                  <UserIcon size={20} color='gray' strokeWidth={2} />
                 </View>
 
                 <TextInput className='text-base text-gray-700 ml-1 w-72'
                   ref={textInputRef}
                   placeholder='Buscar un cliente'
                   placeholderTextColor='gray'
-                  value={value}
+                  value={valueSearchCustomers}
                   onChangeText={handleSearch}
+                  selectionColor={theme.turquesaClaro}
                 />
               </View>
 
-              {value != '' && (
+              {valueSearchCustomers != '' && (
                 <TouchableOpacity className='relative right-3'
                   onPress={() => {
-                    setValue('')
+                    setValueSearchCustomers('')
                     setFlowControl({...flowControl, showSelectResults: false})
                   }}>
                   <XMarkIcon size={25} color='black' />
@@ -98,37 +101,50 @@ const SelectCustomer = () => {
           ):null}
 
           {/* results */}
-          {flowControl.showSelectResults ? (
-            <ScrollView className='bg-white mt-2 max-h-[80%] rounded-md p-3' 
+          {flowControl?.showSelectResults ? (
+            <View className={`bg-white mt-2 rounded-md px-3 pt-3 ${flowControl.showSelectLabel ? 'max-h-[78%]' : 'max-h-[87%]'}`}
               style={styles.shadow}
-              showsVerticalScrollIndicator={false}
-              onScroll={handleScroll}
             >
               {/* loadingSearchedItems */}
               {loaders.loadingSearchedItems ? (
-                <View className='mb-5'> 
-                  {items.map((item) => {
+                <FlatList
+                  data={items}
+                  numColumns={1}
+                  onScroll={handleScroll}
+                  contentContainerStyle={{
+                    paddingBottom: 5,
+                  }}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item}) => {
                     return (
                       <LoaderCustomersSearch key={item.id} />
                     )
-                  })}
-                </View>
+                  }} 
+                />
               ) : (
                 searchedCustomers?.length === 0 ? (
-                  <View className='flex flex-row items-center justify-center py-6'>
+                  <View className='flex flex-row items-center justify-center py-8 -mt-3'>
                     <Text className='text-2xl text-gray-700'>No hay resultados</Text>
                   </View>
                 ) : (
-                  <View className='mb-5'>
-                    {searchedCustomers.map((customer: UserFromScliInterface) => {
+                  <FlatList
+                    data={searchedCustomers}
+                    numColumns={1}
+                    onScroll={handleScroll}
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{
+                      paddingBottom: 5,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({item}) => {
                       return (
-                        <CustomersSearch key={customer.cliente} customer={customer} setValue={setValue} />
+                        <CustomersSearch key={item.rifci} customer={item} />
                       )
-                    })}
-                  </View>
+                    }} 
+                  />
                 )
               )}
-            </ScrollView>
+            </View>
           ):null}
         </View>
       ):null}

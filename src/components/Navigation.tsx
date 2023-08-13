@@ -5,16 +5,16 @@ import Home from '../views/Home'
 import Cart from '../views/Cart'
 import Login from '../views/Login'
 import useLogin from '../hooks/useLogin'
-import LoaderLogoScreen from '../components/loaders/LoaderLogoScreen'
+import LoaderLogoScreen from './loaders/LoaderLogoScreen'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const {login, loadingLogin} = useLogin()
+  const {login, loaders} = useLogin()
 
   return (
     <>
-      {loadingLogin ? (
+      {loaders.loadingLogin ? (
         <LoaderLogoScreen />
       ) : (
         <NavigationContainer>
