@@ -72,7 +72,7 @@ const SelectCustomer = () => {
             <View className='w-full flex flex-row items-center justify-between rounded-md' style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
-                  <UserIcon size={20} color='gray' />
+                  <UserIcon size={20} color='gray' strokeWidth={2} />
                 </View>
 
                 <TextInput className='text-base text-gray-700 ml-1 w-72'
