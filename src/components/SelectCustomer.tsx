@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Keyboard } from 'react-native'
-import { styles } from '../styles'
+import { styles, theme } from '../styles'
 import {XMarkIcon} from 'react-native-heroicons/mini'
 import { MagnifyingGlassIcon } from 'react-native-heroicons/mini'
 import useInv from '../hooks/useInv'
@@ -82,6 +82,7 @@ const SelectCustomer = () => {
                   placeholderTextColor='gray'
                   value={value}
                   onChangeText={handleSearch}
+                  selectionColor={theme.turquesaClaro}
                 />
               </View>
 
@@ -103,6 +104,7 @@ const SelectCustomer = () => {
               style={styles.shadow}
               showsVerticalScrollIndicator={false}
               onScroll={handleScroll}
+              keyboardShouldPersistTaps="handled"
             >
               {/* loadingSearchedItems */}
               {loaders.loadingSearchedItems ? (
