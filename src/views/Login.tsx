@@ -107,7 +107,7 @@ const Login = () => {
         </View>
 
         {/* form */}
-        <View className='flex-1 space-y-3'>
+        <View className='h-1/2 space-y-3'>
           {/* username */}
           <View className='space-y-1'>
             <View className='ml-2'>
@@ -116,7 +116,7 @@ const Login = () => {
 
             <View className={`bg-white w-full rounded-2xl flex-row items-center ${requiredFields.user && 'border border-[#EF4444]'}`}>
               <TextInput className='text-xl text-black p-4 ml-1 w-full'
-                placeholder='Escribe tu nombre de usuario'
+                placeholder='Nombre de usuario'
                 placeholderTextColor='#999'
                 value={user}
                 onChangeText={setUser}
@@ -139,7 +139,7 @@ const Login = () => {
             <View className={`bg-white w-full rounded-2xl flex-row items-center ${requiredFields.password && 'border border-[#EF4444]'}`}>
               <TextInput className='text-xl text-black p-4 ml-1 w-full'
                 secureTextEntry={!showPassword}
-                placeholder='Ingresa tu contraseña'
+                placeholder='Contraseña'
                 placeholderTextColor='#999'
                 value={password}
                 onChangeText={setPassword}
@@ -165,31 +165,33 @@ const Login = () => {
           </View>
 
           {/* Incorrect Credentials */}
-          {incorrectCredentials && (
-            <View className='relative top-5 flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
-              <View className='bg-[#f3c1c0] p-2 rounded-full'>
-                <ExclamationTriangleIcon size={20} color='#a54e54' />
-              </View>
-              <Text className='text-base text-[#a54e54] ml-3'>Usuario no encontrado o contraseña incorrecta</Text>
-            </View>
-          )}
-
-          {/* btn */}
-          <View className='top-32'>
-            <TouchableOpacity onPress={() => auth()} className='w-full p-3 rounded-full'
-              style={{backgroundColor: theme.verde,}}
-            >
-              {!loaders.loadingAuth && (
-                <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
-              )}
-
-              {loaders.loadingAuth && (
-                <View className=''>
-                  <Loader color='white' />
+          <View>
+            {incorrectCredentials && (
+              <View className='mx-10 flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
+                <View className='bg-[#f3c1c0] p-2 rounded-full'>
+                  <ExclamationTriangleIcon size={20} color='#a54e54' />
                 </View>
-              )}
-            </TouchableOpacity>
+                <Text className='text-base text-[#a54e54] ml-3'>Usuario no encontrado o contraseña incorrecta</Text>
+              </View>
+            )}
           </View>
+        </View>
+
+        {/* btn */}
+        <View className='h-1/2 w-full'>
+          <TouchableOpacity onPress={() => auth()} className='w-full p-3 rounded-full'
+            style={{backgroundColor: theme.verde,}}
+          >
+            {!loaders.loadingAuth && (
+              <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
+            )}
+
+            {loaders.loadingAuth && (
+              <View className=''>
+                <Loader color='white' />
+              </View>
+            )}
+          </TouchableOpacity>
         </View>
 
       </View>
