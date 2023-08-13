@@ -38,8 +38,8 @@ const SelectCustomer = () => {
     if(valueSearchCustomers === '') {
       setSearchedCustomers([])
     }
-    
   }, [valueSearchCustomers])
+  
   const handleSearch = async (valueSearchCustomers: string) => {
     setValueSearchCustomers(valueSearchCustomers)
     if(valueSearchCustomers.length > 2) {
