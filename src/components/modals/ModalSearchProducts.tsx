@@ -6,7 +6,7 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 import ProductsSearch from '../products/ProductsSearch'
 import { styles, theme } from '../../styles'
 import { items } from '../../utils/constants'
-import LoaderProductsSearch from './../loaders/LoaderProductsSearch'
+import LoaderProductsSearch from '../loaders/LoaderProductsSearch'
 import useInv from '../../hooks/useInv'
 import { fetchSearchedItems } from '../../api/inv'
 

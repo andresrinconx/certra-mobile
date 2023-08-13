@@ -4,7 +4,7 @@ import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import IconCart from '../components/icons/IconCart'
-import IconSearch from '../components/icons/IconSearch'
+import IconSearchProducts from '../components/icons/IconSearchProducts'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 import ProductsViews from '../components/products/ProductsViews'
@@ -56,7 +56,7 @@ const Home = () => {
         <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
         {/* icons */}
         <View className='mr-4 flex flex-row gap-3 ml-5'>
-          {flowControl?.showProducts && (<View><IconSearch/></View>)}
+          {flowControl?.showProducts && (<View><IconSearchProducts/></View>)}
           {flowControl?.showProducts && (<View><IconCart/></View>)}
 
           <Menu ref={userMenuRef}>
