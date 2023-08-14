@@ -1,13 +1,22 @@
-import { View, ScrollView, Text, TouchableOpacity} from 'react-native'
+import {useState, useEffect} from 'react'
+import { View, ScrollView, Text, TouchableOpacity, FlatList} from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import ProductsCart from '../components/products/ProductsCart'
+import ProductoInterface from '../interfaces/ProductoInterface'
 
 const Cart = () => {
-  const {cart, clearCart} = useInv()
+  const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
+
+  const {cart, clearCart, products} = useInv()
   const navigation = useNavigation()
+
+  useEffect(() => {
+    const addedProducts = products.filter(product => product.agregado === true)
+    setProductsCart(addedProducts)
+  }, [products])
 
   return (
     <>
@@ -27,36 +36,37 @@ const Cart = () => {
       {/* content */}
       <View className={`${globalStyles.container}`}>
         <View className='pb-16'>
-          {cart.length === 0
-            ? (
-              <Text className='text-center font-bold text-2xl mt-5 text-gray-700'>No hay productos</Text>
-            ) : (
-              <>
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{paddingBottom: 10,}}
-                  overScrollMode='never'
-                >
-                  {/* items and trash */}
-                  <View className='flex-row items-center justify-between'>
-                    <Text className='text-xl my-3 text-gray-700'>
-                      <Text className='font-bold'>{cart.length} {cart.length == 1 ? 'item' : 'items'}</Text>
-                    </Text>
-                    
-                    <TouchableOpacity onPress={() => clearCart()} className=''>
-                      <TrashIcon size={30} color='black' />
-                    </TouchableOpacity>
-                  </View>
+          {productsCart.length === 0 ? (
+            <Text className='text-center font-bold text-2xl mt-5 text-gray-700'>No hay productos</Text>
+          ) : (
+            <>
+              <View className='pb-10 max-h-[102.5%]'>
+                {/* items and trash */}
+                <View className='flex-row items-center justify-between'>
+                  <Text className='text-xl my-3 text-gray-700'>
+                    <Text className='font-bold'>{productsCart.length} {cart.length == 1 ? 'producto' : 'productos'}</Text>
+                  </Text>
+                  
+                  <TouchableOpacity onPress={() => clearCart()} className=''>
+                    <TrashIcon size={30} color='black' />
+                  </TouchableOpacity>
+                </View>
 
-                  {cart.map((item) => {
+                <FlatList
+                  data={productsCart}
+                  numColumns={1}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{paddingBottom: 10}}
+                  overScrollMode='never'
+                  renderItem={({item}) => {
                     return (
                       <ProductsCart key={item.id} item={item} />
                     )
-                  })}
-                </ScrollView>
-              </>
-            )
-          }
+                  }} 
+                />
+              </View>
+            </>
+          )}
         </View>
 
         {/* btn pay */}

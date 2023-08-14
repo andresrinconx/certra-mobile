@@ -5,15 +5,21 @@ import useInv from '../../hooks/useInv'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsViews = ({item}: {item: ProductoInterface}) => {
-  const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
+  // const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
   
-  const {setCart, cart, type} = useInv()
-  const {descrip, precio1, cantidad, agregado} = item
+  const {setCart, cart, type, products, setProducts} = useInv()
+  const {descrip, precio1, cantidad, agregado, id} = item
 
   // add to cart
   const handleAddToCart = () => {
-    setCart([...cart, item])
-    setDisabledBtn(true)
+    const updatedProducts = products.map(product => {
+      if (product.id === id || product.agregado === true) {
+        return { ...product, agregado: true }
+      } else {
+        return { ...product, agregado: false }
+      }
+    })
+    setProducts(updatedProducts)
   }
 
   return (
@@ -39,10 +45,10 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
               </Text>
     
               <TouchableOpacity onPress={handleAddToCart} className={`rounded-md p-[5px] mb-2`}
-                style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
-                disabled={disabledBtn}
+                style={{backgroundColor: agregado ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
+                disabled={agregado}
               >
-                <Text className='color-white text-center font-bold text-4'>{disabledBtn ? 'Agregado' : 'Agregar'}</Text>
+                <Text className='color-white text-center font-bold text-4'>{agregado ? 'Agregado' : 'Agregar'}</Text>
               </TouchableOpacity>  
             </View>
           </View>
@@ -64,10 +70,10 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
             {/* btn */}
             <View className='basis-[35%] justify-center items-center'>
               <TouchableOpacity onPress={handleAddToCart} className={`rounded-md p-[10px] w-24 mb-2`}
-                style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
-                disabled={disabledBtn}
+                style={{backgroundColor: agregado ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
+                disabled={agregado}
               >
-                <Text className='color-white text-center font-bold text-4'>{disabledBtn ? 'Agregado' : 'Agregar'}</Text>
+                <Text className='color-white text-center font-bold text-4'>{agregado ? 'Agregado' : 'Agregar'}</Text>
               </TouchableOpacity>  
             </View>
           </View>
