@@ -7,22 +7,10 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 import ModalProductCart from '../modals/ModalProductCart'
 
 const ProductsCart = ({item}: {item: ProductoInterface}) => {
-  const [cantidad, setCantidad] = useState(1)
+  const [cantidadLocal, setCantidadLocal] = useState(1)
 
   const {setModalProduct} = useInv()
-  const {descrip, precio1} = item
-
-  // incremento y decremento
-  const incremento = () => {
-    const total = cantidad + 1
-    setCantidad(total)
-  }
-  const decremento = () => {
-    if (cantidad !== 1) {
-      const total = cantidad - 1
-      setCantidad(total)
-    }
-  }
+  const {descrip, precio1, id, cantidad} = item
 
   return (
     <>
@@ -37,7 +25,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
               </Text>
       
               <Text style={{color: theme.azul,}} className={`font-bold text-xl mb-2`}>
-                Bs. {precio1} - Cantidad: {item.cantidad}
+                Bs. {precio1}
               </Text>
             </View>
 

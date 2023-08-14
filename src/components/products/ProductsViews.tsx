@@ -96,10 +96,6 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                       </TouchableOpacity>
                     </View>
 
-                    {/* <View>
-                      <Text className='text-white text-center font-bold text-lg -my-4'>{cantidad}</Text>
-                    </View> */}
-
                     <View className='w-[80px]'>
                       <TextInput className='text-center text-lg -my-4 text-white font-bold'
                         keyboardType='numeric'
