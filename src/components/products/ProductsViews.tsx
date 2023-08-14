@@ -49,15 +49,14 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
 
   // change cantidad (input)
   useEffect(() => {
-    console.log(cantidadLocal)
-    // const updatedProducts = products.map(product => {
-    //   if (product.id === id && product.agregado === true) {
-    //     return {...product, cantidad}
-    //   } else {
-    //     return {...product}
-    //   }
-    // })
-    // setProducts(updatedProducts)
+    const updatedProducts = products.map(product => {
+      if (product.id === id && product.agregado === true && cantidadLocal > 0) {
+        return {...product, cantidad: cantidadLocal}
+      } else {
+        return {...product}
+      }
+    })
+    setProducts(updatedProducts)
   }, [cantidadLocal])
 
   return (
@@ -101,10 +100,10 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                       <Text className='text-white text-center font-bold text-lg -my-4'>{cantidad}</Text>
                     </View> */}
 
-                    <View className='max-w-[80px]'>
+                    <View className='w-[80px]'>
                       <TextInput className='text-center text-lg -my-4 text-white font-bold'
                         keyboardType='numeric'
-                        value={String(cantidadLocal)}
+                        value={String(cantidad)}
                         onChangeText={text => setCantidadLocal(Number(text))}
                       />
                     </View>
