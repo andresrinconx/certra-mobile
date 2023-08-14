@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'
 import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native'
 import { styles, theme } from '../../styles'
 import useInv from '../../hooks/useInv'
@@ -81,7 +82,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                 <TouchableOpacity onPress={handleAddToCart} className={`rounded-md mb-2`}
                   style={{backgroundColor: theme.verde}}
                 >
-                  <Text className='color-white text-center font-bold p-1'>Agregar</Text>
+                  <Text className='color-white text-center font-bold p-1 pb-1.5'>Agregar</Text>
                 </TouchableOpacity>
               )}
 
