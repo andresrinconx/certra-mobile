@@ -107,15 +107,15 @@ const Login = () => {
       end={{ x: 0, y: 1 }}
       style={{ flex: 1 }}
     >
-      <View className='flex-1 items-center mt-20 mx-[6%]'>
+      <View className='flex-1 items-center mt-16 mb-8 mx-[6%]'>
 
         {/* Logo */}
-        <View className='mb-16'>
+        <View className='mb-5'>
           <Image source={require('../assets/user.png')} style={{width: 150, height: 150,}} />
         </View>
 
         {/* form */}
-        <View className='h-1/2 space-y-3'>
+        <View className='h-2/3 space-y-3'>
           {/* username */}
           <View className='space-y-1'>
             <View className='ml-2'>
@@ -175,7 +175,7 @@ const Login = () => {
           </View>
 
           {/* Incorrect Credentials */}
-          <View className='px-4 top-5'>
+          <View className='px-2 top-5'>
             {incorrectCredentials && (
               <View className='flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
                 <View className='bg-[#f3c1c0] p-2 rounded-full'>
@@ -188,7 +188,7 @@ const Login = () => {
         </View>
 
         {/* btn */}
-        <View className='h-1/2 w-full'>
+        <View className='h-1/3 w-full'>
           <TouchableOpacity onPress={() => auth()} className='w-full p-3 rounded-full'
             style={{backgroundColor: theme.verde,}}
           >
@@ -197,7 +197,7 @@ const Login = () => {
             )}
             
             {loaders.loadingAuth && (
-              <View className=''>
+              <View>
                 <Loader color='white' size={29} />
               </View>
             )}
