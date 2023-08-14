@@ -142,8 +142,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
           agregado: false,
           cantidad: 1,
         }))
-        console.log(productos)
-        // setProducts(productos)
+        setProducts(productos)
         setLoaders({...loaders, loadingProducts: false})
       } catch (error) {
         console.log(error)

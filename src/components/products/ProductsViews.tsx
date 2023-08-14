@@ -8,7 +8,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
   const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
   
   const {setCart, cart, type} = useInv()
-  const {descrip, precio1} = item
+  const {descrip, precio1, cantidad, agregado} = item
 
   // add to cart
   const handleAddToCart = () => {

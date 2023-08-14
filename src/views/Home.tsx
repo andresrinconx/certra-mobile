@@ -97,7 +97,7 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
     
-              {loaders.loadingProducts ? (
+              {loaders.loadingProducts || products.length === 0 ? (
                 <View className={`${globalStyles.container}`}>
                   <View className='flex-1 justify-center items-center'>
                     <FlatList
