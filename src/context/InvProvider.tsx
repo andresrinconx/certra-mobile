@@ -137,7 +137,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         const data = await fetchTableData('Sinv')
 
         // Add properties to each producto
-        const productos = data.map((producto: ProductoInterface) => ({
+        const productos = data?.map((producto: ProductoInterface) => ({
           ...producto,
           agregado: false,
           cantidad: 1,

@@ -6,6 +6,8 @@ import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsViews = ({item}: {item: ProductoInterface}) => {
+  const [cantidadLocal, setCantidadLocal] = useState(1)
+
   const {type, products, setProducts} = useInv()
   const {descrip, precio1, cantidad, agregado, id} = item
 
@@ -45,9 +47,9 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
     setProducts(updatedProducts)
   }
 
-  // cantidad (warn)
-  const setCantidad = () => {
-    console.log(cantidad)
+  // change cantidad (input)
+  useEffect(() => {
+    console.log(cantidadLocal)
     // const updatedProducts = products.map(product => {
     //   if (product.id === id && product.agregado === true) {
     //     return {...product, cantidad}
@@ -56,7 +58,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
     //   }
     // })
     // setProducts(updatedProducts)
-  }
+  }, [cantidadLocal])
 
   return (
     <>
@@ -95,17 +97,17 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                       </TouchableOpacity>
                     </View>
 
-                    <View>
-                      <Text className='text-white text-center font-bold text-lg -my-4'>{cantidad}</Text>
-                    </View>
-
                     {/* <View>
+                      <Text className='text-white text-center font-bold text-lg -my-4'>{cantidad}</Text>
+                    </View> */}
+
+                    <View className='max-w-[80px]'>
                       <TextInput className='text-center text-lg -my-4 text-white font-bold'
                         keyboardType='numeric'
-                        value={String(cantidad)}
-                        onChangeText={setCantidad}
+                        value={String(cantidadLocal)}
+                        onChangeText={text => setCantidadLocal(Number(text))}
                       />
-                    </View> */}
+                    </View>
 
                     <View>
                       <TouchableOpacity onPress={() => increase()} className=''>
