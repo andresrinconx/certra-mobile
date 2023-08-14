@@ -34,7 +34,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
         {/* btns */}
         <View className='basis-[32%] flex-row items-center my-5'>
           <TouchableOpacity onPress={() => decrease(id, cantidad)}
-            style={{backgroundColor: theme.verde,}} 
+            style={{backgroundColor: theme.verde,}}
             className='p-2 flex justify-center items-center rounded-full'
           >
             <MinusSmallIcon size={20} color='white' />
