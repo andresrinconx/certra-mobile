@@ -9,15 +9,12 @@ import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 const InvContext = createContext<{
   productsCart: ProductoInterface[]
   setProductsCart: (productsCart: ProductoInterface[]) => void
-  type: string
-  setType: (type: string) => void
   products: ProductoInterface[]
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
   modalSearch: boolean
   setModalSearch: (modalSearch: boolean) => void
-  icon: (type: string) => any
   clearCart: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
@@ -33,15 +30,12 @@ const InvContext = createContext<{
 }>({
   productsCart: [],
   setProductsCart: () => {},
-  type: 'grid',
-  setType: () => {},
   products: [],
   setProducts: () => {},
   searchedProducts: [],
   setSearchedProducts: () => {},
   modalSearch: false,
   setModalSearch: () => {},
-  icon: () => {},
   clearCart: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
@@ -65,7 +59,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
   const [valueSearchCustomers, setValueSearchCustomers] = useState('')
   // layout
-  const [type, setType] = useState('grid')
   const [flowControl, setFlowControl] = useState({
     showProducts: false, 
     showSelectCustomer: false, 
@@ -215,30 +208,13 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       ]
     )
   }
-
-  // ----- LAYOUT
-  // icon
-  const icon = (type: string) => {
-    if(type === 'grid') { // --- grid
-      return (
-        <Squares2X2Icon size={30} color='black' />
-      )
-    } else { // --- list
-      return (
-        <ListBulletIcon size={30} color='black' />
-      )
-    }
-  }
   
   return (
     <InvContext.Provider value={{
       productsCart,
       setProductsCart,
-      type,
-      setType,
       products,
       setProducts,
-      icon,
       clearCart,
       setModalSearch,
       modalSearch,

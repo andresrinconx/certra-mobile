@@ -33,7 +33,7 @@ const Cart = () => {
             <>
               <View className='pb-10 max-h-[102.5%]'>
                 {/* items and trash */}
-                <View className='flex-row items-center justify-between'>
+                <View className='flex-row items-center justify-between px-2'>
                   <Text className='text-xl my-3 text-gray-700'>
                     <Text className='font-bold'>{productsCart.length} {productsCart.length == 1 ? 'producto' : 'productos'}</Text>
                   </Text>
@@ -65,7 +65,7 @@ const Cart = () => {
           <TouchableOpacity onPress={() => ''} className='rounded-xl p-2'
             style={{backgroundColor: theme.verde,}}
           >
-            <Text className='color-white text-center font-bold text-xl'>Ir a Pagar</Text>
+            <Text className='color-white text-center font-bold text-xl'>Confirmar pedido</Text>
           </TouchableOpacity>
         </View>
       </View>
