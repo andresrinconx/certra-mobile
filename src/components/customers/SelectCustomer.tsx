@@ -124,7 +124,7 @@ const SelectCustomer = () => {
               ) : (
                 searchedCustomers?.length === 0 ? (
                   <View className='flex flex-row items-center justify-center py-8 -mt-3'>
-                    <Text className='text-2xl text-gray-700'>No hay resultados</Text>
+                    <Text className='text-xl text-gray-700 w-full text-center'>No hay resultados</Text>
                   </View>
                 ) : (
                   <FlatList

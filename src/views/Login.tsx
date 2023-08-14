@@ -175,13 +175,13 @@ const Login = () => {
           </View>
 
           {/* Incorrect Credentials */}
-          <View className='mx-7 top-5'>
+          <View className='px-4 top-5'>
             {incorrectCredentials && (
               <View className='flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
                 <View className='bg-[#f3c1c0] p-2 rounded-full'>
                   <ExclamationTriangleIcon size={20} color='#a54e54' />
                 </View>
-                <Text className='text-base text-[#a54e54] ml-3'>Usuario no encontrado o contraseña incorrecta</Text>
+                <Text className='text-base text-[#a54e54] ml-2'>Usuario no encontrado o contraseña incorrecta</Text>
               </View>
             )}
           </View>
@@ -195,10 +195,10 @@ const Login = () => {
             {!loaders.loadingAuth && (
               <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
             )}
-
+            
             {loaders.loadingAuth && (
               <View className=''>
-                <Loader color='white' />
+                <Loader color='white' size={29} />
               </View>
             )}
           </TouchableOpacity>
