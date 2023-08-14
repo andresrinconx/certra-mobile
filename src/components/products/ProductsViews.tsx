@@ -54,17 +54,18 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
               <Text style={{color: theme.azul,}} className={`font-bold text-xl mb-2`}>
                 Bs. {precio1}
               </Text>
-    
-              <TouchableOpacity onPress={handleAddToCart} className={`rounded-md mb-2`}
-                style={{backgroundColor: theme.verde}}
-              >
-                {!agregado && (
-                  <Text className='color-white text-center font-bold p-1'>Agregar</Text>
-                )}
 
-                {/* incremento y decremento */}
-                {agregado && (
-                  <View className='flex flex-row justify-between items-center p-1'>
+              {!agregado && (
+                <TouchableOpacity onPress={handleAddToCart} className={`rounded-md mb-2`}
+                  style={{backgroundColor: theme.verde}}
+                >
+                  <Text className='color-white text-center font-bold p-1'>Agregar</Text>
+                </TouchableOpacity>
+              )}
+
+              {agregado && (
+                <View className={`rounded-md mb-2`} style={{backgroundColor: theme.verde}}>
+                  <View className='flex flex-row justify-between items-center p-1 px-4'>
                     <View>
                       <TouchableOpacity onPress={() => ''} className=''>
                         <MinusSmallIcon size={20} color='white' />
@@ -72,12 +73,16 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                     </View>
 
                     <View>
+                      <Text className='text-white text-center font-bold text-lg -my-4'>{cantidad}</Text>
+                    </View>
+
+                    {/* <View>
                       <TextInput className='text-center text-lg -my-4 text-white font-bold'
                         keyboardType='numeric'
                         value={String(cantidad)}
                         onChangeText={setCantidad}
                       />
-                    </View>
+                    </View> */}
 
                     <View>
                       <TouchableOpacity onPress={() => ''} className=''>
@@ -85,8 +90,8 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                       </TouchableOpacity>
                     </View>
                   </View>
-                )}
-              </TouchableOpacity>  
+                </View>
+              )}
             </View>
           </View>
       ) : (
