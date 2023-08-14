@@ -136,8 +136,12 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         setLoaders({...loaders, loadingProducts: true})
         const data = await fetchTableData('Sinv')
 
-        // Add 'agregado' property to each producto
-        const productos = data.map((producto: ProductoInterface) => ({ ...producto, agregado: false }))
+        // Add properties to each producto
+        const productos = data.map((producto: ProductoInterface) => ({
+          ...producto,
+          agregado: false,
+          cantidad: 1,
+        }))
         console.log(productos)
         // setProducts(productos)
         setLoaders({...loaders, loadingProducts: false})
