@@ -155,10 +155,13 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // clear productsCart
   const clearCart = () => {
     Alert.alert(
-      'Alerta',
-      '¿Seguro que quieres eliminar todos los productos del carrito?',
+      '¿Quieres eliminar todos los productos del carrito?',
+      'Esta acción no se puede deshacer',
       [
-        { text: 'Aceptar', onPress: () => setProductsCart([])},
+        { text: 'Aceptar', onPress: () => {
+          const updatedProducts = products.map(product => product.agregado === true ? {...product, agregado: false} : {...product})
+          setProducts(updatedProducts)
+        }},
         { text: 'Cancelar', style: 'cancel',},
       ]
     )
