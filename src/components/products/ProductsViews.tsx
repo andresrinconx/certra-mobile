@@ -20,7 +20,31 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
     setProducts(updatedProducts)
   }
 
-  // cantidad
+  // increase & decrease
+  const increase = () => {
+    const updatedProducts = products.map(product => {
+      if (product.id === id && product.agregado === true) {
+        return {...product, cantidad: cantidad + 1}
+      } else {
+        return {...product}
+      }
+    })
+    setProducts(updatedProducts)
+  }
+  const decrease = () => {
+    const updatedProducts = products.map(product => {
+      if (product.id === id && product.agregado === true && product.cantidad > 1) {
+        return {...product, cantidad: cantidad - 1}
+      } else if(product.id === id && product.agregado === true && product.cantidad === 1) {
+        return {...product, agregado: false}
+      } else {
+        return {...product}
+      }
+    })
+    setProducts(updatedProducts)
+  }
+
+  // cantidad (warn)
   const setCantidad = () => {
     console.log(cantidad)
     // const updatedProducts = products.map(product => {
@@ -37,9 +61,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
     <>
       {type === 'grid'
         ? (
-          <View className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2'
-            style={styles.shadow}
-          >
+          <View className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
             {/* img */}
             <View className='border-b-[#c0c0c0] border-b mb-2 justify-center items-center'>
               <Image className='w-32 h-32' source={require('../../assets/Acetaminofen.png')} />
@@ -67,7 +89,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                 <View className={`rounded-md mb-2`} style={{backgroundColor: theme.verde}}>
                   <View className='flex flex-row justify-between items-center p-1 px-4'>
                     <View>
-                      <TouchableOpacity onPress={() => ''} className=''>
+                      <TouchableOpacity onPress={() => decrease()} className=''>
                         <MinusSmallIcon size={20} color='white' />
                       </TouchableOpacity>
                     </View>
@@ -85,7 +107,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                     </View> */}
 
                     <View>
-                      <TouchableOpacity onPress={() => ''} className=''>
+                      <TouchableOpacity onPress={() => increase()} className=''>
                         <PlusSmallIcon size={20} color='white' />
                       </TouchableOpacity>
                     </View>
