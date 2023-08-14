@@ -46,7 +46,7 @@ const Login = () => {
     const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
     if (userFromUsuario === undefined) {
       // find in the table 'Scli'
-      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
+      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => ('W' + userDb.cliente === user.toUpperCase() || 'W' + userDb.clave === user) && userDb.clave === password)
       if (userFromScli === undefined) {
         // Incorrect Credentials
         setTimeout(() => {
@@ -72,6 +72,7 @@ const Login = () => {
           setLoaders({...loaders, loadingAuth: false})
           setLogin(true)
         }, 500)
+        setShowPassword(false)
       }
     } else { // success from Usuario
       setIncorrectCredentials(false)
@@ -91,6 +92,7 @@ const Login = () => {
         setLoaders({...loaders, loadingAuth: false})
         setLogin(true)
       }, 500)
+      setShowPassword(false)
     }
   }
 
