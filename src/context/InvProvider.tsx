@@ -15,8 +15,6 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  modalProduct: boolean
-  setModalProduct: (modalProduct: boolean) => void
   modalSearch: boolean
   setModalSearch: (modalSearch: boolean) => void
   icon: (type: string) => any
@@ -29,6 +27,9 @@ const InvContext = createContext<{
   setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
+  increase: (id: number, cantidad: number) => any
+  decrease: (id: number, cantidad: number) => any
+  inputChange: (id: number, cantidad: number) => any
 }>({
   productsCart: [],
   setProductsCart: () => {},
@@ -38,8 +39,6 @@ const InvContext = createContext<{
   setProducts: () => {},
   searchedProducts: [],
   setSearchedProducts: () => {},
-  modalProduct: false,
-  setModalProduct: () => {},
   modalSearch: false,
   setModalSearch: () => {},
   icon: () => {},
@@ -52,6 +51,9 @@ const InvContext = createContext<{
   setLoaders: () => {},
   valueSearchCustomers: '',
   setValueSearchCustomers: () => {},
+  increase: () => {},
+  decrease: () => {},
+  inputChange: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -74,7 +76,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   })
   // modals
   const [modalSearch, setModalSearch] = useState(false)
-  const [modalProduct, setModalProduct] = useState(false)
   // loaders
   const [loaders, setLoaders] = useState({
     loadingProducts: false, 
@@ -152,11 +153,49 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }, [])
 
   // ----- ACTIONS
-  // set product properties
+  // set cart
   useEffect(() => {
     const addedProducts = products.filter(product => product.agregado === true)
     setProductsCart(addedProducts)
   }, [products])
+
+  // increase & decrease
+  const increase = (id: number, cantidad: number) => {
+    const updatedProducts = products.map(product => {
+      if (product.id === id && product.agregado === true) {
+        return {...product, cantidad: cantidad + 1}
+      } else {
+        return {...product}
+      }
+    })
+    setProducts(updatedProducts)
+  }
+  const decrease = (id: number, cantidad: number) => {
+    const updatedProducts = products.map(product => {
+      if (product.id === id && product.agregado === true && product.cantidad > 1) {
+        return {...product, cantidad: cantidad - 1}
+      } else if(product.id === id && product.agregado === true && product.cantidad === 1) {
+        return {...product, agregado: false}
+      } else {
+        return {...product}
+      }
+    })
+    setProducts(updatedProducts)
+  }
+  const inputChange = (id: number, cantidad: number) => {
+    if(cantidad > 1) {
+      const updatedProducts = products.map(product => {
+        if (product.id === id && product.agregado === true && cantidad > 0) {
+          return {...product, cantidad}
+        } else if(product.id === id && product.agregado === true) {
+          return {...product, cantidad: 1}
+        } else {
+          return {...product}
+        }
+      })
+      setProducts(updatedProducts)
+    }
+  }
 
   // clear productsCart
   const clearCart = () => {
@@ -165,7 +204,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       'Esta acción no se puede deshacer',
       [
         { text: 'Aceptar', onPress: () => {
-          const updatedProducts = products.map(product => product.agregado === true ? {...product, agregado: false} : {...product})
+          const updatedProducts = products.map(product => product.agregado === true ? {
+            ...product, 
+            agregado: false, 
+            cantidad: 1
+          } : {...product})
           setProducts(updatedProducts)
         }},
         { text: 'Cancelar', style: 'cancel',},
@@ -195,8 +238,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setType,
       products,
       setProducts,
-      modalProduct,
-      setModalProduct,
       icon,
       clearCart,
       setModalSearch,
@@ -210,7 +251,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       loaders,
       setLoaders,
       valueSearchCustomers,
-      setValueSearchCustomers
+      setValueSearchCustomers,
+      increase,
+      decrease,
+      inputChange
     }}>
       {children}
     </InvContext.Provider>

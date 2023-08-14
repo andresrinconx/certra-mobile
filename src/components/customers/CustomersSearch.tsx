@@ -6,23 +6,37 @@ import useInv from '../../hooks/useInv'
 
 const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
   const {setMyUser, myUser} = useLogin()
-  const {flowControl, setFlowControl, setProductsCart, loaders, setLoaders, setValueSearchCustomers} = useInv()
+  const {flowControl, setFlowControl, setProductsCart, loaders, setLoaders, setValueSearchCustomers, products, setProducts} = useInv()
   const {cliente, nombre} = customer
+
+  // select customer
+  const selectCustomer = () => {
+    setLoaders({...loaders, loadingSlectedCustomer: true})
+    setTimeout(() => {
+      // user
+      setMyUser({...myUser, customer})
+
+      // products & cart
+      setProductsCart([])
+      const updatedProducts = products.map(product => product.agregado === true ? {
+        ...product,
+        agregado: false,
+        cantidad: 1
+      } : {...product})
+      setProducts(updatedProducts)
+
+      // flow & reset
+      setValueSearchCustomers('')
+      setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true, selected: true})
+      setLoaders({...loaders, loadingSlectedCustomer: false})
+    }, 100)
+  }
 
   return (
     <TouchableOpacity
       className='p-2 mx-1 mb-2'
       style={styles.shadow}
-      onPress={() => {
-        setLoaders({...loaders, loadingSlectedCustomer: true})
-        setTimeout(() => {
-          setMyUser({...myUser, customer})
-          setProductsCart([])
-          setValueSearchCustomers('')
-          setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true, selected: true})
-          setLoaders({...loaders, loadingSlectedCustomer: false})
-        }, 100)
-      }}
+      onPress={() => selectCustomer()}
     >
       <Text className='text-black font-bold text-sm'>{cliente}</Text>
       <Text className='text-black text-base' numberOfLines={1}>{nombre}</Text>

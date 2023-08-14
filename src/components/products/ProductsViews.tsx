@@ -8,7 +8,7 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 const ProductsViews = ({item}: {item: ProductoInterface}) => {
   const [cantidadLocal, setCantidadLocal] = useState(1)
 
-  const {type, products, setProducts} = useInv()
+  const {type, products, setProducts, increase, decrease, inputChange} = useInv()
   const {descrip, precio1, cantidad, agregado, id} = item
 
   // add to cart
@@ -23,40 +23,9 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
     setProducts(updatedProducts)
   }
 
-  // increase & decrease
-  const increase = () => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id && product.agregado === true) {
-        return {...product, cantidad: cantidad + 1}
-      } else {
-        return {...product}
-      }
-    })
-    setProducts(updatedProducts)
-  }
-  const decrease = () => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id && product.agregado === true && product.cantidad > 1) {
-        return {...product, cantidad: cantidad - 1}
-      } else if(product.id === id && product.agregado === true && product.cantidad === 1) {
-        return {...product, agregado: false}
-      } else {
-        return {...product}
-      }
-    })
-    setProducts(updatedProducts)
-  }
-
   // change cantidad (input)
   useEffect(() => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id && product.agregado === true && cantidadLocal > 0) {
-        return {...product, cantidad: cantidadLocal}
-      } else {
-        return {...product}
-      }
-    })
-    setProducts(updatedProducts)
+    inputChange(id, cantidadLocal)
   }, [cantidadLocal])
 
   return (
@@ -91,7 +60,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                 <View className={`rounded-md mb-2`} style={{backgroundColor: theme.verde}}>
                   <View className='flex flex-row justify-between items-center p-1 px-4'>
                     <View>
-                      <TouchableOpacity onPress={() => decrease()} className=''>
+                      <TouchableOpacity onPress={() => decrease(id, cantidad)} className=''>
                         <MinusSmallIcon size={20} color='white' />
                       </TouchableOpacity>
                     </View>
@@ -105,7 +74,7 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                     </View>
 
                     <View>
-                      <TouchableOpacity onPress={() => increase()} className=''>
+                      <TouchableOpacity onPress={() => increase(id, cantidad)} className=''>
                         <PlusSmallIcon size={20} color='white' />
                       </TouchableOpacity>
                     </View>
