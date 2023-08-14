@@ -37,7 +37,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
               </Text>
       
               <Text style={{color: theme.azul,}} className={`font-bold text-xl mb-2`}>
-                Bs. {precio1}
+                Bs. {precio1} - Cantidad: {item.cantidad}
               </Text>
             </View>
 

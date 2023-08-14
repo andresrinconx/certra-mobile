@@ -1,6 +1,7 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native'
 import { styles, theme } from '../../styles'
 import useInv from '../../hooks/useInv'
+import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsViews = ({item}: {item: ProductoInterface}) => {
@@ -11,12 +12,25 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
   const handleAddToCart = () => {
     const updatedProducts = products.map(product => {
       if (product.id === id || product.agregado === true) {
-        return { ...product, agregado: true }
+        return {...product, agregado: true}
       } else {
-        return { ...product, agregado: false }
+        return {...product, agregado: false}
       }
     })
     setProducts(updatedProducts)
+  }
+
+  // cantidad
+  const setCantidad = () => {
+    console.log(cantidad)
+    // const updatedProducts = products.map(product => {
+    //   if (product.id === id && product.agregado === true) {
+    //     return {...product, cantidad}
+    //   } else {
+    //     return {...product}
+    //   }
+    // })
+    // setProducts(updatedProducts)
   }
 
   return (
@@ -41,11 +55,37 @@ const ProductsViews = ({item}: {item: ProductoInterface}) => {
                 Bs. {precio1}
               </Text>
     
-              <TouchableOpacity onPress={handleAddToCart} className={`rounded-md p-[5px] mb-2`}
-                style={{backgroundColor: agregado ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
-                disabled={agregado}
+              <TouchableOpacity onPress={handleAddToCart} className={`rounded-md mb-2`}
+                style={{backgroundColor: theme.verde}}
               >
-                <Text className='color-white text-center font-bold text-4'>{agregado ? 'Agregado' : 'Agregar'}</Text>
+                {!agregado && (
+                  <Text className='color-white text-center font-bold p-1'>Agregar</Text>
+                )}
+
+                {/* incremento y decremento */}
+                {agregado && (
+                  <View className='flex flex-row justify-between items-center p-1'>
+                    <View>
+                      <TouchableOpacity onPress={() => ''} className=''>
+                        <MinusSmallIcon size={20} color='white' />
+                      </TouchableOpacity>
+                    </View>
+
+                    <View>
+                      <TextInput className='text-center text-lg -my-4 text-white font-bold'
+                        keyboardType='numeric'
+                        value={String(cantidad)}
+                        onChangeText={setCantidad}
+                      />
+                    </View>
+
+                    <View>
+                      <TouchableOpacity onPress={() => ''} className=''>
+                        <PlusSmallIcon size={20} color='white' />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
               </TouchableOpacity>  
             </View>
           </View>

@@ -152,6 +152,12 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }, [])
 
   // ----- ACTIONS
+  // set product properties
+  useEffect(() => {
+    const addedProducts = products.filter(product => product.agregado === true)
+    setProductsCart(addedProducts)
+  }, [products])
+
   // clear productsCart
   const clearCart = () => {
     Alert.alert(

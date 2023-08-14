@@ -1,17 +1,11 @@
-import {useEffect} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { ShoppingCartIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import useInv from '../../hooks/useInv'
 
 const IconCart = () => {
-  const {productsCart, setProductsCart, products} = useInv()
+  const {productsCart} = useInv()
   const navigation = useNavigation()
-
-  useEffect(() => {
-    const addedProducts = products.filter(product => product.agregado === true)
-    setProductsCart(addedProducts)
-  }, [products])
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
