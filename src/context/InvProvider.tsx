@@ -7,8 +7,8 @@ import { fetchTableData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 
 const InvContext = createContext<{
-  cart: ProductoInterface[]
-  setCart: (cart: ProductoInterface[]) => void
+  productsCart: ProductoInterface[]
+  setProductsCart: (productsCart: ProductoInterface[]) => void
   type: string
   setType: (type: string) => void
   products: ProductoInterface[]
@@ -30,8 +30,8 @@ const InvContext = createContext<{
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
 }>({
-  cart: [],
-  setCart: () => {},
+  productsCart: [],
+  setProductsCart: () => {},
   type: 'grid',
   setType: () => {},
   products: [],
@@ -55,9 +55,9 @@ const InvContext = createContext<{
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
-  // cart
+  // products
   const [products, setProducts] = useState<ProductoInterface[]>([])
-  const [cart, setCart] = useState<ProductoInterface[]>([])
+  const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
@@ -84,13 +84,13 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   })
 
   // ----- STORAGE
-  // get storage (cart, flowControl)
+  // get storage (productsCart, flowControl)
   useEffect(() => {
     const getCartStorage = async () => {
       try {
-        // cart
-        const cartStorage = await getDataStorage('cart')
-        setCart(cartStorage ? JSON.parse(cartStorage) : [])
+        // productsCart
+        const cartStorage = await getDataStorage('productsCart')
+        setProductsCart(cartStorage ? JSON.parse(cartStorage) : [])
         // flowControl
         const flowControlStorage = await getDataStorage('flowControl')
         setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
@@ -101,17 +101,17 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     getCartStorage()
   }, [])
 
-  // set cart
+  // set productsCart
   useEffect(() => {
-    const cartStorage = async () => {
+    const productsCartStorage = async () => {
       try {
-        await setDataStorage('cart', cart)
+        await setDataStorage('productsCart', productsCart)
       } catch (error) {
         console.log(error)
       }
     }
-    cartStorage()
-  }, [cart])
+    productsCartStorage()
+  }, [productsCart])
 
   // set flow control
   useEffect(() => {
@@ -152,16 +152,14 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }, [])
 
   // ----- ACTIONS
-  // clear cart
+  // clear productsCart
   const clearCart = () => {
     Alert.alert(
       'Alerta',
       '¿Seguro que quieres eliminar todos los productos del carrito?',
       [
+        { text: 'Aceptar', onPress: () => setProductsCart([])},
         { text: 'Cancelar', style: 'cancel',},
-        { text: 'Aceptar', onPress: () => {
-          setCart([])
-        }},
       ]
     )
   }
@@ -182,8 +180,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   
   return (
     <InvContext.Provider value={{
-      cart,
-      setCart,
+      productsCart,
+      setProductsCart,
       type,
       setType,
       products,

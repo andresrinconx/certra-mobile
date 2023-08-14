@@ -7,7 +7,7 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 const ProductsViews = ({item}: {item: ProductoInterface}) => {
   // const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
   
-  const {setCart, cart, type, products, setProducts} = useInv()
+  const {type, products, setProducts} = useInv()
   const {descrip, precio1, cantidad, agregado, id} = item
 
   // add to cart

@@ -1,22 +1,13 @@
-import {useState, useEffect} from 'react'
-import { View, ScrollView, Text, TouchableOpacity, FlatList} from 'react-native'
+import { View, Text, TouchableOpacity, FlatList} from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import ProductsCart from '../components/products/ProductsCart'
-import ProductoInterface from '../interfaces/ProductoInterface'
 
 const Cart = () => {
-  const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
-
-  const {cart, clearCart, products} = useInv()
+  const {productsCart, clearCart} = useInv()
   const navigation = useNavigation()
-
-  useEffect(() => {
-    const addedProducts = products.filter(product => product.agregado === true)
-    setProductsCart(addedProducts)
-  }, [products])
 
   return (
     <>
@@ -44,7 +35,7 @@ const Cart = () => {
                 {/* items and trash */}
                 <View className='flex-row items-center justify-between'>
                   <Text className='text-xl my-3 text-gray-700'>
-                    <Text className='font-bold'>{productsCart.length} {cart.length == 1 ? 'producto' : 'productos'}</Text>
+                    <Text className='font-bold'>{productsCart.length} {productsCart.length == 1 ? 'producto' : 'productos'}</Text>
                   </Text>
                   
                   <TouchableOpacity onPress={() => clearCart()} className=''>

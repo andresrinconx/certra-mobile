@@ -6,7 +6,7 @@ import useInv from '../../hooks/useInv'
 
 const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
   const {setMyUser, myUser} = useLogin()
-  const {flowControl, setFlowControl, setCart, loaders, setLoaders, setValueSearchCustomers} = useInv()
+  const {flowControl, setFlowControl, setProductsCart, loaders, setLoaders, setValueSearchCustomers} = useInv()
   const {cliente, nombre} = customer
 
   return (
@@ -17,7 +17,7 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
         setLoaders({...loaders, loadingSlectedCustomer: true})
         setTimeout(() => {
           setMyUser({...myUser, customer})
-          setCart([])
+          setProductsCart([])
           setValueSearchCustomers('')
           setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true, selected: true})
           setLoaders({...loaders, loadingSlectedCustomer: false})

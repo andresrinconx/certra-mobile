@@ -8,11 +8,11 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
   const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
   
   const {descrip, precio1} = product
-  const {setCart, cart} = useInv()
+  const {setProductsCart, productsCart} = useInv()
 
   // add to cart
   const handleAddToCart = () => {
-    setCart([...cart, product])
+    setProductsCart([...productsCart, product])
     setDisabledBtn(true)
   }
 

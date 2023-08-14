@@ -6,7 +6,7 @@ import useLogin from '../../hooks/useLogin'
 import { setDataStorage } from '../../utils/asyncStorage'
 
 const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
-  const {setCart, setFlowControl, setValueSearchCustomers} = useInv()
+  const {setProductsCart, setFlowControl, setValueSearchCustomers} = useInv()
   const {setMyUser, setUser, setPassword, setLogin} = useLogin()
   const navigation = useNavigation()
   
@@ -18,9 +18,9 @@ const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
     navigation.navigate('Login')
     await setDataStorage('login', false)
     await setDataStorage('myUser', {})
-    await setDataStorage('cart', [])
+    await setDataStorage('productsCart', [])
     await setDataStorage('flowControl', {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false,})
-    setCart([])
+    setProductsCart([])
     setFlowControl({
       showProducts: false, 
       showSelectCustomer: false, 
