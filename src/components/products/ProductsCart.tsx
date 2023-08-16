@@ -23,9 +23,13 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
         {/* image */}
         <View className='basis-[35%] flex items-center justify-center'>
           {image_url === null ? (
-            <Image className='w-24 h-24' source={require('../../assets/Acetaminofen.png')} />
+            <Image className='w-24 h-24' resizeMode='cover'
+              source={require('../../assets/Acetaminofen.png')} 
+            />
           ) : (
-            <Image className='w-24 h-24' source={{uri: `${image_url}`}} />
+            <Image className='w-24 h-24' resizeMode='contain' 
+              source={{uri: `${image_url}`}}
+            />
           )}
         </View>
 
@@ -45,7 +49,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
 
             {/* increase & decrease */}
             <View className='flex flex-row justify-between rounded-xl' style={styles.shadow}>
-              <View className='flex justify-center rounded-l-lg w-10' style={{backgroundColor: '#f0f1f5'}}>
+              <View className='flex justify-center rounded-l-lg w-10' style={{backgroundColor: cantidad === 1 ? '#eaeaea' : '#d8d8d8'}}>
                 <TouchableOpacity onPress={() => decrease(id, cantidad)}
                   className='p-2 flex justify-center items-center'
                   disabled={cantidad === 1 ? true : false}
@@ -62,7 +66,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
                 />
               </View>
 
-              <View className='flex justify-center rounded-r-lg w-10' style={{backgroundColor: '#f0f1f5'}}>
+              <View className='flex justify-center rounded-r-lg w-10' style={{backgroundColor: '#d8d8d8'}}>
                 <TouchableOpacity onPress={() => increase(id, cantidad)}
                   className='p-2 flex justify-center items-center'
                 >
