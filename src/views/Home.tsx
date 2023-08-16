@@ -88,51 +88,56 @@ const Home = () => {
         <>
           <SelectCustomer />
           {flowControl?.showProducts && !flowControl?.showSelectResults ? (
-            <>
-              <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
-                <Text className='text-gray-700 text-xl font-bold'>Productos</Text>
+
+            loaders.loadingProducts || products.length === 0 ? (
+              <View className={`${globalStyles.container}`}>
+                <View className='flex-1 justify-center items-center'>
+                  <FlatList
+                    ListHeaderComponent={() => (
+                      <View className='flex-row justify-between mb-3 mx-3 px-1'>
+                        <Text className='text-gray-700 text-xl font-bold w-full text-center'>Productos</Text>
+                      </View>
+                    )}
+                    data={items}
+                    numColumns={2}
+                    contentContainerStyle={{
+                      paddingBottom: 10,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                    renderItem={({item}) => {
+                      return (
+                        <LoaderProductsGrid key={item.id} />
+                      )
+                    }} 
+                  />
+                </View>
               </View>
-    
-              {loaders.loadingProducts || products.length === 0 ? (
-                <View className={`${globalStyles.container}`}>
-                  <View className='flex-1 justify-center items-center'>
-                    <FlatList
-                      data={items}
-                      numColumns={2}
-                      contentContainerStyle={{
-                        paddingBottom: 10,
-                      }}
-                      showsVerticalScrollIndicator={false}
-                      overScrollMode='never'
-                      renderItem={({item}) => {
-                        return (
-                          <LoaderProductsGrid key={item.id} />
-                        )
-                      }} 
-                    />
-                  </View>
+            ) : (
+              <View className={`${globalStyles.container}`}>
+                <View className='flex-1 justify-center items-center'>
+                  <FlatList
+                    ListHeaderComponent={() => (
+                      <View className='flex-row justify-between mb-3 mx-3 px-1'>
+                        <Text className='text-gray-700 text-xl font-bold w-full text-center'>Productos</Text>
+                      </View>
+                    )}
+                    data={products}
+                    numColumns={2}
+                    contentContainerStyle={{
+                      paddingBottom: 10,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                    renderItem={({item}) => {
+                      return (
+                        <ProductsGrid key={item.id} item={item} />
+                      )
+                    }} 
+                  />
                 </View>
-              ) : (
-                <View className={`${globalStyles.container}`}>
-                  <View className='flex-1 justify-center items-center'>
-                    <FlatList
-                      data={products}
-                      numColumns={2}
-                      contentContainerStyle={{
-                        paddingBottom: 10,
-                      }}
-                      showsVerticalScrollIndicator={false}
-                      overScrollMode='never'
-                      renderItem={({item}) => {
-                        return (
-                          <ProductsGrid key={item.id} item={item} />
-                        )
-                      }} 
-                    />
-                  </View>
-                </View>
-              )}
-            </>
+              </View>
+            )
           ):null}
         </>
       )}
