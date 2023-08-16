@@ -31,6 +31,7 @@ const InvContext = createContext<{
   setSubtotal: (subtotal: number) => void
   total: number
   setTotal: (total: number) => void
+  removeElement: (id: number) => void
 }>({
   productsCart: [],
   setProductsCart: () => {},
@@ -56,6 +57,7 @@ const InvContext = createContext<{
   setSubtotal: () => {},
   total: 0,
   setTotal: () => {},
+  removeElement: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -211,10 +213,24 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         }
       })
       setProducts(updatedProducts)
+    } else {
+      
     }
   }
+  
+  // remove element from cart
+  const removeElement = (id: number) => {
+    const updatedProducts = products.map(product => {
+      if (product.id === id && product.agregado === true) {
+        return {...product, agregado: false}
+      } else {
+        return {...product}
+      }
+    })
+    setProducts(updatedProducts)
+  }
 
-  // clear productsCart
+  // clear cart
   const clearCart = () => {
     Alert.alert(
       '¿Quieres eliminar todos los productos del carrito?',
@@ -258,7 +274,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       subtotal,
       setSubtotal,
       total,
-      setTotal
+      setTotal,
+      removeElement
     }}>
       {children}
     </InvContext.Provider>

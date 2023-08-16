@@ -8,7 +8,7 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 const ProductsCart = ({item}: {item: ProductoInterface}) => {
   const [cantidadLocal, setCantidadLocal] = useState(1)
 
-  const {increase, decrease, inputChange} = useInv()
+  const {increase, decrease, inputChange, removeElement} = useInv()
   const {descrip, precio1, id, cantidad, image_url} = item
 
   // change cantidad (input)
@@ -54,11 +54,13 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
                 </TouchableOpacity>
               </View>
               
-              <TextInput className='text-center text-xl text-black px-4'
-                keyboardType='numeric'
-                value={String(cantidad)}
-                onChangeText={text => setCantidadLocal(Number(text))}
-              />
+              <View className='flex flex-row justify-center items-center'>
+                <TextInput className='text-center text-base text-black w-[80px]'
+                  keyboardType='numeric'
+                  value={String(cantidad)}
+                  onChangeText={text => setCantidadLocal(Number(text))}
+                />
+              </View>
 
               <View className='flex justify-center rounded-r-lg w-10' style={{backgroundColor: '#f0f1f5'}}>
                 <TouchableOpacity onPress={() => increase(id, cantidad)}
@@ -70,7 +72,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
             </View>
 
             {/* delete */}
-            <TouchableOpacity onPress={() => ''} 
+            <TouchableOpacity onPress={() => removeElement(id)} 
               className='h-full flex justify-center px-3 p-2 rounded-lg ml-ml-4 mb-2'
               style={styles.shadow}
             >

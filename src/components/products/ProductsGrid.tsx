@@ -6,7 +6,7 @@ import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsGrid = ({item}: {item: ProductoInterface}) => {
-  const [cantidadLocal, setCantidadLocal] = useState(1)
+  const [cantidadLocal, setCantidadLocal] = useState('1')
 
   const {products, setProducts, increase, decrease, inputChange} = useInv()
   const {descrip, precio1, cantidad, agregado, id, image_url} = item
@@ -25,7 +25,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
 
   // change cantidad (input)
   useEffect(() => {
-    inputChange(id, cantidadLocal)
+    inputChange(id, Number(cantidadLocal))
   }, [cantidadLocal])
 
   return (
@@ -73,8 +73,8 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
               <View className='w-[80px]'>
                 <TextInput className='text-center text-lg -my-4 text-white font-bold'
                   // keyboardType='numeric'
-                  value={String(cantidad)}
-                  onChangeText={text => setCantidadLocal(Number(text))}
+                  value={String(cantidadLocal)}
+                  onChangeText={text => setCantidadLocal(text)}
                 />
               </View>
 
