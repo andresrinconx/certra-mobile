@@ -90,7 +90,7 @@ const Home = () => {
           {flowControl?.showProducts && !flowControl?.showSelectResults ? (
             <>
               <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
-                <Text className={`text-gray-700 text-xl font-bold`}>Productos</Text>
+                <Text className='text-gray-700 text-xl font-bold'>Productos</Text>
               </View>
     
               {loaders.loadingProducts || products.length === 0 ? (
