@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, FlatList} from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
-import { globalStyles, theme, styles } from '../styles'
+import { theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import ProductsCart from '../components/products/ProductsCart'
 
@@ -21,13 +21,18 @@ const Cart = () => {
           </TouchableOpacity>
         </View>
 
-        <Text className='font-bold text-2xl text-white pl-3'>Carrito</Text>
+        <Text className={`font-bold text-2xl text-white ${productsCart.length !== 0 ? 'pl-3' : 'pr-8'}`}>Carrito</Text>
 
-        <View className='mr-4'>
-          <TouchableOpacity onPress={() => clearCart()} className=''>
-            <TrashIcon size={30} color='white' strokeWidth={1.8} />
-          </TouchableOpacity>
-        </View>
+        {productsCart.length !== 0 ? (
+          <View className='mr-4'>
+            <TouchableOpacity onPress={() => clearCart()}>
+              <TrashIcon size={30} color='white' strokeWidth={1.8} />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View />
+        )}
+        
       </View>
 
       {/* content */}
@@ -54,29 +59,32 @@ const Cart = () => {
         </View>
       </View>
 
-      <View className='absolute bottom-3 w-full z-50 bg-white'>
-        <View className='border-b border-b-gray-300' />
+      {/* confirm */}
+      {productsCart.length !== 0 && (
+        <View className='absolute bottom-3 w-full z-50 bg-white'>
+          <View className='border-b border-b-gray-300' />
 
-        <View className='px-2'>
-          {/* subtotal & total */}
-          <View className='flex pt-3 pb-1 px-3'>
-            <View className='flex flex-row justify-between'>
-              <Text className='font-semibold text-lg text-black'>Subtotal:</Text>
-              <Text style={{color: theme.azul,}} className='font-semibold text-lg text-black'>Bs. {subtotal}</Text>
+          <View className='px-2'>
+            {/* subtotal & total */}
+            <View className='flex pt-3 pb-1 px-3'>
+              <View className='flex flex-row justify-between'>
+                <Text className='font-semibold text-lg text-black'>Subtotal:</Text>
+                <Text style={{color: theme.azul,}} className='font-semibold text-lg text-black'>Bs. {subtotal}</Text>
+              </View>
+
+              <View className='flex flex-row justify-between'>
+                <Text className='font-bold text-xl mb-2 text-black'>Total:</Text>
+                <Text style={{color: theme.azul,}} className='font-bold text-xl mb-2 text-black'>Bs. {total}</Text>
+              </View>
             </View>
 
-            <View className='flex flex-row justify-between'>
-              <Text className='font-bold text-xl mb-2 text-black'>Total:</Text>
-              <Text style={{color: theme.azul,}} className='font-bold text-xl mb-2 text-black'>Bs. {total}</Text>
-            </View>
+            {/* btn confirm */}
+            <TouchableOpacity onPress={() => ''} className='rounded-xl py-3' style={{backgroundColor: theme.verde}}>
+              <Text className='color-white text-center font-bold text-xl'>Confirmar pedido ({productsCart.length} {productsCart.length === 1 ? 'producto' : 'productos'})</Text>
+            </TouchableOpacity>
           </View>
-
-          {/* btn confirm */}
-          <TouchableOpacity onPress={() => ''} className='rounded-xl py-3' style={{backgroundColor: theme.verde}}>
-            <Text className='color-white text-center font-bold text-xl'>Confirmar pedido ({productsCart.length} {productsCart.length === 1 ? 'producto' : 'productos'})</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+      )}
     </>
   )
 }
