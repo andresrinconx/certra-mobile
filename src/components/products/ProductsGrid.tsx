@@ -25,7 +25,29 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
 
   // change cantidad (input)
   useEffect(() => {
-    inputChange(id, Number(cantidadLocal))
+    if(cantidadLocal < 1) {
+      const updatedProducts = products.map(product => {
+        if (product.id === id && product.agregado === true) {
+          return {...product, cantidad: Number(null)}
+        } else {
+          return {...product}
+        }
+      })
+      setProducts(updatedProducts)
+
+      setTimeout(() => {
+        const updatedProducts = products.map(product => {
+          if (product.id === id && product.agregado === true) {
+            return {...product, cantidad: 1}
+          } else {
+            return {...product}
+          }
+        })
+        setProducts(updatedProducts)
+      }, 3000);
+    } else {
+      inputChange(id, cantidadLocal)
+    }
   }, [cantidadLocal])
 
   return (
