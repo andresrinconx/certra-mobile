@@ -9,7 +9,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
   const [cantidadLocal, setCantidadLocal] = useState(1)
 
   const {products, setProducts, increase, decrease, inputChange} = useInv()
-  const {descrip, precio1, cantidad, agregado, id} = item
+  const {descrip, precio1, cantidad, agregado, id, image_url} = item
 
   // add to cart
   const handleAddToCart = () => {
@@ -31,8 +31,12 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
   return (
     <View className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
       {/* img */}
-      <View className='border-b-[#c0c0c0] border-b mb-2 justify-center items-center'>
-        <Image className='w-32 h-32' source={require('../../assets/Acetaminofen.png')} />
+      <View className='border-b-gray-300 border-b mb-2 justify-center items-center'>
+        {image_url === null ? (
+          <Image className='w-32 h-32' source={require('../../assets/Acetaminofen.png')} />
+        ) : (
+          <Image className='w-32 h-32' source={{uri: `${image_url}`}} />
+        )}
       </View>
       
       {/* texts & btn */}
