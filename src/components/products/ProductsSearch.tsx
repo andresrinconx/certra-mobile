@@ -1,45 +1,25 @@
-import {useState} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { styles, theme } from '../../styles'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 import useInv from '../../hooks/useInv'
+import {ArrowUpLeftIcon, MagnifyingGlassCircleIcon} from 'react-native-heroicons/mini'
+import {useNavigation} from '@react-navigation/native'
 
 const ProductsSearch = ({product}: {product: ProductoInterface}) => {
-  const [disabledBtn, setDisabledBtn] = useState(false) // en este caso debe ser un state local, del componente
-  
-  const {descrip, precio1} = product
-  const {setProductsCart, productsCart} = useInv()
-
-  // add to cart
-  const handleAddToCart = () => {
-    setProductsCart([...productsCart, product])
-    setDisabledBtn(true)
-  }
+  const {descrip} = product
+  const navigation = useNavigation()
 
   return (
-    <View className='flex flex-row items-center h-16 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
-      style={styles.shadow}
+    <TouchableOpacity className='flex flex-row items-center justify-between mb-5 px-2'
+      onPress={() => navigation.navigate('Product', { product })}
     >
-
-      {/* textos item */}
-      <Text className={`text-black text-sm mb-1 basis-[60%] pr-2`} numberOfLines={2}>
-        {descrip}
-      </Text>
-
-      <Text style={{color: theme.azul,}} className={`font-bold text-lg basis-[30%] pl-1.5`}>
-        Bs. {precio1}
-      </Text>
-
-      {/* btn */}
-      <View className='basis-[10%] flex flex-row justify-center items-center'>
-        <TouchableOpacity onPress={handleAddToCart} className={`rounded-full p-5 mb-2 flex flex-row justify-center items-center`}
-          style={{backgroundColor: disabledBtn ? 'rgba(0, 0, 0, 0.5)' : theme.verde,}}
-          disabled={disabledBtn}
-        >
-          <Text className='absolute color-white text-3xl'>+</Text>
-        </TouchableOpacity>  
+      <View className='flex flex-row items-center gap-2 basis-[80%]'>
+        <MagnifyingGlassCircleIcon size={40} color='lightgray' />
+        <Text className='text-black text-base' numberOfLines={1}>{descrip}</Text>
       </View>
-    </View>
+      <View>
+        <ArrowUpLeftIcon size={20} color='black' />
+      </View>
+    </TouchableOpacity>
   )
 }
 

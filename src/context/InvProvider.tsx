@@ -220,7 +220,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const removeElement = (id: number) => {
     const updatedProducts = products.map(product => {
       if (product.id === id && product.agregado === true) {
-        return {...product, agregado: false}
+        return {...product, agregado: false, cantidad: 1}
       } else {
         return {...product}
       }
