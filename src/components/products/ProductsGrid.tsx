@@ -66,17 +66,17 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
                 </TouchableOpacity>
               </View>
 
-              <View className='w-[80px]'>
-                <Text className='text-center text-lg -my-4 text-white font-bold'>{cantidad}</Text>
-              </View>
-
               {/* <View className='w-[80px]'>
+                <Text className='text-center text-lg -my-4 text-white font-bold'>{cantidad}</Text>
+              </View> */}
+
+              <View className='w-[80px]'>
                 <TextInput className='text-center text-lg -my-4 text-white font-bold'
                   keyboardType='numeric'
                   value={String(cantidad)}
                   onChangeText={text => setCantidadLocal(Number(text))}
                 />
-              </View> */}
+              </View>
 
               <View>
                 <TouchableOpacity onPress={() => increase(id, cantidad)} className=''>
