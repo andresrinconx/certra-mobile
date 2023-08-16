@@ -213,8 +213,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         }
       })
       setProducts(updatedProducts)
-    } else {
-      
     }
   }
   
