@@ -72,7 +72,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
 
               <View className='w-[80px]'>
                 <TextInput className='text-center text-lg -my-4 text-white font-bold'
-                  keyboardType='numeric'
+                  // keyboardType='numeric'
                   value={String(cantidad)}
                   onChangeText={text => setCantidadLocal(Number(text))}
                 />
