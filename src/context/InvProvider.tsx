@@ -27,6 +27,10 @@ const InvContext = createContext<{
   increase: (id: number, cantidad: number) => any
   decrease: (id: number, cantidad: number) => any
   inputChange: (id: number, cantidad: number) => any
+  subtotal: number
+  setSubtotal: (subtotal: number) => void
+  total: number
+  setTotal: (total: number) => void
 }>({
   productsCart: [],
   setProductsCart: () => {},
@@ -48,12 +52,18 @@ const InvContext = createContext<{
   increase: () => {},
   decrease: () => {},
   inputChange: () => {},
+  subtotal: 0,
+  setSubtotal: () => {},
+  total: 0,
+  setTotal: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
-  // products
+  // products & cart
   const [products, setProducts] = useState<ProductoInterface[]>([])
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
+  const [subtotal, setSubtotal] = useState(0)
+  const [total, setTotal] = useState(0)
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
@@ -154,6 +164,17 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     const addedProducts = products.filter(product => product.agregado === true)
     setProductsCart(addedProducts)
   }, [products])
+  
+  // set subtotal & total
+  useEffect(() => {
+    // subtotal
+    const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    setSubtotal(subtotal)
+
+    // total
+    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    setTotal(total)
+  }, [productsCart])
 
   // increase & decrease
   const increase = (id: number, cantidad: number) => {
@@ -233,7 +254,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setValueSearchCustomers,
       increase,
       decrease,
-      inputChange
+      inputChange,
+      subtotal,
+      setSubtotal,
+      total,
+      setTotal
     }}>
       {children}
     </InvContext.Provider>

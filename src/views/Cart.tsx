@@ -6,7 +6,7 @@ import useInv from '../hooks/useInv'
 import ProductsCart from '../components/products/ProductsCart'
 
 const Cart = () => {
-  const {productsCart, clearCart} = useInv()
+  const {productsCart, clearCart, subtotal, total} = useInv()
   const navigation = useNavigation()
 
   return (
@@ -62,12 +62,12 @@ const Cart = () => {
           <View className='flex pt-3 pb-1 px-3'>
             <View className='flex flex-row justify-between'>
               <Text className='font-semibold text-lg text-black'>Subtotal:</Text>
-              <Text style={{color: theme.azul,}} className='font-semibold text-lg text-black'>Bs. {'10.000'}</Text>
+              <Text style={{color: theme.azul,}} className='font-semibold text-lg text-black'>Bs. {subtotal}</Text>
             </View>
 
             <View className='flex flex-row justify-between'>
               <Text className='font-bold text-xl mb-2 text-black'>Total:</Text>
-              <Text style={{color: theme.azul,}} className='font-bold text-xl mb-2 text-black'>Bs. {'10.000'}</Text>
+              <Text style={{color: theme.azul,}} className='font-bold text-xl mb-2 text-black'>Bs. {total}</Text>
             </View>
           </View>
 
