@@ -91,10 +91,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       try {
         setLoaders({...loaders, loadingStorageInv: true})
 
-        // productsCart
-        const cartStorage = await getDataStorage('productsCart')
-        console.log(cartStorage)
-        setProductsCart(cartStorage ? JSON.parse(cartStorage) : null)
+        // products
+        const productsStorage = await getDataStorage('products')
+        setTimeout(() => {
+          setProducts(productsStorage ? JSON.parse(productsStorage) : [])
+        }, 1000)
         // flowControl
         const flowControlStorage = await getDataStorage('flowControl')
         setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
@@ -107,17 +108,17 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     getCartStorage()
   }, [])
 
-  // set productsCart
+  // set products
   useEffect(() => {
-    const productsCartStorage = async () => {
+    const setProductsStorage = async () => {
       try {
-        await setDataStorage('productsCart', productsCart)
+        await setDataStorage('products', products)
       } catch (error) {
         console.log(error)
       }
     }
-    productsCartStorage()
-  }, [productsCart])
+    setProductsStorage()
+  }, [products])
 
   // set flow control
   useEffect(() => {

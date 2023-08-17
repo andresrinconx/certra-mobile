@@ -76,14 +76,14 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   // add myUser storage
   useEffect(() => {
     if(myUser.letters) {
-      const cartStorage = async () => {
+      const setMyUserStorage = async () => {
         try {
           await setDataStorage('myUser', myUser)
         } catch (error) {
           console.log(error)
         }
       }
-      cartStorage()
+      setMyUserStorage()
     }
   }, [myUser])
 
