@@ -11,13 +11,23 @@ import useInv from '../hooks/useInv'
 const Product = () => {
   const [product, setProduct] = useState<ProductoInterface>({descrip: '', precio1: 0, id: 0, image_url: '', cantidad: 1, agregado: false})
 
-  const {products, setProducts} = useInv()
+  const {products, setProducts, productsCart} = useInv()
   const navigation = useNavigation()
   const route = useRoute()
 
   useEffect(() => {
     setProduct(route.params as ProductoInterface)
   }, [route])
+
+  // when is removed from cart
+  useEffect(() => {
+    if(product.agregado) {
+      const inCart = productsCart.find(item => item.id === product.id)
+      if(inCart === undefined) {
+        setProduct({...product, agregado: false})
+      }
+    }
+  }, [productsCart])
 
   // product on cart
   useEffect(() => {
@@ -52,9 +62,9 @@ const Product = () => {
     if(productInGrid !== undefined) {
       const updatedProducts = products.map(item => {
         if (item.id === product.id && product.agregado === false) {
-          return {...product, agregado: true}
+          return {...item, agregado: true}
         } else {
-          return {...product}
+          return {...item}
         }
       })
       setProducts(updatedProducts)
