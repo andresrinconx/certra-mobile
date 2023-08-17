@@ -4,5 +4,5 @@ export default interface ProductoInterface {
   id: number
   cantidad: number
   agregado: boolean
-  image_url: URL
+  image_url: URL | string
 }

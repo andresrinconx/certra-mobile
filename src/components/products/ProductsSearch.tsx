@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Pressable } from 'react-native'
 import { styles, theme } from '../../styles'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 import useInv from '../../hooks/useInv'
+import {useNavigation} from '@react-navigation/native'
 import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 
 const ProductsSearch = ({product}: {product: ProductoInterface}) => {
@@ -11,6 +12,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
 
   const {descrip, precio1, image_url, id} = product
   const {setProducts, products} = useInv()
+  const navigation = useNavigation()
 
   useEffect(() => {
     const productOnCart = products.find(product => product.id === id && product.agregado === true)
@@ -67,7 +69,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
   }
 
   return (
-    <View className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
+    <Pressable onPress={() => navigation.navigate('Product', {...product, agregado, cantidad})} className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
       style={styles.shadow}
     >
       <View className='flex flex-row'>
@@ -137,7 +139,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
         </View>
         
       </View>
-    </View>
+    </Pressable>
   )
 }
 
