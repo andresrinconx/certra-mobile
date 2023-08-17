@@ -91,7 +91,7 @@ const ModalSearch = () => {
               numColumns={1}
               onScroll={handleScroll}
               contentContainerStyle={{
-                paddingBottom: 5,
+                paddingBottom: 20,
               }}
               showsVerticalScrollIndicator={false}
               renderItem={({item}) => {
