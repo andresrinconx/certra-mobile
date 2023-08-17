@@ -11,8 +11,18 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
   const [cantidad, setCantidad] = useState(1)
 
   const {descrip, precio1, image_url, id} = product
-  const {setProducts, products} = useInv()
+  const {setProducts, products, productsCart} = useInv()
   const navigation = useNavigation()
+
+  // when is removed from cart
+  useEffect(() => {
+    if(agregado) {
+      const inCart = productsCart.find(item => item.id === id)
+      if(inCart === undefined) {
+        setAgregado(false)
+      }
+    }
+  }, [productsCart])
 
   // product on cart
   useEffect(() => {
