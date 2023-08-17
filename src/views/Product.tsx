@@ -15,25 +15,29 @@ const Product = () => {
   const navigation = useNavigation()
   const route = useRoute()
 
+  useEffect(() => {
+    setProduct(route.params as ProductoInterface)
+  }, [route])
+
   // product on cart
   useEffect(() => {
     const productOnCart = products.find(item => item.id === product.id && product.agregado === true)
     if(productOnCart !== undefined) {
       setProduct({...product, agregado: true, cantidad: productOnCart.cantidad})
     }
-  }, [])
+  }, [products])
 
   // update 'cantidad'
-  // useEffect(() => {
-  //   const updatedProducts = products.map(item => {
-  //     if (item.id === product.id && product.agregado === true) {
-  //       return {...product, cantidad: product.cantidad}
-  //     } else {
-  //       return {...product}
-  //     }
-  //   })
-  //   setProducts(updatedProducts)
-  // }, [product.cantidad])
+  useEffect(() => {
+    const updatedProducts = products.map(item => {
+      if (item.id === product.id && item.agregado === true) {
+        return {...item, cantidad: product.cantidad}
+      } else {
+        return {...item}
+      }
+    })
+    setProducts(updatedProducts)
+  }, [product.cantidad])
   
   // actions
   const addToProducts = () => {
@@ -61,9 +65,15 @@ const Product = () => {
     }
   }
 
-  useEffect(() => {
-    setProduct(route.params as ProductoInterface)
-  }, [route])
+  // increase & decrease
+  const increase = () => {
+    setProduct({...product, cantidad: product.cantidad + 1})
+  }
+  const decrease = () => {
+    if(product.cantidad > 1) {
+      setProduct({...product, cantidad: product.cantidad - 1})
+    }
+  }
 
   return (
     <View className='flex-1'>
@@ -114,10 +124,10 @@ const Product = () => {
           {product.agregado && (
             <View className='w-[45%] pl-3'>
               <View className='flex flex-row justify-between rounded-xl' style={styles.shadow}>
-                <View className='flex justify-center rounded-l-lg w-10' style={{backgroundColor: false ? '#eaeaea' : '#d8d8d8'}}>
-                  <TouchableOpacity onPress={() => 'decrease(id, cantidad)'}
+                <View className='flex justify-center rounded-l-lg w-10' style={{backgroundColor: product.cantidad === 1 ? '#eaeaea' : '#d8d8d8'}}>
+                  <TouchableOpacity onPress={() => decrease()}
                     className='p-2 flex justify-center items-center py-2.5'
-                    disabled={true}
+                    disabled={product.cantidad === 1 ? true : false}
                   >
                     <MinusSmallIcon size={20} color='black' />
                   </TouchableOpacity>
@@ -133,7 +143,7 @@ const Product = () => {
                 </View>
 
                 <View className='flex justify-center rounded-r-lg w-10' style={{backgroundColor: '#d8d8d8'}}>
-                  <TouchableOpacity onPress={() => 'increase(id, cantidad)'}
+                  <TouchableOpacity onPress={() => increase()}
                     className='p-2 flex justify-center items-center py-2.5'
                   >
                     <PlusSmallIcon size={20} color='black' />

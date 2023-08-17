@@ -21,7 +21,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
       setAgregado(true)
       setCantidad(productOnCart.cantidad)
     }
-  }, [])
+  }, [products])
 
   // update 'cantidad'
   useEffect(() => {
