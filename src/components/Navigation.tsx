@@ -8,15 +8,17 @@ import Search from '../views/Search'
 import Product from '../views/Product'
 import useLogin from '../hooks/useLogin'
 import LoaderLogoScreen from './loaders/LoaderLogoScreen'
+import useInv from '../hooks/useInv'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const {login, loaders} = useLogin()
+  const {login, loaders: loadersLogin} = useLogin()
+  const {loaders: loadersInv} = useInv()
 
   return (
     <>
-      {loaders.loadingLogin ? (
+      {loadersLogin.loadingLogin || loadersInv.loadingStorageInv ? (
         <LoaderLogoScreen />
       ) : (
         <NavigationContainer>
