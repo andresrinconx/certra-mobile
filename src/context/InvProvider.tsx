@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react"
 import {Alert} from 'react-native'
-import { Squares2X2Icon, ListBulletIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from "../interfaces/ProductoInterface"
 import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData } from "../utils/api"
@@ -13,8 +12,6 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  modalSearch: boolean
-  setModalSearch: (modalSearch: boolean) => void
   clearCart: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
@@ -40,8 +37,6 @@ const InvContext = createContext<{
   setProducts: () => {},
   searchedProducts: [],
   setSearchedProducts: () => {},
-  modalSearch: false,
-  setModalSearch: () => {},
   clearCart: () => {},
   searchedCustomers: [],
   setSearchedCustomers: () => {},
@@ -81,8 +76,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     showSelectLabel: false,
     selected: false,
   })
-  // modals
-  const [modalSearch, setModalSearch] = useState(false)
   // loaders
   const [loaders, setLoaders] = useState({
     loadingProducts: false, 
@@ -268,8 +261,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       products,
       setProducts,
       clearCart,
-      setModalSearch,
-      modalSearch,
       searchedProducts,
       setSearchedProducts,
       searchedCustomers,
