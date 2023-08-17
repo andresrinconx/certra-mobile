@@ -20,6 +20,9 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
     if(productOnCart !== undefined) {
       setAgregado(true)
       setCantidad(productOnCart.cantidad)
+    } else {
+      setAgregado(false)
+      setCantidad(1)
     }
   }, [products])
 

@@ -156,7 +156,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }, [])
 
   // ----- ACTIONS
-  // set cart
+  // set productsCart
   useEffect(() => {
     const addedProducts = products.filter(product => product.agregado === true)
     setProductsCart(addedProducts)
