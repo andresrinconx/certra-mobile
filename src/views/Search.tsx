@@ -82,7 +82,7 @@ const Search = () => {
       </View>
 
       {/* results */}
-      <View className='mx-3 mb-32'>
+      <View className='mx-3 mb-16'>
         {loaders.loadingSearchedItems ? (
           <FlatList
             data={items}
