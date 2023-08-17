@@ -143,7 +143,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     const obtenerProductos = async () => {
       // tiene datos en el storage
       if(products.length === 0) {
-        console.log('none')
+        // sobreescribir datos de la api sin perder el storage
+        
+
       } else {
         try {
           setLoaders({...loaders, loadingProducts: true})
