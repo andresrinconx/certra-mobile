@@ -69,7 +69,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
   }
 
   return (
-    <Pressable onPress={() => navigation.navigate('Product', {...product, agregado, cantidad})} className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
+    <TouchableOpacity onPress={() => navigation.navigate('Product', {...product, agregado, cantidad})} className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
       style={styles.shadow}
     >
       <View className='flex flex-row'>
@@ -139,7 +139,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
         </View>
         
       </View>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

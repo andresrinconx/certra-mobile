@@ -72,7 +72,7 @@ const SelectCustomer = () => {
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
-            <View className='w-full flex flex-row items-center justify-between rounded-md mb-4' style={styles.shadow}>
+            <View className={`w-full flex flex-row items-center justify-between rounded-md ${flowControl.showSelectResults ? 'mb-0' : 'mb-4'}`} style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
                   <UserIcon size={20} color='gray' strokeWidth={2} />

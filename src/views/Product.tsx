@@ -48,15 +48,21 @@ const Product = () => {
       <View className=''>
         {/* img */}
         <View className='border-b-gray-300 border-b mb-2 pb-5 justify-center items-center'>
-          {product?.image_url === null ? (
-            <Image className='w-32 h-32' resizeMode='cover'
-              source={require('../assets/Acetaminofen.png')} 
+          {product?.image_url === '' || product?.image_url === null ? (
+            <Image className='w-52 h-52' resizeMode='cover'
+              source={require('../assets/Acetaminofen.png')}
             />
           ) : (
             <Image className='w-52 h-52' resizeMode='contain' 
               source={{uri: `${product?.image_url}`}}
             />
           )}
+        </View>
+
+        {/* texts */}
+        <View className='mx-3'>
+          <Text className='text-xl font-bold text-gray-700'>{product?.descrip}</Text>
+          <Text className=''>{product?.precio1}</Text>
         </View>
       </View>
     </View>

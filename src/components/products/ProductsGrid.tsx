@@ -1,7 +1,8 @@
 import {useState, useEffect} from 'react'
-import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, Pressable } from 'react-native'
 import { styles, theme } from '../../styles'
 import useInv from '../../hooks/useInv'
+import {useNavigation} from '@react-navigation/native'
 import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
@@ -10,6 +11,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
 
   const {increase, decrease, inputChange, addToCart} = useInv()
   const {descrip, precio1, cantidad, agregado, id, image_url} = item
+  const navigation = useNavigation()
 
   // change cantidad (input)
   useEffect(() => {
@@ -17,7 +19,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
   }, [cantidadLocal])
 
   return (
-    <View className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
+    <Pressable onPress={() => navigation.navigate('Product', {...item})} className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
       {/* img */}
       <View className='border-b-gray-300 border-b mb-2 justify-center items-center'>
         {image_url === null ? (
@@ -79,7 +81,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
           </View>
         )}
       </View>
-    </View>
+    </Pressable>
   )
 }
 

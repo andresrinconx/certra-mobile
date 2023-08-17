@@ -35,7 +35,9 @@ const Navigation = () => {
             <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login'}}/>
             <Stack.Screen name='Home' component={Home} options={{headerShown: false, title: 'Home', headerBackVisible: false}}/>
             <Stack.Screen name='Cart' component={Cart} options={{headerShown: false, title: 'Cart', headerTintColor: '#fff'}}/>
-            <Stack.Screen name='Product' component={Product} options={{headerShown: false, title: 'Product'}}/>
+            <Stack.Screen name='Product' component={Product} 
+              options={{headerShown: false, title: 'Product', animation: 'fade_from_bottom'}}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       )}
