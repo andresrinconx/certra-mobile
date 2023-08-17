@@ -34,8 +34,6 @@ const Product = () => {
     const productOnCart = products.find(item => item.id === product.id && product.agregado === true)
     if(productOnCart !== undefined) {
       setProduct({...product, agregado: true, cantidad: productOnCart.cantidad})
-    } else {
-      setProduct({...product, agregado: false, cantidad: 1})
     }
   }, [products])
 
