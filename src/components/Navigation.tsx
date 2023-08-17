@@ -14,11 +14,14 @@ const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
   const {login, loaders: loadersLogin} = useLogin()
+  const {loadingLogin} = loadersLogin
+
   const {loaders: loadersInv} = useInv()
+  const {loadingStorageInv} = loadersInv
 
   return (
     <>
-      {loadersLogin.loadingLogin || loadersInv.loadingStorageInv ? (
+      {loadingLogin || loadingStorageInv ? (
         <LoaderLogoScreen />
       ) : (
         <NavigationContainer>
