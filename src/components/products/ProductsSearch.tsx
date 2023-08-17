@@ -14,6 +14,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
   const {setProducts, products} = useInv()
   const navigation = useNavigation()
 
+  // product on cart
   useEffect(() => {
     const productOnCart = products.find(product => product.id === id && product.agregado === true)
     if(productOnCart !== undefined) {
@@ -22,6 +23,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
     }
   }, [])
 
+  // update 'cantidad'
   useEffect(() => {
     const updatedProducts = products.map(product => {
       if (product.id === id && product.agregado === true) {
