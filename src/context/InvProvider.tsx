@@ -165,11 +165,13 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // set subtotal & total
   useEffect(() => {
     // subtotal
-    const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    let subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    subtotal = Number(subtotal.toFixed(2))
     setSubtotal(subtotal)
 
     // total
-    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    let total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    total = Number(total.toFixed(2))
     setTotal(total)
   }, [productsCart])
 
