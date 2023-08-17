@@ -4,6 +4,7 @@ import { theme } from '../styles'
 import Home from '../views/Home'
 import Cart from '../views/Cart'
 import Login from '../views/Login'
+import Product from '../views/Product'
 import useLogin from '../hooks/useLogin'
 import LoaderLogoScreen from './loaders/LoaderLogoScreen'
 
@@ -31,27 +32,10 @@ const Navigation = () => {
               
             }}
           >
-            <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login' }}/>
-
-            <Stack.Screen name='Home'
-              options={{
-                headerShown: false,
-                title: 'Inventario',
-                headerBackVisible: false,
-              }}
-            >
-              {() => (<Home />)}
-            </Stack.Screen>
-
-            <Stack.Screen name='Cart'
-              options={{
-                headerShown: false, 
-                title: 'cart',
-                headerTintColor: '#fff',
-              }}
-            >
-              {() => (<Cart />)}
-            </Stack.Screen>
+            <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login'}}/>
+            <Stack.Screen name='Home' component={Home} options={{headerShown: false, title: 'Home', headerBackVisible: false}}/>
+            <Stack.Screen name='Cart' component={Cart} options={{headerShown: false, title: 'Cart', headerTintColor: '#fff'}}/>
+            <Stack.Screen name='Product' component={Product} options={{headerShown: false, title: 'Product'}}/>
           </Stack.Navigator>
         </NavigationContainer>
       )}

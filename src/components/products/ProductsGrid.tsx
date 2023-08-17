@@ -8,20 +8,8 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 const ProductsGrid = ({item}: {item: ProductoInterface}) => {
   const [cantidadLocal, setCantidadLocal] = useState(1)
 
-  const {products, setProducts, increase, decrease, inputChange} = useInv()
+  const {increase, decrease, inputChange, addToCart} = useInv()
   const {descrip, precio1, cantidad, agregado, id, image_url} = item
-
-  // add to cart
-  const handleAddToCart = () => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id || product.agregado === true) {
-        return {...product, agregado: true}
-      } else {
-        return {...product, agregado: false}
-      }
-    })
-    setProducts(updatedProducts)
-  }
 
   // change cantidad (input)
   useEffect(() => {
@@ -54,7 +42,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
         </Text>
 
         {!agregado && (
-          <TouchableOpacity onPress={handleAddToCart} className={`rounded-md mb-2`}
+          <TouchableOpacity onPress={() => addToCart(id)} className={`rounded-md mb-2`}
             style={{backgroundColor: theme.verde}}
           >
             <Text className='color-white text-center font-bold p-1 pb-1.5'>Agregar</Text>

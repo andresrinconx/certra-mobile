@@ -32,7 +32,6 @@ const Cart = () => {
         ) : (
           <View />
         )}
-        
       </View>
 
       {/* content */}

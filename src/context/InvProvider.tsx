@@ -32,6 +32,7 @@ const InvContext = createContext<{
   total: number
   setTotal: (total: number) => void
   removeElement: (id: number) => void
+  addToCart: (id: number) => void
 }>({
   productsCart: [],
   setProductsCart: () => {},
@@ -58,6 +59,7 @@ const InvContext = createContext<{
   total: 0,
   setTotal: () => {},
   removeElement: () => {},
+  addToCart: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
@@ -178,6 +180,18 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     setTotal(total)
   }, [productsCart])
 
+  // add to cart
+  const addToCart = (id: number) => {
+    const updatedProducts = products.map(product => {
+      if (product.id === id || product.agregado === true) {
+        return {...product, agregado: true}
+      } else {
+        return {...product, agregado: false}
+      }
+    })
+    setProducts(updatedProducts)
+  }
+
   // increase & decrease
   const increase = (id: number, cantidad: number) => {
     const updatedProducts = products.map(product => {
@@ -273,7 +287,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setSubtotal,
       total,
       setTotal,
-      removeElement
+      removeElement,
+      addToCart
     }}>
       {children}
     </InvContext.Provider>

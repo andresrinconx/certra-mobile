@@ -84,7 +84,7 @@ const ModalSearch = () => {
         </View>
 
         {/* results */}
-        <View className='mx-3'>
+        <View className='mx-3 mb-32'>
           {loaders.loadingSearchedItems ? (
             <FlatList
               data={items}
@@ -108,7 +108,7 @@ const ModalSearch = () => {
                 onScroll={handleScroll}
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{
-                  paddingBottom: 5,
+                  paddingBottom: 20,
                 }}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item}) => {

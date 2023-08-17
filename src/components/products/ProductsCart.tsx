@@ -34,7 +34,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
         </View>
 
         {/* info */}
-        <View className='basis-[65%] pr-5'>
+        <View className='basis-[65%] pr-5 border-l-[0.2px] border-l-gray-400 pl-2'>
           {/* texts */}
           <Text className='text-black text-sm mb-1' numberOfLines={1}>
             {descrip}
