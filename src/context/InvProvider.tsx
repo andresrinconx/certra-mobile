@@ -85,8 +85,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   })
 
   useEffect(() => {
-    console.log(loaders.loadingStorageInv)
-  }, [loaders.loadingStorageInv])
+    console.log(productsCart)
+  }, [productsCart])
 
   // ----- STORAGE
   // get storage (productsCart, flowControl)
@@ -141,23 +141,28 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
-      try {
-        setLoaders({...loaders, loadingProducts: true})
-        const data = await fetchTableData('Sinv')
-        
-        // fail api
-        if(data === undefined) {return}
-
-        // Add properties to each producto
-        const productos = data?.map((producto: ProductoInterface) => ({
-          ...producto,
-          agregado: false,
-          cantidad: 1,
-        }))
-        setProducts(productos)
-        setLoaders({...loaders, loadingProducts: false})
-      } catch (error) {
-        console.log(error)
+      // tiene datos en el storage
+      if(products.length === 0) {
+        console.log('none')
+      } else {
+        try {
+          setLoaders({...loaders, loadingProducts: true})
+          const data = await fetchTableData('Sinv')
+          
+          // fail api
+          if(data === undefined) {return}
+  
+          // Add properties to each producto
+          const productos = data?.map((producto: ProductoInterface) => ({
+            ...producto,
+            agregado: false,
+            cantidad: 1,
+          }))
+          setProducts(productos)
+          setLoaders({...loaders, loadingProducts: false})
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
     obtenerProductos()
