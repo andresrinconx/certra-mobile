@@ -105,7 +105,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
             )}
 
             {agregado && (
-              <View className={`rounded-md mb-2`} style={{backgroundColor: theme.verde}}>
+              <View className='rounded-md mb-2 w-32' style={{backgroundColor: theme.verde}}>
                 <View className='flex flex-row justify-between items-center p-1 px-4'>
                   <View>
                     <TouchableOpacity onPress={() => decrease()} className=''>
@@ -113,7 +113,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
                     </TouchableOpacity>
                   </View>
     
-                  <View className='w-[80px]'>
+                  <View>
                     <Text className='text-center text-lg -my-4 text-white font-bold'>{cantidad}</Text>
                   </View>
     
