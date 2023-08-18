@@ -56,10 +56,8 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
       if(item.id === id) {
-        const cleanNumber = localData.cantidad.replace(/-/g, '')
-        const valorNumerico = parseFloat(cleanNumber)
-        const cleanCantidad = Math.abs(valorNumerico)
-        
+        const cleanCantidad = parseFloat(localData.cantidad.replace(/-/g, ''))
+
         return {...item, cantidad: cleanCantidad}
       } else {
         return {...item}
