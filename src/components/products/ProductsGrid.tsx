@@ -12,7 +12,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
     cantidad: 1
   })
 
-  const {increase, decrease, inputChange, addToCart, productsCart} = useInv()
+  const {increase, decrease, addToCart, productsCart} = useInv()
   const {descrip, precio1, id, image_url} = product
   const navigation = useNavigation()
 

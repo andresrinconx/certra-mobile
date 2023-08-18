@@ -23,7 +23,6 @@ const InvContext = createContext<{
   setValueSearchCustomers: (valueSearchCustomers: string) => void
   increase: (id: number) => void
   decrease: (id: number) => void
-  inputChange: (id: number, cantidad: number) => void
   subtotal: number
   setSubtotal: (subtotal: number) => void
   total: number
@@ -48,7 +47,6 @@ const InvContext = createContext<{
   setValueSearchCustomers: () => {},
   increase: () => {},
   decrease: () => {},
-  inputChange: () => {},
   subtotal: 0,
   setSubtotal: () => {},
   total: 0,
@@ -202,20 +200,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setProductsCart(updatedProductsCart)
     }
   }
-  const inputChange = (id: number, cantidad: number) => {
-    // if(cantidad > 1) {
-    //   const updatedProducts = products.map(product => {
-    //     if (product.id === id && product.agregado === true && cantidad > 0) {
-    //       return {...product, cantidad}
-    //     } else if(product.id === id && product.agregado === true) {
-    //       return {...product, cantidad: 1}
-    //     } else {
-    //       return {...product}
-    //     }
-    //   })
-    //   setProducts(updatedProducts)
-    // }
-  }
   
   // remove element from cart
   const removeElement = (id: number) => {
@@ -257,7 +241,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       setValueSearchCustomers,
       increase,
       decrease,
-      inputChange,
       subtotal,
       setSubtotal,
       total,

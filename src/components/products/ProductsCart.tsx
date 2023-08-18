@@ -6,15 +6,8 @@ import useInv from '../../hooks/useInv'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsCart = ({product}: {product: ProductoInterface}) => {
-  const [cantidadLocal, setCantidadLocal] = useState(1)
-
-  const {increase, decrease, inputChange, removeElement} = useInv()
+  const {increase, decrease, removeElement} = useInv()
   const {descrip, precio1, id, cantidad, image_url} = product
-
-  // change cantidad (input)
-  useEffect(() => {
-    inputChange(id, cantidadLocal)
-  }, [cantidadLocal])
 
   return (
     <View className='flex justify-center items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px]' style={styles.shadow}>
@@ -57,14 +50,18 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
                   <MinusSmallIcon size={20} color='black' />
                 </TouchableOpacity>
               </View>
+
+              <TouchableOpacity className='flex flex-row justify-center items-center'>
+                <Text className='text-center text-base text-black w-[65px]'>{cantidad}</Text>
+              </TouchableOpacity>
               
-              <View className='flex flex-row justify-center items-center'>
+              {/* <View className='flex flex-row justify-center items-center'>
                 <TextInput className='text-center text-base text-black w-[80px]'
                   keyboardType='numeric'
                   value={String(cantidad)}
                   onChangeText={text => setCantidadLocal(Number(text))}
                 />
-              </View>
+              </View> */}
 
               <View className='flex justify-center rounded-r-lg w-10' style={{backgroundColor: '#d8d8d8'}}>
                 <TouchableOpacity onPress={() => increase(id)}
