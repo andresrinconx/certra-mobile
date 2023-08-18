@@ -175,7 +175,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // add to cart
   const addToCart = (product: ProductoInterface) => {
-    setProductsCart([...productsCart, {...product, agregado: true}])
+    setProductsCart([...productsCart, {...product, agregado: true, cantidad: 1}])
   }
 
   // increase & decrease

@@ -7,84 +7,27 @@ import {useNavigation} from '@react-navigation/native'
 import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 
 const ProductsSearch = ({product}: {product: ProductoInterface}) => {
-  const [agregado, setAgregado] = useState(false)
-  const [cantidad, setCantidad] = useState(1)
+  const [localData, setLocalData] = useState({
+    agregado: false,
+    cantidad: 1
+  })
 
   const {descrip, precio1, image_url, id} = product
-  const {setProducts, products, productsCart} = useInv()
+  const {productsCart, increase, decrease, addToCart} = useInv()
   const navigation = useNavigation()
 
-  // when is removed from cart
+  // refresh data when cart change
   useEffect(() => {
-    if(agregado) {
-      const inCart = productsCart.find(item => item.id === id)
-      if(inCart === undefined) {
-        setAgregado(false)
-      }
+    const productInCart = productsCart.find(productInCart => productInCart.id === id)
+    if(productInCart !== undefined) { // product in cart
+      setLocalData({...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad})
+    } else {
+      setLocalData({...localData, agregado: false, cantidad: 1})
     }
   }, [productsCart])
 
-  // product on cart
-  useEffect(() => {
-    const productOnCart = products.find(product => product.id === id && product.agregado === true)
-    if(productOnCart !== undefined) {
-      setAgregado(true)
-      setCantidad(productOnCart.cantidad)
-    } else {
-      setAgregado(false)
-      setCantidad(1)
-    }
-  }, [products])
-
-  // update 'cantidad'
-  useEffect(() => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id && product.agregado === true) {
-        return {...product, cantidad}
-      } else {
-        return {...product}
-      }
-    })
-    setProducts(updatedProducts)
-  }, [cantidad])
-  
-  const addToProducts = () => {
-    if(!agregado) {
-      setAgregado(true)
-    }
-    
-    // is in grid
-    const productInGrid = products.find(product => product.id === id)
-    if(productInGrid !== undefined) {
-      const updatedProducts = products.map(product => {
-        if (product.id === id && product.agregado === false) {
-          return {...product, agregado: true}
-        } else {
-          return {...product}
-        }
-      })
-      setProducts(updatedProducts)
-    } else {
-      setProducts([...products, {
-        ...product, 
-        agregado: true,
-        cantidad: 1
-      }])
-    }
-  }
-
-  // increase & decrease
-  const increase = () => {
-    setCantidad(cantidad + 1)
-  }
-  const decrease = () => {
-    if(cantidad > 1) {
-      setCantidad(cantidad - 1)
-    }
-  }
-
   return (
-    <Pressable onPress={() => navigation.navigate('Product', {...product, agregado, cantidad})} className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
+    <Pressable onPress={() => navigation.navigate('Product', {...product})} className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
       style={styles.shadow}
     >
       <View className='flex flex-row'>
@@ -113,25 +56,25 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
           </Text>
 
           <View className='flex items-end'>
-            {!agregado && (
-              <TouchableOpacity onPress={() => addToProducts()} className='rounded-md w-32'
+            {!localData.agregado && (
+              <TouchableOpacity onPress={() => addToCart(product)} className='rounded-md w-32'
                 style={{backgroundColor: theme.verde}}
               >
                 <Text className='color-white text-center font-bold p-1 pb-1.5'>Agregar</Text>
               </TouchableOpacity>
             )}
 
-            {agregado && (
+            {localData.agregado && (
               <View className='rounded-md mb-2 w-32' style={{backgroundColor: theme.verde}}>
                 <View className='flex flex-row justify-between items-center p-1 px-4'>
                   <View>
-                    <TouchableOpacity onPress={() => decrease()} className=''>
+                    <TouchableOpacity onPress={() => decrease(id)} className=''>
                       <MinusSmallIcon size={20} color='white' />
                     </TouchableOpacity>
                   </View>
     
                   <View>
-                    <Text className='text-center text-lg -my-4 text-white font-bold'>{cantidad}</Text>
+                    <Text className='text-center text-lg -my-4 text-white font-bold'>{localData.cantidad}</Text>
                   </View>
     
                   {/* <View className='w-[80px]'>
@@ -143,7 +86,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
                   </View> */}
     
                   <View>
-                    <TouchableOpacity onPress={() => increase()} className=''>
+                    <TouchableOpacity onPress={() => increase(id)} className=''>
                       <PlusSmallIcon size={20} color='white' />
                     </TouchableOpacity>
                   </View>
