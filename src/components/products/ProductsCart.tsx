@@ -37,8 +37,6 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
         console.log('cero')
       }
     }
-    // console.log(productInCart?.id + '-' + productInCart?.cantidad)
-    
   }, [localData.cantidad])
 
   return (
