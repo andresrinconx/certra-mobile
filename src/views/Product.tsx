@@ -10,8 +10,12 @@ import useInv from '../hooks/useInv'
 
 const Product = () => {
   const [product, setProduct] = useState<ProductoInterface>({descrip: '', precio1: 0, id: 0, image_url: '', cantidad: 1, agregado: false})
+  const [localData, setLocalData] = useState({
+    agregado: false,
+    cantidad: 1
+  })
 
-  const {products, setProducts, productsCart} = useInv()
+  const {productsCart, increase, decrease, addToCart} = useInv()
   const navigation = useNavigation()
   const route = useRoute()
 
@@ -19,71 +23,17 @@ const Product = () => {
     setProduct(route.params as ProductoInterface)
   }, [route])
 
-  // when is removed from cart
+  // refresh data when cart change
   useEffect(() => {
-    if(product.agregado) {
-      const inCart = productsCart.find(item => item.id === product.id)
-      if(inCart === undefined) {
-        setProduct({...product, agregado: false})
-      }
-    }
-  }, [productsCart])
-
-  // product on cart
-  useEffect(() => {
-    const productOnCart = products.find(item => item.id === product.id && product.agregado === true)
-    if(productOnCart !== undefined) {
-      setProduct({...product, agregado: true, cantidad: productOnCart.cantidad})
-    }
-  }, [products])
-
-  // update 'cantidad'
-  useEffect(() => {
-    const updatedProducts = products.map(item => {
-      if (item.id === product.id && item.agregado === true) {
-        return {...item, cantidad: product.cantidad}
-      } else {
-        return {...item}
-      }
-    })
-    setProducts(updatedProducts)
-  }, [product.cantidad])
-  
-  // actions
-  const addToProducts = () => {
-    if(!product.agregado) {
-      setProduct({...product, agregado: true})
-    }
-    
-    // is in grid
-    const productInGrid = products.find(item => item.id === product.id)
-    if(productInGrid !== undefined) {
-      const updatedProducts = products.map(item => {
-        if (item.id === product.id && product.agregado === false) {
-          return {...item, agregado: true}
-        } else {
-          return {...item}
-        }
-      })
-      setProducts(updatedProducts)
+    const productInCart = productsCart.find(productInCart => productInCart.id === product.id)
+    if(productInCart !== undefined) { // product in cart
+      console.log('in cart')
+      setLocalData({...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad})
     } else {
-      setProducts([...products, {
-        ...product,
-        agregado: true,
-        cantidad: 1
-      }])
+      console.log('not in cart')
+      setLocalData({...localData, agregado: false, cantidad: 1})
     }
-  }
-
-  // increase & decrease
-  const increase = () => {
-    setProduct({...product, cantidad: product.cantidad + 1})
-  }
-  const decrease = () => {
-    if(product.cantidad > 1) {
-      setProduct({...product, cantidad: product.cantidad - 1})
-    }
-  }
+  }, [productsCart, product])
 
   return (
     <View className='flex-1'>
@@ -131,20 +81,20 @@ const Product = () => {
 
         <View className={`flex flex-row items-center ${product.agregado ? 'justify-between' : 'justify-center'} gap-5 py-4`}>
           {/* increase & decrease */}
-          {product.agregado && (
+          {localData.agregado && (
             <View className='w-[45%] pl-3'>
               <View className='flex flex-row justify-between rounded-xl' style={styles.shadow}>
-                <View className='flex justify-center rounded-l-lg w-10' style={{backgroundColor: product.cantidad === 1 ? '#eaeaea' : '#d8d8d8'}}>
-                  <TouchableOpacity onPress={() => decrease()}
+                <View className='flex justify-center rounded-l-lg w-10' style={{backgroundColor: localData.cantidad === 1 ? '#eaeaea' : '#d8d8d8'}}>
+                  <TouchableOpacity onPress={() => decrease(product.id)}
                     className='p-2 flex justify-center items-center py-2.5'
-                    disabled={product.cantidad === 1 ? true : false}
+                    disabled={localData.cantidad === 1 ? true : false}
                   >
                     <MinusSmallIcon size={20} color='black' />
                   </TouchableOpacity>
                 </View>
                 
                 <View className='flex flex-row justify-center items-center'>
-                  <Text className='text-center text-xl text-black w-[80px]'>{product.cantidad}</Text>
+                  <Text className='text-center text-xl text-black w-[80px]'>{localData.cantidad}</Text>
                   {/* <TextInput className='text-center text-base text-black w-[80px]'
                     keyboardType='numeric'
                     value={String(product.cantidad)}
@@ -153,7 +103,7 @@ const Product = () => {
                 </View>
 
                 <View className='flex justify-center rounded-r-lg w-10' style={{backgroundColor: '#d8d8d8'}}>
-                  <TouchableOpacity onPress={() => increase()}
+                  <TouchableOpacity onPress={() => increase(product.id)}
                     className='p-2 flex justify-center items-center py-2.5'
                   >
                     <PlusSmallIcon size={20} color='black' />
@@ -164,12 +114,12 @@ const Product = () => {
           )}
 
           {/* btn confirm */}
-          <View className={`${!product.agregado ? 'w-[90%] flex flex-row justify-center' : 'w-[45%] pr-3'}`}>
-            <TouchableOpacity onPress={() => addToProducts()} className='rounded-xl py-2 w-full' 
-              style={{backgroundColor: product.agregado ? '#d2ec92' : theme.verde}}
+          <View className={`${!localData.agregado ? 'w-[90%] flex flex-row justify-center' : 'w-[45%] pr-3'}`}>
+            <TouchableOpacity onPress={() => addToCart(product)} className='rounded-xl py-2 w-full' 
+              style={{backgroundColor: localData.agregado ? '#d2ec92' : theme.verde}}
               disabled={false}
             >
-              <Text className='color-white text-center font-bold text-xl'>{product.agregado ? 'Agregado' : 'Agregar'}</Text>
+              <Text className='color-white text-center font-bold text-xl'>{localData.agregado ? 'Agregado' : 'Agregar'}</Text>
             </TouchableOpacity>
           </View>
         </View>
