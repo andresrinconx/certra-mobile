@@ -6,8 +6,42 @@ import useInv from '../../hooks/useInv'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsCart = ({product}: {product: ProductoInterface}) => {
-  const {increase, decrease, removeElement} = useInv()
-  const {descrip, precio1, id, cantidad, image_url} = product
+  const [localData, setLocalData] = useState({
+    agregado: false,
+    cantidad: 1
+  })
+
+  const {increase, decrease, removeElement, productsCart, setProductsCart} = useInv()
+  const {descrip, precio1, cantidad, id, image_url} = product
+
+  // refresh data when cart change
+  useEffect(() => {
+    const productInCart = productsCart.find(productInCart => productInCart.id === id)
+    if(productInCart !== undefined) { // product in cart
+      setLocalData({...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad})
+    } else {
+      setLocalData({...localData, agregado: false, cantidad: 1})
+    }
+  }, [productsCart])
+
+  useEffect(() => {
+    const productInCart = productsCart.find(item => item.id === id)
+    
+    if(productInCart !== undefined) {
+      if(productInCart.cantidad === localData.cantidad) { // igual
+        console.log('igual')
+      } else if(productInCart.cantidad < localData.cantidad) { // mayor
+        console.log('mayor')
+      } else if(localData.cantidad === 0) { // cero
+        console.log('cero')
+      } else if(productInCart.cantidad > localData.cantidad) { // menor
+        console.log('menor')
+      }
+    }
+    // console.log(productInCart?.id + '-' + productInCart?.cantidad)
+    // const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: item.cantidad + 1} : {...item})
+    // setProductsCart(updatedProductsCart)
+  }, [localData.cantidad])
 
   return (
     <View className='flex justify-center items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px]' style={styles.shadow}>
@@ -36,6 +70,12 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
           <Text style={{color: theme.azul,}} className='font-bold text-lg mb-2'>
             Bs. {precio1}
           </Text>
+
+          <TextInput className='bg-white border h-10 w-28'
+            keyboardType='numeric'
+            value={String(localData.cantidad)}
+            onChangeText={text => setLocalData({...localData, cantidad: Number(text)})}
+          />
 
           {/* btns */}
           <View className='flex flex-row justify-between h-10'>
