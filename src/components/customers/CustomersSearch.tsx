@@ -18,12 +18,6 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
 
       // products & cart
       setProductsCart([])
-      const updatedProducts = products.map(product => product.agregado === true ? {
-        ...product,
-        agregado: false,
-        cantidad: 1
-      } : {...product})
-      setProducts(updatedProducts)
 
       // flow & reset
       setValueSearchCustomers('')

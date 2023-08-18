@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import { View, Text, Image, TouchableOpacity, TextInput, Pressable } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native'
 import { styles, theme } from '../../styles'
 import useInv from '../../hooks/useInv'
 import {useNavigation} from '@react-navigation/native'
