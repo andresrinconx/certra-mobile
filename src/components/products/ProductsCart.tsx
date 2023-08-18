@@ -7,6 +7,7 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsCart = ({product}: {product: ProductoInterface}) => {
   const [openModal, setOpenModal] = useState(false)
+  const [disableAcept, setDisableAcept] = useState(false)
   const [localData, setLocalData] = useState({
     agregado: false,
     cantidad: ''
@@ -25,20 +26,24 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
     }
   }, [productsCart])
 
+  // change 'cantidad' (input)
   useEffect(() => {
     const productInCart = productsCart.find(item => item.id === id)
     
+    // btns
     if(productInCart !== undefined) {
       if((productInCart.cantidad === Number(localData.cantidad) || productInCart.cantidad < Number(localData.cantidad) || productInCart.cantidad > Number(localData.cantidad) && Number(localData.cantidad) !== 0)) { // igual, mayor o menor (y no es cero)
-
-        // actualizar la cantidad
-        // const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: Number(localData.cantidad)} : {...item})
-        // setProductsCart(updatedProductsCart)
+        setDisableAcept(false)
       } else if(Number(localData.cantidad) === 0) { // cero
-        console.log('cero')
+        setDisableAcept(true)
       }
     }
   }, [localData.cantidad])
+  const acept = () => {
+    const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: Number(localData.cantidad)} : {...item})
+    setProductsCart(updatedProductsCart)
+    setOpenModal(false)
+  }
 
   return (
     <>
@@ -124,7 +129,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
             <View className='rounded-full mx-4 mt-3' style={{backgroundColor: '#f2f2f2',}}>
               <TextInput className='h-12 w-full pl-5 text-xl rounded-full'
                 keyboardType='numeric'
-                autoFocus={true}
+                autoFocus
                 value={String(localData.cantidad)}
                 onChangeText={text => setLocalData({...localData, cantidad: text})}
               />
@@ -137,10 +142,11 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
                 <Text className='text-center text-base uppercase text-blue-500'>Cancelar</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => ''} className='flex justify-center w-[48%] h-12 rounded-full border-[0.2px] border-gray-400'
+              <TouchableOpacity onPress={() => acept()} className='flex justify-center w-[48%] h-12 rounded-full border-[0.2px] border-gray-400'
                 style={{backgroundColor: '#f7f7f7'}}
+                disabled={disableAcept}
               >
-                <Text className='text-center text-base uppercase text-blue-500'>Aceptar</Text>
+                <Text className={`text-center text-base uppercase ${disableAcept ? 'text-blue-200' : 'text-blue-500'}`}>Aceptar</Text>
               </TouchableOpacity>
             </View>
           </View>
