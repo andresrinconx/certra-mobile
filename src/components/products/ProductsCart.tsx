@@ -8,7 +8,7 @@ import ProductoInterface from '../../interfaces/ProductoInterface'
 const ProductsCart = ({product}: {product: ProductoInterface}) => {
   const [localData, setLocalData] = useState({
     agregado: false,
-    cantidad: 1
+    cantidad: ''
   })
 
   const {increase, decrease, removeElement, productsCart, setProductsCart} = useInv()
@@ -18,9 +18,9 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.id === id)
     if(productInCart !== undefined) { // product in cart
-      setLocalData({...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad})
+      setLocalData({...localData, agregado: productInCart.agregado, cantidad: String(productInCart.cantidad)})
     } else {
-      setLocalData({...localData, agregado: false, cantidad: 1})
+      setLocalData({...localData, agregado: false, cantidad: String(1)})
     }
   }, [productsCart])
 
@@ -28,19 +28,17 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
     const productInCart = productsCart.find(item => item.id === id)
     
     if(productInCart !== undefined) {
-      if(productInCart.cantidad === localData.cantidad) { // igual
-        console.log('igual')
-      } else if(productInCart.cantidad < localData.cantidad) { // mayor
-        console.log('mayor')
-      } else if(localData.cantidad === 0) { // cero
+      if((productInCart.cantidad === Number(localData.cantidad) || productInCart.cantidad < Number(localData.cantidad) || productInCart.cantidad > Number(localData.cantidad) && Number(localData.cantidad) !== 0)) { // igual, mayor o menor (y no es cero)
+
+        // actualizar la cantidad
+        const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: Number(localData.cantidad)} : {...item})
+        setProductsCart(updatedProductsCart)
+      } else if(Number(localData.cantidad) === 0) { // cero
         console.log('cero')
-      } else if(productInCart.cantidad > localData.cantidad) { // menor
-        console.log('menor')
       }
     }
     // console.log(productInCart?.id + '-' + productInCart?.cantidad)
-    // const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: item.cantidad + 1} : {...item})
-    // setProductsCart(updatedProductsCart)
+    
   }, [localData.cantidad])
 
   return (
@@ -74,7 +72,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
           <TextInput className='bg-white border h-10 w-28'
             keyboardType='numeric'
             value={String(localData.cantidad)}
-            onChangeText={text => setLocalData({...localData, cantidad: Number(text)})}
+            onChangeText={text => setLocalData({...localData, cantidad: text})}
           />
 
           {/* btns */}
