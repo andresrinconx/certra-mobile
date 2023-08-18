@@ -84,10 +84,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     loadingStorageInv: false,
   })
 
-  useEffect(() => {
-    console.log(productsCart)
-  }, [productsCart])
-
   // ----- STORAGE
   // get storage (productsCart, flowControl)
   useEffect(() => {
@@ -95,9 +91,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       try {
         setLoaders({...loaders, loadingStorageInv: true})
         
-        // products
-        const productsStorage = await getDataStorage('products')
-        setProducts(productsStorage ? JSON.parse(productsStorage) : [])
+        // productsCart
+        // const productsStorage = await getDataStorage('products')
+        // setProducts(productsStorage ? JSON.parse(productsStorage) : [])
         // flowControl
         const flowControlStorage = await getDataStorage('flowControl')
         setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
@@ -141,115 +137,102 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // get products api
   useEffect(() => {
     const obtenerProductos = async () => {
-      // tiene datos en el storage
-      if(products.length === 0) {
-        // sobreescribir datos de la api sin perder el storage
+      try {
+        setLoaders({...loaders, loadingProducts: true})
+        const data = await fetchTableData('Sinv')
         
+        // fail api
+        if(data === undefined) {return}
 
-      } else {
-        try {
-          setLoaders({...loaders, loadingProducts: true})
-          const data = await fetchTableData('Sinv')
-          
-          // fail api
-          if(data === undefined) {return}
-  
-          // Add properties to each producto
-          const productos = data?.map((producto: ProductoInterface) => ({
-            ...producto,
-            agregado: false,
-            cantidad: 1,
-          }))
-          setProducts(productos)
-          setLoaders({...loaders, loadingProducts: false})
-        } catch (error) {
-          console.log(error)
-        }
+        // Add properties to each producto
+        const productos = data?.map((producto: ProductoInterface) => ({
+          ...producto,
+          agregado: false,
+          cantidad: 1,
+        }))
+        setProducts(productos)
+        setLoaders({...loaders, loadingProducts: false})
+      } catch (error) {
+        console.log(error)
       }
     }
     obtenerProductos()
   }, [])
 
   // ----- ACTIONS
-  // set productsCart
-  useEffect(() => {
-    const addedProducts = products.filter(product => product.agregado === true)
-    setProductsCart(addedProducts)
-  }, [products])
-  
   // set subtotal & total
   useEffect(() => {
     // subtotal
-    let subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    subtotal = Number(subtotal.toFixed(2))
-    setSubtotal(subtotal)
+    // let subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    // subtotal = Number(subtotal.toFixed(2))
+    // setSubtotal(subtotal)
 
     // total
-    let total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    total = Number(total.toFixed(2))
-    setTotal(total)
+    // let total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    // total = Number(total.toFixed(2))
+    // setTotal(total)
   }, [productsCart])
 
   // add to cart
   const addToCart = (id: number) => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id || product.agregado === true) {
-        return {...product, agregado: true}
-      } else {
-        return {...product, agregado: false}
-      }
-    })
-    setProducts(updatedProducts)
+    // const updatedProducts = products.map(product => {
+    //   if (product.id === id || product.agregado === true) {
+    //     return {...product, agregado: true}
+    //   } else {
+    //     return {...product, agregado: false}
+    //   }
+    // })
+    // setProducts(updatedProducts)
   }
 
   // increase & decrease
   const increase = (id: number, cantidad: number) => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id && product.agregado === true) {
-        return {...product, cantidad: cantidad + 1}
-      } else {
-        return {...product}
-      }
-    })
-    setProducts(updatedProducts)
+    // const updatedProducts = products.map(product => {
+    //   if (product.id === id && product.agregado === true) {
+    //     return {...product, cantidad: cantidad + 1}
+    //   } else {
+    //     return {...product}
+    //   }
+    // })
+    // setProducts(updatedProducts)
   }
   const decrease = (id: number, cantidad: number) => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id && product.agregado === true && product.cantidad > 1) {
-        return {...product, cantidad: cantidad - 1}
-      } else if(product.id === id && product.agregado === true && product.cantidad === 1) {
-        return {...product, agregado: false}
-      } else {
-        return {...product}
-      }
-    })
-    setProducts(updatedProducts)
+    // const updatedProducts = products.map(product => {
+    //   if (product.id === id && product.agregado === true && product.cantidad > 1) {
+    //     return {...product, cantidad: cantidad - 1}
+    //   } else if(product.id === id && product.agregado === true && product.cantidad === 1) {
+    //     return {...product, agregado: false}
+    //   } else {
+    //     return {...product}
+    //   }
+    // })
+    // setProducts(updatedProducts)
   }
   const inputChange = (id: number, cantidad: number) => {
-    if(cantidad > 1) {
-      const updatedProducts = products.map(product => {
-        if (product.id === id && product.agregado === true && cantidad > 0) {
-          return {...product, cantidad}
-        } else if(product.id === id && product.agregado === true) {
-          return {...product, cantidad: 1}
-        } else {
-          return {...product}
-        }
-      })
-      setProducts(updatedProducts)
-    }
+    // if(cantidad > 1) {
+    //   const updatedProducts = products.map(product => {
+    //     if (product.id === id && product.agregado === true && cantidad > 0) {
+    //       return {...product, cantidad}
+    //     } else if(product.id === id && product.agregado === true) {
+    //       return {...product, cantidad: 1}
+    //     } else {
+    //       return {...product}
+    //     }
+    //   })
+    //   setProducts(updatedProducts)
+    // }
   }
   
   // remove element from cart
   const removeElement = (id: number) => {
-    const updatedProducts = products.map(product => {
-      if (product.id === id && product.agregado === true) {
-        return {...product, agregado: false, cantidad: 1}
-      } else {
-        return {...product}
-      }
-    })
-    setProducts(updatedProducts)
+    // const updatedProducts = products.map(product => {
+    //   if (product.id === id && product.agregado === true) {
+    //     return {...product, agregado: false, cantidad: 1}
+    //   } else {
+    //     return {...product}
+    //   }
+    // })
+    // setProducts(updatedProducts)
   }
 
   // clear cart
@@ -259,12 +242,12 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       'Esta acción no se puede deshacer',
       [
         { text: 'Aceptar', onPress: () => {
-          const updatedProducts = products.map(product => product.agregado === true ? {
-            ...product, 
-            agregado: false, 
-            cantidad: 1
-          } : {...product})
-          setProducts(updatedProducts)
+          // const updatedProducts = products.map(product => product.agregado === true ? {
+          //   ...product, 
+          //   agregado: false, 
+          //   cantidad: 1
+          // } : {...product})
+          // setProducts(updatedProducts)
         }},
         { text: 'Cancelar', style: 'cancel',},
       ]

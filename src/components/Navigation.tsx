@@ -21,7 +21,7 @@ const Navigation = () => {
 
   return (
     <>
-      {loadingLogin || loadingStorageInv ? (
+      {loadingLogin ? (
         <LoaderLogoScreen />
       ) : (
         <NavigationContainer>
@@ -35,7 +35,6 @@ const Navigation = () => {
                 fontWeight: '800', 
                 fontSize: 24,
               },
-              
             }}
           >
             <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login'}} />
