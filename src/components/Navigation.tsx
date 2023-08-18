@@ -21,7 +21,7 @@ const Navigation = () => {
 
   return (
     <>
-      {loadingLogin ? (
+      {loadingLogin || loadingStorageInv ? (
         <LoaderLogoScreen />
       ) : (
         <NavigationContainer>

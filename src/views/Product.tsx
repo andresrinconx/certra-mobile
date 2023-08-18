@@ -27,10 +27,8 @@ const Product = () => {
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.id === product.id)
     if(productInCart !== undefined) { // product in cart
-      console.log('in cart')
       setLocalData({...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad})
     } else {
-      console.log('not in cart')
       setLocalData({...localData, agregado: false, cantidad: 1})
     }
   }, [productsCart, product])
