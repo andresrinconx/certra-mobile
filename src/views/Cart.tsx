@@ -6,7 +6,7 @@ import useInv from '../hooks/useInv'
 import ProductsCart from '../components/products/ProductsCart'
 
 const Cart = () => {
-  const {productsCart, clearCart, subtotal, total} = useInv()
+  const {productsCart, clearCart, subtotal, total, confirmOrder} = useInv()
   const navigation = useNavigation()
 
   return (
@@ -78,7 +78,7 @@ const Cart = () => {
             </View>
 
             {/* btn confirm */}
-            <TouchableOpacity onPress={() => ''} className='rounded-xl py-3' style={{backgroundColor: theme.verde}}>
+            <TouchableOpacity onPress={() => confirmOrder()} className='rounded-xl py-3' style={{backgroundColor: theme.verde}}>
               <Text className='color-white text-center font-bold text-xl'>Confirmar pedido ({productsCart.length} {productsCart.length === 1 ? 'producto' : 'productos'})</Text>
             </TouchableOpacity>
           </View>

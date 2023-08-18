@@ -122,7 +122,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
       {/* modal */}
       <Modal
         visible={openModal}
-        animationType='fade'
+        animationType='none'
         transparent={true}
       >
         <View className='flex-1' style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
@@ -136,7 +136,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
                 keyboardType='numeric'
                 value={String(localData.cantidad)}
                 onChangeText={text => setLocalData({...localData, cantidad: text})}
-                // autoFocus
+                autoFocus
               />
             </View>
 

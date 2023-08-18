@@ -4,6 +4,7 @@ import ProductoInterface from "../interfaces/ProductoInterface"
 import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
+import { OrderInterface } from "../interfaces/OrderInterface"
 
 const InvContext = createContext<{
   productsCart: ProductoInterface[]
@@ -29,6 +30,7 @@ const InvContext = createContext<{
   setTotal: (total: number) => void
   removeElement: (id: number) => void
   addToCart: (product: ProductoInterface) => void
+  confirmOrder: () => void
 }>({
   productsCart: [],
   setProductsCart: () => {},
@@ -53,11 +55,15 @@ const InvContext = createContext<{
   setTotal: () => {},
   removeElement: () => {},
   addToCart: () => {},
+  confirmOrder: () => {},
 })
 
 export const InvProvider = ({children}: {children: React.ReactNode}) => {
-  // products & cart
+  // products
   const [products, setProducts] = useState<ProductoInterface[]>([])
+  
+  // order & cart
+  const [order, setOrder] = useState<OrderInterface>({subtotal: 0, total: 0, cliente: '', productos: []})
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
   const [subtotal, setSubtotal] = useState(0)
   const [total, setTotal] = useState(0)
@@ -81,6 +87,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     loadingSlectedCustomer: false,
     loadingStorageInv: false,
   })
+
+  useEffect(() => {
+    console.log(order)
+  }, [order])
 
   // ----- STORAGE
   // get storage (productsCart, flowControl)
@@ -221,6 +231,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       ]
     )
   }
+
+  // confirm order
+  const confirmOrder = () => {
+    
+  }
   
   return (
     <InvContext.Provider value={{
@@ -246,7 +261,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       total,
       setTotal,
       removeElement,
-      addToCart
+      addToCart,
+      confirmOrder
     }}>
       {children}
     </InvContext.Provider>
