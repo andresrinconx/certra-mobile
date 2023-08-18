@@ -6,17 +6,12 @@ import {useNavigation} from '@react-navigation/native'
 import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
-const ProductsGrid = ({item}: {item: ProductoInterface}) => {
+const ProductsGrid = ({product}: {product: ProductoInterface}) => {
   const [cantidadLocal, setCantidadLocal] = useState(1)
 
   const {increase, decrease, inputChange, addToCart} = useInv()
-  const {descrip, precio1, cantidad, agregado, id, image_url} = item
+  const {descrip, precio1, cantidad, agregado, id, image_url} = product
   const navigation = useNavigation()
-
-  // change cantidad (input)
-  useEffect(() => {
-    inputChange(id, cantidadLocal)
-  }, [cantidadLocal])
 
   return (
     <Pressable onPress={() => navigation.navigate('Product', {...item})} className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
@@ -44,7 +39,7 @@ const ProductsGrid = ({item}: {item: ProductoInterface}) => {
         </Text>
 
         {!agregado && (
-          <TouchableOpacity onPress={() => addToCart(id)} className={`rounded-md mb-2`}
+          <TouchableOpacity onPress={() => addToCart(product)} className={`rounded-md mb-2`}
             style={{backgroundColor: theme.verde}}
           >
             <Text className='color-white text-center font-bold p-1 pb-1.5'>Agregar</Text>

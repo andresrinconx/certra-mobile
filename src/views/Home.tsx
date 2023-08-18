@@ -131,7 +131,7 @@ const Home = () => {
                     overScrollMode='never'
                     renderItem={({item}) => {
                       return (
-                        <ProductsGrid key={item.id} item={item} />
+                        <ProductsGrid key={item.id} product={item} />
                       )
                     }} 
                   />

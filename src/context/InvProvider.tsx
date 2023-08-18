@@ -29,7 +29,7 @@ const InvContext = createContext<{
   total: number
   setTotal: (total: number) => void
   removeElement: (id: number) => void
-  addToCart: (id: number) => void
+  addToCart: (product: ProductoInterface) => void
 }>({
   productsCart: [],
   setProductsCart: () => {},
@@ -174,7 +174,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }, [productsCart])
 
   // add to cart
-  const addToCart = (id: number) => {
+  const addToCart = (product: ProductoInterface) => {
+    
     // const updatedProducts = products.map(product => {
     //   if (product.id === id || product.agregado === true) {
     //     return {...product, agregado: true}
