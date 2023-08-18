@@ -21,9 +21,9 @@ const InvContext = createContext<{
   setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
-  increase: (id: number, cantidad: number) => any
-  decrease: (id: number, cantidad: number) => any
-  inputChange: (id: number, cantidad: number) => any
+  increase: (id: number) => void
+  decrease: (id: number, cantidad: number) => void
+  inputChange: (id: number, cantidad: number) => void
   subtotal: number
   setSubtotal: (subtotal: number) => void
   total: number
@@ -163,39 +163,25 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // set subtotal & total
   useEffect(() => {
     // subtotal
-    // let subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    // subtotal = Number(subtotal.toFixed(2))
-    // setSubtotal(subtotal)
+    let subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    subtotal = Number(subtotal.toFixed(2))
+    setSubtotal(subtotal)
 
     // total
-    // let total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    // total = Number(total.toFixed(2))
-    // setTotal(total)
+    let total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    total = Number(total.toFixed(2))
+    setTotal(total)
   }, [productsCart])
 
   // add to cart
   const addToCart = (product: ProductoInterface) => {
-    
-    // const updatedProducts = products.map(product => {
-    //   if (product.id === id || product.agregado === true) {
-    //     return {...product, agregado: true}
-    //   } else {
-    //     return {...product, agregado: false}
-    //   }
-    // })
-    // setProducts(updatedProducts)
+    setProductsCart([...productsCart, {...product, agregado: true}])
   }
 
   // increase & decrease
-  const increase = (id: number, cantidad: number) => {
-    // const updatedProducts = products.map(product => {
-    //   if (product.id === id && product.agregado === true) {
-    //     return {...product, cantidad: cantidad + 1}
-    //   } else {
-    //     return {...product}
-    //   }
-    // })
-    // setProducts(updatedProducts)
+  const increase = (id: number) => {
+    const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: item.cantidad + 1} : {...item})
+    setProductsCart(updatedProductsCart)
   }
   const decrease = (id: number, cantidad: number) => {
     // const updatedProducts = products.map(product => {

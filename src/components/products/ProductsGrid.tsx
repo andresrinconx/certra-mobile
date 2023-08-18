@@ -7,14 +7,30 @@ import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
 const ProductsGrid = ({product}: {product: ProductoInterface}) => {
-  const [cantidadLocal, setCantidadLocal] = useState(1)
+  const [localData, setLocalData] = useState({
+    agregado: false,
+    cantidad: 1
+  })
 
-  const {increase, decrease, inputChange, addToCart} = useInv()
+  const {increase, decrease, inputChange, addToCart, productsCart} = useInv()
   const {descrip, precio1, cantidad, agregado, id, image_url} = product
   const navigation = useNavigation()
 
+  // local changes
+  useEffect(() => {
+    setLocalData({...localData, agregado})
+  }, [])
+
+  // refresh data when cart change
+  useEffect(() => {
+    const productInCart = productsCart.find(productInCart => productInCart.id === id)
+    if(productInCart !== undefined) { // product in cart
+      setLocalData({...localData, agregado: true, cantidad: productInCart.cantidad})
+    }
+  }, [productsCart])
+
   return (
-    <Pressable onPress={() => navigation.navigate('Product', {...item})} className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
+    <Pressable onPress={() => navigation.navigate('Product', {...product})} className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
       {/* img */}
       <View className='border-b-gray-300 border-b mb-2 justify-center items-center'>
         {image_url === null ? (
@@ -38,7 +54,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
           Bs. {precio1}
         </Text>
 
-        {!agregado && (
+        {!localData.agregado && (
           <TouchableOpacity onPress={() => addToCart(product)} className={`rounded-md mb-2`}
             style={{backgroundColor: theme.verde}}
           >
@@ -46,7 +62,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
           </TouchableOpacity>
         )}
 
-        {agregado && (
+        {localData.agregado && (
           <View className={`rounded-md mb-2`} style={{backgroundColor: theme.verde}}>
             <View className='flex flex-row justify-between items-center p-1 px-4'>
               <View>
@@ -56,7 +72,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
               </View>
 
               <View className='w-[80px]'>
-                <Text className='text-center text-lg -my-4 text-white font-bold'>{cantidad}</Text>
+                <Text className='text-center text-lg -my-4 text-white font-bold'>{localData.cantidad}</Text>
               </View>
 
               {/* <View className='w-[80px]'>
@@ -68,7 +84,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
               </View> */}
 
               <View>
-                <TouchableOpacity onPress={() => increase(id, cantidad)} className=''>
+                <TouchableOpacity onPress={() => increase(id)} className=''>
                   <PlusSmallIcon size={20} color='white' />
                 </TouchableOpacity>
               </View>
