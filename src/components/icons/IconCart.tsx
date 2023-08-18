@@ -1,10 +1,11 @@
+import {useEffect} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { ShoppingCartIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import useInv from '../../hooks/useInv'
 
 const IconCart = () => {
-  const {productsCart} = useInv()
+  const {productsCart, setProductsCart} = useInv()
   const navigation = useNavigation()
 
   return (

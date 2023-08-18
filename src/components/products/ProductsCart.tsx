@@ -5,11 +5,11 @@ import { theme, styles } from '../../styles'
 import useInv from '../../hooks/useInv'
 import ProductoInterface from '../../interfaces/ProductoInterface'
 
-const ProductsCart = ({item}: {item: ProductoInterface}) => {
+const ProductsCart = ({product}: {product: ProductoInterface}) => {
   const [cantidadLocal, setCantidadLocal] = useState(1)
 
   const {increase, decrease, inputChange, removeElement} = useInv()
-  const {descrip, precio1, id, cantidad, image_url} = item
+  const {descrip, precio1, id, cantidad, image_url} = product
 
   // change cantidad (input)
   useEffect(() => {
@@ -50,7 +50,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
             {/* increase & decrease */}
             <View className='flex flex-row justify-between rounded-xl' style={styles.shadow}>
               <View className='flex justify-center rounded-l-lg w-10' style={{backgroundColor: cantidad === 1 ? '#eaeaea' : '#d8d8d8'}}>
-                <TouchableOpacity onPress={() => decrease(id, cantidad)}
+                <TouchableOpacity onPress={() => decrease(id)}
                   className='p-2 flex justify-center items-center'
                   disabled={cantidad === 1 ? true : false}
                 >
@@ -67,7 +67,7 @@ const ProductsCart = ({item}: {item: ProductoInterface}) => {
               </View>
 
               <View className='flex justify-center rounded-r-lg w-10' style={{backgroundColor: '#d8d8d8'}}>
-                <TouchableOpacity onPress={() => increase(id, cantidad)}
+                <TouchableOpacity onPress={() => increase(id)}
                   className='p-2 flex justify-center items-center'
                 >
                   <PlusSmallIcon size={20} color='black' />

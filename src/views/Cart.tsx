@@ -49,7 +49,7 @@ const Cart = () => {
                 overScrollMode='never'
                 renderItem={({item}) => {
                   return (
-                    <ProductsCart key={item.id} item={item} />
+                    <ProductsCart key={item.id} product={item} />
                   )
                 }} 
               />

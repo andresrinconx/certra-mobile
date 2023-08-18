@@ -22,7 +22,7 @@ const InvContext = createContext<{
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
   increase: (id: number) => void
-  decrease: (id: number, cantidad: number) => void
+  decrease: (id: number) => void
   inputChange: (id: number, cantidad: number) => void
   subtotal: number
   setSubtotal: (subtotal: number) => void
@@ -173,6 +173,14 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     setTotal(total)
   }, [productsCart])
 
+  // set productsCart added
+  // useEffect(() => {
+  //   if(productsCart.length !== 0) {
+  //     const updatedProductsCart = productsCart.filter(item => item.agregado === true)
+  //     setProductsCart(updatedProductsCart)
+  //   }
+  // }, [productsCart])
+
   // add to cart
   const addToCart = (product: ProductoInterface) => {
     setProductsCart([...productsCart, {...product, agregado: true}])
@@ -183,17 +191,24 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: item.cantidad + 1} : {...item})
     setProductsCart(updatedProductsCart)
   }
-  const decrease = (id: number, cantidad: number) => {
-    // const updatedProducts = products.map(product => {
-    //   if (product.id === id && product.agregado === true && product.cantidad > 1) {
-    //     return {...product, cantidad: cantidad - 1}
-    //   } else if(product.id === id && product.agregado === true && product.cantidad === 1) {
-    //     return {...product, agregado: false}
-    //   } else {
-    //     return {...product}
-    //   }
-    // })
-    // setProducts(updatedProducts)
+  const decrease = (id: number) => {
+    const productInCart = productsCart.find(item => item.id === id && item.cantidad === 1)
+    if(productInCart !== undefined) {
+      Alert.alert(
+        'Advertencia',
+        '¿Quieres eliminar este producto del carrito?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Eliminar', style: 'destructive' , onPress: () => {
+            const updatedProductsCart = productsCart.filter(item => item.id !== id)
+            setProductsCart(updatedProductsCart)
+          }}
+        ]
+      )
+    } else {
+      const updatedProductsCart = productsCart.map(item => (item.id === id && item.cantidad > 1) ? {...item, cantidad: item.cantidad - 1} : {...item})
+      setProductsCart(updatedProductsCart)
+    }
   }
   const inputChange = (id: number, cantidad: number) => {
     // if(cantidad > 1) {
@@ -212,14 +227,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   
   // remove element from cart
   const removeElement = (id: number) => {
-    // const updatedProducts = products.map(product => {
-    //   if (product.id === id && product.agregado === true) {
-    //     return {...product, agregado: false, cantidad: 1}
-    //   } else {
-    //     return {...product}
-    //   }
-    // })
-    // setProducts(updatedProducts)
+    const updatedProductsCart = productsCart.filter(item => item.id !== id)
+    setProductsCart(updatedProductsCart)
   }
 
   // clear cart

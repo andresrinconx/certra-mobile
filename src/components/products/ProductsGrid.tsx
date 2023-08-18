@@ -13,19 +13,16 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
   })
 
   const {increase, decrease, inputChange, addToCart, productsCart} = useInv()
-  const {descrip, precio1, cantidad, agregado, id, image_url} = product
+  const {descrip, precio1, id, image_url} = product
   const navigation = useNavigation()
-
-  // local changes
-  useEffect(() => {
-    setLocalData({...localData, agregado})
-  }, [])
 
   // refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.id === id)
     if(productInCart !== undefined) { // product in cart
-      setLocalData({...localData, agregado: true, cantidad: productInCart.cantidad})
+      setLocalData({...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad})
+    } else {
+      setLocalData({...localData, agregado: false, cantidad: 1})
     }
   }, [productsCart])
 
@@ -66,7 +63,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
           <View className={`rounded-md mb-2`} style={{backgroundColor: theme.verde}}>
             <View className='flex flex-row justify-between items-center p-1 px-4'>
               <View>
-                <TouchableOpacity onPress={() => decrease(id, cantidad)} className=''>
+                <TouchableOpacity onPress={() => decrease(id)} className=''>
                   <MinusSmallIcon size={20} color='white' />
                 </TouchableOpacity>
               </View>
