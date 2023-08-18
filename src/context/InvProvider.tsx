@@ -173,14 +173,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     setTotal(total)
   }, [productsCart])
 
-  // set productsCart added
-  // useEffect(() => {
-  //   if(productsCart.length !== 0) {
-  //     const updatedProductsCart = productsCart.filter(item => item.agregado === true)
-  //     setProductsCart(updatedProductsCart)
-  //   }
-  // }, [productsCart])
-
   // add to cart
   const addToCart = (product: ProductoInterface) => {
     setProductsCart([...productsCart, {...product, agregado: true}])
@@ -198,11 +190,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         'Advertencia',
         '¿Quieres eliminar este producto del carrito?',
         [
-          { text: 'Cancelar', style: 'cancel' },
           { text: 'Eliminar', style: 'destructive' , onPress: () => {
             const updatedProductsCart = productsCart.filter(item => item.id !== id)
             setProductsCart(updatedProductsCart)
-          }}
+          }},
+          { text: 'Cancelar', style: 'cancel' },
         ]
       )
     } else {
@@ -237,13 +229,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       '¿Quieres eliminar todos los productos del carrito?',
       'Esta acción no se puede deshacer',
       [
-        { text: 'Aceptar', onPress: () => {
-          // const updatedProducts = products.map(product => product.agregado === true ? {
-          //   ...product, 
-          //   agregado: false, 
-          //   cantidad: 1
-          // } : {...product})
-          // setProducts(updatedProducts)
+        { text: 'Sí, eliminar', onPress: () => {
+          const updatedProducts = productsCart.filter(item => item.agregado !== true)
+          setProductsCart(updatedProducts)
         }},
         { text: 'Cancelar', style: 'cancel',},
       ]

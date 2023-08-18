@@ -1,4 +1,3 @@
-import {useEffect} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { ShoppingCartIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
