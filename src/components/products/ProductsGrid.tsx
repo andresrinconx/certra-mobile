@@ -27,9 +27,9 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
   }, [productsCart])
 
   return (
-    <Pressable onPress={() => navigation.navigate('Product', {...product})} className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
+    <View className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
       {/* img */}
-      <View className='border-b-gray-300 border-b mb-2 justify-center items-center'>
+      <Pressable onPress={() => navigation.navigate('Product', {...product})} className='border-b-gray-300 border-b mb-2 justify-center items-center'>
         {image_url === null ? (
           <Image className='w-32 h-32' resizeMode='cover'
             source={require('../../assets/Acetaminofen.png')} 
@@ -39,13 +39,16 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
             source={{uri: `${image_url}`}}
           />
         )}
-      </View>
+      </Pressable>
       
       {/* texts & btn */}
       <View>
-        <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
-          {descrip}
-        </Text>
+
+        <Pressable onPress={() => navigation.navigate('Product', {...product})}>
+          <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
+            {descrip}
+          </Text>
+        </Pressable>
 
         <Text style={{color: theme.azul,}} className={`font-bold text-xl mb-2`}>
           Bs. {precio1}
@@ -89,7 +92,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
           </View>
         )}
       </View>
-    </Pressable>
+    </View>
   )
 }
 

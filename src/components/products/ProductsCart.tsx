@@ -1,9 +1,10 @@
-import {useState, useEffect, useRef} from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image, Modal } from 'react-native'
+import {useState, useEffect} from 'react'
+import { View, Text, TextInput, TouchableOpacity, Image, Modal, Pressable } from 'react-native'
 import { MinusSmallIcon, PlusSmallIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { theme, styles } from '../../styles'
 import useInv from '../../hooks/useInv'
 import ProductoInterface from '../../interfaces/ProductoInterface'
+import { useNavigation } from '@react-navigation/native'
 
 const ProductsCart = ({product}: {product: ProductoInterface}) => {
   const [openModal, setOpenModal] = useState(false)
@@ -15,6 +16,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
 
   const {increase, decrease, removeElement, productsCart, setProductsCart} = useInv()
   const {descrip, precio1, cantidad, id, image_url} = product
+  const navigation = useNavigation()
 
   // refresh data when cart change
   useEffect(() => {
@@ -51,7 +53,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
         <View className='flex flex-row'>
 
           {/* image */}
-          <View className='basis-[35%] flex items-center justify-center'>
+          <Pressable onPress={() => navigation.navigate('Product', {...product})} className='basis-[35%] flex items-center justify-center'>
             {image_url === null ? (
               <Image className='w-24 h-24' resizeMode='cover'
                 source={require('../../assets/Acetaminofen.png')} 
@@ -61,14 +63,17 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
                 source={{uri: `${image_url}`}}
               />
             )}
-          </View>
+          </Pressable>
 
           {/* info */}
           <View className='basis-[65%] pr-5 border-l-[0.2px] border-l-gray-400 pl-2'>
             {/* texts */}
-            <Text className='text-black text-sm mb-1' numberOfLines={1}>
-              {descrip}
-            </Text>
+
+            <Pressable onPress={() => navigation.navigate('Product', {...product})}>
+              <Text className='text-black text-sm mb-1' numberOfLines={1}>
+                {descrip}
+              </Text>
+            </Pressable>
     
             <Text style={{color: theme.azul,}} className='font-bold text-lg mb-2'>
               Bs. {precio1}
@@ -127,11 +132,11 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
             <Text className='text-2xl text-center text-black mt-3 pb-3 border-b-[0.5px] border-gray-500'>Cantidad</Text>
 
             <View className='rounded-full mx-4 mt-3' style={{backgroundColor: '#f2f2f2',}}>
-              <TextInput className='h-12 w-full pl-5 text-xl rounded-full'
+              <TextInput className='h-12 w-full pl-5 text-xl rounded-full text-gray-700'
                 keyboardType='numeric'
-                autoFocus
                 value={String(localData.cantidad)}
                 onChangeText={text => setLocalData({...localData, cantidad: text})}
+                // autoFocus
               />
             </View>
 

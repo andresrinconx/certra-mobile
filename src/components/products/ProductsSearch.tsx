@@ -27,12 +27,12 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
   }, [productsCart])
 
   return (
-    <Pressable onPress={() => navigation.navigate('Product', {...product})} className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
+    <View className='flex flex-row items-center h-32 mr-[2px] ml-[1px] mb-2 mt-[1px] p-3'
       style={styles.shadow}
     >
       <View className='flex flex-row'>
         {/* image */}
-        <View className='basis-[35%] flex items-center justify-center'>
+        <Pressable onPress={() => navigation.navigate('Product', {...product})} className='basis-[35%] flex items-center justify-center'>
           {image_url === null ? (
             <Image className='w-24 h-24' resizeMode='cover'
               source={require('../../assets/Acetaminofen.png')} 
@@ -42,14 +42,17 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
               source={{uri: `${image_url}`}}
             />
           )}
-        </View>
+        </Pressable>
 
         {/* info */}
         <View className='basis-[65%] border-l-[0.2px] border-l-gray-400 pl-2'>
           {/* texts */}
-          <Text className='text-black text-sm mb-1' numberOfLines={2}>
-            {descrip}
-          </Text>
+
+          <Pressable onPress={() => navigation.navigate('Product', {...product})}>
+            <Text className='text-black text-sm mb-1' numberOfLines={2}>
+              {descrip}
+            </Text>
+          </Pressable>
 
           <Text style={{color: theme.azul,}} className='font-bold text-lg mb-2'>
             Bs. {precio1}
@@ -97,7 +100,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
         </View>
         
       </View>
-    </Pressable>
+    </View>
   )
 }
 
