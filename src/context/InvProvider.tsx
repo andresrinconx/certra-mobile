@@ -24,10 +24,10 @@ const InvContext = createContext<{
   setValueSearchCustomers: (valueSearchCustomers: string) => void
   increase: (id: number) => void
   decrease: (id: number) => void
-  subtotal: number
-  setSubtotal: (subtotal: number) => void
-  total: number
-  setTotal: (total: number) => void
+  subtotal: string
+  setSubtotal: (subtotal: string) => void
+  total: string
+  setTotal: (total: string) => void
   removeElement: (id: number) => void
   addToCart: (product: ProductoInterface) => void
   confirmOrder: () => void
@@ -49,9 +49,9 @@ const InvContext = createContext<{
   setValueSearchCustomers: () => {},
   increase: () => {},
   decrease: () => {},
-  subtotal: 0,
+  subtotal: '',
   setSubtotal: () => {},
-  total: 0,
+  total: '',
   setTotal: () => {},
   removeElement: () => {},
   addToCart: () => {},
@@ -65,8 +65,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // order & cart
   const [order, setOrder] = useState<OrderInterface>({subtotal: 0, total: 0, cliente: '', productos: []})
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
-  const [subtotal, setSubtotal] = useState(0)
-  const [total, setTotal] = useState(0)
+  const [subtotal, setSubtotal] = useState('')
+  const [total, setTotal] = useState('')
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
@@ -171,14 +171,14 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // set subtotal & total
   useEffect(() => {
     // subtotal
-    let subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    subtotal = Number(subtotal.toFixed(2))
-    setSubtotal(subtotal)
+    const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0);
+    const formatedSubtotal = subtotal.toLocaleString('es-ES', { minimumFractionDigits: 2 })
+    setSubtotal(formatedSubtotal)
 
     // total
-    let total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    total = Number(total.toFixed(2))
-    setTotal(total)
+    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    const formatedTotal = total.toLocaleString('es-ES', { minimumFractionDigits: 2 })
+    setTotal(formatedTotal)
   }, [productsCart])
 
   // add to cart
