@@ -94,7 +94,7 @@ const Home = () => {
                 <View className='flex-1 justify-center items-center'>
                   <FlatList
                     ListHeaderComponent={() => (
-                      <View className='flex-row justify-between mb-3 mx-3 px-1'>
+                      <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? 'mt-0' : 'mt-3'}`}>
                         <Text className='text-gray-700 text-xl font-bold w-full text-center'>Productos</Text>
                       </View>
                     )}
@@ -118,7 +118,7 @@ const Home = () => {
                 <View className='flex-1 justify-center items-center'>
                   <FlatList
                     ListHeaderComponent={() => (
-                      <View className='flex-row justify-between mb-3 mx-3 px-1'>
+                      <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? 'mt-0' : 'mt-3'}`}>
                         <Text className='text-gray-700 text-xl font-bold w-full text-center'>Productos</Text>
                       </View>
                     )}

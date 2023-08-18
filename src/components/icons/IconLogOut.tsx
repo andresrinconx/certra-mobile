@@ -24,12 +24,6 @@ const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
 
     // reset cart
     setProductsCart([])
-    const updatedProducts = products.map(product => product.agregado === true ? {
-      ...product,
-      agregado: false,
-      cantidad: 1
-    } : {...product})
-    setProducts(updatedProducts)
     
     // reset flow
     setFlowControl({
