@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, Modal, Pressable } from 'react-native'
 import { MinusSmallIcon, PlusSmallIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { theme, styles } from '../../styles'
@@ -18,6 +18,18 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
   const {descrip, precio1, cantidad, id, image_url} = product
   const navigation = useNavigation()
 
+  const textInputRef = useRef<TextInput | null>(null)
+
+  // SCREEN
+  // show keyboard
+  useEffect(() => {
+    setTimeout(() => {
+      if (textInputRef.current) {
+        textInputRef.current.focus()
+      }
+    }, 300)
+  }, [])
+
   // refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.id === id)
@@ -36,13 +48,23 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
     if(productInCart !== undefined) {
       if((productInCart.cantidad === Number(localData.cantidad) || productInCart.cantidad < Number(localData.cantidad) || productInCart.cantidad > Number(localData.cantidad) && Number(localData.cantidad) !== 0)) { // igual, mayor o menor (y no es cero)
         setDisableAcept(false)
-      } else if(Number(localData.cantidad) === 0) { // cero
+      } else if(Number(localData.cantidad) === 0 || Number(localData.cantidad) < 0) { // cero o NaN
         setDisableAcept(true)
       }
     }
   }, [localData.cantidad])
   const acept = () => {
-    const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: Number(localData.cantidad)} : {...item})
+    const updatedProductsCart = productsCart.map(item => {
+      if(item.id === id) {
+        const cleanNumber = localData.cantidad.replace(/-/g, '')
+        const valorNumerico = parseFloat(cleanNumber)
+        const cleanCantidad = Math.abs(valorNumerico)
+        
+        return {...item, cantidad: cleanCantidad}
+      } else {
+        return {...item}
+      }
+    })
     setProductsCart(updatedProductsCart)
     setOpenModal(false)
   }
@@ -122,7 +144,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
       {/* modal */}
       <Modal
         visible={openModal}
-        animationType='none'
+        animationType='fade'
         transparent={true}
       >
         <View className='flex-1' style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
@@ -137,6 +159,8 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
                 value={String(localData.cantidad)}
                 onChangeText={text => setLocalData({...localData, cantidad: text})}
                 autoFocus
+                selectionColor={theme.turquesaClaro}
+                ref={textInputRef}
               />
             </View>
 
