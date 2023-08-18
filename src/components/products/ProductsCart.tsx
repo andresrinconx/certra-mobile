@@ -18,18 +18,6 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
   const {descrip, precio1, cantidad, id, image_url} = product
   const navigation = useNavigation()
 
-  const textInputRef = useRef<TextInput | null>(null)
-
-  // SCREEN
-  // show keyboard
-  useEffect(() => {
-    setTimeout(() => {
-      if (textInputRef.current) {
-        textInputRef.current.focus()
-      }
-    }, 300)
-  }, [])
-
   // refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.id === id)
@@ -158,7 +146,6 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
                 onChangeText={text => setLocalData({...localData, cantidad: text})}
                 autoFocus
                 selectionColor={theme.turquesaClaro}
-                ref={textInputRef}
               />
             </View>
 
