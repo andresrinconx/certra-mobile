@@ -234,7 +234,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // confirm order
   const confirmOrder = () => {
-    
+    // setOrder({})
   }
   
   return (

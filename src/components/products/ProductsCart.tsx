@@ -47,7 +47,7 @@ const ProductsCart = ({product}: {product: ProductoInterface}) => {
         const cleanCantidad = parseFloat(localData.cantidad.replace(/-/g, ''))
 
         return {...item, cantidad: cleanCantidad}
-      } else {
+      } else { 
         return {...item}
       }
     })
