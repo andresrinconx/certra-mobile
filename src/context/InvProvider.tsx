@@ -193,6 +193,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }
   const decrease = (id: number) => {
     const productInCart = productsCart.find(item => item.id === id && item.cantidad === 1)
+
+    // If the product is in the cart and has a quantity of 1, show an alert to confirm the deletion.
     if(productInCart !== undefined) {
       Alert.alert(
         'Advertencia',
@@ -206,6 +208,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         ]
       )
     } else {
+      // If the product is in the cart and has a quantity greater than 1, decrease the quantity by 1.
       const updatedProductsCart = productsCart.map(item => (item.id === id && item.cantidad > 1) ? {...item, cantidad: item.cantidad - 1} : {...item})
       setProductsCart(updatedProductsCart)
     }
@@ -234,7 +237,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // confirm order
   const confirmOrder = () => {
-    // setOrder({})
+    //
   }
   
   return (
