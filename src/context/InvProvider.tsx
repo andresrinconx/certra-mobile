@@ -188,7 +188,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // submit order
   useEffect(() => {
     const submitOrder = async () => {
-      try {
+      try { 
         const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
           method: 'POST',
           headers: {
