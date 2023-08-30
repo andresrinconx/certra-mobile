@@ -3,7 +3,7 @@ import { InvProvider } from './src/context/InvProvider'
 import { LoginProvider } from './src/context/LoginProvider'
 
 const App = () => {
-  return (
+  return ( 
     <LoginProvider>
       <InvProvider>
         <Navigation />
