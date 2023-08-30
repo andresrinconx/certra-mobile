@@ -4,17 +4,24 @@ import { theme } from '../styles'
 import Home from '../views/Home'
 import Cart from '../views/Cart'
 import Login from '../views/Login'
+import Search from '../views/Search'
+import Product from '../views/Product'
 import useLogin from '../hooks/useLogin'
 import LoaderLogoScreen from './loaders/LoaderLogoScreen'
+import useInv from '../hooks/useInv'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
-  const {login, loaders} = useLogin()
+  const {login, loaders: loadersLogin} = useLogin()
+  const {loadingLogin} = loadersLogin
+
+  const {loaders: loadersInv} = useInv()
+  const {loadingStorageInv} = loadersInv
 
   return (
     <>
-      {loaders.loadingLogin ? (
+      {loadingLogin || loadingStorageInv ? (
         <LoaderLogoScreen />
       ) : (
         <NavigationContainer>
@@ -28,30 +35,13 @@ const Navigation = () => {
                 fontWeight: '800', 
                 fontSize: 24,
               },
-              
             }}
           >
-            <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login' }}/>
-
-            <Stack.Screen name='Home'
-              options={{
-                headerShown: false,
-                title: 'Inventario',
-                headerBackVisible: false,
-              }}
-            >
-              {() => (<Home />)}
-            </Stack.Screen>
-
-            <Stack.Screen name='Cart'
-              options={{
-                headerShown: false, 
-                title: 'cart',
-                headerTintColor: '#fff',
-              }}
-            >
-              {() => (<Cart />)}
-            </Stack.Screen>
+            <Stack.Screen name='Login' component={Login} options={{headerShown: false, title: 'Login'}} />
+            <Stack.Screen name='Home' component={Home} options={{headerShown: false, title: 'Home', headerBackVisible: false}} />
+            <Stack.Screen name='Cart' component={Cart} options={{headerShown: false, title: 'Cart', headerTintColor: '#fff'}} />
+            <Stack.Screen name='Search' component={Search} options={{headerShown: false, title: 'Search', animation: 'none'}}/>
+            <Stack.Screen name='Product' component={Product} options={{headerShown: false, title: 'Product', animation: 'fade_from_bottom'}} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

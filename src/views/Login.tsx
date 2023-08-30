@@ -41,15 +41,18 @@ const Login = () => {
     }
 
     setLoaders({...loaders, loadingAuth: true})
+    setIncorrectCredentials(false)
     // find in the table 'Usuario'
     const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
     if (userFromUsuario === undefined) {
       // find in the table 'Scli'
-      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => (userDb.cliente === user.toUpperCase() || userDb.clave === user) && userDb.clave === password)
+      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => ('W' + userDb.cliente === user.toUpperCase() || 'W' + userDb.clave === user) && userDb.clave === password)
       if (userFromScli === undefined) {
         // Incorrect Credentials
-        setLoaders({...loaders, loadingAuth: false})
-        setIncorrectCredentials(true)
+        setTimeout(() => {
+          setLoaders({...loaders, loadingAuth: false})
+          setIncorrectCredentials(true)
+        }, 1000)
         return
       } else { // success from Scli
         setIncorrectCredentials(false)
@@ -69,6 +72,7 @@ const Login = () => {
           setLoaders({...loaders, loadingAuth: false})
           setLogin(true)
         }, 500)
+        setShowPassword(false)
       }
     } else { // success from Usuario
       setIncorrectCredentials(false)
@@ -88,6 +92,7 @@ const Login = () => {
         setLoaders({...loaders, loadingAuth: false})
         setLogin(true)
       }, 500)
+      setShowPassword(false)
     }
   }
 
@@ -104,15 +109,15 @@ const Login = () => {
       end={{ x: 0, y: 1 }}
       style={{ flex: 1 }}
     >
-      <View className='flex-1 items-center mt-20 mx-[6%]'>
+      <View className='flex-1 items-center mt-16 mb-8 mx-[6%]'>
 
         {/* Logo */}
-        <View className='mb-16'>
+        <View className='mb-5'>
           <Image source={require('../assets/user.png')} style={{width: 150, height: 150,}} />
         </View>
 
         {/* form */}
-        <View className='h-1/2 space-y-3'>
+        <View className='h-2/3 space-y-3'>
           {/* username */}
           <View className='space-y-1'>
             <View className='ml-2'>
@@ -172,30 +177,30 @@ const Login = () => {
           </View>
 
           {/* Incorrect Credentials */}
-          <View>
+          <View className='px-2 top-5'>
             {incorrectCredentials && (
-              <View className='mx-10 flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
+              <View className='flex flex-row items-center p-3 rounded-lg bg-[#fbeaea] border border-[#f10202]'>
                 <View className='bg-[#f3c1c0] p-2 rounded-full'>
                   <ExclamationTriangleIcon size={20} color='#a54e54' />
                 </View>
-                <Text className='text-base text-[#a54e54] ml-3'>Usuario no encontrado o contraseña incorrecta</Text>
+                <Text className='text-base text-[#a54e54] ml-2'>Usuario no encontrado o contraseña incorrecta</Text>
               </View>
             )}
           </View>
         </View>
 
         {/* btn */}
-        <View className='h-1/2 w-full'>
+        <View className='h-1/3 w-full'>
           <TouchableOpacity onPress={() => auth()} className='w-full p-3 rounded-full'
             style={{backgroundColor: theme.verde,}}
           >
             {!loaders.loadingAuth && (
               <Text className='text-white font-bold text-2xl text-center'>Iniciar Sesión</Text>
             )}
-
+            
             {loaders.loadingAuth && (
-              <View className=''>
-                <Loader color='white' />
+              <View>
+                <Loader color='white' size={32} />
               </View>
             )}
           </TouchableOpacity>
