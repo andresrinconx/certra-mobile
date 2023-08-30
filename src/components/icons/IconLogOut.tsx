@@ -5,14 +5,13 @@ import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import { setDataStorage } from '../../utils/asyncStorage'
 
-const IconLogOut = ({closeUserMenu}: {closeUserMenu: () => void}) => {
+const IconLogOut = () => {
   const {setProductsCart, setFlowControl, setValueSearchCustomers, products, setProducts} = useInv()
   const {setMyUser, setUser, setPassword, setLogin} = useLogin()
   const navigation = useNavigation()
   
   const handleLogOut = async () => {
     // reset login and navigate
-    closeUserMenu()
     setUser('')
     setPassword('')
     setLogin(false)

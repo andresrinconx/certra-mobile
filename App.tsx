@@ -1,25 +1,16 @@
-// import Navigation from './src/components/Navigation'
-// import { InvProvider } from './src/context/InvProvider'
-// import { LoginProvider } from './src/context/LoginProvider'
-
-// const App = () => {
-//   return ( 
-//     <LoginProvider>
-//       <InvProvider>
-//         <Navigation />
-//       </InvProvider>
-//     </LoginProvider>
-//   )
-// }
-
-// export default App
-import React from "react";
-import { NativeBaseProvider, Box } from "native-base";
+import { NativeBaseProvider } from "native-base"
+import { LoginProvider } from './src/context/LoginProvider'
+import { InvProvider } from './src/context/InvProvider'
+import Navigation from './src/components/Navigation'
 
 export default function App() {
   return (
     <NativeBaseProvider>
-      <Box>Hello world</Box>
+      <LoginProvider>
+         <InvProvider>
+           <Navigation />
+         </InvProvider>
+       </LoginProvider>
     </NativeBaseProvider>
-  );
+  )
 }

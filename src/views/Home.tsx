@@ -10,14 +10,13 @@ import { items } from '../utils/constants'
 import ProductsGrid from '../components/products/ProductsGrid'
 import IconUser from '../components/icons/IconUser'
 import SelectCustomer from '../components/customers/SelectCustomer'
-import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
 import IconLogOut from '../components/icons/IconLogOut'
 import Loader from '../components/loaders/Loader'
 
 const Home = () => {
   const {products, loaders, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()
-  const userMenuRef = useRef<Menu>(null)
+  // const userMenuRef = useRef<Menu>(null)
 
   // flowControl
   useEffect(() => {
@@ -32,11 +31,11 @@ const Home = () => {
   
   // SCREEN
   // close User Menu
-  const closeUserMenu = () => {
-    if (userMenuRef.current) {
-      userMenuRef.current.close()
-    }
-  }
+  // const closeUserMenu = () => {
+  //   if (userMenuRef.current) {
+  //     userMenuRef.current.close()
+  //   }
+  // }
   // back HANDLER
   useEffect(() => {
     const backAction = () => {
@@ -48,7 +47,7 @@ const Home = () => {
   }, [])
 
   return (
-    <MenuProvider>
+    <>
       {/* header */}
       <View className={`flex flex-row justify-between items-center py-3`}
         style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
@@ -58,8 +57,9 @@ const Home = () => {
         <View className='mr-4 flex flex-row gap-3 ml-5'>
           {flowControl?.showProducts && (<View><IconSearchProducts/></View>)}
           {flowControl?.showProducts && (<View><IconCart/></View>)}
-
-          <Menu ref={userMenuRef}>
+          {flowControl?.showProducts && (<View><IconLogOut /></View>)}
+          
+          {/* <Menu ref={userMenuRef}>
             <MenuTrigger style={{ backgroundColor: '#fff', borderRadius: 999 }}>
               <IconUser />
             </MenuTrigger>
@@ -73,10 +73,9 @@ const Home = () => {
               </View>
 
               <View className='px-3 mt-5 py-3 flex flex-row justify-end border-t border-t-slate-300'>
-                <IconLogOut closeUserMenu={closeUserMenu} />
               </View>
             </MenuOptions>
-          </Menu>
+          </Menu> */}
         </View>
       </View>
 
@@ -141,7 +140,7 @@ const Home = () => {
           ):null}
         </>
       )}
-    </MenuProvider>
+    </>
   )
 }
 

@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
 import {EyeIcon, EyeSlashIcon, ExclamationTriangleIcon} from 'react-native-heroicons/mini'
 import { theme } from '../styles'
 import useLogin from '../hooks/useLogin'
@@ -103,12 +102,7 @@ const Login = () => {
   }, [login])
 
   return (
-    <LinearGradient
-      colors={[`${theme.turquesaClaro}`, '#fff']}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      style={{ flex: 1 }}
-    >
+    <View>
       <View className='flex-1 items-center mt-16 mb-8 mx-[6%]'>
 
         {/* Logo */}
@@ -207,7 +201,7 @@ const Login = () => {
         </View>
 
       </View>
-    </LinearGradient>
+    </View>
   )
 }
 
