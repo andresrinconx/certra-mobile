@@ -1,6 +1,8 @@
+import { ProductoOrderInterface } from "./ProductoOrderInterface";
+
 export interface OrderInterface {
-  subtotal: number,
-  total: number,
+  subtotal: string,
+  total: string,
   cliente: string,
-  productos: [],
+  productos: ProductoOrderInterface[],
 }

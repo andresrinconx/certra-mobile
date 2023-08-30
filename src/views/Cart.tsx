@@ -4,9 +4,11 @@ import { useNavigation } from '@react-navigation/native'
 import { theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import ProductsCart from '../components/products/ProductsCart'
+import useLogin from '../hooks/useLogin'
 
 const Cart = () => {
   const {productsCart, clearCart, subtotal, total, confirmOrder} = useInv()
+  const {myUser} = useLogin()
   const navigation = useNavigation()
 
   return (
@@ -76,7 +78,7 @@ const Cart = () => {
             </View>
 
             {/* btn confirm */}
-            <TouchableOpacity onPress={() => confirmOrder()} className='rounded-xl py-3' style={{backgroundColor: theme.verde}}>
+            <TouchableOpacity onPress={() => confirmOrder(myUser)} className='rounded-xl py-3' style={{backgroundColor: theme.verde}}>
               <Text className='color-white text-center font-bold text-xl'>Confirmar pedido ({productsCart.length} {productsCart.length === 1 ? 'producto' : 'productos'})</Text>
             </TouchableOpacity>
           </View>

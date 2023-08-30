@@ -30,7 +30,7 @@ const InvContext = createContext<{
   setTotal: (total: string) => void
   removeElement: (id: number) => void
   addToCart: (product: ProductoInterface) => void
-  confirmOrder: () => void
+  confirmOrder: (myUser: any) => void
 }>({
   productsCart: [],
   setProductsCart: () => {},
@@ -63,14 +63,21 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const [products, setProducts] = useState<ProductoInterface[]>([])
   
   // order & cart
-  const [order, setOrder] = useState<OrderInterface>({subtotal: 0, total: 0, cliente: '', productos: []})
+  const [order, setOrder] = useState<OrderInterface>({
+    subtotal: '', 
+    total: '', 
+    cliente: '', 
+    productos: []
+  })
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
   const [subtotal, setSubtotal] = useState('')
   const [total, setTotal] = useState('')
+
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
   const [valueSearchCustomers, setValueSearchCustomers] = useState('')
+
   // layout
   const [flowControl, setFlowControl] = useState({
     showProducts: false, 
@@ -80,6 +87,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     showSelectLabel: false,
     selected: false,
   })
+
   // loaders
   const [loaders, setLoaders] = useState({
     loadingProducts: false, 
@@ -87,10 +95,6 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     loadingSlectedCustomer: false,
     loadingStorageInv: false,
   })
-
-  useEffect(() => {
-    console.log(order)
-  }, [order])
 
   // ----- STORAGE
   // get storage (productsCart, flowControl)
@@ -181,6 +185,30 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
     setTotal(formatedTotal)
   }, [productsCart])
 
+  // submit order
+  useEffect(() => {
+    const submitOrder = async () => {
+      try {
+        const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(order),
+        });
+    
+        if (response.ok) {
+          console.log('Pedido confirmado exitosamente:', order);
+        } else {
+          console.error('Error al confirmar el pedido');
+        }
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+    }
+    submitOrder()
+  }, [order])
+
   // add to cart
   const addToCart = (product: ProductoInterface) => {
     setProductsCart([...productsCart, {...product, agregado: true, cantidad: 1}])
@@ -236,8 +264,41 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   }
 
   // confirm order
-  const confirmOrder = () => {
-    //
+  const confirmOrder = async (myUser: any) => {
+    // order data
+    setOrder({
+      ...order, 
+      subtotal: subtotal, 
+      total: total, 
+      cliente: (myUser.from === 'scli' ? myUser.nombre : myUser.us_nombre), 
+      productos: productsCart.map((product: ProductoInterface) => ({
+        codigo: Number(product.codigo),
+        descrip: String(product.descrip),
+        base1: Number(product.base1),
+        precio1: Number(product.precio1),
+        iva: Number(product.iva),
+        cantidad: Number(product.cantidad)
+      }))
+    })
+    
+    // post data
+    // try {
+    //   const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(order),
+    //   });
+  
+    //   if (response.ok) {
+    //     console.log('Pedido confirmado exitosamente:', order);
+    //   } else {
+    //     console.error('Error al confirmar el pedido');
+    //   }
+    // } catch (error) {
+    //   console.error('Error en la solicitud:', error);
+    // }
   }
   
   return (
