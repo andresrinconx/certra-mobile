@@ -3,6 +3,7 @@ import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData } from "../utils/api"
+import { ThemeColorsInterface } from "../interfaces/ThemeColorsInterface"
 
 const LoginContext = createContext<{
   login: boolean
@@ -17,6 +18,8 @@ const LoginContext = createContext<{
   setLoaders: (loaders: {loadingLogin: boolean, loadingAuth: boolean,}) => void
   usersFromUsuario: UserFromUsuarioInterface[]
   usersFromScli: UserFromScliInterface[]
+  themeColors: ThemeColorsInterface
+  setThemeColors: (themeColors: ThemeColorsInterface) => void
 }>({
   login: false,
   setLogin: () => {},
@@ -30,6 +33,8 @@ const LoginContext = createContext<{
   setLoaders: () => {},
   usersFromUsuario: [],
   usersFromScli: [],
+  themeColors: {primary: ''},
+  setThemeColors: () => {},
 })
 
 export const LoginProvider = ({children}: {children: React.ReactNode}) => {
@@ -39,6 +44,9 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     from: '',
     letters: '',
   })
+  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
+    primary: ''
+  }) // 0 = Scli, 1 = Usuario
   // api
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
@@ -58,6 +66,9 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       try {
         setLoaders({...loaders, loadingLogin: true})
 
+        // themeColors
+        const themeColorsStorage = await getDataStorage('themeColors')
+        setThemeColors(themeColorsStorage ? JSON.parse(themeColorsStorage) : {})
         // login
         const loginStorage = await getDataStorage('login')
         setLogin(loginStorage === 'true' ? true : false)
@@ -72,7 +83,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
     getUser()
   }, [])
-  
+
   // add myUser storage
   useEffect(() => {
     if(myUser.letters) {
@@ -92,8 +103,8 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const dataUsuario = fetchTableData('Usuario')
-        const dataScli = fetchTableData('Scli')
+        const dataUsuario = fetchTableData('usuario')
+        const dataScli = fetchTableData('scli')
         const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todaas al mismo tiempo
         setUsersFromUsuario(usuario)
         setUsersFromScli(scli)
@@ -103,9 +114,6 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
     }
     getUsers()
   }, [])
-
-  // ----- ACTIONS
-
 
   return (
     <LoginContext.Provider value={{
@@ -120,7 +128,9 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
       loaders,
       setLoaders,
       usersFromScli,
-      usersFromUsuario
+      usersFromUsuario,
+      themeColors,
+      setThemeColors
     }}>
       {children}
     </LoginContext.Provider>

@@ -8,12 +8,14 @@ import IconSearchProducts from '../components/icons/IconSearchProducts'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
 import ProductsGrid from '../components/products/ProductsGrid'
-import IconUser from '../components/icons/IconUser'
 import SelectCustomer from '../components/customers/SelectCustomer'
 import IconLogOut from '../components/icons/IconLogOut'
 import Loader from '../components/loaders/Loader'
 
 const Home = () => {
+  // theme
+  const {themeColors: {primary}} = useLogin()
+
   const {products, loaders, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()
   // const userMenuRef = useRef<Menu>(null)
@@ -50,7 +52,7 @@ const Home = () => {
     <>
       {/* header */}
       <View className={`flex flex-row justify-between items-center py-3`}
-        style={{ ...styles.shadowHeader, backgroundColor: theme.turquesaClaro }}
+        style={{ ...styles.shadowHeader, backgroundColor: primary }}
       >
         <Text className='pl-3 font-bold text-2xl text-white'>Inventario</Text>
         {/* icons */}

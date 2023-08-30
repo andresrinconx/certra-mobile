@@ -9,8 +9,13 @@ import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import { setDataStorage } from '../utils/asyncStorage'
 import { firstTwoLetters } from '../utils/helpers'
+import { pallete } from '../utils/pallete'
 
 const Login = () => {
+  // theme
+  const {themeColors: {primary}, setThemeColors} = useLogin()
+
+  // state
   const [showPassword, setShowPassword] = useState(false)
   const [incorrectCredentials, setIncorrectCredentials] = useState(false)
   const [requiredFields, setRequiredFields] = useState({
@@ -19,6 +24,7 @@ const Login = () => {
   })
 
   const {user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin} = useLogin()
+
   const navigation = useNavigation()
 
   const auth = async () => {
@@ -41,19 +47,24 @@ const Login = () => {
 
     setLoaders({...loaders, loadingAuth: true})
     setIncorrectCredentials(false)
+
     // find in the table 'Usuario'
-    const userFromUsuario = usersFromUsuario.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
+    const userFromUsuario = usersFromUsuario?.find((userDb: UserFromUsuarioInterface) => (userDb.us_codigo === user.toUpperCase() || userDb.us_codigo === user) && userDb.us_clave === password)
     if (userFromUsuario === undefined) {
+
       // find in the table 'Scli'
-      const userFromScli = usersFromScli.find((userDb: UserFromScliInterface) => ('W' + userDb.cliente === user.toUpperCase() || 'W' + userDb.clave === user) && userDb.clave === password)
+      const userFromScli = usersFromScli?.find((userDb: UserFromScliInterface) => ('W' + userDb.cliente === user.toUpperCase() || 'W' + userDb.clave === user) && userDb.clave === password)
       if (userFromScli === undefined) {
+
         // Incorrect Credentials
         setTimeout(() => {
           setLoaders({...loaders, loadingAuth: false})
           setIncorrectCredentials(true)
         }, 1000)
         return
-      } else { // success from Scli
+      } else { 
+        
+        // Success from Scli
         setIncorrectCredentials(false)
         const letters = firstTwoLetters(userFromScli.nombre)
         setMyUser({
@@ -61,6 +72,7 @@ const Login = () => {
           from: 'scli',
           letters, 
         })
+        await setDataStorage('themeColors', {...pallete[0]}) // 0 = Scli
         await setDataStorage('login', true)
         await setDataStorage('myUser', {
           ...userFromScli,
@@ -69,11 +81,14 @@ const Login = () => {
         })
         setTimeout(() => {
           setLoaders({...loaders, loadingAuth: false})
+          setThemeColors({...pallete[0]}) // 0 = Scli
           setLogin(true)
         }, 500)
         setShowPassword(false)
       }
-    } else { // success from Usuario
+    } else { 
+
+      // Success from Usuario
       setIncorrectCredentials(false)
       const letters = firstTwoLetters(userFromUsuario.us_nombre)
       setMyUser({
@@ -81,6 +96,7 @@ const Login = () => {
         from: 'usuario',
         letters, 
       })
+      await setDataStorage('themeColors', {...pallete[1]}) // 1 = Usuario
       await setDataStorage('login', true)
       await setDataStorage('myUser', {
         ...userFromUsuario,
@@ -89,6 +105,7 @@ const Login = () => {
       })
       setTimeout(() => {
         setLoaders({...loaders, loadingAuth: false})
+        setThemeColors({...pallete[1]}) // 1 = Usuario
         setLogin(true)
       }, 500)
       setShowPassword(false)
@@ -102,7 +119,7 @@ const Login = () => {
   }, [login])
 
   return (
-    <View>
+    <View className="flex-1 bg-white">
       <View className='flex-1 items-center mt-16 mb-8 mx-[6%]'>
 
         {/* Logo */}

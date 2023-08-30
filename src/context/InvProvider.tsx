@@ -187,26 +187,28 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // submit order
   useEffect(() => {
-    const submitOrder = async () => {
-      try { 
-        const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(order),
-        });
-    
-        if (response.ok) {
-          console.log('Pedido confirmado exitosamente:', order);
-        } else {
-          console.error('Error al confirmar el pedido');
+    if(order.productos.length !== 0) {
+      const submitOrder = async () => {
+        try { 
+          const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+          });
+      
+          if (response.ok) {
+            console.log('Pedido confirmado exitosamente:', order);
+          } else {
+            console.error('Error al confirmar el pedido');
+          }
+        } catch (error) {
+          console.error('Error en la solicitud:', error);
         }
-      } catch (error) {
-        console.error('Error en la solicitud:', error);
       }
+      submitOrder()
     }
-    submitOrder()
   }, [order])
 
   // add to cart

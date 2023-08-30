@@ -1,14 +1,5 @@
-// Pallete
-const pallete = [
-  { // orange
-    hex: '#f97316', 
-    rbga: (opacity: number) => `rgba(251, 146, 60, ${opacity})`
-  },
-]
-export const themeColors = {...pallete[0]}
-
-// Styles
-export const tailwind = {
+// Utilities
+export const utilities = {
   // texts
   h1: '',
   h2: '',
@@ -17,3 +8,6 @@ export const tailwind = {
   h5: '',
   h6: '',
 }
+
+// Styles
+export const styles = {}
