@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import useInv from '../../hooks/useInv'
 
 const IconCart = () => {
-  const {cart} = useInv()
+  const {productsCart, setProductsCart} = useInv()
   const navigation = useNavigation()
 
   return (
@@ -12,11 +12,11 @@ const IconCart = () => {
       <View>
         <ShoppingCartIcon size={30} color='white' />
 
-        {cart.length > 0
+        {productsCart.length > 0
           && (
             <View className='absolute -top-2 -right-2 bg-red-600 rounded-full w-5 h-5 justify-center items-center'>
               <Text className='color-white text-xs'>
-                {cart.length}
+                {productsCart.length}
               </Text>
             </View>
           )

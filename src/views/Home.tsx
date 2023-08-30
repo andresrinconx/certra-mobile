@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react'
-import { View, Text, TouchableOpacity, FlatList, BackHandler } from 'react-native'
+import { View, Text, FlatList, BackHandler } from 'react-native'
 import { globalStyles, theme, styles } from '../styles'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
@@ -7,7 +7,7 @@ import IconCart from '../components/icons/IconCart'
 import IconSearchProducts from '../components/icons/IconSearchProducts'
 import LoaderProductsGrid from '../components/loaders/LoaderProductsGrid'
 import { items } from '../utils/constants'
-import ProductsViews from '../components/products/ProductsViews'
+import ProductsGrid from '../components/products/ProductsGrid'
 import IconUser from '../components/icons/IconUser'
 import SelectCustomer from '../components/customers/SelectCustomer'
 import { Menu, MenuOptions, MenuTrigger, MenuProvider } from 'react-native-popup-menu'
@@ -15,7 +15,7 @@ import IconLogOut from '../components/icons/IconLogOut'
 import Loader from '../components/loaders/Loader'
 
 const Home = () => {
-  const {type, setType, products, icon, loaders, flowControl, setFlowControl} = useInv()
+  const {products, loaders, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()
   const userMenuRef = useRef<Menu>(null)
 
@@ -88,56 +88,56 @@ const Home = () => {
         <>
           <SelectCustomer />
           {flowControl?.showProducts && !flowControl?.showSelectResults ? (
-            <>
-              <View className='flex-row justify-between mt-4 mb-3 mx-3 px-1'>
-                <Text className={`text-gray-700 text-xl font-bold`}>Productos</Text>
-    
-                <TouchableOpacity onPress={() => setType(type === 'grid' ? 'list' : 'grid')}>
-                  {icon(type)}
-                </TouchableOpacity>
+
+            loaders.loadingProducts || products.length === 0 ? (
+              <View className={`${globalStyles.container}`}>
+                <View className='flex-1 justify-center items-center'>
+                  <FlatList
+                    ListHeaderComponent={() => (
+                      <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? 'mt-0' : 'mt-3'}`}>
+                        <Text className='text-gray-700 text-xl font-bold w-full text-center'>Productos</Text>
+                      </View>
+                    )}
+                    data={items}
+                    numColumns={2}
+                    contentContainerStyle={{
+                      paddingBottom: 10,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                    renderItem={({item}) => {
+                      return (
+                        <LoaderProductsGrid key={item.id} />
+                      )
+                    }} 
+                  />
+                </View>
               </View>
-    
-              {loaders.loadingProducts ? (
-                <View className={`${globalStyles.container}`}>
-                  <View className='flex-1 justify-center items-center'>
-                    <FlatList
-                      data={items}
-                      numColumns={2}
-                      contentContainerStyle={{
-                        paddingBottom: 10,
-                      }}
-                      showsVerticalScrollIndicator={false}
-                      overScrollMode='never'
-                      renderItem={({item}) => {
-                        return (
-                          <LoaderProductsGrid key={item.id} />
-                        )
-                      }} 
-                    />
-                  </View>
+            ) : (
+              <View className={`${globalStyles.container}`}>
+                <View className='flex-1 justify-center items-center'>
+                  <FlatList
+                    ListHeaderComponent={() => (
+                      <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? 'mt-0' : 'mt-3'}`}>
+                        <Text className='text-gray-700 text-xl font-bold w-full text-center'>Productos</Text>
+                      </View>
+                    )}
+                    data={products}
+                    numColumns={2}
+                    contentContainerStyle={{
+                      paddingBottom: 10,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode='never'
+                    renderItem={({item}) => {
+                      return (
+                        <ProductsGrid key={item.id} product={item} />
+                      )
+                    }} 
+                  />
                 </View>
-              ) : (
-                <View className={`${globalStyles.container}`}>
-                  <View className='flex-1 justify-center items-center'>
-                    <FlatList
-                      data={products}
-                      key={type === 'grid' ? 'grid' : 'list'}
-                      numColumns={type === 'grid' ? 2 : 1}
-                      contentContainerStyle={{
-                        paddingBottom: 10,
-                      }}
-                      showsVerticalScrollIndicator={false}
-                      overScrollMode='never'
-                      renderItem={({item}) => {
-                        return (
-                          <ProductsViews key={item.id} item={item} />
-                        )
-                      }} 
-                    />
-                  </View>
-                </View>
-              )}
-            </>
+              </View>
+            )
           ):null}
         </>
       )}

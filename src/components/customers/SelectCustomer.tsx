@@ -72,7 +72,7 @@ const SelectCustomer = () => {
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
-            <View className='w-full flex flex-row items-center justify-between rounded-md' style={styles.shadow}>
+            <View className={`w-full flex flex-row items-center justify-between rounded-md ${flowControl.showSelectResults ? 'mb-0' : 'mb-4'}`} style={styles.shadow}>
               <View className='flex flex-row items-center'>
                 <View className='ml-3'>
                   <UserIcon size={20} color='gray' strokeWidth={2} />
@@ -124,7 +124,7 @@ const SelectCustomer = () => {
               ) : (
                 searchedCustomers?.length === 0 ? (
                   <View className='flex flex-row items-center justify-center py-8 -mt-3'>
-                    <Text className='text-2xl text-gray-700'>No hay resultados</Text>
+                    <Text className='text-xl text-gray-700 w-full text-center'>No hay resultados</Text>
                   </View>
                 ) : (
                   <FlatList
