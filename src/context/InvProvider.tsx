@@ -176,6 +176,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
             body: JSON.stringify(order),
           });
 
+          // remove later
           if (response.ok) {
             console.log('Pedido confirmado exitosamente:', order);
           } else {
