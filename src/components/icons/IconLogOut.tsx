@@ -20,7 +20,14 @@ const IconLogOut = () => {
     await setDataStorage('themeColors', {})
     await setDataStorage('myUser', {})
     await setDataStorage('productsCart', [])
-    await setDataStorage('flowControl', {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false,})
+    await setDataStorage('flowControl', {
+      showProducts: false, 
+      showSelectCustomer: false, 
+      showSelectSearch: false, 
+      showSelectResults: false, 
+      showSelectLabel: false, 
+      selected: false,
+    })
 
     // reset cart
     setProductsCart([])
@@ -35,7 +42,19 @@ const IconLogOut = () => {
       selected: false,
     })
     setMyUser({})
-    setThemeColors({primary: ''})
+    setThemeColors({
+      primary: '',
+      backgrund: '',
+      charge: '',
+      list: '',
+      turquoise: '',
+      darkTurquoise: '',
+      green: '',
+      blue: '',
+      icon: '',
+      typography: '',
+      processBtn: '',
+    })
     setValueSearchCustomers('')
   }
 

@@ -22,17 +22,6 @@ const Home = () => {
   const {myUser} = useLogin()
   // const userMenuRef = useRef<Menu>(null)
 
-  // flowControl
-  useEffect(() => {
-    if(!flowControl?.selected) { // is not selected
-      if(myUser.from === 'usuario') {
-        setFlowControl({...flowControl, showProducts: false, showSelectCustomer: true, showSelectSearch: true})
-      } else { // myUser.from === 'scli'
-        setFlowControl({...flowControl, showProducts: true, showSelectCustomer: false})
-      }
-    }
-  }, [myUser])
-  
   // SCREEN
   // close User Menu
   // const closeUserMenu = () => {

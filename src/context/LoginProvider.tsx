@@ -14,8 +14,8 @@ const LoginContext = createContext<{
   setPassword: (password: string) => void
   myUser: any
   setMyUser: (myUser: any) => void
-  loaders: { loadingLogin: boolean, loadingAuth: boolean, }
-  setLoaders: (loaders: { loadingLogin: boolean, loadingAuth: boolean, }) => void
+  loaders: { loadingAuth: boolean, }
+  setLoaders: (loaders: { loadingAuth: boolean, }) => void
   usersFromUsuario: UserFromUsuarioInterface[]
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
@@ -29,7 +29,7 @@ const LoginContext = createContext<{
   setPassword: () => { },
   myUser: {},
   setMyUser: () => { },
-  loaders: { loadingLogin: false, loadingAuth: false, },
+  loaders: { loadingAuth: false, },
   setLoaders: () => { },
   usersFromUsuario: [],
   usersFromScli: [],
@@ -77,35 +77,10 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [password, setPassword] = useState('')
   // loaders
   const [loaders, setLoaders] = useState({
-    loadingLogin: false,
     loadingAuth: false,
   })
 
   // ---- STORAGE
-  // get storage (logged user, myUser)
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        setLoaders({ ...loaders, loadingLogin: true })
-
-        // themeColors
-        const themeColorsStorage = await getDataStorage('themeColors')
-        setThemeColors(themeColorsStorage ? JSON.parse(themeColorsStorage) : {})
-        // login
-        const loginStorage = await getDataStorage('login')
-        setLogin(loginStorage === 'true' ? true : false)
-        // myUser
-        const myUserStorage = await getDataStorage('myUser')
-        setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
-
-        setLoaders({ ...loaders, loadingLogin: false })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUser()
-  }, [])
-
   // add myUser storage
   useEffect(() => {
     if (myUser.letters) {
@@ -127,7 +102,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const dataUsuario = fetchTableData('usuario')
         const dataScli = fetchTableData('scli')
-        const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todaas al mismo tiempo
+        const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
         setUsersFromUsuario(usuario)
         setUsersFromScli(scli)
       } catch (error) {

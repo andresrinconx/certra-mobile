@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react"
-import {Alert} from 'react-native'
+import { Alert } from 'react-native'
 import ProductoInterface from "../interfaces/ProductoInterface"
 import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData } from "../utils/api"
@@ -16,10 +16,10 @@ const InvContext = createContext<{
   clearCart: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
-  flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}
-  setFlowControl: (flowControl: {showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean,}) => void
-  loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}
-  setLoaders: (loaders: {loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, loadingStorageInv: boolean,}) => void
+  flowControl: { showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean, }
+  setFlowControl: (flowControl: { showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean, }) => void
+  loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }
+  setLoaders: (loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
   increase: (id: number) => void
@@ -33,40 +33,40 @@ const InvContext = createContext<{
   confirmOrder: (myUser: any) => void
 }>({
   productsCart: [],
-  setProductsCart: () => {},
+  setProductsCart: () => { },
   products: [],
-  setProducts: () => {},
+  setProducts: () => { },
   searchedProducts: [],
-  setSearchedProducts: () => {},
-  clearCart: () => {},
+  setSearchedProducts: () => { },
+  clearCart: () => { },
   searchedCustomers: [],
-  setSearchedCustomers: () => {},
-  flowControl: {showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false,},
-  setFlowControl: () => {},
-  loaders: {loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, loadingStorageInv: false,},
-  setLoaders: () => {},
+  setSearchedCustomers: () => { },
+  flowControl: { showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false, },
+  setFlowControl: () => { },
+  loaders: { loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, },
+  setLoaders: () => { },
   valueSearchCustomers: '',
-  setValueSearchCustomers: () => {},
-  increase: () => {},
-  decrease: () => {},
+  setValueSearchCustomers: () => { },
+  increase: () => { },
+  decrease: () => { },
   subtotal: '',
-  setSubtotal: () => {},
+  setSubtotal: () => { },
   total: '',
-  setTotal: () => {},
-  removeElement: () => {},
-  addToCart: () => {},
-  confirmOrder: () => {},
+  setTotal: () => { },
+  removeElement: () => { },
+  addToCart: () => { },
+  confirmOrder: () => { },
 })
 
-export const InvProvider = ({children}: {children: React.ReactNode}) => {
+export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // products
   const [products, setProducts] = useState<ProductoInterface[]>([])
-  
+
   // order & cart
   const [order, setOrder] = useState<OrderInterface>({
-    subtotal: '', 
-    total: '', 
-    cliente: '', 
+    subtotal: '',
+    total: '',
+    cliente: '',
     productos: []
   })
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
@@ -80,44 +80,22 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // layout
   const [flowControl, setFlowControl] = useState({
-    showProducts: false, 
-    showSelectCustomer: false, 
-    showSelectSearch: false, 
-    showSelectResults: false, 
+    showProducts: false,
+    showSelectCustomer: false,
+    showSelectSearch: false,
+    showSelectResults: false,
     showSelectLabel: false,
     selected: false,
   })
 
   // loaders
   const [loaders, setLoaders] = useState({
-    loadingProducts: false, 
+    loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
-    loadingStorageInv: false,
   })
 
   // ----- STORAGE
-  // get storage (productsCart, flowControl)
-  useEffect(() => {
-    const getCartStorage = async () => {
-      try {
-        setLoaders({...loaders, loadingStorageInv: true})
-        
-        // productsCart
-        const productsCartStorage = await getDataStorage('productsCart')
-        setProductsCart(productsCartStorage ? JSON.parse(productsCartStorage) : [])
-        // flowControl
-        const flowControlStorage = await getDataStorage('flowControl')
-        setFlowControl(flowControlStorage ? JSON.parse(flowControlStorage) : null)
-
-        setLoaders({...loaders, loadingStorageInv: false})
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getCartStorage()
-  }, [])
-
   // set productsCart
   useEffect(() => {
     const setProductsStorage = async () => {
@@ -133,7 +111,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   // set flow control
   useEffect(() => {
     // set storage when a customer is selected
-    if(flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
+    if (flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
       const flowControlStorage = async () => {
         try {
           await setDataStorage('flowControl', flowControl)
@@ -150,11 +128,11 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const obtenerProductos = async () => {
       try {
-        setLoaders({...loaders, loadingProducts: true})
+        setLoaders({ ...loaders, loadingProducts: true })
         const data = await fetchTableData('Sinv')
-        
+
         // fail api
-        if(data === undefined) {return}
+        if (data === undefined) { return }
 
         // Add properties to each producto
         const productos = data?.map((producto: ProductoInterface) => ({
@@ -163,7 +141,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
           cantidad: 1,
         }))
         setProducts(productos)
-        setLoaders({...loaders, loadingProducts: false})
+        setLoaders({ ...loaders, loadingProducts: false })
       } catch (error) {
         console.log(error)
       }
@@ -187,9 +165,9 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // submit order
   useEffect(() => {
-    if(order.productos.length !== 0) {
+    if (order.productos.length !== 0) {
       const submitOrder = async () => {
-        try { 
+        try {
           const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
             method: 'POST',
             headers: {
@@ -197,7 +175,7 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
             },
             body: JSON.stringify(order),
           });
-      
+
           if (response.ok) {
             console.log('Pedido confirmado exitosamente:', order);
           } else {
@@ -213,37 +191,39 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
 
   // add to cart
   const addToCart = (product: ProductoInterface) => {
-    setProductsCart([...productsCart, {...product, agregado: true, cantidad: 1}])
+    setProductsCart([...productsCart, { ...product, agregado: true, cantidad: 1 }])
   }
 
   // increase & decrease
   const increase = (id: number) => {
-    const updatedProductsCart = productsCart.map(item => item.id === id ? {...item, cantidad: item.cantidad + 1} : {...item})
+    const updatedProductsCart = productsCart.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : { ...item })
     setProductsCart(updatedProductsCart)
   }
   const decrease = (id: number) => {
     const productInCart = productsCart.find(item => item.id === id && item.cantidad === 1)
 
     // If the product is in the cart and has a quantity of 1, show an alert to confirm the deletion.
-    if(productInCart !== undefined) {
+    if (productInCart !== undefined) {
       Alert.alert(
         'Advertencia',
         '¿Quieres eliminar este producto del carrito?',
         [
-          { text: 'Eliminar', style: 'destructive' , onPress: () => {
-            const updatedProductsCart = productsCart.filter(item => item.id !== id)
-            setProductsCart(updatedProductsCart)
-          }},
+          {
+            text: 'Eliminar', style: 'destructive', onPress: () => {
+              const updatedProductsCart = productsCart.filter(item => item.id !== id)
+              setProductsCart(updatedProductsCart)
+            }
+          },
           { text: 'Cancelar', style: 'cancel' },
         ]
       )
     } else {
       // If the product is in the cart and has a quantity greater than 1, decrease the quantity by 1.
-      const updatedProductsCart = productsCart.map(item => (item.id === id && item.cantidad > 1) ? {...item, cantidad: item.cantidad - 1} : {...item})
+      const updatedProductsCart = productsCart.map(item => (item.id === id && item.cantidad > 1) ? { ...item, cantidad: item.cantidad - 1 } : { ...item })
       setProductsCart(updatedProductsCart)
     }
   }
-  
+
   // remove element from cart
   const removeElement = (id: number) => {
     const updatedProductsCart = productsCart.filter(item => item.id !== id)
@@ -256,11 +236,13 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
       '¿Quieres eliminar todos los productos del carrito?',
       'Esta acción no se puede deshacer',
       [
-        { text: 'Sí, eliminar', onPress: () => {
-          const updatedProducts = productsCart.filter(item => item.agregado !== true)
-          setProductsCart(updatedProducts)
-        }},
-        { text: 'Cancelar', style: 'cancel',},
+        {
+          text: 'Sí, eliminar', onPress: () => {
+            const updatedProducts = productsCart.filter(item => item.agregado !== true)
+            setProductsCart(updatedProducts)
+          }
+        },
+        { text: 'Cancelar', style: 'cancel', },
       ]
     )
   }
@@ -269,10 +251,10 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
   const confirmOrder = async (myUser: any) => {
     // order data
     setOrder({
-      ...order, 
-      subtotal: subtotal, 
-      total: total, 
-      cliente: (myUser.from === 'scli' ? myUser.nombre : myUser.us_nombre), 
+      ...order,
+      subtotal: subtotal,
+      total: total,
+      cliente: (myUser.from === 'scli' ? myUser.nombre : myUser.us_nombre),
       productos: productsCart.map((product: ProductoInterface) => ({
         codigo: Number(product.codigo),
         descrip: String(product.descrip),
@@ -282,27 +264,8 @@ export const InvProvider = ({children}: {children: React.ReactNode}) => {
         cantidad: Number(product.cantidad)
       }))
     })
-    
-    // post data
-    // try {
-    //   const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(order),
-    //   });
-  
-    //   if (response.ok) {
-    //     console.log('Pedido confirmado exitosamente:', order);
-    //   } else {
-    //     console.error('Error al confirmar el pedido');
-    //   }
-    // } catch (error) {
-    //   console.error('Error en la solicitud:', error);
-    // }
   }
-  
+
   return (
     <InvContext.Provider value={{
       productsCart,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Animated, Easing } from 'react-native';
+import { View, Animated, Easing } from 'react-native';
 import useLogin from '../../hooks/useLogin';
 
 const LoaderLogoScreen = () => {
@@ -28,7 +28,7 @@ const LoaderLogoScreen = () => {
   });
 
   return (
-    <View className='flex-1 justify-center items-center' style={{ backgroundColor: primary || '#fff' }}>
+    <View className='flex-1 justify-center items-center bg-white'>
       <Animated.Image
         source={require('../../assets/pastilla.png')}
         style={{
