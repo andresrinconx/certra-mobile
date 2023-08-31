@@ -4,6 +4,6 @@ export const pallete = [
     primary: '#ff00ee', // (Turquesa Oscuro)
   },
   { // Usuario
-    primary: '#ff00ee', // (Azul)
+    primary: '#00ffaa', // (Azul)
   }, 
 ]

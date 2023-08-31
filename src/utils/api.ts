@@ -1,6 +1,6 @@
 import {API_LOCAL, API_REMOTE} from '@env'
 
-const tableDataEndpoint = (table: string) => `${API_REMOTE}${table}`
+const tableDataEndpoint = (table: string) => `${API_LOCAL}${table}`
 const searchedItemsEndpoint = (params: {searchTerm: string, table: string}) => `${API_LOCAL}/searchCli/${params.searchTerm}`
 
 export const fetchTableData = async (table: string) => {

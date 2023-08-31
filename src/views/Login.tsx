@@ -83,7 +83,7 @@ const Login = () => {
           setLoaders({...loaders, loadingAuth: false})
           setThemeColors({...pallete[0]}) // 0 = Scli
           setLogin(true)
-        }, 500)
+        }, 1000)
         setShowPassword(false)
       }
     } else { 
@@ -107,7 +107,7 @@ const Login = () => {
         setLoaders({...loaders, loadingAuth: false})
         setThemeColors({...pallete[1]}) // 1 = Usuario
         setLogin(true)
-      }, 500)
+      }, 1000)
       setShowPassword(false)
     }
   }
