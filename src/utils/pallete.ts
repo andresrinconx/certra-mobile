@@ -1,7 +1,7 @@
 // Pallete
 export const pallete = [
   { // Scli
-    primary: '#006283', // (Turquesa Oscuro)
+    primary: '#006283', // (Dark Turquoise)
     backgrund: '#F6FAFB',
     charge: '#E4F0F3',
     list: '#D2E6EC',
@@ -14,7 +14,7 @@ export const pallete = [
     processBtn: '#808080',
   },
   { // Usuario
-    primary: '#1F377E', // (Azul)
+    primary: '#1F377E', // (Blue)
     backgrund: '#F6FAFB',
     charge: '#E4F0F3',
     list: '#D2E6EC',
