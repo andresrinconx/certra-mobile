@@ -1,9 +1,29 @@
 // Pallete
 export const pallete = [
   { // Scli
-    primary: '#ff00ee', // (Turquesa Oscuro)
+    primary: '#006283', // (Turquesa Oscuro)
+    backgrund: '#F6FAFB',
+    charge: '#E4F0F3',
+    list: '#D2E6EC',
+    turquoise: '#1C819F',
+    darkTurquoise: '#006283',
+    green: '#92BF1E',
+    blue: '#1F377E',
+    icon: '#B3B3B3',
+    typography: '#666666',
+    processBtn: '#808080',
   },
   { // Usuario
-    primary: '#00ffaa', // (Azul)
+    primary: '#1F377E', // (Azul)
+    backgrund: '#F6FAFB',
+    charge: '#E4F0F3',
+    list: '#D2E6EC',
+    turquoise: '#1C819F',
+    darkTurquoise: '#006283',
+    green: '#92BF1E',
+    blue: '#1F377E',
+    icon: '#B3B3B3',
+    typography: '#666666',
+    processBtn: '#808080',
   }, 
 ]
