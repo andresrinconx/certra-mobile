@@ -79,11 +79,11 @@ const Login = () => {
           from: "scli",
           letters,
         })
+        setThemeColors({ ...pallete[0] }) // 0 = Scli
+        setLogin(true)
         setTimeout(() => {
           setLoaders({ ...loaders, loadingAuth: false })
-          setThemeColors({ ...pallete[0] }) // 0 = Scli
-          setLogin(true)
-        }, 1000)
+        }, 1500)
         setShowPassword(false)
       }
     } else {
@@ -103,11 +103,11 @@ const Login = () => {
         from: "usuario",
         letters,
       })
+      setThemeColors({ ...pallete[1] }) // 1 = Usuario
+      setLogin(true)
       setTimeout(() => {
         setLoaders({ ...loaders, loadingAuth: false })
-        setThemeColors({ ...pallete[1] }) // 1 = Usuario
-        setLogin(true)
-      }, 1000)
+      }, 1500)
       setShowPassword(false)
     }
   }
@@ -236,7 +236,7 @@ const Login = () => {
             </View>
 
             <View className="">
-              <TouchableOpacity onPress={ ()=>{ Linking.openURL('https://google.com')}} className="">
+              <TouchableOpacity onPress={ ()=>{ Linking.openURL('https://www.youtube.com/channel/UCE63H9js4lEAN8C713SRFrQ')}} className="">
                 <Image className="w-10 h-10" resizeMode="cover"
                   source={require("../assets/youtube.png")}
                 />
