@@ -120,8 +120,6 @@ const Login = () => {
 
   return (
     <View className="flex-1 relative">
-
-      {/* background */}
       <ImageBackground className="w-full h-full" resizeMode="cover"
         source={require("../assets/background.png")}
       >
@@ -254,9 +252,7 @@ const Login = () => {
 
         </View>
       </ImageBackground>
-
     </View>
-
   )
 }
 
