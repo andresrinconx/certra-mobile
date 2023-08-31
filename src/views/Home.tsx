@@ -11,10 +11,12 @@ import ProductsGrid from '../components/products/ProductsGrid'
 import SelectCustomer from '../components/customers/SelectCustomer'
 import IconLogOut from '../components/icons/IconLogOut'
 import Loader from '../components/loaders/Loader'
+import { utilities } from '../utils/styles'
 
 const Home = () => {
-  // theme
-  const {themeColors: {primary}} = useLogin()
+  // theme & styles
+  const { themeColors: { primary, backgrund, charge, list, turquoise, darkTurquoise, green, blue, icon, typography, processBtn } } = useLogin()
+  const {  } = utilities
 
   const {products, loaders, flowControl, setFlowControl} = useInv()
   const {myUser} = useLogin()

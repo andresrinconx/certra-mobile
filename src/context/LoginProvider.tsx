@@ -14,39 +14,61 @@ const LoginContext = createContext<{
   setPassword: (password: string) => void
   myUser: any
   setMyUser: (myUser: any) => void
-  loaders: {loadingLogin: boolean, loadingAuth: boolean,}
-  setLoaders: (loaders: {loadingLogin: boolean, loadingAuth: boolean,}) => void
+  loaders: { loadingLogin: boolean, loadingAuth: boolean, }
+  setLoaders: (loaders: { loadingLogin: boolean, loadingAuth: boolean, }) => void
   usersFromUsuario: UserFromUsuarioInterface[]
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
 }>({
   login: false,
-  setLogin: () => {},
+  setLogin: () => { },
   user: '',
-  setUser: () => {},
+  setUser: () => { },
   password: '',
-  setPassword: () => {},
+  setPassword: () => { },
   myUser: {},
-  setMyUser: () => {},
-  loaders: {loadingLogin: false, loadingAuth: false,},
-  setLoaders: () => {},
+  setMyUser: () => { },
+  loaders: { loadingLogin: false, loadingAuth: false, },
+  setLoaders: () => { },
   usersFromUsuario: [],
   usersFromScli: [],
-  themeColors: {primary: ''},
-  setThemeColors: () => {},
+  themeColors: {
+    primary: '',
+    backgrund: '',
+    charge: '',
+    list: '',
+    turquoise: '',
+    darkTurquoise: '',
+    green: '',
+    blue: '',
+    icon: '',
+    typography: '',
+    processBtn: ''
+  },
+  setThemeColors: () => { },
 })
 
-export const LoginProvider = ({children}: {children: React.ReactNode}) => {
+export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // user
   const [login, setLogin] = useState(false) // go to login or go to home
   const [myUser, setMyUser] = useState<any>({
     from: '',
     letters: '',
   })
-  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
-    primary: ''
-  }) // 0 = Scli, 1 = Usuario
+  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({ // 0 = Scli, 1 = Usuario
+    primary: '',
+    backgrund: '',
+    charge: '',
+    list: '',
+    turquoise: '',
+    darkTurquoise: '',
+    green: '',
+    blue: '',
+    icon: '',
+    typography: '',
+    processBtn: '',
+  })
   // api
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
@@ -64,7 +86,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        setLoaders({...loaders, loadingLogin: true})
+        setLoaders({ ...loaders, loadingLogin: true })
 
         // themeColors
         const themeColorsStorage = await getDataStorage('themeColors')
@@ -76,7 +98,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
         const myUserStorage = await getDataStorage('myUser')
         setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
 
-        setLoaders({...loaders, loadingLogin: false})
+        setLoaders({ ...loaders, loadingLogin: false })
       } catch (error) {
         console.log(error)
       }
@@ -86,7 +108,7 @@ export const LoginProvider = ({children}: {children: React.ReactNode}) => {
 
   // add myUser storage
   useEffect(() => {
-    if(myUser.letters) {
+    if (myUser.letters) {
       const setMyUserStorage = async () => {
         try {
           await setDataStorage('myUser', myUser)
