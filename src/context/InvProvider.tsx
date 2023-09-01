@@ -16,8 +16,26 @@ const InvContext = createContext<{
   clearCart: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
-  flowControl: { showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean, }
-  setFlowControl: (flowControl: { showProducts: boolean, showSelectCustomer: boolean, showSelectSearch: boolean, showSelectResults: boolean, showSelectLabel: boolean, selected: boolean, }) => void
+  flowControl: { 
+    showProducts: boolean
+    showSelectCustomer: boolean
+    showSelectSearch: boolean
+    showSelectResults: boolean
+    showSelectLabel: boolean
+    showLogoCertra: boolean
+    showLogoLab: boolean
+    selected: boolean
+  }
+  setFlowControl: (flowControl: { 
+    showProducts: boolean
+    showSelectCustomer: boolean
+    showSelectSearch: boolean
+    showSelectResults: boolean
+    showSelectLabel: boolean
+    showLogoCertra: boolean
+    showLogoLab: boolean
+    selected: boolean
+  }) => void
   loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }
   setLoaders: (loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }) => void
   valueSearchCustomers: string
@@ -42,7 +60,16 @@ const InvContext = createContext<{
   clearCart: () => { },
   searchedCustomers: [],
   setSearchedCustomers: () => { },
-  flowControl: { showProducts: false, showSelectCustomer: false, showSelectSearch: false, showSelectResults: false, showSelectLabel: false, selected: false, },
+  flowControl: { 
+    showProducts: false, 
+    showSelectCustomer: false, 
+    showSelectSearch: false, 
+    showSelectResults: false, 
+    showSelectLabel: false, 
+    showLogoCertra: false,
+    showLogoLab: false,
+    selected: false, 
+  },
   setFlowControl: () => { },
   loaders: { loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, },
   setLoaders: () => { },
@@ -92,6 +119,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     showSelectSearch: false,
     showSelectResults: false,
     showSelectLabel: false,
+    showLogoCertra: false,
+    showLogoLab: false,
     selected: false,
   })
 

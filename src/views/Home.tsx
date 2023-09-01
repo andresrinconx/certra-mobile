@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { View, Text, FlatList, BackHandler } from "react-native"
+import { View, Text, FlatList, BackHandler, Image } from "react-native"
 import IconCart from "../components/icons/IconCart"
 import IconLogOut from "../components/icons/IconLogOut"
 import IconSearchProducts from "../components/icons/IconSearchProducts"
@@ -34,69 +34,82 @@ const Home = () => {
 
   return (
     <View className="flex-1">
+      {/* header */}
+      <View className="">
+        <Image className="w-52 h-52" resizeMode="cover"
+          source={require(`../assets/${flowControl?.showLogoCertra ? 'logo-certra.png' : 'logo-drocerca.png'}`)}
+        />
+
+        {flowControl?.showLogoLab && (
+          <Image className="w-52 h-52" resizeMode="cover"
+            source={require("../assets/logo-lab.png")}
+          />
+        )}
+      </View>
+      
       {/* content */}
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
-      {loaders.loadingSlectedCustomer ? (
-        <View className="flex-1 flex-row items-center justify-center">
-          <Loader />
-        </View>
-      ) : (
-        <>
-          <SelectCustomer />
-          {flowControl?.showProducts && !flowControl?.showSelectResults ? (
+        {loaders.loadingSlectedCustomer ? (
+          <View className="flex-1 flex-row items-center justify-center">
+            <Loader />
+          </View>
+        ) : (
+          <>
+            <SelectCustomer />
+            {flowControl?.showProducts && !flowControl?.showSelectResults ? (
 
-            loaders.loadingProducts || products.length === 0 ? (
-              <View className={`${globalStyles.container}`}>
-                <View className="flex-1 justify-center items-center">
-                  <FlatList
-                    ListHeaderComponent={() => (
-                      <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                        <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-                      </View>
-                    )}
-                    data={items}
-                    numColumns={2}
-                    contentContainerStyle={{
-                      paddingBottom: 10,
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    overScrollMode="never"
-                    renderItem={({ item }) => {
-                      return (
-                        <LoaderProductsGrid key={item.id} />
-                      )
-                    }}
-                  />
+              loaders.loadingProducts || products.length === 0 ? (
+                <View className={`${globalStyles.container}`}>
+                  <View className="flex-1 justify-center items-center">
+                    <FlatList
+                      ListHeaderComponent={() => (
+                        <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
+                          <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
+                        </View>
+                      )}
+                      data={items}
+                      numColumns={2}
+                      contentContainerStyle={{
+                        paddingBottom: 10,
+                      }}
+                      showsVerticalScrollIndicator={false}
+                      overScrollMode="never"
+                      renderItem={({ item }) => {
+                        return (
+                          <LoaderProductsGrid key={item.id} />
+                        )
+                      }}
+                    />
+                  </View>
                 </View>
-              </View>
-            ) : (
-              <View className={`${globalStyles.container}`}>
-                <View className="flex-1 justify-center items-center">
-                  <FlatList
-                    ListHeaderComponent={() => (
-                      <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                        <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-                      </View>
-                    )}
-                    data={products}
-                    numColumns={2}
-                    contentContainerStyle={{
-                      paddingBottom: 10,
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    overScrollMode="never"
-                    renderItem={({ item }) => {
-                      return (
-                        <ProductsGrid key={item.id} product={item} />
-                      )
-                    }}
-                  />
+              ) : (
+                <View className={`${globalStyles.container}`}>
+                  <View className="flex-1 justify-center items-center">
+                    <FlatList
+                      ListHeaderComponent={() => (
+                        <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
+                          <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
+                        </View>
+                      )}
+                      data={products}
+                      numColumns={2}
+                      contentContainerStyle={{
+                        paddingBottom: 10,
+                      }}
+                      showsVerticalScrollIndicator={false}
+                      overScrollMode="never"
+                      renderItem={({ item }) => {
+                        return (
+                          <ProductsGrid key={item.id} product={item} />
+                        )
+                      }}
+                    />
+                  </View>
                 </View>
-              </View>
-            )
-          ) : null}
-        </>
-      )}
+              )
+            ) : null}
+          </>
+        )}
       </View>
 
       {/* nav */}

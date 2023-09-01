@@ -57,6 +57,7 @@ const Navigation = () => {
           setFlowControl({
             ...flowControl,
             showProducts: false,
+            showLogoCertra: true,
             showSelectCustomer: true,
             showSelectSearch: true
           })
@@ -66,6 +67,8 @@ const Navigation = () => {
           setFlowControl({
             ...flowControl,
             showProducts: false,
+            showLogoCertra: true,
+            showLogoLab: true,
             showSelectCustomer: true,
             showSelectSearch: true
           })
@@ -75,6 +78,7 @@ const Navigation = () => {
           setFlowControl({
             ...flowControl,
             showProducts: true,
+            showLogoCertra: true,
             showSelectCustomer: false
           })
         }

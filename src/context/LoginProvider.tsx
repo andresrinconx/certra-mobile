@@ -80,12 +80,6 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     loadingAuth: false,
   })
 
-  useEffect(() => {
-    if (myUser.from === 'usuario-clipro') {
-      console.log('clipro-brother')
-    }
-  }, [myUser])
-
   // ---- STORAGE
   // add myUser storage
   useEffect(() => {
