@@ -21,7 +21,13 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
 
       // flow & reset
       setValueSearchCustomers('')
-      setFlowControl({...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true, selected: true})
+      setFlowControl({
+        ...flowControl, 
+        showSelectResults: false, 
+        showProducts: true, 
+        showSelectLabel: true, 
+        selected: true
+      })
       setLoaders({...loaders, loadingSlectedCustomer: false})
     }, 100)
   }

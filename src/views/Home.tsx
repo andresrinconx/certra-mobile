@@ -43,15 +43,9 @@ const Home = () => {
 
           {/* logos */}
           <View className="flex-row justify-between">
-            <Image className="w-36 h-16" resizeMode="contain"
+            <Image className="w-48 h-16" resizeMode="contain"
               source={flowControl?.showLogoCertra ? require("../assets/logo-certra.png") : require("../assets/logo-drocerca.png")}
             />
-
-            {flowControl?.showLogoLab && (
-              <Image className="w-36 h-16" resizeMode="contain"
-                source={require("../assets/logo-drocerca.png")}
-              />
-            )}
           </View>
           
           {/* customers and products */}
@@ -128,8 +122,8 @@ const Home = () => {
         {/* main */}
         <View className="flex flex-row items-center gap-4 pl-5">
           <View><IconHome /></View>
-          <View className="h-8 border-l-[0.8px] border-l-white" />
-          <View><IconProfile /></View>
+          {flowControl?.showProducts && (<View className="h-8 border-l-[0.8px] border-l-white" />)}
+          {flowControl?.showProducts && (<View><IconProfile /></View>)}
         </View>
 
         {/* other */}

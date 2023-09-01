@@ -4,7 +4,7 @@ import { OrderInterface } from '../interfaces/OrderInterface';
 // get
 const tableDataEndpoint = (table: string) => `${API_LOCAL}${table}`;
 const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${API_LOCAL}/${params.table}/${params.searchTerm}`;
-const userDataEndpoint = (params: {searchTerm: string; table: string}) => `${API_LOCAL}${params.table}/${params.searchTerm}`;
+const userDataEndpoint = (params: {code: string; table: string}) => `${API_LOCAL}${params.table}/${params.code}`;
 
 // post
 const sendDataEndpoint = () => `${API_LOCAL}pedidoguardar`;
@@ -31,7 +31,7 @@ export const fetchSearchedItems = async (params: { searchTerm: string; table: st
   }
 };
 
-export const fetchUserData = async (params: { searchTerm: string; table: string; }) => {
+export const fetchUserData = async (params: { code: string; table: string; }) => {
   const userDataUrl = userDataEndpoint(params);
   try {
     const response = await fetch(userDataUrl);

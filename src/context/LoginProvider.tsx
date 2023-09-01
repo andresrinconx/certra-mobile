@@ -80,6 +80,10 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     loadingAuth: false,
   })
 
+  useEffect(() => {
+    console.log(myUser)
+  }, [myUser])
+
   // ---- STORAGE
   // add myUser storage
   useEffect(() => {
