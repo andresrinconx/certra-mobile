@@ -204,7 +204,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     if (order.productos.length !== 0) {
       const submitOrder = async () => {
         try {
-          const response = await fetch('http://192.168.230.19/proteoerp/app/pedidoguardar', {
+          const response = await fetch('http://192.168.230.19:4000/enviar-pedido', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -10,6 +10,7 @@ import useLogin from "../hooks/useLogin"
 import LoaderLogoScreen from "./loaders/LoaderLogoScreen"
 import useInv from "../hooks/useInv"
 import { getDataStorage } from "../utils/asyncStorage"
+import Profile from "../views/Profile"
 
 const Stack = createNativeStackNavigator()
 
@@ -52,7 +53,7 @@ const Navigation = () => {
     if (storageLoaded) {
       if (!flowControl.selected) { // is not selected
         if (myUser.from === 'usuario') {
-          
+
           // 'usuario' will see this
           setFlowControl({
             ...flowControl,
@@ -62,7 +63,7 @@ const Navigation = () => {
             showSelectSearch: true
           })
         } else if (myUser.from === 'usuario-clipro') {
-          
+
           // 'usuario-clipro' will see this
           setFlowControl({
             ...flowControl,
@@ -73,7 +74,7 @@ const Navigation = () => {
             showSelectSearch: true
           })
         } else if (myUser.from === 'scli') {
-          
+
           // 'scli' will see this
           setFlowControl({
             ...flowControl,
@@ -95,8 +96,9 @@ const Navigation = () => {
           <Stack.Navigator initialRouteName={login ? "Home" : "Login"}>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false, title: "Login" }} />
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false, title: "Home", headerBackVisible: false }} />
-            <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false, title: "Cart", headerTintColor: "#fff" }} />
+            <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false, title: "Profile" }} />
             <Stack.Screen name="Search" component={Search} options={{ headerShown: false, title: "Search", animation: "none" }} />
+            <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false, title: "Cart", headerTintColor: "#fff" }} />
             <Stack.Screen name="Product" component={Product} options={{ headerShown: false, title: "Product", animation: "fade_from_bottom" }} />
           </Stack.Navigator>
         </NavigationContainer>

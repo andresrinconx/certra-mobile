@@ -13,6 +13,8 @@ import { items } from "../utils/constants"
 import { utilities } from "../utils/styles"
 
 import { globalStyles, styles } from "../styles"
+import IconProfile from "../components/icons/IconProfile"
+import IconHome from "../components/icons/IconHome"
 
 const Home = () => {
   // theme & styles
@@ -33,174 +35,115 @@ const Home = () => {
   }, [])
 
   return (
-    <View className="flex-1">
-      {/* header */}
-      <View className="">
-        <Image className="w-52 h-52" resizeMode="cover"
-          source={require(`../assets/${flowControl?.showLogoCertra ? 'logo-certra.png' : 'logo-drocerca.png'}`)}
-        />
-
-        {flowControl?.showLogoLab && (
-          <Image className="w-52 h-52" resizeMode="cover"
-            source={require("../assets/logo-lab.png")}
-          />
-        )}
-      </View>
-      
-      {/* content */}
+    <>
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
-        {loaders.loadingSlectedCustomer ? (
-          <View className="flex-1 flex-row items-center justify-center">
-            <Loader />
+
+        {/* content */}
+        <View className="flex-1 px-6 pt-6">
+
+          {/* logos */}
+          <View className="flex-row justify-between">
+            <Image className="w-36 h-16" resizeMode="contain"
+              source={flowControl?.showLogoCertra ? require("../assets/logo-certra.png") : require("../assets/logo-drocerca.png")}
+            />
+
+            {flowControl?.showLogoLab && (
+              <Image className="w-36 h-16" resizeMode="contain"
+                source={require("../assets/logo-drocerca.png")}
+              />
+            )}
           </View>
-        ) : (
-          <>
-            <SelectCustomer />
-            {flowControl?.showProducts && !flowControl?.showSelectResults ? (
+          
+          {/* content */}
+          <View className="flex-1">
+            {loaders.loadingSlectedCustomer ? (
+              <View className="flex-1 flex-row items-center justify-center">
+                <Loader />
+              </View>
+            ) : (
+              <>
+                <SelectCustomer />
+                {flowControl?.showProducts && !flowControl?.showSelectResults ? (
 
-              loaders.loadingProducts || products.length === 0 ? (
-                <View className={`${globalStyles.container}`}>
-                  <View className="flex-1 justify-center items-center">
-                    <FlatList
-                      ListHeaderComponent={() => (
-                        <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                          <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-                        </View>
-                      )}
-                      data={items}
-                      numColumns={2}
-                      contentContainerStyle={{
-                        paddingBottom: 10,
-                      }}
-                      showsVerticalScrollIndicator={false}
-                      overScrollMode="never"
-                      renderItem={({ item }) => {
-                        return (
-                          <LoaderProductsGrid key={item.id} />
-                        )
-                      }}
-                    />
-                  </View>
-                </View>
-              ) : (
-                <View className={`${globalStyles.container}`}>
-                  <View className="flex-1 justify-center items-center">
-                    <FlatList
-                      ListHeaderComponent={() => (
-                        <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                          <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-                        </View>
-                      )}
-                      data={products}
-                      numColumns={2}
-                      contentContainerStyle={{
-                        paddingBottom: 10,
-                      }}
-                      showsVerticalScrollIndicator={false}
-                      overScrollMode="never"
-                      renderItem={({ item }) => {
-                        return (
-                          <ProductsGrid key={item.id} product={item} />
-                        )
-                      }}
-                    />
-                  </View>
-                </View>
-              )
-            ) : null}
-          </>
-        )}
-      </View>
-
-      {/* nav */}
-      <View className="flex flex-row justify-between items-center py-3" style={{ backgroundColor: primary }}>
-        <Text className="pl-3 font-bold text-2xl text-white">{myUser.from === 'usuario' ? 'Inventario' : myUser.from === 'usuario-clipro' ? 'Inventario-Clipro' : null}</Text>
-
-        {/* icons */}
-        <View className="mr-4 flex flex-row gap-3 ml-5">
-          {flowControl?.showProducts && (<View><IconSearchProducts /></View>)}
-          {flowControl?.showProducts && (<View><IconCart /></View>)}
-          {(<View><IconLogOut /></View>)}
+                  loaders.loadingProducts || products.length === 0 ? (
+                    <View className="">
+                      <View className="flex-1 justify-center items-center">
+                        <FlatList
+                          ListHeaderComponent={() => (
+                            <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
+                              <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
+                            </View>
+                          )}
+                          data={items}
+                          numColumns={2}
+                          contentContainerStyle={{
+                            paddingBottom: 10,
+                          }}
+                          showsVerticalScrollIndicator={false}
+                          overScrollMode="never"
+                          renderItem={({ item }) => {
+                            return (
+                              <LoaderProductsGrid key={item.id} />
+                            )
+                          }}
+                        />
+                      </View>
+                    </View>
+                  ) : (
+                    <View className={`${globalStyles.container}`}>
+                      <View className="flex-1 justify-center items-center">
+                        <FlatList
+                          ListHeaderComponent={() => (
+                            <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
+                              <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
+                            </View>
+                          )}
+                          data={products}
+                          numColumns={2}
+                          contentContainerStyle={{
+                            paddingBottom: 10,
+                          }}
+                          showsVerticalScrollIndicator={false}
+                          overScrollMode="never"
+                          renderItem={({ item }) => {
+                            return (
+                              <ProductsGrid key={item.id} product={item} />
+                            )
+                          }}
+                        />
+                      </View>
+                    </View>
+                  )
+                ):null}
+              </>
+            )}
+          </View>
         </View>
+
       </View>
 
-    </View>
-    // <>
-    //   {/* nav */}
-    //   <View className={`flex flex-row justify-between items-center py-3`}
-    //     style={{ ...styles.shadowHeader, backgroundColor: primary }}
-    //   >
-    //     <Text className="pl-3 font-bold text-2xl text-white">Inventario</Text>
-    //     {/* icons */}
-    //     <View className="mr-4 flex flex-row gap-3 ml-5">
-    //       {flowControl?.showProducts && (<View><IconSearchProducts /></View>)}
-    //       {flowControl?.showProducts && (<View><IconCart /></View>)}
-    //       {(<View><IconLogOut /></View>)}
-    //     </View>
-    //   </View>
+      {/* footer */}
+      <View className="flex flex-row justify-between items-center h-16" style={{ backgroundColor: primary }}>
 
-    //   {loaders.loadingSlectedCustomer ? (
-    //     <View className="flex-1 flex-row items-center justify-center">
-    //       <Loader />
-    //     </View>
-    //   ) : (
-    //     <>
-    //       <SelectCustomer />
-    //       {flowControl?.showProducts && !flowControl?.showSelectResults ? (
+        {/* main */}
+        <View className="flex flex-row items-center gap-4 pl-5">
+          <View><IconHome /></View>
+          <View className="h-8 border-l-[0.8px] border-l-white" />
+          <View><IconProfile /></View>
+        </View>
 
-    //         loaders.loadingProducts || products.length === 0 ? (
-    //           <View className={`${globalStyles.container}`}>
-    //             <View className="flex-1 justify-center items-center">
-    //               <FlatList
-    //                 ListHeaderComponent={() => (
-    //                   <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-    //                     <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-    //                   </View>
-    //                 )}
-    //                 data={items}
-    //                 numColumns={2}
-    //                 contentContainerStyle={{
-    //                   paddingBottom: 10,
-    //                 }}
-    //                 showsVerticalScrollIndicator={false}
-    //                 overScrollMode="never"
-    //                 renderItem={({ item }) => {
-    //                   return (
-    //                     <LoaderProductsGrid key={item.id} />
-    //                   )
-    //                 }}
-    //               />
-    //             </View>
-    //           </View>
-    //         ) : (
-    //           <View className={`${globalStyles.container}`}>
-    //             <View className="flex-1 justify-center items-center">
-    //               <FlatList
-    //                 ListHeaderComponent={() => (
-    //                   <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-    //                     <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-    //                   </View>
-    //                 )}
-    //                 data={products}
-    //                 numColumns={2}
-    //                 contentContainerStyle={{
-    //                   paddingBottom: 10,
-    //                 }}
-    //                 showsVerticalScrollIndicator={false}
-    //                 overScrollMode="never"
-    //                 renderItem={({ item }) => {
-    //                   return (
-    //                     <ProductsGrid key={item.id} product={item} />
-    //                   )
-    //                 }}
-    //               />
-    //             </View>
-    //           </View>
-    //         )
-    //       ) : null}
-    //     </>
-    //   )}
-    // </>
+        {/* other */}
+        <View className="flex flex-row items-center h-full">
+          {flowControl?.showProducts && (<View><IconSearchProducts /></View>)}
+          {flowControl?.showProducts && (<View className="ml-2"><IconCart /></View>)}
+
+          <View className="h-full w-20 flex justify-center items-center ml-5" style={{ backgroundColor: green }}>
+            <IconLogOut />
+          </View>
+        </View>
+
+      </View>
+    </>
   )
 }
 
