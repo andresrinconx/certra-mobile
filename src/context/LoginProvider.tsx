@@ -56,7 +56,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     from: '',
     letters: '',
   })
-  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({ // 0 = Scli, 1 = Usuario
+  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({ // 0 = Usuario, 1 = Scli
     primary: '',
     backgrund: '',
     charge: '',
@@ -79,6 +79,12 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [loaders, setLoaders] = useState({
     loadingAuth: false,
   })
+
+  useEffect(() => {
+    if (myUser.from === 'usuario-clipro') {
+      console.log('clipro-brother')
+    }
+  }, [myUser])
 
   // ---- STORAGE
   // add myUser storage

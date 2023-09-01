@@ -31,6 +31,7 @@ const InvContext = createContext<{
   removeElement: (id: number) => void
   addToCart: (product: ProductoInterface) => void
   confirmOrder: (myUser: any) => void
+  order: OrderInterface
 }>({
   productsCart: [],
   setProductsCart: () => { },
@@ -56,6 +57,12 @@ const InvContext = createContext<{
   removeElement: () => { },
   addToCart: () => { },
   confirmOrder: () => { },
+  order: {
+    subtotal: '',
+    total: '',
+    cliente: '',
+    productos: []
+  }
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -178,7 +185,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
           // remove later
           if (response.ok) {
-            console.log('Pedido confirmado exitosamente:', order);
+            console.log('Pedido confirmado', order)
           } else {
             console.error('Error al confirmar el pedido');
           }
@@ -292,7 +299,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setTotal,
       removeElement,
       addToCart,
-      confirmOrder
+      confirmOrder,
+      order
     }}>
       {children}
     </InvContext.Provider>

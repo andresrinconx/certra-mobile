@@ -28,6 +28,19 @@ const IconLogOut = () => {
       showSelectLabel: false, 
       selected: false,
     })
+    await setDataStorage('themeColors', {
+      primary: '',
+      backgrund: '',
+      charge: '',
+      list: '',
+      turquoise: '',
+      darkTurquoise: '',
+      green: '',
+      blue: '',
+      icon: '',
+      typography: '',
+      processBtn: '',
+    })
 
     // reset cart
     setProductsCart([])

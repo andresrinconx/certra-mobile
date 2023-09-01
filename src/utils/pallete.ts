@@ -1,6 +1,6 @@
 // Pallete
 export const pallete = [
-  { // Scli
+  { // Usuario - Usuario-Clipro
     primary: '#006283', // (Dark Turquoise)
     backgrund: '#F6FAFB',
     charge: '#E4F0F3',
@@ -13,7 +13,7 @@ export const pallete = [
     typography: '#666666',
     processBtn: '#808080',
   },
-  { // Usuario
+  { // Scli
     primary: '#1F377E', // (Blue)
     backgrund: '#F6FAFB',
     charge: '#E4F0F3',

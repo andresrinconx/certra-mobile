@@ -53,6 +53,16 @@ const Navigation = () => {
       if (!flowControl.selected) { // is not selected
         if (myUser.from === 'usuario') {
           
+          // 'usuario' will see this
+          setFlowControl({
+            ...flowControl,
+            showProducts: false,
+            showSelectCustomer: true,
+            showSelectSearch: true
+          })
+        } else if (myUser.from === 'usuario-clipro') {
+          
+          // 'usuario-clipro' will see this
           setFlowControl({
             ...flowControl,
             showProducts: false,
@@ -61,6 +71,7 @@ const Navigation = () => {
           })
         } else if (myUser.from === 'scli') {
           
+          // 'scli' will see this
           setFlowControl({
             ...flowControl,
             showProducts: true,
