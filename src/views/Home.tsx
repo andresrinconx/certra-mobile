@@ -12,7 +12,7 @@ import useInv from "../hooks/useInv"
 import { items } from "../utils/constants"
 import { utilities } from "../utils/styles"
 
-import { globalStyles, styles } from "../styles"
+import { globalStyles } from "../styles"
 import IconProfile from "../components/icons/IconProfile"
 import IconHome from "../components/icons/IconHome"
 
@@ -54,7 +54,7 @@ const Home = () => {
             )}
           </View>
           
-          {/* content */}
+          {/* customers and products */}
           <View className="flex-1">
             {loaders.loadingSlectedCustomer ? (
               <View className="flex-1 flex-row items-center justify-center">
@@ -90,7 +90,7 @@ const Home = () => {
                       </View>
                     </View>
                   ) : (
-                    <View className={`${globalStyles.container}`}>
+                    <View className="">
                       <View className="flex-1 justify-center items-center">
                         <FlatList
                           ListHeaderComponent={() => (

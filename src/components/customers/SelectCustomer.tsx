@@ -47,7 +47,7 @@ const SelectCustomer = () => {
       }
       setLoaders({...loaders, loadingSearchedItems: true})
       // fetching...
-      const data = await fetchSearchedItems({searchTerm: valueSearchCustomers, table: 'scli'})
+      const data = await fetchSearchedItems({searchTerm: valueSearchCustomers, table: 'searchCli'}) // searchCli = scli
       setSearchedCustomers(data.message === undefined ? data : [])
       setLoaders({...loaders, loadingSearchedItems: false})
     } else {

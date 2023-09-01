@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react"
 import { Alert } from 'react-native'
 import ProductoInterface from "../interfaces/ProductoInterface"
 import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
-import { fetchTableData } from "../utils/api"
+import { fetchTableData, sendData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { OrderInterface } from "../interfaces/OrderInterface"
 
@@ -199,30 +199,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setTotal(formatedTotal)
   }, [productsCart])
 
-  // submit order
+  // send order
   useEffect(() => {
     if (order.productos.length !== 0) {
-      const submitOrder = async () => {
-        try {
-          const response = await fetch('http://192.168.230.19:4000/enviar-pedido', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order),
-          });
-
-          // remove later
-          if (response.ok) {
-            console.log('Pedido confirmado', order)
-          } else {
-            console.error('Error al confirmar el pedido');
-          }
-        } catch (error) {
-          console.error('Error en la solicitud:', error);
-        }
+      const sendOrder = async () => {
+        await sendData(order)
       }
-      submitOrder()
+      sendOrder()
     }
   }, [order])
 
