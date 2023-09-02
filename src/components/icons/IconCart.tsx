@@ -1,27 +1,32 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import { ShoppingCartIcon } from 'react-native-heroicons/solid'
-import { useNavigation } from '@react-navigation/native'
-import useInv from '../../hooks/useInv'
+import { View, Text, TouchableOpacity, Image } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import useInv from "../../hooks/useInv"
+import useLogin from "../../hooks/useLogin"
 
 const IconCart = () => {
-  const {productsCart, setProductsCart} = useInv()
+  // theme
+  const { themeColors: { green } } = useLogin()
+
+  const { productsCart } = useInv()
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-      <View>
-        <ShoppingCartIcon size={30} color='white' />
+    <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+      <Image className="w-7 h-7" resizeMode="cover"
+        source={require("../../assets/cart.png")}
+      />
 
-        {productsCart.length > 0
-          && (
-            <View className='absolute -top-2 -right-2 bg-red-600 rounded-full w-5 h-5 justify-center items-center'>
-              <Text className='color-white text-xs'>
-                {productsCart.length}
-              </Text>
-            </View>
-          )
-        }
-      </View>
+      {productsCart.length > 0
+        && (
+          <View className="flex flex-row justify-center items-center absolute -top-1 -right-1 w-4 h-4 rounded-full"
+            style={{ backgroundColor: green, }}
+          >
+            <Text className="w-full text-center color-black text-[10px]">
+              {productsCart.length}
+            </Text>
+          </View>
+        )
+      }
     </TouchableOpacity>
   )
 }

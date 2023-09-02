@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { ArrowSmallRightIcon, TrashIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
@@ -7,9 +8,25 @@ import ProductsCart from '../components/products/ProductsCart'
 import useLogin from '../hooks/useLogin'
 
 const Cart = () => {
-  const {productsCart, clearCart, subtotal, total, confirmOrder} = useInv()
+  const {productsCart, clearCart, subtotal, total, confirmOrder, order} = useInv()
   const {myUser} = useLogin()
   const navigation = useNavigation()
+
+  // borrar
+  const [mensaje, setMensaje] = useState('')
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await fetch(`http://192.168.230.19/proteoerp/app/pedidoguardar`)
+        const data = await res.json()
+        setMensaje(data.error)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getData()
+  }, [order])
+  // borrar
 
   return (
     <>
@@ -56,6 +73,10 @@ const Cart = () => {
             />
           </View>
         )}
+
+        {/* borrar */}
+        <Text className="text-gray-700">{mensaje}</Text>
+        {/* borrar */}
       </View>
 
       {/* confirm */}
