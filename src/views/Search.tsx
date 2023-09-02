@@ -44,7 +44,7 @@ const Search = () => {
     if(value.length > 2) {
       setLoaders({...loaders, loadingSearchedItems: true})
       // fetching...
-      const data = await fetchSearchedItems({searchTerm: value, table: 'Sinv'})
+      const data = await fetchSearchedItems({searchTerm: value, table: 'search'}) // search = sinv
       setSearchedProducts(data)
       setLoaders({...loaders, loadingSearchedItems: false})
     } else {

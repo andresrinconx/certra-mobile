@@ -1,20 +1,45 @@
-import { View, Image } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
-import { theme } from '../../styles'
+import React, { useState, useEffect } from 'react';
+import { View, Animated, Easing } from 'react-native';
+import useLogin from '../../hooks/useLogin';
 
 const LoaderLogoScreen = () => {
-  return (
-    <LinearGradient
-      colors={[`${theme.turquesaOscuro}`, `${theme.turquesaClaro}`]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.5, y: 0.4 }}
-      style={{ flex: 1 }}
-    >
-      <View className='flex-1 justify-center items-center'>
-        <Image source={require('../../assets/user.png')} style={{width: 200, height: 200,}} />
-      </View>
-    </LinearGradient>
-  )
-}
+  const { themeColors: { primary } } = useLogin();
+  const [rotationValue] = useState(new Animated.Value(0));
 
-export default LoaderLogoScreen
+  useEffect(() => {
+    const rotateImage = () => {
+      Animated.timing(rotationValue, {
+        toValue: 1,
+        duration: 1500, // Ajusta la duración según tus necesidades
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }).start(() => {
+        rotationValue.setValue(0);
+        rotateImage();
+      });
+    };
+
+    rotateImage();
+  }, []);
+
+  const rotateInterpolation = rotationValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  return (
+    <View className='flex-1 justify-center items-center bg-white'>
+      <Animated.Image
+        source={require('../../assets/pastilla.png')}
+        style={{
+          transform: [{ rotate: rotateInterpolation }],
+          width: 100,
+          height: 100,
+        }}
+        resizeMode="contain"
+      />
+    </View>
+  );
+};
+
+export default LoaderLogoScreen;
