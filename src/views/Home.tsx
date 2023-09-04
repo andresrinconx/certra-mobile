@@ -95,7 +95,7 @@ const Home = () => {
                       </View>
                     </View>
                   ) : (
-                    <View className="">
+                    <View className="h-full">
                       <View className="flex-1 justify-center items-center">
                         <FlatList
                           ListHeaderComponent={() => (

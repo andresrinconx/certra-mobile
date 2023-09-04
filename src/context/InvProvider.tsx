@@ -165,10 +165,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     const obtenerProductos = async () => {
       try {
         setLoaders({ ...loaders, loadingProducts: true })
-        const data = await fetchTableData('Sinv')
-
-        // fail api
-        if (data === undefined) { return }
+        const data = await fetchTableData('sinv')
 
         // Add properties to each producto
         const productos = data?.map((producto: ProductoInterface) => ({

@@ -96,7 +96,8 @@ const SelectCustomer = () => {
                   onPress={() => {
                     setValueSearchCustomers("")
                     setFlowControl({...flowControl, showSelectResults: false})
-                  }}>
+                  }}
+                >
                   <XMarkIcon size={25} color={icon} />
                 </TouchableOpacity>
               )}
