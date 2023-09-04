@@ -9,7 +9,7 @@ import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import { setDataStorage } from "../utils/asyncStorage"
 import { firstTwoLetters } from "../utils/helpers"
 import { pallete } from "../utils/pallete"
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
+import { widthPercentageToDP as wp} from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
 
 const Login = () => {
@@ -179,7 +179,7 @@ const Login = () => {
           <View className="w-5/6 absolute bottom-0 space-y-3">
 
             {/* username */}
-            <View className="">
+            <View>
               <View className="flex-row items-center rounded-2xl py-4 bg-white">
                 <TextInput className="w-full pl-5 text-[#666666]" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefUser}
@@ -199,9 +199,9 @@ const Login = () => {
             </View>
 
             {/* password */}
-            <View className="">
+            <View>
               <View className="flex-row items-center rounded-2xl py-4 bg-white">
-                <TextInput className="w-full pl-5 text-[#666666]" style={{ fontSize: wp(4.5) }}
+                <TextInput className="w-full font-extrabold pl-5 text-[#666666]" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder="Contraseña"
@@ -260,7 +260,7 @@ const Login = () => {
 
         {/* social media */}
         <View className="h-1/6 flex flex-row justify-center items-start pt-8 space-x-5">
-          <View className="">
+          <View>
             <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/drocerca/') }} className="">
               <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/instagram.png")}
@@ -268,7 +268,7 @@ const Login = () => {
             </TouchableOpacity>
           </View>
 
-          <View className="">
+          <View>
             <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/DROCERCA/') }} className="">
               <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/facebook.png")}
@@ -276,7 +276,7 @@ const Login = () => {
             </TouchableOpacity>
           </View>
 
-          <View className="">
+          <View>
             <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/channel/UCE63H9js4lEAN8C713SRFrQ') }} className="">
               <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/youtube.png")}
@@ -284,7 +284,7 @@ const Login = () => {
             </TouchableOpacity>
           </View>
 
-          <View className="">
+          <View>
             <TouchableOpacity onPress={() => { Linking.openURL('https://twitter.com/drocerca') }} className="">
               <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/x.png")}

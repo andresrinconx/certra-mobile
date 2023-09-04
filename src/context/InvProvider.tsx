@@ -190,13 +190,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // subtotal
     const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0);
-    const formatedSubtotal = subtotal.toLocaleString('es-ES', { minimumFractionDigits: 2 })
-    setSubtotal(formatedSubtotal)
+    const subtotalFormated = subtotal.toLocaleString();
+    setSubtotal(subtotalFormated);
 
     // total
-    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    const formatedTotal = total.toLocaleString('es-ES', { minimumFractionDigits: 2 })
-    setTotal(formatedTotal)
+    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0);
+    const totalFormated = total.toLocaleString();
+    setTotal(totalFormated);
   }, [productsCart])
 
   // send order
@@ -272,8 +272,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     // order data
     setOrder({
       ...order,
-      subtotal: subtotal,
-      total: total,
+      subtotal: subtotal.replace(/\./g, ''),
+      total: total.replace(/\./g, ''),
       cliente: (myUser.from === 'scli' ? myUser.nombre : myUser.us_nombre),
       productos: productsCart.map((product: ProductoInterface) => ({
         codigo: Number(product.codigo),

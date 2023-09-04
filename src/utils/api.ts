@@ -53,8 +53,9 @@ export const sendData = async (order: OrderInterface) => {
         'Content-Type': 'application/json',
       },
     });
-  
-    console.log('Orden enviada:', response);
+    
+    console.log(order)
+    console.log('Orden enviada:', response.data);
 
     // fetch
     // const response = await fetch(sendDataUrl, {
