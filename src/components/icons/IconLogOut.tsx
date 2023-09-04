@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import useInv from "../../hooks/useInv"
 import useLogin from "../../hooks/useLogin"
 import { setDataStorage } from "../../utils/asyncStorage"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
 const IconLogOut = () => {
   const { setProductsCart, setFlowControl, setValueSearchCustomers } = useInv()
@@ -77,10 +78,10 @@ const IconLogOut = () => {
   return (
     <TouchableOpacity onPress={handleLogOut}>
       <View className="flex flex-row items-center gap-2">
-        <Image className="w-6 h-6" resizeMode="cover"
+        <Image style={{ width: wp(6), height: wp(6) }} resizeMode="cover"
           source={require("../../assets/leave.png")}
         />
-        <Text className="text-sm text-white">Salir</Text>
+        <Text className="text-sm w-8 text-white">Salir</Text>
       </View>
     </TouchableOpacity>
   )

@@ -41,10 +41,6 @@ const Profile = () => {
     }
     getData()
   }, [])
-
-  useEffect(() => {
-    console.log(dataConfig)
-  }, [dataConfig])
   
   return (
     <View className="flex-1 px-6 pt-6">
@@ -52,9 +48,15 @@ const Profile = () => {
 
       {/* logos */}
       <View className="flex-row justify-between">
-        <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
-          source={flowControl?.showLogoCertra ? require("../assets/logo-certra.png") : require("../assets/logo-drocerca.png")}
-        />
+        {flowControl?.showLogoCertra ? (
+          <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
+            source={require("../assets/logo-certra.png")}
+          />
+        ) : (
+          <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
+            source={require("../assets/logo-drocerca.png")}
+          />
+        )}
       </View>
 
       {/* back */}
@@ -88,18 +90,18 @@ const Profile = () => {
             <View className="flex flex-col items-center">
               {!flowControl?.showLogoCertra && (
                 <View>
-                  <Image className="w-32 h-32" resizeMode="cover"
+                  <Image style={{ width: wp(32), height: wp(32) }} resizeMode="cover"
                     source={require("../assets/drugstore.png")}
                   />
                 </View>
               )}
 
-              <Text className="font-extrabold mt-4" style={{ color: typography, fontSize: wp(4.5) }}>
+              <Text className="w-56 font-extrabold text-center mt-4" style={{ color: typography, fontSize: wp(4.5) }}>
                 {myUser.from === 'scli' ? dataConfig?.nombre : dataConfig?.nombre}
               </Text>
 
               <Text className="w-28 font-normal" style={{ color: typography, fontSize: wp(4) }}>
-                Codigo: {myUser.from === 'scli' ? dataConfig?.proveed : dataConfig?.proveed}
+                Codigo: {myUser.from === 'scli' ? dataConfig?.cliente : dataConfig?.proveed}
               </Text>
             </View>
             

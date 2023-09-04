@@ -11,18 +11,16 @@ import useLogin from "../hooks/useLogin"
 import useInv from "../hooks/useInv"
 import { items } from "../utils/constants"
 import { utilities } from "../utils/styles"
-
-import { globalStyles } from "../styles"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import IconProfile from "../components/icons/IconProfile"
 import IconHome from "../components/icons/IconHome"
 
 const Home = () => {
   // theme & styles
-  const { themeColors: { primary, backgrund, charge, list, turquoise, darkTurquoise, green, blue, icon, typography, processBtn } } = useLogin()
+  const { themeColors: { primary, backgrund, green } } = useLogin()
   const { } = utilities
 
   const { products, loaders, flowControl } = useInv()
-  const { myUser } = useLogin()
 
   // back HANDLER
   useEffect(() => {
@@ -43,9 +41,15 @@ const Home = () => {
 
           {/* logos */}
           <View className="flex-row justify-between">
-            <Image className="w-48 h-16" resizeMode="contain"
-              source={flowControl?.showLogoCertra ? require("../assets/logo-certra.png") : require("../assets/logo-drocerca.png")}
+          {flowControl?.showLogoCertra ? (
+            <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
+              source={require("../assets/logo-certra.png")}
             />
+          ) : (
+            <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
+              source={require("../assets/logo-drocerca.png")}
+            />
+          )}
           </View>
           
           {/* customers and products */}
