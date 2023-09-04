@@ -190,7 +190,7 @@ const Profile = () => {
 
               {/* phone */}
               <View className="flex flex-row justify-between items-center">
-                <Text className="w-2/6 font-bold" style={{ color: typography, fontSize: wp(4.5) }}>Teléfonos</Text>
+                <Text className="w-2/6 font-bold" style={{ color: typography, fontSize: wp(4.5) }}>Teléfono</Text>
 
                 <View className="w-4/6 rounded-lg py-2 px-1" style={{ backgroundColor: charge, }}>
                   <Text className="text-center" style={{ color: typography }}>

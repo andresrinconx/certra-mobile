@@ -272,8 +272,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     // order data
     setOrder({
       ...order,
-      subtotal: subtotal.replace(/\./g, ''),
-      total: total.replace(/\./g, ''),
+      subtotal: String(parseInt(subtotal)),
+      total: String(parseInt(total)),
       cliente: (myUser.from === 'scli' ? myUser.nombre : myUser.us_nombre),
       productos: productsCart.map((product: ProductoInterface) => ({
         codigo: Number(product.codigo),
