@@ -9,6 +9,8 @@ import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import { setDataStorage } from "../utils/asyncStorage"
 import { firstTwoLetters } from "../utils/helpers"
 import { pallete } from "../utils/pallete"
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
+import { StatusBar } from "expo-status-bar"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -47,15 +49,15 @@ const Login = () => {
     setIncorrectCredentials(false)
 
     // find in the table "Usuario"
-    const userFromUsuario = usersFromUsuario?.find((userDb: UserFromUsuarioInterface) => 
+    const userFromUsuario = usersFromUsuario?.find((userDb: UserFromUsuarioInterface) =>
       (userDb.us_codigo === user.toUpperCase().trim() || userDb.us_codigo === user.trim()) && userDb.us_clave === password)
 
     if (userFromUsuario === undefined) {
 
       // find in the table "Scli"
-      const userFromScli = usersFromScli?.find((userDb: UserFromScliInterface) => 
+      const userFromScli = usersFromScli?.find((userDb: UserFromScliInterface) =>
         ("W" + userDb.cliente === user.toUpperCase() || "W" + userDb.clave === user) && userDb.clave === password)
-        
+
       if (userFromScli === undefined) {
 
         // Incorrect Credentials
@@ -156,7 +158,8 @@ const Login = () => {
 
   return (
     <View className="flex-1 relative">
-      
+      <StatusBar style="light" />
+
       <Image className="absolute w-full h-full" resizeMode="cover"
         source={require("../assets/background.png")}
       />
@@ -166,7 +169,7 @@ const Login = () => {
 
         {/* logo drocerca */}
         <View className="flex flex-row justify-center h-1/6 pt-10">
-          <Image className="w-80 h-16" resizeMode="contain"
+          <Image resizeMode="contain" style={{ width: wp(90), height: wp(20) }}
             source={require("../assets/logo-drocerca.png")}
           />
         </View>
@@ -177,8 +180,8 @@ const Login = () => {
 
             {/* username */}
             <View className="">
-              <View className="flex-row items-center rounded-2xl p-1 bg-white">
-                <TextInput className="w-full pl-3 text-lg text-[#666666]"
+              <View className="flex-row items-center rounded-2xl py-4 bg-white">
+                <TextInput className="w-full pl-5 text-[#666666]" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefUser}
                   placeholder="Usuario"
                   placeholderTextColor="#666666"
@@ -189,16 +192,16 @@ const Login = () => {
               </View>
 
               {requiredFields.user && (
-                <View className="pl-4">
-                  <Text className="text-lg text-white">* Campo obligatorio</Text>
+                <View className="pl-4 pt-1">
+                  <Text className="text-white" style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
 
             {/* password */}
             <View className="">
-              <View className="flex-row items-center rounded-2xl p-1 bg-white">
-                <TextInput className="w-full pl-3 text-lg text-[#666666]"
+              <View className="flex-row items-center rounded-2xl py-4 bg-white">
+                <TextInput className="w-full pl-5 text-[#666666]" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder="Contraseña"
@@ -220,8 +223,8 @@ const Login = () => {
               </View>
 
               {requiredFields.password && (
-                <View className="pl-4">
-                  <Text className="text-lg text-white">* Campo obligatorio</Text>
+                <View className="pl-4 pt-1">
+                  <Text className="text-white" style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
@@ -229,18 +232,18 @@ const Login = () => {
             {/* Incorrect Credentials */}
             {incorrectCredentials && (
               <View className="pr-4">
-                <Text className="text-lg text-white text-right">* Datos incorrectos</Text>
+                <Text className="text-white text-right" style={{ fontSize: wp(4) }}>* Datos incorrectos</Text>
               </View>
             )}
 
             {/* sign in */}
             <View className="flex flex-col items-center">
-              <TouchableOpacity onPress={() => auth()} className="rounded-lg p-1.5 w-40"
+              <TouchableOpacity onPress={() => auth()} className="flex flex-col justify-center items-center rounded-xl p-1.5 w-36"
                 style={{ backgroundColor: "#92BF1E" }}
               >
                 {!loaders.loadingAuth && (
                   <View className="h-6">
-                    <Text className="text-black font-medium text-base text-center">Iniciar Sesión</Text>
+                    <Text className="text-black font-medium text-center" style={{ fontSize: wp(4.5) }}>Iniciar Sesión</Text>
                   </View>
                 )}
 
@@ -258,32 +261,32 @@ const Login = () => {
         {/* social media */}
         <View className="h-1/6 flex flex-row justify-center items-start pt-8 space-x-5">
           <View className="">
-            <TouchableOpacity onPress={ ()=>{ Linking.openURL('https://www.instagram.com/drocerca/')}} className="">
-              <Image className="w-10 h-10" resizeMode="cover"
+            <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/drocerca/') }} className="">
+              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/instagram.png")}
               />
             </TouchableOpacity>
           </View>
 
           <View className="">
-            <TouchableOpacity onPress={ ()=>{ Linking.openURL('https://www.facebook.com/DROCERCA/')}} className="">
-              <Image className="w-10 h-10" resizeMode="cover"
+            <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/DROCERCA/') }} className="">
+              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/facebook.png")}
               />
             </TouchableOpacity>
           </View>
 
           <View className="">
-            <TouchableOpacity onPress={ ()=>{ Linking.openURL('https://www.youtube.com/channel/UCE63H9js4lEAN8C713SRFrQ')}} className="">
-              <Image className="w-10 h-10" resizeMode="cover"
+            <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/channel/UCE63H9js4lEAN8C713SRFrQ') }} className="">
+              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/youtube.png")}
               />
             </TouchableOpacity>
           </View>
 
           <View className="">
-            <TouchableOpacity onPress={ ()=>{ Linking.openURL('https://twitter.com/drocerca')}} className="">
-              <Image className="w-10 h-10" resizeMode="cover"
+            <TouchableOpacity onPress={() => { Linking.openURL('https://twitter.com/drocerca') }} className="">
+              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                 source={require("../assets/x.png")}
               />
             </TouchableOpacity>

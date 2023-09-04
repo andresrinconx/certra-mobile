@@ -1,13 +1,14 @@
 import {API_LOCAL, API_REMOTE} from '@env';
 import { OrderInterface } from '../interfaces/OrderInterface';
+import axios from 'axios';
 
 // get
-const tableDataEndpoint = (table: string) => `${API_REMOTE}${table}`;
-const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${API_REMOTE}/${params.table}/${params.searchTerm}`;
-const userDataEndpoint = (params: {code: string; table: string}) => `${API_REMOTE}${params.table}/${params.code}`;
+const tableDataEndpoint = (table: string) => `${API_LOCAL}${table}`;
+const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${API_LOCAL}/${params.table}/${params.searchTerm}`;
+const userDataEndpoint = (params: {code: string; table: string}) => `${API_LOCAL}${params.table}/${params.code}`;
 
 // post
-const sendDataEndpoint = () => `${API_REMOTE}pedidoguardar`;
+const sendDataEndpoint = () => `${API_LOCAL}pedidoguardar`;
 
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);
@@ -45,13 +46,26 @@ export const fetchUserData = async (params: { code: string; table: string; }) =>
 export const sendData = async (order: OrderInterface) => {
   const sendDataUrl = sendDataEndpoint();
   try {
-    await fetch(sendDataUrl, {
-      method: 'POST',
+
+    // axios
+    const response = await axios.post(sendDataUrl, order, {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(order),
     });
+  
+    console.log('Orden enviada:', response);
+
+    // fetch
+    // const response = await fetch(sendDataUrl, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(order),
+    // });
+
+    // console.log(response)
   } catch (error) {
     console.error('Error en la solicitud:', error);
   }
