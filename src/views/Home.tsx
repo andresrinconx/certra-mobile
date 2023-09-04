@@ -14,6 +14,7 @@ import { utilities } from "../utils/styles"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import IconProfile from "../components/icons/IconProfile"
 import IconHome from "../components/icons/IconHome"
+import { StatusBar } from "expo-status-bar"
 
 const Home = () => {
   // theme & styles
@@ -21,6 +22,7 @@ const Home = () => {
   const { } = utilities
 
   const { products, loaders, flowControl } = useInv()
+  const { myUser: { image_url } } = useLogin()
 
   // back HANDLER
   useEffect(() => {
@@ -35,21 +37,26 @@ const Home = () => {
   return (
     <>
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
+        <StatusBar style="dark" />
 
         {/* content */}
         <View className="flex-1 px-6 pt-6">
 
           {/* logos */}
           <View className="flex-row justify-between">
-          {flowControl?.showLogoCertra ? (
-            <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
-              source={require("../assets/logo-certra.png")}
+            {flowControl?.showLogoCertra ? (
+              <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
+                source={require("../assets/logo-certra.png")}
+              />
+            ) : (
+              <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
+                source={require("../assets/logo-drocerca.png")}
+              />
+            )}
+
+            <Image style={{ width: wp(40), height: wp(16) }} resizeMode="contain"
+              source={{uri: `${image_url}`}}
             />
-          ) : (
-            <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
-              source={require("../assets/logo-drocerca.png")}
-            />
-          )}
           </View>
           
           {/* customers and products */}

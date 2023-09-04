@@ -57,6 +57,10 @@ const Profile = () => {
             source={require("../assets/logo-drocerca.png")}
           />
         )}
+
+        <Image style={{ width: wp(40), height: wp(16) }} resizeMode="contain"
+          source={{uri: `${myUser?.image_url}`}}
+        />
       </View>
 
       {/* back */}

@@ -181,7 +181,7 @@ const Login = () => {
             {/* username */}
             <View>
               <View className="flex-row items-center rounded-2xl py-4 bg-white">
-                <TextInput className="w-full pl-5 text-[#666666]" style={{ fontSize: wp(4.5) }}
+                <TextInput className="w-full pl-5" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefUser}
                   placeholder="Usuario"
                   placeholderTextColor="#666666"
@@ -201,7 +201,7 @@ const Login = () => {
             {/* password */}
             <View>
               <View className="flex-row items-center rounded-2xl py-4 bg-white">
-                <TextInput className="w-full font-extrabold pl-5 text-[#666666]" style={{ fontSize: wp(4.5) }}
+                <TextInput className="w-full pl-5" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder="Contraseña"
@@ -232,7 +232,7 @@ const Login = () => {
             {/* Incorrect Credentials */}
             {incorrectCredentials && (
               <View className="pr-4">
-                <Text className="text-white text-right" style={{ fontSize: wp(4) }}>* Datos incorrectos</Text>
+                <Text className="text-white text-right" style={{ fontSize: wp(4.5) }}>* Datos incorrectos</Text>
               </View>
             )}
 

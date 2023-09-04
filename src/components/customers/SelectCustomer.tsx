@@ -1,8 +1,6 @@
-import {useEffect, useRef} from "react"
-import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList } from "react-native"
-import { styles, theme } from "../../styles"
+import {useEffect, useRef, useCallback} from "react"
+import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList, Image } from "react-native"
 import {XMarkIcon} from "react-native-heroicons/mini"
-import {UserIcon} from "react-native-heroicons/outline"
 import useInv from "../../hooks/useInv"
 import { fetchSearchedItems } from "../../utils/api"
 import { items } from "../../utils/constants"
@@ -10,8 +8,12 @@ import LoaderCustomersSearch from "../loaders/LoaderCustomersSearch"
 import CustomersSearch from "./CustomersSearch"
 import useLogin from "../../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import { debounce } from 'lodash'
 
 const SelectCustomer = () => {
+  // theme & styles
+  const { themeColors: { list, typography, primary, icon } } = useLogin()
+
   const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers} = useInv()
   const {myUser} = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
@@ -57,6 +59,8 @@ const SelectCustomer = () => {
     }
   }
 
+  const handleTextDebounce = useCallback(debounce(handleSearch, 300), [])
+
   return (
     <>
       {flowControl?.showSelectCustomer ? (
@@ -65,37 +69,36 @@ const SelectCustomer = () => {
 
           {/* label */}
           {flowControl?.showSelectLabel && (
-            <View className="mb-3">
-              <Text className="text-gray-700 text-xl font-bold">Cliente</Text>
-              <Text className="text-gray-500 text-base">{myUser?.customer?.nombre}</Text>
+            <View className="mb-4">
+              <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
+              <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
             </View>
           )}
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
-            <View className={`w-full flex flex-row items-center justify-between rounded-md ${flowControl.showSelectResults ? "mb-0" : "mb-4"}`} style={styles.shadow}>
-              <View className="flex flex-row items-center">
-                <View className="ml-3">
-                  <UserIcon size={20} color="gray" strokeWidth={2} />
-                </View>
+            <View className="flex flex-row items-center">
+              <Image style={{ width: wp(10), height: wp(10) }} resizeMode="cover"
+                source={require("../../assets/drugstore-search.png")}
+              />
 
-                <TextInput className="text-base text-gray-700 ml-1 w-72"
-                  ref={textInputRef}
+              <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
+                <TextInput className="w-full pl-3" style={{ color: typography }}
                   placeholder="Buscar un cliente"
-                  placeholderTextColor="gray"
-                  value={valueSearchCustomers}
-                  onChangeText={handleSearch}
-                  selectionColor={theme.turquesaClaro}
+                  placeholderTextColor={typography}
+                  // value={valueSearchCustomers}
+                  onChangeText={handleTextDebounce}
+                  selectionColor={primary}
                 />
               </View>
 
-              {valueSearchCustomers != "" && (
-                <TouchableOpacity className="relative right-3"
+              {valueSearchCustomers !== "" && (
+                <TouchableOpacity className="absolute right-3"
                   onPress={() => {
                     setValueSearchCustomers("")
                     setFlowControl({...flowControl, showSelectResults: false})
                   }}>
-                  <XMarkIcon size={25} color="black" />
+                  <XMarkIcon size={25} color={icon} />
                 </TouchableOpacity>
               )}
             </View>
@@ -103,9 +106,7 @@ const SelectCustomer = () => {
 
           {/* results */}
           {flowControl?.showSelectResults ? (
-            <View className={`bg-white mt-2 rounded-md px-3 pt-3 ${flowControl.showSelectLabel ? "max-h-[78%]" : "max-h-[87%]"}`}
-              style={styles.shadow}
-            >
+            <View>
               {/* loadingSearchedItems */}
               {loaders.loadingSearchedItems ? (
                 <FlatList
@@ -114,6 +115,7 @@ const SelectCustomer = () => {
                   onScroll={handleScroll}
                   contentContainerStyle={{
                     paddingBottom: 5,
+                    marginTop: 15
                   }}
                   showsVerticalScrollIndicator={false}
                   renderItem={({item}) => {
@@ -124,8 +126,8 @@ const SelectCustomer = () => {
                 />
               ) : (
                 searchedCustomers?.length === 0 ? (
-                  <View className="flex flex-row items-center justify-center py-8 -mt-3">
-                    <Text className="text-xl text-gray-700 w-full text-center">No hay resultados</Text>
+                  <View className="flex flex-row items-center justify-center py-8">
+                    <Text className="text-xl w-full text-center" style={{ color: typography }}>No hay resultados</Text>
                   </View>
                 ) : (
                   <FlatList
@@ -135,6 +137,7 @@ const SelectCustomer = () => {
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{
                       paddingBottom: 5,
+                      marginTop: 15
                     }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item}) => {
