@@ -59,7 +59,7 @@ const SelectCustomer = () => {
     }
   }
 
-  const handleTextDebounce = useCallback(debounce(handleSearch, 300), [])
+  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
 
   return (
     <>
@@ -86,7 +86,6 @@ const SelectCustomer = () => {
                 <TextInput className="w-full pl-3" style={{ color: typography }}
                   placeholder="Buscar un cliente"
                   placeholderTextColor={typography}
-                  // value={valueSearchCustomers}
                   onChangeText={handleTextDebounce}
                   selectionColor={primary}
                 />
