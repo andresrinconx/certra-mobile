@@ -35,7 +35,7 @@ const ProductsSearch = ({product}: {product: ProductoInterface}) => {
         <Pressable onPress={() => navigation.navigate('Product', {...product})} className='basis-[35%] flex items-center justify-center'>
           {image_url === null ? (
             <Image className='w-24 h-24' resizeMode='cover'
-              source={require('../../assets/Acetaminofen.png')} 
+              source={require('../../assets/no-image.png')} 
             />
           ) : (
             <Image className='w-24 h-24' resizeMode='contain' 

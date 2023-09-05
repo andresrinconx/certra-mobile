@@ -58,7 +58,7 @@ const Product = () => {
       <View className='h-[35%] bg-white border-b-gray-300 border-b pb-5 justify-center items-center'>
         {product?.image_url === '' || product?.image_url === null ? (
           <Image className='w-52 h-52' resizeMode='cover'
-            source={require('../assets/Acetaminofen.png')}
+            source={require('../assets/no-image.png')}
           />
         ) : (
           <Image className='w-52 h-52' resizeMode='contain' 

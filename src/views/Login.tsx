@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, Linking } from "react-native"
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking } from "react-native"
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/mini"
 import useLogin from "../hooks/useLogin"
 import { useNavigation } from "@react-navigation/native"
@@ -11,6 +11,7 @@ import { firstTwoLetters } from "../utils/helpers"
 import { pallete } from "../utils/pallete"
 import { widthPercentageToDP as wp} from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
+import { socialMedia } from "../utils/constants"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -259,38 +260,24 @@ const Login = () => {
         </View>
 
         {/* social media */}
-        <View className="h-1/6 flex flex-row justify-center items-start pt-8 space-x-5">
-          <View>
-            <TouchableOpacity onPress={() => { Linking.openURL('https://www.instagram.com/drocerca/') }} className="">
-              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-                source={require("../assets/instagram.png")}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/DROCERCA/') }} className="">
-              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-                source={require("../assets/facebook.png")}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => { Linking.openURL('https://www.youtube.com/channel/UCE63H9js4lEAN8C713SRFrQ') }} className="">
-              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-                source={require("../assets/youtube.png")}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <TouchableOpacity onPress={() => { Linking.openURL('https://twitter.com/drocerca') }} className="">
-              <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-                source={require("../assets/x.png")}
-              />
-            </TouchableOpacity>
-          </View>
+        <View className="h-1/6 flex justify-center items-center pt-8 space-x-5">
+          <FlatList
+            data={socialMedia}
+            numColumns={1}
+            horizontal={true}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => {
+              let isLast = socialMedia.length === item.id
+              let noMargin = `${isLast ? 'mr-0' : 'mr-3'}`
+              return (
+                <TouchableOpacity onPress={() => { Linking.openURL(`${item.url}`) }} className={`${noMargin}`}>
+                  <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
+                    source={item.image}
+                  />
+                </TouchableOpacity>
+              )
+            }} 
+          />
         </View>
 
       </View>

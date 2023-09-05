@@ -39,7 +39,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
       <Pressable onPress={() => navigation.navigate("Product", {...product})} className="mb-2 justify-center items-center">
         {image_url === null ? (
           <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain"
-            source={require("../../assets/Acetaminofen.png")} 
+            source={require("../../assets/no-image.png")} 
           />
         ) : (
           <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain" 
