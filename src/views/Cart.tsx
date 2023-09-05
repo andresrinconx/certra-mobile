@@ -7,7 +7,7 @@ import ProductsCart from '../components/products/ProductsCart'
 import useLogin from '../hooks/useLogin'
 
 const Cart = () => {
-  const {productsCart, clearCart, subtotal, total, confirmOrder, order} = useInv()
+  const {productsCart, clearCart, subtotal, total, confirmOrder} = useInv()
   const {myUser} = useLogin()
   const navigation = useNavigation()
 
@@ -56,12 +56,6 @@ const Cart = () => {
             />
           </View>
         )}
-
-        {/* borrar */}
-        <Text className="text-gray-700">
-          Total: {order.subtotal}
-        </Text>
-        {/* borrar */}
       </View>
 
       {/* confirm */}
