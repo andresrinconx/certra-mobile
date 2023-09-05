@@ -146,7 +146,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
               </View>
 
               {/* added */}
-              <View>
+              <View className="pl-5">
                 <TouchableOpacity onPress={() => removeElement(id)} className="flex flex-row items-center justify-center rounded-md w-7 h-7"
                   style={{ backgroundColor: green }}
                 >
