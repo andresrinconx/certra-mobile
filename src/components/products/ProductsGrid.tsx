@@ -17,14 +17,15 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
     agregado: false,
     cantidad: 1
   })
+  const [loadingAddToCart, setLoadingAddToCart] = useState(false)
 
-  const { increase, decrease, addToCart, productsCart, removeElement, loaders, setLoaders } = useInv()
+  const { increase, decrease, addToCart, productsCart, removeElement } = useInv()
   const { descrip, precio1, id, image_url, merida, centro, oriente } = product
   const navigation = useNavigation()
 
   // refresh data when cart change
   useEffect(() => {
-    setLoaders({ ...loaders, loadingActionCart: true })
+    setLoadingAddToCart(true)
 
     const productInCart = productsCart.find(productInCart => productInCart.id === id)
     if (productInCart !== undefined) { // product in cart
@@ -33,8 +34,21 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
       setLocalData({ ...localData, agregado: false, cantidad: 1 })
     }
 
-    setLoaders({ ...loaders, loadingActionCart: false })
+    setTimeout(() => {
+      setLoadingAddToCart(false)
+    }, 2000);
   }, [productsCart])
+
+  const handleAddToCart = () => {
+    setLoadingAddToCart(true)
+    console.log('press')
+
+    // addToCart(product)
+    
+    // setTimeout(() => {
+    //   setLoadingAddToCart(false)
+    // }, 2000);
+  }
 
   return (
     <View className="h-[98%] mb-3 mr-2 p-2 rounded-2xl" style={{ backgroundColor: lightList, width: wp("45.5%") }}>
@@ -117,7 +131,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
         {/* ammount and added */}
         <View className="flex flex-row">
           {!localData.agregado ? (
-            <TouchableOpacity onPress={() => addToCart(product)} className="flex flex-row items-center justify-center rounded-md h-7 w-full"
+            <TouchableOpacity onPress={handleAddToCart} className="flex flex-row items-center justify-center rounded-md h-7 w-full"
               style={{ backgroundColor: turquoise }}
             >
               <Text className="w-full text-center font-bold text-white">Agregar</Text>
@@ -125,8 +139,8 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
           ):null}
 
           {localData.agregado ? (
-            loaders.loadingActionCart ? (
-              <View className="">
+            loadingAddToCart ? (
+              <View className="flex flex-row justify-center items-center w-full">
                 <Loader size={24} />
               </View>
             ) : (
