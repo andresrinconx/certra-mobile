@@ -36,8 +36,18 @@ const InvContext = createContext<{
     showLogoLab: boolean
     selected: boolean
   }) => void
-  loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }
-  setLoaders: (loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }) => void
+  loaders: { 
+    loadingProducts: boolean, 
+    loadingSearchedItems: boolean, 
+    loadingSlectedCustomer: boolean, 
+    loadingActionCart: boolean,
+  }
+  setLoaders: (loaders: { 
+    loadingProducts: boolean, 
+    loadingSearchedItems: boolean, 
+    loadingSlectedCustomer: boolean, 
+    loadingActionCart: boolean,
+  }) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
   increase: (id: number) => void
@@ -71,7 +81,12 @@ const InvContext = createContext<{
     selected: false, 
   },
   setFlowControl: () => { },
-  loaders: { loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, },
+  loaders: { 
+    loadingProducts: false, 
+    loadingSearchedItems: false, 
+    loadingSlectedCustomer: false, 
+    loadingActionCart: false,
+  },
   setLoaders: () => { },
   valueSearchCustomers: "",
   setValueSearchCustomers: () => { },
@@ -129,6 +144,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
+    loadingActionCart: false,
   })
 
   // ----- STORAGE
@@ -212,7 +228,11 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // add to cart
   const addToCart = (product: ProductoInterface) => {
+    setLoaders({ ...loaders, loadingActionCart: true })
+
     setProductsCart([...productsCart, { ...product, agregado: true, cantidad: 1 }])
+
+    setLoaders({ ...loaders, loadingActionCart: false })
   }
 
   // increase & decrease

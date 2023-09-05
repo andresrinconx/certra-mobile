@@ -1,14 +1,14 @@
-import {useState, useEffect} from "react"
+import { useState, useEffect } from "react"
 import { View, Text, Image, TouchableOpacity, Pressable, FlatList } from "react-native"
 import useInv from "../../hooks/useInv"
-import {useNavigation} from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native"
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon } from "react-native-heroicons/outline"
 import ProductoInterface from "../../interfaces/ProductoInterface"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import useLogin from "../../hooks/useLogin"
 import { disponibility } from "../../utils/constants"
 
-const ProductsGrid = ({product}: {product: ProductoInterface}) => {
+const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   // theme
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise } } = useLogin()
 
@@ -17,17 +17,17 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
     cantidad: 1
   })
 
-  const {increase, decrease, addToCart, productsCart, removeElement} = useInv()
-  const {descrip, precio1, id, image_url, merida, centro, oriente} = product
+  const { increase, decrease, addToCart, productsCart, removeElement, loaders } = useInv()
+  const { descrip, precio1, id, image_url, merida, centro, oriente } = product
   const navigation = useNavigation()
 
   // refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.id === id)
-    if(productInCart !== undefined) { // product in cart
-      setLocalData({...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad})
+    if (productInCart !== undefined) { // product in cart
+      setLocalData({ ...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad })
     } else {
-      setLocalData({...localData, agregado: false, cantidad: 1})
+      setLocalData({ ...localData, agregado: false, cantidad: 1 })
     }
   }, [productsCart])
 
@@ -36,30 +36,30 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
   return (
     <View className="h-[98%] mb-3 mr-2 p-2 rounded-2xl" style={{ backgroundColor: lightList, width: wp("45.5%") }}>
       {/* img */}
-      <Pressable onPress={() => navigation.navigate("Product", {...product})} className="mb-2 justify-center items-center">
+      <Pressable onPress={() => navigation.navigate("Product", { ...product })} className="mb-2 justify-center items-center">
         {image_url === null ? (
           <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain"
-            source={require("../../assets/no-image.png")} 
+            source={require("../../assets/no-image.png")}
           />
         ) : (
-          <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain" 
-            source={{uri: `${image_url}`}}
+          <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain"
+            source={{ uri: `${image_url}` }}
           />
         )}
       </Pressable>
-      
+
       {/* texts & btn */}
       <View>
 
         {/* descrip */}
-        <Pressable onPress={() => navigation.navigate("Product", {...product})}>
+        <Pressable onPress={() => navigation.navigate("Product", { ...product })}>
           <Text style={{ fontSize: wp(4), color: typography }} className="font-bold"
             numberOfLines={2}
           >
             {descrip}
           </Text>
         </Pressable>
-        
+
         {/* price */}
         <View className="my-2">
           <Text style={{ fontSize: hp(1.5), color: typography }}>
@@ -90,7 +90,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
                 alignItems: "center",
               }}
               showsVerticalScrollIndicator={false}
-              renderItem={({item: {id, name}}) => {
+              renderItem={({ item: { id, name } }) => {
                 return (
                   <View key={id} className="flex flex-col items-center">
                     <Text style={{ fontSize: hp(1.6), color: darkTurquoise }} className="w-10 text-center">
@@ -99,14 +99,14 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
 
                     <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center">
                       {
-                        name === 'Mérida' ? parseInt(String(merida)) : 
-                        name === 'Centro' ? parseInt(String(centro)) :
-                        name === 'Oriente' ? parseInt(String(oriente)):null
+                        name === 'Mérida' ? parseInt(String(merida)) :
+                          name === 'Centro' ? parseInt(String(centro)) :
+                            name === 'Oriente' ? parseInt(String(oriente)) : null
                       }
                     </Text>
                   </View>
                 )
-              }} 
+              }}
             />
           </View>
         </View>

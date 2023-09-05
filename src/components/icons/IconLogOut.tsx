@@ -64,6 +64,7 @@ const IconLogOut = () => {
       backgrund: "",
       charge: "",
       list: "",
+      lightList: "",
       turquoise: "",
       darkTurquoise: "",
       green: "",

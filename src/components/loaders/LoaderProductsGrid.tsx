@@ -6,7 +6,7 @@ const LoaderProductsGrid = () => {
   const { themeColors: { charge } } = useLogin()
 
   return (
-    <View className="h-56 mb-2 mr-2 rounded-2xl" style={{ backgroundColor: charge, width: wp("42%") }} />
+    <View className="h-56 mb-2 mr-2 rounded-2xl" style={{ backgroundColor: charge, width: wp("45.5%") }} />
   )
 }
 
