@@ -7,6 +7,7 @@ import ProductoInterface from "../../interfaces/ProductoInterface"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import useLogin from "../../hooks/useLogin"
 import { disponibility } from "../../utils/constants"
+import Loader from "../loaders/Loader"
 
 const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   // theme
@@ -17,21 +18,23 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
     cantidad: 1
   })
 
-  const { increase, decrease, addToCart, productsCart, removeElement, loaders } = useInv()
+  const { increase, decrease, addToCart, productsCart, removeElement, loaders, setLoaders } = useInv()
   const { descrip, precio1, id, image_url, merida, centro, oriente } = product
   const navigation = useNavigation()
 
   // refresh data when cart change
   useEffect(() => {
+    setLoaders({ ...loaders, loadingActionCart: true })
+
     const productInCart = productsCart.find(productInCart => productInCart.id === id)
     if (productInCart !== undefined) { // product in cart
       setLocalData({ ...localData, agregado: productInCart.agregado, cantidad: productInCart.cantidad })
     } else {
       setLocalData({ ...localData, agregado: false, cantidad: 1 })
     }
-  }, [productsCart])
 
-  // className="h-56 mb-2 mr-2 rounded-2xl" style={{ backgroundColor: charge, width: wp("42%") }}
+    setLoaders({ ...loaders, loadingActionCart: false })
+  }, [productsCart])
 
   return (
     <View className="h-[98%] mb-3 mr-2 p-2 rounded-2xl" style={{ backgroundColor: lightList, width: wp("45.5%") }}>
@@ -113,48 +116,54 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
 
         {/* ammount and added */}
         <View className="flex flex-row">
-          {!localData.agregado && (
+          {!localData.agregado ? (
             <TouchableOpacity onPress={() => addToCart(product)} className="flex flex-row items-center justify-center rounded-md h-7 w-full"
               style={{ backgroundColor: turquoise }}
             >
               <Text className="w-full text-center font-bold text-white">Agregar</Text>
             </TouchableOpacity>
-          )}
+          ):null}
 
-          {localData.agregado && (
-            <View className="flex flex-row items-center justify-between w-full">
+          {localData.agregado ? (
+            loaders.loadingActionCart ? (
+              <View className="">
+                <Loader size={24} />
+              </View>
+            ) : (
+              <View className="flex flex-row items-center justify-between w-full">
 
-              {/* increase & decrease */}
-              <View className="flex-1 flex-row items-center justify-around">
-                <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>
-                  <TouchableOpacity onPress={() => decrease(id)} className="p-0.5">
-                    <MinusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-                  </TouchableOpacity>
+                {/* increase & decrease */}
+                <View className="flex-1 flex-row items-center justify-around">
+                  <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>
+                    <TouchableOpacity onPress={() => decrease(id)} className="p-0.5">
+                      <MinusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ width: wp(12) }}>
+                    <Text className="text-center text-lg font-bold" style={{ color: darkTurquoise }}>
+                      {localData.cantidad}
+                    </Text>
+                  </View>
+
+                  <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>
+                    <TouchableOpacity onPress={() => increase(id)} className="p-0.5">
+                      <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
 
-                <View style={{ width: wp(12) }}>
-                  <Text className="text-center text-lg font-bold" style={{ color: darkTurquoise }}>
-                    {localData.cantidad}
-                  </Text>
-                </View>
-
-                <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>
-                  <TouchableOpacity onPress={() => increase(id)} className="p-0.5">
-                    <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
+                {/* added */}
+                <View className="pl-5">
+                  <TouchableOpacity onPress={() => removeElement(id)} className="flex flex-row items-center justify-center rounded-md w-7 h-7"
+                    style={{ backgroundColor: green }}
+                  >
+                    <CheckIcon size={20} color="white" strokeWidth={3} />
                   </TouchableOpacity>
                 </View>
               </View>
-
-              {/* added */}
-              <View className="pl-5">
-                <TouchableOpacity onPress={() => removeElement(id)} className="flex flex-row items-center justify-center rounded-md w-7 h-7"
-                  style={{ backgroundColor: green }}
-                >
-                  <CheckIcon size={20} color="white" strokeWidth={3} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
+            )
+          ):null}
         </View>
       </View>
     </View>

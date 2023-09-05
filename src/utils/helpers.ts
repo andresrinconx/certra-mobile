@@ -6,3 +6,7 @@ export const firstTwoLetters = (fullName: string) => {
   }
   return letters
 }
+
+export const formatText = (text: string) => {
+  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}

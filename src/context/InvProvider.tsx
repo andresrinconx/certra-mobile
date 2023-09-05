@@ -228,15 +228,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // add to cart
   const addToCart = (product: ProductoInterface) => {
-    setLoaders({ ...loaders, loadingActionCart: true })
-    console.log('true')
- 
     setProductsCart([...productsCart, { ...product, agregado: true, cantidad: 1 }])
-
-    setTimeout(() => {
-      setLoaders({ ...loaders, loadingActionCart: false })
-      console.log('false')
-    }, 1000);
   }
 
   // increase & decrease

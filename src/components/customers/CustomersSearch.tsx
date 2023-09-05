@@ -15,22 +15,22 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
   // select customer
   const selectCustomer = () => {
     setLoaders({...loaders, loadingSlectedCustomer: true})
+    // user
+    setMyUser({...myUser, customer})
+
+    // products & cart
+    setProductsCart([])
+
+    // flow & reset
+    setValueSearchCustomers("")
+    setFlowControl({
+      ...flowControl, 
+      showSelectResults: false, 
+      showProducts: true, 
+      showSelectLabel: true, 
+      selected: true
+    })
     setTimeout(() => {
-      // user
-      setMyUser({...myUser, customer})
-
-      // products & cart
-      setProductsCart([])
-
-      // flow & reset
-      setValueSearchCustomers("")
-      setFlowControl({
-        ...flowControl, 
-        showSelectResults: false, 
-        showProducts: true, 
-        showSelectLabel: true, 
-        selected: true
-      })
       setLoaders({...loaders, loadingSlectedCustomer: false})
     }, 100)
   }

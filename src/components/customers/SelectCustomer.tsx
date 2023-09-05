@@ -1,6 +1,6 @@
-import {useEffect, useRef, useCallback} from "react"
+import { useEffect, useRef, useCallback } from "react"
 import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList, Image } from "react-native"
-import {XMarkIcon} from "react-native-heroicons/mini"
+import { XMarkIcon } from "react-native-heroicons/mini"
 import useInv from "../../hooks/useInv"
 import { fetchSearchedItems } from "../../utils/api"
 import { items } from "../../utils/constants"
@@ -9,13 +9,14 @@ import CustomersSearch from "./CustomersSearch"
 import useLogin from "../../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { debounce } from "lodash"
+import { formatText } from "../../utils/helpers"
 
 const SelectCustomer = () => {
   // theme & styles
-  const { themeColors: { list, typography, primary, icon } } = useLogin()
+  const { themeColors: { list, typography, primary } } = useLogin()
 
-  const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers} = useInv()
-  const {myUser} = useLogin()
+  const { searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers } = useInv()
+  const { myUser } = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
@@ -37,25 +38,32 @@ const SelectCustomer = () => {
 
   // SEARCH
   useEffect(() => {
-    if(valueSearchCustomers === "") {
+    if (valueSearchCustomers === "") {
       setSearchedCustomers([])
     }
   }, [valueSearchCustomers])
-  
+
   const handleSearch = async (valueSearchCustomers: string) => {
     setValueSearchCustomers(valueSearchCustomers)
-    if(valueSearchCustomers.length > 2) {
-      if(!flowControl.showSelectResults) {
-        setFlowControl({...flowControl, showSelectResults: true})
-      }
-      setLoaders({...loaders, loadingSearchedItems: true})
+    if (valueSearchCustomers.length > 2) {
+
+      setFlowControl({ ...flowControl, showSelectResults: true, showProducts: false, showSelectLabel: false })
+      setLoaders({ ...loaders, loadingSearchedItems: true })
+
       // fetching...
-      const data = await fetchSearchedItems({searchTerm: valueSearchCustomers, table: "searchCli"}) // searchCli = scli
-      setSearchedCustomers(data.message === undefined ? data : [])
-      setLoaders({...loaders, loadingSearchedItems: false})
+      const data = await fetchSearchedItems({ searchTerm: formatText(valueSearchCustomers), table: "searchCli" }) // searchCli = scli
+      setSearchedCustomers(data?.length !== 0 ? data : [])
+      setLoaders({ ...loaders, loadingSearchedItems: false })
     } else {
-      setFlowControl({...flowControl, showSelectResults: false})
-      setSearchedCustomers([])
+      if (myUser.customer === undefined) {
+        // no customer selected
+        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: false, showSelectLabel: false })
+        setSearchedCustomers([])
+      } else { 
+        // customer selected
+        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true })
+        setSearchedCustomers([])
+      }
     }
   }
 
@@ -68,12 +76,12 @@ const SelectCustomer = () => {
         <View className="mt-3">
 
           {/* label */}
-          {flowControl?.showSelectLabel ? (
+          {flowControl?.showSelectLabel && !flowControl?.showSelectResults ? (
             <View className="mb-4">
               <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
               <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
             </View>
-          ):null}
+          ) : null}
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
@@ -90,24 +98,12 @@ const SelectCustomer = () => {
                   selectionColor={primary}
                 />
               </View>
-
-              {/* {valueSearchCustomers !== "" && (
-                <TouchableOpacity className="absolute right-3"
-                  onPress={() => {
-                    setValueSearchCustomers("")
-                    setFlowControl({...flowControl, showSelectResults: false})
-                  }}
-                >
-                  <XMarkIcon size={25} color={icon} />
-                </TouchableOpacity>
-              )} */}
             </View>
-          ):null}
+          ) : null}
 
           {/* results */}
           {flowControl?.showSelectResults ? (
             <View>
-              {/* loadingSearchedItems */}
               {loaders.loadingSearchedItems ? (
                 <FlatList
                   data={items}
@@ -118,11 +114,11 @@ const SelectCustomer = () => {
                     marginTop: 15
                   }}
                   showsVerticalScrollIndicator={false}
-                  renderItem={({item}) => {
+                  renderItem={({ item }) => {
                     return (
                       <LoaderCustomersSearch key={item.id} />
                     )
-                  }} 
+                  }}
                 />
               ) : (
                 searchedCustomers?.length === 0 ? (
@@ -140,18 +136,18 @@ const SelectCustomer = () => {
                       marginTop: 15
                     }}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <CustomersSearch key={item.rifci} customer={item} />
                       )
-                    }} 
+                    }}
                   />
                 )
               )}
             </View>
-          ):null}
+          ) : null}
         </View>
-      ):null}
+      ) : null}
     </>
   )
 }
