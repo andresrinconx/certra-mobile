@@ -1,14 +1,14 @@
-import {API_LOCAL, API_REMOTE} from '@env';
+import {LOCAL_API_URL, API_URL} from '@env';
 import { OrderInterface } from '../interfaces/OrderInterface';
 import axios from 'axios';
 
 // get
-const tableDataEndpoint = (table: string) => `${API_LOCAL}${table}`;
-const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${API_LOCAL}/${params.table}/${params.searchTerm}`;
-const userDataEndpoint = (params: {code: string; table: string}) => `${API_LOCAL}${params.table}/${params.code}`;
+const tableDataEndpoint = (table: string) => `${LOCAL_API_URL}/${table}`;
+const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${LOCAL_API_URL}/${params.table}/${params.searchTerm}`;
+const userDataEndpoint = (params: {code: string; table: string}) => `${LOCAL_API_URL}/${params.table}/${params.code}`;
 
 // post
-const sendDataEndpoint = () => `${API_LOCAL}pedidoguardar`;
+const sendDataEndpoint = () => `${LOCAL_API_URL}/pedidoguardar`;
 
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);

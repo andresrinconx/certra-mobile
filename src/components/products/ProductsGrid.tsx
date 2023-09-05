@@ -1,12 +1,17 @@
-import {useState, useEffect} from 'react'
-import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native'
-import { styles, theme } from '../../styles'
-import useInv from '../../hooks/useInv'
-import {useNavigation} from '@react-navigation/native'
-import { MinusSmallIcon, PlusSmallIcon } from 'react-native-heroicons/outline'
-import ProductoInterface from '../../interfaces/ProductoInterface'
+import {useState, useEffect} from "react"
+import { View, Text, Image, TouchableOpacity, Pressable } from "react-native"
+import { theme } from "../../styles"
+import useInv from "../../hooks/useInv"
+import {useNavigation} from "@react-navigation/native"
+import { MinusSmallIcon, PlusSmallIcon } from "react-native-heroicons/outline"
+import ProductoInterface from "../../interfaces/ProductoInterface"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import useLogin from "../../hooks/useLogin"
 
 const ProductsGrid = ({product}: {product: ProductoInterface}) => {
+  // theme
+  const { themeColors: { typography } } = useLogin()
+
   const [localData, setLocalData] = useState({
     agregado: false,
     cantidad: 1
@@ -26,16 +31,18 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
     }
   }, [productsCart])
 
+  // className="h-56 mb-2 mr-2 rounded-2xl" style={{ backgroundColor: charge, width: wp("42%") }}
+
   return (
-    <View className='w-[47.5%] mr-[10px] ml-[1px] mb-4 mt-[1px] px-2' style={styles.shadow}>
+    <View className="h-64 mb-2 mr-2 p-2 rounded-2xl" style={{ backgroundColor: '#edf5f8', width: wp("42%") }}>
       {/* img */}
-      <Pressable onPress={() => navigation.navigate('Product', {...product})} className='border-b-gray-300 border-b mb-2 justify-center items-center'>
+      <Pressable onPress={() => navigation.navigate("Product", {...product})} className="mb-2 justify-center items-center">
         {image_url === null ? (
-          <Image className='w-32 h-32' resizeMode='cover'
-            source={require('../../assets/Acetaminofen.png')} 
+          <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain"
+            source={require("../../assets/Acetaminofen.png")} 
           />
         ) : (
-          <Image className='w-32 h-32' resizeMode='contain' 
+          <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain" 
             source={{uri: `${image_url}`}}
           />
         )}
@@ -44,8 +51,10 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
       {/* texts & btn */}
       <View>
 
-        <Pressable onPress={() => navigation.navigate('Product', {...product})}>
-          <Text className={`text-black text-sm mb-1`} numberOfLines={2}>
+        <Pressable onPress={() => navigation.navigate("Product", {...product})}>
+          <Text className="text-sm mb-1" style={{ fontSize: wp(4), color: typography }} 
+            numberOfLines={2}
+          >
             {descrip}
           </Text>
         </Pressable>
@@ -58,34 +67,34 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
           <TouchableOpacity onPress={() => addToCart(product)} className={`rounded-md mb-2`}
             style={{backgroundColor: theme.verde}}
           >
-            <Text className='color-white text-center font-bold p-1 pb-1.5'>Agregar</Text>
+            <Text className="color-white text-center font-bold p-1 pb-1.5">Agregar</Text>
           </TouchableOpacity>
         )}
 
         {localData.agregado && (
           <View className={`rounded-md mb-2`} style={{backgroundColor: theme.verde}}>
-            <View className='flex flex-row justify-between items-center p-1 px-4'>
+            <View className="flex flex-row justify-between items-center p-1 px-4">
               <View>
-                <TouchableOpacity onPress={() => decrease(id)} className=''>
-                  <MinusSmallIcon size={20} color='white' />
+                <TouchableOpacity onPress={() => decrease(id)} className="">
+                  <MinusSmallIcon size={20} color="white" />
                 </TouchableOpacity>
               </View>
 
-              <View className='w-[80px]'>
-                <Text className='text-center text-lg -my-4 text-white font-bold'>{localData.cantidad}</Text>
+              <View className="w-[80px]">
+                <Text className="text-center text-lg -my-4 text-white font-bold">{localData.cantidad}</Text>
               </View>
 
-              {/* <View className='w-[80px]'>
-                <TextInput className='text-center text-lg -my-4 text-white font-bold'
-                  keyboardType='numeric'
+              {/* <View className="w-[80px]">
+                <TextInput className="text-center text-lg -my-4 text-white font-bold"
+                  keyboardType="numeric"
                   value={String(cantidad)}
                   onChangeText={text => setCantidadLocal(Number(text))}
                 />
               </View> */}
 
               <View>
-                <TouchableOpacity onPress={() => increase(id)} className=''>
-                  <PlusSmallIcon size={20} color='white' />
+                <TouchableOpacity onPress={() => increase(id)} className="">
+                  <PlusSmallIcon size={20} color="white" />
                 </TouchableOpacity>
               </View>
             </View>

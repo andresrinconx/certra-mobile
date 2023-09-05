@@ -18,7 +18,7 @@ import { StatusBar } from "expo-status-bar"
 
 const Home = () => {
   // theme & styles
-  const { themeColors: { primary, backgrund, green } } = useLogin()
+  const { themeColors: { primary, backgrund, green, typography } } = useLogin()
   const { } = utilities
 
   const { products, loaders, flowControl } = useInv()
@@ -70,19 +70,15 @@ const Home = () => {
                 <SelectCustomer />
                 {flowControl?.showProducts && !flowControl?.showSelectResults ? (
 
-                  loaders.loadingProducts || products.length === 0 ? (
-                    <View className="">
+                  loaders.loadingProducts || products?.length === 0 ? (
+                    <View className="h-full">
                       <View className="flex-1 justify-center items-center">
                         <FlatList
-                          ListHeaderComponent={() => (
-                            <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                              <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-                            </View>
-                          )}
                           data={items}
                           numColumns={2}
                           contentContainerStyle={{
-                            paddingBottom: 10,
+                            paddingBottom: 135,
+                            marginTop: 15
                           }}
                           showsVerticalScrollIndicator={false}
                           overScrollMode="never"
@@ -99,14 +95,15 @@ const Home = () => {
                       <View className="flex-1 justify-center items-center">
                         <FlatList
                           ListHeaderComponent={() => (
-                            <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                              <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
+                            <View className="mb-2">
+                              <Text className="font-bold text-gray-700" style={{ fontSize: wp(4.5), color: typography }}>Productos</Text>
                             </View>
                           )}
                           data={products}
                           numColumns={2}
                           contentContainerStyle={{
                             paddingBottom: 10,
+                            marginTop: 15
                           }}
                           showsVerticalScrollIndicator={false}
                           overScrollMode="never"

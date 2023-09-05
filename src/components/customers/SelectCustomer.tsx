@@ -8,7 +8,7 @@ import LoaderCustomersSearch from "../loaders/LoaderCustomersSearch"
 import CustomersSearch from "./CustomersSearch"
 import useLogin from "../../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { debounce } from 'lodash'
+import { debounce } from "lodash"
 
 const SelectCustomer = () => {
   // theme & styles
@@ -68,12 +68,12 @@ const SelectCustomer = () => {
         <View className="mt-3">
 
           {/* label */}
-          {flowControl?.showSelectLabel && (
+          {flowControl?.showSelectLabel ? (
             <View className="mb-4">
               <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
               <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
             </View>
-          )}
+          ):null}
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
