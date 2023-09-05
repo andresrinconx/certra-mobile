@@ -266,13 +266,15 @@ const Login = () => {
             numColumns={1}
             horizontal={true}
             showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              let isLast = socialMedia.length === item.id
+            renderItem={({item: {url, image, id}}) => {
+              let isLast = socialMedia.length === id
               let noMargin = `${isLast ? 'mr-0' : 'mr-3'}`
               return (
-                <TouchableOpacity onPress={() => { Linking.openURL(`${item.url}`) }} className={`${noMargin}`}>
+                <TouchableOpacity key={id} onPress={() => { Linking.openURL(`${url}`) }} 
+                  className={`${noMargin}`}
+                >
                   <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-                    source={item.image}
+                    source={image}
                   />
                 </TouchableOpacity>
               )

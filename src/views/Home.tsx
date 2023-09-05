@@ -40,7 +40,7 @@ const Home = () => {
         <StatusBar style="dark" />
 
         {/* content */}
-        <View className="flex-1 px-6 pt-6">
+        <View className="flex-1 px-3 pt-6">
 
           {/* logos */}
           <View className="flex-row justify-between">

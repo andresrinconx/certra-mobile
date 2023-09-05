@@ -33,3 +33,18 @@ export const socialMedia = [
     image: require("../assets/x.png")
   },
 ]
+
+export const disponibility = [
+  {
+    id: 1,
+    name: 'Mérida',
+  },
+  {
+    id: 2,
+    name: 'Centro',
+  },
+  {
+    id: 3,
+    name: 'Oriente',
+  },
+]
