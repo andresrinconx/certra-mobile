@@ -51,18 +51,25 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
       {/* texts & btn */}
       <View>
 
+        {/* descrip */}
         <Pressable onPress={() => navigation.navigate("Product", {...product})}>
-          <Text className="text-sm mb-1" style={{ fontSize: wp(4), color: typography }} 
+          <Text style={{ fontSize: wp(4), color: typography }} 
             numberOfLines={2}
           >
             {descrip}
           </Text>
         </Pressable>
+        
+        {/* price */}
+        <Text className="mt-2" style={{ fontSize: wp(4), color: typography }}>
+          Precio:
+        </Text>
 
         <Text style={{color: theme.azul,}} className={`font-bold text-xl mb-2`}>
           Bs. {precio1}
         </Text>
 
+        {/* ammount and added */}
         {!localData.agregado && (
           <TouchableOpacity onPress={() => addToCart(product)} className={`rounded-md mb-2`}
             style={{backgroundColor: theme.verde}}
@@ -83,15 +90,7 @@ const ProductsGrid = ({product}: {product: ProductoInterface}) => {
               <View className="w-[80px]">
                 <Text className="text-center text-lg -my-4 text-white font-bold">{localData.cantidad}</Text>
               </View>
-
-              {/* <View className="w-[80px]">
-                <TextInput className="text-center text-lg -my-4 text-white font-bold"
-                  keyboardType="numeric"
-                  value={String(cantidad)}
-                  onChangeText={text => setCantidadLocal(Number(text))}
-                />
-              </View> */}
-
+              
               <View>
                 <TouchableOpacity onPress={() => increase(id)} className="">
                   <PlusSmallIcon size={20} color="white" />

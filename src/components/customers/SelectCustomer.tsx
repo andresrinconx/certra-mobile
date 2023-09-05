@@ -91,7 +91,7 @@ const SelectCustomer = () => {
                 />
               </View>
 
-              {valueSearchCustomers !== "" && (
+              {/* {valueSearchCustomers !== "" && (
                 <TouchableOpacity className="absolute right-3"
                   onPress={() => {
                     setValueSearchCustomers("")
@@ -100,7 +100,7 @@ const SelectCustomer = () => {
                 >
                   <XMarkIcon size={25} color={icon} />
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
           ):null}
 
