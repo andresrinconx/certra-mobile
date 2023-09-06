@@ -80,7 +80,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
       <View className="flex flex-row items-center">
 
         {/* left info */}
-        <View className="w-1/2">
+        <View className="w-1/2 pr-2">
 
           {/* disponibility */}
           <View className="mb-2">
@@ -89,7 +89,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
             </Text>
 
             {/* sedes */}
-            <View>
+            <View className="px-3">
               <FlatList
                 data={disponibility}
                 horizontal={true}
@@ -124,7 +124,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
         </View>
 
         {/* right info */}
-        <View className="w-1/2">
+        <View className="w-1/2 pl-2">
 
           {/* price */}
           <View className="my-2">
