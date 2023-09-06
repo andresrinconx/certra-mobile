@@ -237,19 +237,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
     // If the product is in the cart and has a quantity of 1, show an alert to confirm the deletion.
     if (productInCart !== undefined) {
-      Alert.alert(
-        "Advertencia",
-        "¿Quieres eliminar este producto del carrito?",
-        [
-          {
-            text: "Eliminar", style: "destructive", onPress: () => {
-              const updatedProductsCart = productsCart.filter(item => item.id !== id)
-              setProductsCart(updatedProductsCart)
-            }
-          },
-          { text: "Cancelar", style: "cancel" },
-        ]
-      )
+      const updatedProductsCart = productsCart.filter(item => item.id !== id)
+      setProductsCart(updatedProductsCart)
     } else {
       // If the product is in the cart and has a quantity greater than 1, decrease the quantity by 1.
       const updatedProductsCart = productsCart.map(item => (item.id === id && item.cantidad > 1) ? { ...item, cantidad: item.cantidad - 1 } : { ...item })
