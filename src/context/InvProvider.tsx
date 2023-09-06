@@ -40,11 +40,13 @@ const InvContext = createContext<{
     loadingProducts: boolean, 
     loadingSearchedItems: boolean, 
     loadingSlectedCustomer: boolean, 
+    loadingCart: boolean,
   }
   setLoaders: (loaders: { 
     loadingProducts: boolean, 
     loadingSearchedItems: boolean, 
     loadingSlectedCustomer: boolean, 
+    loadingCart: boolean,
   }) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
@@ -82,7 +84,8 @@ const InvContext = createContext<{
   loaders: { 
     loadingProducts: false, 
     loadingSearchedItems: false, 
-    loadingSlectedCustomer: false, 
+    loadingSlectedCustomer: false,
+    loadingCart: true,
   },
   setLoaders: () => { },
   valueSearchCustomers: "",
@@ -141,6 +144,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
+    loadingCart: true,
   })
 
   // ----- STORAGE
@@ -171,6 +175,10 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [flowControl])
 
+  useEffect(() => {
+    console.log(loaders)
+  }, [loaders])
+
   // ----- API
   // get products api
   useEffect(() => {
@@ -180,22 +188,22 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         const data = await fetchTableData("sinv")
 
         // Add properties to each producto
-        const productos = data?.map((producto: ProductoInterface) => ({
-          ...producto,
-          agregado: false,
-          cantidad: 1,
-        }))
+        // const productos = data?.map((producto: ProductoInterface) => ({
+        //   ...producto,
+        //   agregado: false,
+        //   cantidad: 1,
+        // }))
 
         // fail api
-        if (productos?.length !== 0) {
-          setProducts(productos)
+        if (data?.length !== 0) {
+          setProducts(data)
           setLoaders({ ...loaders, loadingProducts: false })
         }
 
         // slow api
         setTimeout(() => {
-          if (products.length !== 0) {
-            setProducts(productos)
+          if (data.length !== 0) {
+            setProducts(data)
             setLoaders({ ...loaders, loadingProducts: false })
           }
         }, 2500);
@@ -284,7 +292,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       ...order,
       subtotal: String(parseInt(subtotal)),
       total: String(parseInt(total)),
-      cliente: (myUser.from === "scli" ? myUser.nombre : myUser.us_nombre),
+      cliente: (myUser.from === "scli" ? {
+        name: myUser.nombre, 
+        code: 123
+      } : {
+        name: myUser.us_nombre,
+        code: 123
+      }),
       productos: productsCart.map((product: ProductoInterface) => ({
         codigo: Number(product.codigo),
         descrip: String(product.descrip),

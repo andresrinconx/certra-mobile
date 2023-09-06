@@ -42,6 +42,7 @@ const Search = () => {
   useEffect(() => {
     if (value === "") {
       setSearchedProducts([])
+      setLoaders({ ...loaders, loadingSearchedItems: false })
     }
   }, [value])
 
@@ -55,6 +56,7 @@ const Search = () => {
       setLoaders({ ...loaders, loadingSearchedItems: false })
     } else {
       setSearchedProducts([])
+      setLoaders({ ...loaders, loadingSearchedItems: false })
     }
   }
 

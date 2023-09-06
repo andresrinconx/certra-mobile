@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { View, Text, TouchableOpacity, FlatList, Image } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import useInv from "../hooks/useInv"
@@ -5,15 +6,23 @@ import ProductsCart from "../components/products/ProductsCart"
 import useLogin from "../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
+import Loader from "../components/loaders/Loader"
 
 const Cart = () => {
   // theme
-  const { themeColors: { typography, backgrund, processBtn, darkTurquoise, green, icon } } = useLogin()
+  const { themeColors: { typography, backgrund, processBtn, darkTurquoise, green, icon, primary } } = useLogin()
 
-  const { productsCart, clearCart, subtotal, total, confirmOrder, flowControl } = useInv()
+  const { productsCart, clearCart, subtotal, total, confirmOrder, flowControl, loaders, setLoaders } = useInv()
   const { myUser } = useLogin()
   const { image_url } = myUser
   const navigation = useNavigation()
+
+  useEffect(() => {
+    setLoaders({ ...loaders, loadingCart: true })
+    setTimeout(() => {
+      setLoaders({ ...loaders, loadingCart: false })
+    }, 200);
+  }, [])
 
   return (
     <>
@@ -78,22 +87,28 @@ const Cart = () => {
                 No hay productos
               </Text>
             ) : (
-              <View className="">
-                <FlatList
-                  data={productsCart}
-                  numColumns={1}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ 
-                    paddingBottom: 200,
-                    marginTop: 15 
-                  }}
-                  overScrollMode="never"
-                  renderItem={({ item }) => {
-                    return (
-                      <ProductsCart key={item.id} product={item} />
-                    )
-                  }}
-                />
+              <View>
+                {loaders.loadingCart ? (
+                  <View className="mt-10">
+                    <Loader color={`${primary}`} />
+                  </View>
+                ) : (
+                  <FlatList
+                    data={productsCart}
+                    numColumns={1}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ 
+                      paddingBottom: 200,
+                      marginTop: 15 
+                    }}
+                    overScrollMode="never"
+                    renderItem={({ item }) => {
+                      return (
+                        <ProductsCart key={item.id} product={item} />
+                      )
+                    }}
+                  />
+                )}
               </View>
             )}
           </View>
@@ -101,7 +116,7 @@ const Cart = () => {
 
       </View>
 
-      {/* process */}
+      {/* process order */}
       <View className="flex flex-col justify-center h-32 w-[100%] bottom-1.5 absolute border-t-[0.5px] border-t-[#999999]">
         <View className="flex flex-col justify-center h-full w-[92%]"
           style={{ backgroundColor: backgrund, borderTopColor: icon, marginLeft: 16 }}

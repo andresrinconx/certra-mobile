@@ -54,7 +54,17 @@ const SelectCustomer = () => {
       const data = await fetchSearchedItems({ searchTerm: formatText(valueSearchCustomers), table: "searchCli" }) // searchCli = scli
       setSearchedCustomers(data?.length !== 0 ? data : [])
       setLoaders({ ...loaders, loadingSearchedItems: false })
-    } else {
+    } else if (valueSearchCustomers.length === 2) {
+      if (myUser.customer === undefined) {
+        // no customer selected
+        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: false, showSelectLabel: false })
+        setSearchedCustomers([])
+      } else { 
+        // customer selected
+        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true })
+        setSearchedCustomers([])
+      }
+    } else if (valueSearchCustomers.length < 2) {
       if (myUser.customer === undefined) {
         // no customer selected
         setFlowControl({ ...flowControl, showSelectResults: false, showProducts: false, showSelectLabel: false })

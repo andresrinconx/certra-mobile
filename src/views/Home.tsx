@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { View, Text, FlatList, BackHandler, Image } from "react-native"
+import { View, Text, FlatList, BackHandler, Image, Keyboard } from "react-native"
 import IconCart from "../components/icons/IconCart"
 import IconLogOut from "../components/icons/IconLogOut"
 import IconSearchProducts from "../components/icons/IconSearchProducts"
@@ -24,6 +24,7 @@ const Home = () => {
   const { products, loaders, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
 
+  // SCREEN
   // back HANDLER
   useEffect(() => {
     const backAction = () => {
@@ -33,6 +34,11 @@ const Home = () => {
 
     const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction)
   }, [])
+  // hide keyboard
+  const handleScroll = () => {
+    // Cerrar el teclado
+    Keyboard.dismiss()
+  }
 
   return (
     <>
@@ -100,6 +106,7 @@ const Home = () => {
                             </View>
                           )}
                           data={products}
+                          onScroll={handleScroll}
                           numColumns={2}
                           contentContainerStyle={{
                             paddingBottom: 10,
