@@ -36,35 +36,35 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
     }
   }, [productsCart])
 
-    // actions
-    const handleAddToCart = () => {
-      setLoadingAddToCart(true)
-      addToCart(product) // function
-      setTimeout(() => {
-        setLoadingAddToCart(false)
-      }, 1000);
-    }
-    const handleDecrease = () => {
-      setLoadingDecrease(true)
-      decrease(id) // function
-      setTimeout(() => {
-        setLoadingDecrease(false)
-      }, 1000);
-    }
-    const handleIncrease = () => {
-      setLoadingIncrease(true)
-      increase(id) // function
-      setTimeout(() => {
-        setLoadingIncrease(false)
-      }, 1000);
-    }
-    const handleRemoveElement = () => {
-      setLoadingRemoveElement(true)
-      removeElement(id) // function
-      setTimeout(() => {
-        setLoadingRemoveElement(false)
-      }, 1000);
-    }
+  // actions
+  const handleAddToCart = () => {
+    setLoadingAddToCart(true)
+    addToCart(product) // function
+    setTimeout(() => {
+      setLoadingAddToCart(false)
+    }, 1000);
+  }
+  const handleDecrease = () => {
+    setLoadingDecrease(true)
+    decrease(id) // function
+    setTimeout(() => {
+      setLoadingDecrease(false)
+    }, 1000);
+  }
+  const handleIncrease = () => {
+    setLoadingIncrease(true)
+    increase(id) // function
+    setTimeout(() => {
+      setLoadingIncrease(false)
+    }, 1000);
+  }
+  const handleRemoveElement = () => {
+    setLoadingRemoveElement(true)
+    removeElement(id) // function
+    setTimeout(() => {
+      setLoadingRemoveElement(false)
+    }, 1000);
+  }
 
   return (
     <View className="flex flex-col mb-3 p-2 rounded-2xl" style={{ backgroundColor: lightList }}>
