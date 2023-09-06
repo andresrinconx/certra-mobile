@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { View, Text, TouchableOpacity, Image, Pressable } from "react-native"
+import { View, Text, TouchableOpacity, FlatList, Pressable } from "react-native"
 import ProductoInterface from "../../interfaces/ProductoInterface"
 import useInv from "../../hooks/useInv"
 import { useNavigation } from "@react-navigation/native"
@@ -7,6 +7,7 @@ import { MinusSmallIcon, PlusSmallIcon, CheckIcon } from "react-native-heroicons
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import useLogin from "../../hooks/useLogin"
 import Loader from "../loaders/Loader"
+import { disponibility } from "../../utils/constants"
 
 const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   // theme
@@ -21,7 +22,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   const [loadingIncrease, setLoadingIncrease] = useState(false)
   const [loadingRemoveElement, setLoadingRemoveElement] = useState(false)
 
-  const { descrip, precio1, id } = product
+  const { descrip, precio1, id, merida, centro, oriente } = product
   const { productsCart, increase, decrease, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
 
@@ -81,10 +82,45 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
         {/* left info */}
         <View className="w-1/2">
 
-          {/* price */}
-          <Text style={{ color: darkTurquoise, }} className="font-bold text-lg mb-2">
-            Bs. {precio1}
-          </Text>
+          {/* disponibility */}
+          <View className="mb-2">
+            <Text style={{ fontSize: hp(1.6), color: typography }} className="pb-0.5">
+              Disponibilidad:
+            </Text>
+
+            {/* sedes */}
+            <View>
+              <FlatList
+                data={disponibility}
+                horizontal={true}
+                contentContainerStyle={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item: { id, name } }) => {
+                  return (
+                    <View key={id} className="flex flex-col items-center">
+                      <Text style={{ fontSize: hp(1.6), color: darkTurquoise }} className="w-10 text-center">
+                        {name}
+                      </Text>
+
+                      <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center">
+                        {
+                          name === 'Mérida' ? parseInt(String(merida)) :
+                            name === 'Centro' ? parseInt(String(centro)) :
+                              name === 'Oriente' ? parseInt(String(oriente)) : null
+                        }
+                      </Text>
+                    </View>
+                  )
+                }}
+              />
+            </View>
+          </View>
         </View>
 
         {/* right info */}

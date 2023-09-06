@@ -61,11 +61,11 @@ const Search = () => {
   const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
 
   return (
-    <View className="flex-1 pt-10" style={{ backgroundColor: backgrund }}>
+    <View className="flex-1 h-full pt-10" style={{ backgroundColor: backgrund }}>
       <StatusBar style="dark" />
 
       {/* content */}
-      <View className="h-5/6">
+      <View className="h-6/6">
         {/* arrow & input */}
         <View className="flex flex-row items-center px-3">
           <TouchableOpacity onPress={() => {navigation.goBack()}}>
@@ -127,16 +127,16 @@ const Search = () => {
       </View>
 
       {productsCart.length > 0 && (
-          <View className="flex flex-row items-center justify-center h-12 w-[97%] bottom-1.5 absolute rounded-full" 
-            style={{ backgroundColor: primary, marginLeft: 6 }}
-          >
-            <TouchableOpacity onPress={() => navigation.navigate("Cart")} className="flex-row items-center justify-center">
-              <Text className="font-bold pr-1 text-white" style={{ fontSize: wp(5) }}>Ver Carrito</Text>
-            </TouchableOpacity>
+        <View className="flex flex-row items-center justify-center h-14 w-[97%] bottom-1.5 absolute rounded-full border-[3px] border-white" 
+          style={{ backgroundColor: primary, marginLeft: 6 }}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("Cart")} className="flex-row items-center justify-center">
+            <Text className="font-bold pr-1 text-white" style={{ fontSize: wp(5) }}>Ver Carrito</Text>
+          </TouchableOpacity>
 
-            <IconCart />
-          </View>
-        )}
+          <IconCart />
+        </View>
+      )}
     </View>
   )
 }
