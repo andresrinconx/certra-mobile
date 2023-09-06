@@ -186,11 +186,19 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
           cantidad: 1,
         }))
 
-        // no fail api call
+        // fail api
         if (productos?.length !== 0) {
           setProducts(productos)
           setLoaders({ ...loaders, loadingProducts: false })
         }
+
+        // slow api
+        setTimeout(() => {
+          if (products.length !== 0) {
+            setProducts(productos)
+            setLoaders({ ...loaders, loadingProducts: false })
+          }
+        }, 2500);
       } catch (error) {
         console.log(error)
       }

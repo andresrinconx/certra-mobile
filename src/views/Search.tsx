@@ -1,19 +1,26 @@
-import { useEffect, useRef, useState } from 'react'
-import { View, TouchableOpacity, TextInput, Keyboard, FlatList } from 'react-native'
-import { ArrowSmallRightIcon } from 'react-native-heroicons/outline'
-import {XMarkIcon} from 'react-native-heroicons/mini'
-import ProductsSearch from '../components/products/ProductsSearch'
-import { styles, theme } from '../styles'
-import { items } from '../utils/constants'
-import LoaderProductsSearch from '../components/loaders/LoaderProductsSearch'
-import useInv from '../hooks/useInv'
-import { fetchSearchedItems } from '../utils/api'
-import { useNavigation } from '@react-navigation/native'
+import { useCallback, useEffect, useRef, useState } from "react"
+import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image } from "react-native"
+import { XMarkIcon } from "react-native-heroicons/mini"
+import ProductsSearch from "../components/products/ProductsSearch"
+import { styles, theme } from "../styles"
+import { items } from "../utils/constants"
+import LoaderProductsSearch from "../components/loaders/LoaderProductsSearch"
+import useInv from "../hooks/useInv"
+import { fetchSearchedItems } from "../utils/api"
+import { useNavigation } from "@react-navigation/native"
+import { StatusBar } from "expo-status-bar"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import useLogin from "../hooks/useLogin"
+import { debounce } from "lodash"
+import { formatText } from "../utils/helpers"
 
 const Search = () => {
-  const [value, setValue] = useState('')
-  
-  const {searchedProducts, loaders, setLoaders, setSearchedProducts} = useInv()
+  // theme
+  const { themeColors: { backgrund, typography, primary, list } } = useLogin()
+
+  const [value, setValue] = useState("")
+
+  const { searchedProducts, loaders, setLoaders, setSearchedProducts } = useInv()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -34,55 +41,51 @@ const Search = () => {
 
   // SEARCH
   useEffect(() => {
-    if(value === '') {
+    if (value === "") {
       setSearchedProducts([])
     }
   }, [value])
 
   const handleSearch = async (value: string) => {
     setValue(value)
-    if(value.length > 2) {
-      setLoaders({...loaders, loadingSearchedItems: true})
+    if (value.length > 2) {
+      setLoaders({ ...loaders, loadingSearchedItems: true })
       // fetching...
-      const data = await fetchSearchedItems({searchTerm: value, table: 'search'}) // search = sinv
+      const data = await fetchSearchedItems({ searchTerm: formatText(value), table: "search" }) // search = sinv
       setSearchedProducts(data)
-      setLoaders({...loaders, loadingSearchedItems: false})
+      setLoaders({ ...loaders, loadingSearchedItems: false })
     } else {
       setSearchedProducts([])
     }
   }
 
+  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
+
   return (
-    <View className='flex-1 bg-white'>
+    <View className="flex-1 pt-10" style={{ backgroundColor: backgrund }}>
+      <StatusBar style="dark" />
+
       {/* arrow & input */}
-      <View className='flex flex-row items-center p-3'>
-        <TouchableOpacity className='mr-2' onPress={() => {
-          navigation.goBack()
-          setValue('')
-        }}>
-          <ArrowSmallRightIcon size={30} color='black' rotation={180} />
-        </TouchableOpacity>
-        <View className='w-80 flex flex-row items-center justify-between rounded-full'
-          style={styles.shadow}
-        >
-          <TextInput className='mx-4 text-base text-gray-700'
-            placeholder='Buscar Inventario'
-            placeholderTextColor='gray'
-            ref={textInputRef}
-            value={value}
-            onChangeText={handleSearch}
-            selectionColor={theme.turquesaClaro}
+      <View className="flex flex-row items-center px-3">
+        <TouchableOpacity onPress={() => {navigation.goBack()}}>
+          <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
+            source={require("../assets/back.png")}
           />
-          {value && (
-            <TouchableOpacity onPress={() => setValue('')} className='relative right-3'>
-              <XMarkIcon size={25} color='black' />
-            </TouchableOpacity>
-          )}
+        </TouchableOpacity>
+
+        <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
+          <TextInput className="mx-4 text-base" style={{ color: typography }}
+            placeholder="Buscar Inventario"
+            placeholderTextColor={typography}
+            ref={textInputRef}
+            onChangeText={handleTextDebounce}
+            selectionColor={primary}
+          />
         </View>
       </View>
 
       {/* results */}
-      <View className='mx-3 mb-16'>
+      <View className="h-full mx-3 mb-16">
         {loaders.loadingSearchedItems ? (
           <FlatList
             data={items}
@@ -90,13 +93,14 @@ const Search = () => {
             onScroll={handleScroll}
             contentContainerStyle={{
               paddingBottom: 20,
+              marginTop: 15
             }}
             showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
+            renderItem={({ item }) => {
               return (
                 <LoaderProductsSearch key={item.id} />
               )
-            }} 
+            }}
           />
         ) : (
           searchedProducts?.length > 0 && (
@@ -107,13 +111,14 @@ const Search = () => {
               keyboardShouldPersistTaps="handled"
               contentContainerStyle={{
                 paddingBottom: 20,
+                marginTop: 15
               }}
               showsVerticalScrollIndicator={false}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <ProductsSearch key={item.id} product={item} />
                 )
-              }} 
+              }}
             />
           )
         )}

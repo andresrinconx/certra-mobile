@@ -1,8 +1,12 @@
-import { View } from 'react-native'
+import { View } from "react-native"
+import useLogin from "../../hooks/useLogin"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
 const LoaderProductsSearch = () => {
+  const { themeColors: { charge } } = useLogin()
+
   return (
-    <View className='h-16 mb-2 w-full rounded-xl' style={{ backgroundColor: '#e5e5e5' }}></View>
+    <View className="h-16 w-full mb-2 mr-2 rounded-2xl" style={{ backgroundColor: charge }} />
   )
 }
 

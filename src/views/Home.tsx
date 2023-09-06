@@ -70,7 +70,7 @@ const Home = () => {
                 <SelectCustomer />
                 {flowControl?.showProducts && !flowControl?.showSelectResults ? (
 
-                  loaders.loadingProducts || products?.length === 0 ? (
+                  loaders.loadingProducts ? (
                     <View className="h-full">
                       <View className="flex-1 justify-center items-center">
                         <FlatList

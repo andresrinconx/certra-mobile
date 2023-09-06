@@ -86,9 +86,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
 
         {/* descrip */}
         <Pressable onPress={() => navigation.navigate("Product", { ...product })}>
-          <Text style={{ fontSize: wp(4), color: typography }} className="font-bold"
-            numberOfLines={2}
-          >
+          <Text style={{ fontSize: wp(4), color: typography }} className="font-bold" numberOfLines={2}>
             {descrip}
           </Text>
         </Pressable>
@@ -202,13 +200,13 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
                 </View>
               ):null}
 
-              {/* localData.agregado && loadingRemoveElement */}
               {localData.agregado && loadingRemoveElement ? (
                 <View className="flex flex-row justify-center items-center rounded-md h-7 w-7 ml-5" style={{ backgroundColor: green }}>
                   <Loader size={wp(4.5)} color="white" />
                 </View>
               ):null}
             </View>
+            
           ):null}
         </View>
       </View>
