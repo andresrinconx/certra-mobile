@@ -53,7 +53,7 @@ const Cart = () => {
             </View>
 
             {productsCart.length !== 0 && (
-              <View className="mr-4">
+              <View>
                 <TouchableOpacity onPress={() => clearCart()}>
                   <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                     source={require("../assets/trash-can.png")}
@@ -126,7 +126,7 @@ const Cart = () => {
             disabled={productsCart.length === 0 ? true : false}
           >
             <Text className="text-center font-bold text-white" style={{ fontSize: wp(5) }}>
-              Procesar pedido {productsCart.length === 0 ? '' : `({${productsCart.length}})`}
+              Procesar pedido {productsCart.length === 0 ? '' : `(${productsCart.length})`}
             </Text>
           </TouchableOpacity>
         </View>

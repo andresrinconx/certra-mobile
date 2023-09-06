@@ -196,6 +196,9 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
                           {localData.cantidad}
                         </Text>
                       </View>
+                      // <TouchableOpacity onPress={() => setOpenModal(true)} className='flex flex-row justify-center items-center'>
+                      //   <Text className='text-center text-base text-black w-[65px]'>{cantidad}</Text>
+                      // </TouchableOpacity>
                     )}
 
                     <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>
