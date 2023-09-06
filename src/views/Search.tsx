@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image } from "react-native"
-import { XMarkIcon } from "react-native-heroicons/mini"
+import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, Text } from "react-native"
 import ProductsSearch from "../components/products/ProductsSearch"
-import { styles, theme } from "../styles"
 import { items } from "../utils/constants"
 import LoaderProductsSearch from "../components/loaders/LoaderProductsSearch"
 import useInv from "../hooks/useInv"
@@ -13,14 +11,15 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import useLogin from "../hooks/useLogin"
 import { debounce } from "lodash"
 import { formatText } from "../utils/helpers"
+import IconCart from "../components/icons/IconCart"
 
 const Search = () => {
   // theme
-  const { themeColors: { backgrund, typography, primary, list } } = useLogin()
+  const { themeColors: { backgrund, typography, primary, list, green, turquoise } } = useLogin()
 
   const [value, setValue] = useState("")
 
-  const { searchedProducts, loaders, setLoaders, setSearchedProducts } = useInv()
+  const { searchedProducts, loaders, setLoaders, setSearchedProducts, productsCart } = useInv()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -31,7 +30,7 @@ const Search = () => {
       if (textInputRef.current) {
         textInputRef.current.focus()
       }
-    }, 300)
+    }, 100)
   }, [])
   // hide keyboard
   const handleScroll = () => {
@@ -65,50 +64,34 @@ const Search = () => {
     <View className="flex-1 pt-10" style={{ backgroundColor: backgrund }}>
       <StatusBar style="dark" />
 
-      {/* arrow & input */}
-      <View className="flex flex-row items-center px-3">
-        <TouchableOpacity onPress={() => {navigation.goBack()}}>
-          <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-            source={require("../assets/back.png")}
-          />
-        </TouchableOpacity>
+      {/* content */}
+      <View className="h-5/6">
+        {/* arrow & input */}
+        <View className="flex flex-row items-center px-3">
+          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+            <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
+              source={require("../assets/back.png")}
+            />
+          </TouchableOpacity>
 
-        <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
-          <TextInput className="mx-4 text-base" style={{ color: typography }}
-            placeholder="Buscar Inventario"
-            placeholderTextColor={typography}
-            ref={textInputRef}
-            onChangeText={handleTextDebounce}
-            selectionColor={primary}
-          />
+          <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
+            <TextInput className="mx-4 text-base" style={{ color: typography }}
+              placeholder="Buscar Inventario"
+              placeholderTextColor={typography}
+              ref={textInputRef}
+              onChangeText={handleTextDebounce}
+              selectionColor={primary}
+            />
+          </View>
         </View>
-      </View>
 
-      {/* results */}
-      <View className="h-full mx-3 mb-16">
-        {loaders.loadingSearchedItems ? (
-          <FlatList
-            data={items}
-            numColumns={1}
-            onScroll={handleScroll}
-            contentContainerStyle={{
-              paddingBottom: 20,
-              marginTop: 15
-            }}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => {
-              return (
-                <LoaderProductsSearch key={item.id} />
-              )
-            }}
-          />
-        ) : (
-          searchedProducts?.length > 0 && (
+        {/* results */}
+        <View className="h-full mx-3 mb-16">
+          {loaders.loadingSearchedItems ? (
             <FlatList
-              data={searchedProducts}
+              data={items}
               numColumns={1}
               onScroll={handleScroll}
-              keyboardShouldPersistTaps="handled"
               contentContainerStyle={{
                 paddingBottom: 20,
                 marginTop: 15
@@ -116,13 +99,44 @@ const Search = () => {
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {
                 return (
-                  <ProductsSearch key={item.id} product={item} />
+                  <LoaderProductsSearch key={item.id} />
                 )
               }}
             />
-          )
-        )}
+          ) : (
+            searchedProducts?.length > 0 && (
+              <FlatList
+                data={searchedProducts}
+                numColumns={1}
+                onScroll={handleScroll}
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={{
+                  paddingBottom: 20,
+                  marginTop: 15
+                }}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => {
+                  return (
+                    <ProductsSearch key={item.id} product={item} />
+                  )
+                }}
+              />
+            )
+          )}
+        </View>
       </View>
+
+      {productsCart.length > 0 && (
+          <View className="flex flex-row items-center justify-center h-12 w-[97%] bottom-1.5 absolute rounded-full" 
+            style={{ backgroundColor: primary, marginLeft: 6 }}
+          >
+            <TouchableOpacity onPress={() => navigation.navigate("Cart")} className="flex-row items-center justify-center">
+              <Text className="font-bold pr-1 text-white" style={{ fontSize: wp(5) }}>Ver Carrito</Text>
+            </TouchableOpacity>
+
+            <IconCart />
+          </View>
+        )}
     </View>
   )
 }
