@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react"
 import { Alert } from "react-native"
 import ProductoInterface from "../interfaces/ProductoInterface"
-import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
+import { setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData, sendData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { OrderInterface } from "../interfaces/OrderInterface"

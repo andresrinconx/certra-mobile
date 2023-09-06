@@ -10,7 +10,7 @@ import Loader from "../components/loaders/Loader"
 
 const Profile = () => {
   // theme
-  const { themeColors: { typography, charge, primary } } = useLogin()
+  const { themeColors: { typography, charge, primary, backgrund } } = useLogin()
 
   // state
   const [dataConfig, setDataConfig] = useState<any>({})
@@ -43,7 +43,7 @@ const Profile = () => {
   }, [])
   
   return (
-    <View className="flex-1 px-6 pt-6">
+    <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
       <StatusBar style="dark" />
 
       {/* logos */}
@@ -85,7 +85,7 @@ const Profile = () => {
             <Loader color={`${primary}`} />
           </View>
         ) : (
-        <View>
+        <View className="px-3">
           
           {/* main info */}
           <View>

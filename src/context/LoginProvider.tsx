@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react"
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
-import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
+import { setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData } from "../utils/api"
 import { ThemeColorsInterface } from "../interfaces/ThemeColorsInterface"
 
