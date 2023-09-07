@@ -12,6 +12,7 @@ import { pallete } from "../utils/pallete"
 import { widthPercentageToDP as wp} from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
 import { socialMedia } from "../utils/constants"
+import useInv from "../hooks/useInv"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -25,6 +26,7 @@ const Login = () => {
   const textInputRefPassword = useRef<TextInput | null>(null)
 
   const { user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin, setThemeColors } = useLogin()
+  const { getProducts } = useInv()
   const navigation = useNavigation()
 
   // actions
@@ -137,6 +139,7 @@ const Login = () => {
   }
   useEffect(() => {
     if (login) {
+      getProducts()
       navigation.navigate("Home")
     }
   }, [login])

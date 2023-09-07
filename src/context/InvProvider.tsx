@@ -246,6 +246,20 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setProductsCart(updatedProductsCart)
   }
 
+  // send order
+  useEffect(() => {
+    const sendOrder = async () => {
+      try {
+        if (order.productos.length !== 0) {
+          await sendData(order)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    sendOrder()
+  }, [order])
+
   // confirm order
   const confirmOrder = async (myUser: any) => {
     // order data
@@ -269,16 +283,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         cantidad: Number(product.cantidad)
       }))
     })
-
-    setTimeout(() => {
-      sendOrder()
-    }, 2500);
-  }
-
-  const sendOrder = async () => {
-    if (order.productos.length !== 0) {
-      await sendData(order)
-    }
   }
 
   return (

@@ -47,7 +47,15 @@ const SelectCustomer = () => {
     setValueSearchCustomers(valueSearchCustomers)
     if (valueSearchCustomers?.length > 2) {
 
-      setFlowControl({ ...flowControl, showSelectResults: true, showProducts: false, showSelectLabel: false })
+      setFlowControl({ 
+        ...flowControl, 
+        showSelectResults: true, 
+        showProducts: false, 
+        showSelectLabel: false, 
+        showSelectCustomer: true,
+        showSelectSearch: true,
+        showLogoCertra: true 
+      })
       setLoaders({ ...loaders, loadingSearchedItems: true })
 
       // fetching...
@@ -58,24 +66,56 @@ const SelectCustomer = () => {
       if (myUser.customer === undefined) {
         // no customer selected
         getProducts()
-        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: false, showSelectLabel: false })
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: false, 
+          showSelectLabel: false, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true 
+        })
         setSearchedCustomers([])
       } else { 
         // customer selected
         getProducts()
-        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true })
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: true, 
+          showSelectLabel: true, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true 
+        })
         setSearchedCustomers([])
       }
     } else if (valueSearchCustomers.length < 2) {
       if (myUser.customer === undefined) {
         // no customer selected
         getProducts()
-        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: false, showSelectLabel: false })
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: false, 
+          showSelectLabel: false, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true 
+        })
         setSearchedCustomers([])
       } else { 
         // customer selected
         getProducts()
-        setFlowControl({ ...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true })
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: true, 
+          showSelectLabel: true, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true 
+        })
         setSearchedCustomers([])
       }
     }

@@ -128,15 +128,18 @@ const Search = () => {
         </View>
       </View>
 
+      {/* view cart */}
       {productsCart.length > 0 && (
         <View className="flex flex-row items-center justify-center h-14 w-[97%] bottom-1.5 absolute rounded-full border-[3px] border-white" 
           style={{ backgroundColor: primary, marginLeft: 6 }}
         >
-          <TouchableOpacity onPress={() => navigation.navigate("Cart")} className="flex-row items-center justify-center">
-            <Text className="font-bold pr-1 text-white" style={{ fontSize: wp(5) }}>Ver Carrito</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Cart")} className="w-full h-full flex flex-row items-center justify-center rounded-full">
+            <View  className="flex-row items-center justify-center">
+              <Text className="font-bold pr-1 text-white" style={{ fontSize: wp(5) }}>Ver Carrito</Text>
+              <IconCart />
+            </View>
           </TouchableOpacity>
 
-          <IconCart />
         </View>
       )}
     </View>

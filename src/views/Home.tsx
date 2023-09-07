@@ -20,14 +20,8 @@ const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
-  const { products, loaders, flowControl, getProducts } = useInv()
+  const { products, loaders, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
-
-  useEffect(() => {
-    if (products?.length === 0) {
-      getProducts()
-    }
-  }, [])
 
   // SCREEN
   // back HANDLER
