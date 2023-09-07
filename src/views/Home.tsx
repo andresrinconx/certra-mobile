@@ -20,7 +20,7 @@ const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
-  const { products, loaders, flowControl } = useInv()
+  const { products, loaders, getProducts, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
 
   // SCREEN
@@ -38,6 +38,13 @@ const Home = () => {
     // Cerrar el teclado
     Keyboard.dismiss()
   }
+
+  // download products if not exist
+  useEffect(() => {
+    if (products?.length === 0) {
+      getProducts()
+    }
+  }, [])
 
   return (
     <>
