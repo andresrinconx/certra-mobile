@@ -137,17 +137,26 @@ const Cart = () => {
           style={{ backgroundColor: backgrund, borderTopColor: icon, marginLeft: 16 }}
         >
           {productsCart.length !== 0 && (
-            <>
+            <View className="px-2">
+              {/* subtotal & total */}
               <View className="flex flex-row justify-between">
-                <Text className="font-semibold text-lg text-black">Subtotal:</Text>
-                <Text style={{ color: darkTurquoise, }} className="font-semibold text-lg text-black">Bs. {subtotal}</Text>
+                <Text style={{ fontSize: wp(4.5), color: typography }} className="font-semibold">
+                  Subtotal:
+                </Text>
+                <Text style={{ fontSize: wp(4.5), color: typography, }} className="font-semibold">
+                  Bs. {subtotal}
+                </Text>
               </View>
 
               <View className="flex flex-row justify-between">
-                <Text className="font-bold text-xl mb-2 text-black">Total:</Text>
-                <Text style={{ color: darkTurquoise, }} className="font-bold text-xl mb-2 text-black">Bs. {total}</Text>
+                <Text style={{ fontSize: wp(5), color: typography }} className="mb-2 font-extrabold">
+                  Total:
+                </Text>
+                <Text style={{ fontSize: wp(5), color: darkTurquoise, }} className="font-extrabold mb-2">
+                  Bs. {total}
+                </Text>
               </View>
-            </>
+            </View>
           )}
 
           {/* btn confirm */}
