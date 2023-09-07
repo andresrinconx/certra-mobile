@@ -12,8 +12,8 @@ import useInv from "../hooks/useInv"
 import { items } from "../utils/constants"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import IconProfile from "../components/icons/IconProfile"
-import IconHome from "../components/icons/IconHome"
 import { StatusBar } from "expo-status-bar"
+import IconItinerary from "../components/icons/IconItinerary"
 
 
 const Home = () => {
@@ -144,9 +144,9 @@ const Home = () => {
 
         {/* main */}
         <View className="flex flex-row items-center gap-4 pl-5">
-          <View><IconHome /></View>
+          <View><IconProfile /></View>
           {flowControl?.showProducts && (<View className="h-8 border-l-[0.8px] border-l-white" />)}
-          {flowControl?.showProducts && (<View><IconProfile /></View>)}
+          {flowControl?.showProducts && (<View><IconItinerary /></View>)}
         </View>
 
         {/* other */}

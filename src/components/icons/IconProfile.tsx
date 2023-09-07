@@ -6,7 +6,7 @@ const IconProfile = () => {
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+    <TouchableOpacity onPress={() => navigation.navigate("Profile")} className="flex flex-col items-center">
       <Image style={{ width: wp(6), height: wp(6) }} resizeMode="cover"
         source={require("../../assets/profile.png")}
       />
