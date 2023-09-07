@@ -36,9 +36,7 @@ const IconLogOut = () => {
       navigation.navigate("Login")
 
       // reset alert
-      setTimeout(() => {
-        setAlertLogOut(false)
-      }, 500);
+      setAlertLogOut(false)
     }, 2000);
 
     await setDataStorage("login", false)
