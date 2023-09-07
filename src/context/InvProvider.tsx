@@ -4,6 +4,7 @@ import { setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData, sendData } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { OrderInterface } from "../interfaces/OrderInterface"
+import { getDate } from "../utils/helpers"
 
 const InvContext = createContext<{
   productsCart: ProductoInterface[]
@@ -101,10 +102,11 @@ const InvContext = createContext<{
   addToCart: () => { },
   processOrder: () => { },
   order: {
+    date: "",
+    cliente: { name: "", code: 0 },
+    productos: [],
     subtotal: "",
     total: "",
-    cliente: { name: "", code: 0 },
-    productos: []
   },
   getProducts: () => { }
 })
@@ -115,10 +117,11 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // order & cart
   const [order, setOrder] = useState<OrderInterface>({
+    date: "",
+    cliente: { name: "", code: 0 },
+    productos: [],
     subtotal: "",
     total: "",
-    cliente: { name: "", code: 0 },
-    productos: []
   })
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
   const [subtotal, setSubtotal] = useState("")
@@ -284,8 +287,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     // order data
     setOrder({
       ...order,
-      subtotal: String(subtotal),
-      total: String(total),
+      date: getDate(new Date()),
       cliente: (myUser.from === "scli" ? {
         name: myUser?.nombre,
         code: myUser?.cliente
@@ -300,7 +302,9 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         precio1: Number(product.precio1),
         iva: Number(product.iva),
         cantidad: Number(product.cantidad)
-      }))
+      })),
+      subtotal: String(subtotal),
+      total: String(total),
     })
   }
 
