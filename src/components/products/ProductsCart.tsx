@@ -145,9 +145,9 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
                         <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center">
                           {
-                            name === 'Mérida' ? parseInt(String(merida)) :
-                              name === 'Centro' ? parseInt(String(centro)) :
-                                name === 'Oriente' ? parseInt(String(oriente)) : null
+                            name === "Mérida" ? parseInt(String(merida)) :
+                              name === "Centro" ? parseInt(String(centro)) :
+                                name === "Oriente" ? parseInt(String(oriente)) : null
                           }
                         </Text>
                       </View>
@@ -192,13 +192,13 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
                       </View>
                     ) : (
                       <View style={{ width: wp(12) }}>
-                        <Text className="text-center font-bold" style={{ color: darkTurquoise, fontSize: wp(4.5) }}>
-                          {localData.cantidad}
-                        </Text>
+                        <TouchableOpacity onPress={() => setOpenModal(true)}>
+                          <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className="text-center">
+                            {cantidad}
+                          </Text>
+                        </TouchableOpacity>
                       </View>
-                      // <TouchableOpacity onPress={() => setOpenModal(true)} className='flex flex-row justify-center items-center'>
-                      //   <Text className='text-center text-base text-black w-[65px]'>{cantidad}</Text>
-                      // </TouchableOpacity>
+                      
                     )}
 
                     <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>

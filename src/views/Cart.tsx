@@ -175,18 +175,17 @@ const Cart = () => {
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertClearCart} onClose={onClose}>
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
-          <AlertDialog.Header>Delete Customer</AlertDialog.Header>
+          <AlertDialog.Header>Vaciar Carrito</AlertDialog.Header>
           <AlertDialog.Body>
-            This will remove all data relating to Alex. This action cannot be
-            reversed. Deleted data can not be recovered.
+            ¿Está seguro que desea vaciar el carrito?
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
-                Cancel
+                Cancelar
               </Button>
               <Button colorScheme="danger" onPress={() => clearCart()}>
-                Delete
+                Aceptar
               </Button>
             </Button.Group>
           </AlertDialog.Footer>
