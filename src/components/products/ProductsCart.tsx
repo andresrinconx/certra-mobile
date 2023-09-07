@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
-import { View, Text, TouchableOpacity, FlatList, Pressable } from "react-native"
-import { Modal, FormControl, Input, Button } from "native-base"
+import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from "react-native"
+import { Modal } from "native-base"
 import { MinusSmallIcon, PlusSmallIcon, XMarkIcon } from "react-native-heroicons/outline"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import useInv from "../../hooks/useInv"
@@ -12,7 +12,7 @@ import { disponibility } from "../../utils/constants"
 
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   // theme
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon } } = useLogin()
+  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn } } = useLogin()
   
   const [openModal, setOpenModal] = useState(false)
   const [disableAcept, setDisableAcept] = useState(false)
@@ -25,7 +25,6 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [loadingRemoveElement, setLoadingRemoveElement] = useState(false)
 
   const initialRef = useRef(null);
-  const finalRef = useRef(null);
 
   const { increase, decrease, removeElement, productsCart, setProductsCart } = useInv()
   const { descrip, precio1, id, cantidad, centro, merida, oriente } = product
@@ -54,10 +53,11 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
       }
     }
   }, [localData.cantidad])
+
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
       if (item.id === id) {
-        const cleanCantidad = parseFloat(localData.cantidad.replace(/-/g, ""))
+        const cleanCantidad = parseInt(localData.cantidad.replace(/-/g, ""))
 
         return { ...item, cantidad: cleanCantidad }
       } else {
@@ -229,34 +229,41 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
       </View>
 
       {/* modal input */}
-      <Modal isOpen={openModal} onClose={() => setOpenModal(false)} initialFocusRef={initialRef} finalFocusRef={finalRef}>
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Contact Us</Modal.Header>
-          <Modal.Body>
-            <FormControl>
-              <FormControl.Label>Name</FormControl.Label>
-              <Input ref={initialRef} />
-            </FormControl>
-            <FormControl mt="3">
-              <FormControl.Label>Email</FormControl.Label>
-              <Input />
-            </FormControl>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button.Group space={2}>
-              <Button variant="ghost" colorScheme="blueGray" onPress={() => {
-              setOpenModal(false);
-            }}>
-                Cancel
-              </Button>
-              <Button onPress={() => {
-              setOpenModal(false);
-            }}>
-                Save
-              </Button>
-            </Button.Group>
-          </Modal.Footer>
+      <Modal isOpen={openModal} onClose={() => setOpenModal(false)} initialFocusRef={initialRef}>
+        <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
+
+          <Text className="text-center mb-3" style={{ fontSize: wp(5), color: typography }}>Cantidad</Text>
+
+          {/* input */}
+          <View className="w-full rounded-xl mb-4" style={{ backgroundColor: list }}>
+            <TextInput className="h-12 text-center rounded-xl" style={{ color: turquoise, fontSize: wp(5) }}
+              keyboardType="numeric"
+              value={String(localData.cantidad)}
+              onChangeText={text => setLocalData({ ...localData, cantidad: text })}
+              autoFocus
+              selectionColor={primary}
+            />
+          </View>
+          
+          {/* btns */}
+          <View className="flex flex-row items-center justify-between">
+            <View style={{ backgroundColor: green }} className="flex justify-center w-[48%] rounded-xl">
+              <TouchableOpacity onPress={() => setOpenModal(false)}>
+                <Text style={{ fontSize: wp(4.5) }} className="py-2 text-center font-bold text-white">
+                  Cancelar
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className="flex justify-center w-[48%] rounded-xl">
+              <TouchableOpacity onPress={() => acept()} disabled={disableAcept}>
+                <Text style={{ fontSize: wp(4.5) }} className="py-2 text-center font-bold text-white">
+                  Aceptar
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
         </Modal.Content>
       </Modal>
 

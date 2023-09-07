@@ -175,16 +175,16 @@ const Cart = () => {
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertClearCart} onClose={onClose}>
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
-          <AlertDialog.Header>Vaciar Carrito</AlertDialog.Header>
+          <AlertDialog.Header>¿Deseas continuar?</AlertDialog.Header>
           <AlertDialog.Body>
-            ¿Está seguro que desea vaciar el carrito?
+            Se eliminarán todos los productos de tu carrito.
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
                 Cancelar
               </Button>
-              <Button colorScheme="danger" onPress={() => clearCart()}>
+              <Button color={darkTurquoise} onPress={() => clearCart()}>
                 Aceptar
               </Button>
             </Button.Group>

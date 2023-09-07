@@ -54,7 +54,8 @@ const SelectCustomer = () => {
         showSelectLabel: false, 
         showSelectCustomer: true,
         showSelectSearch: true,
-        showLogoCertra: true 
+        showLogoCertra: true,
+        selected: false
       })
       setLoaders({ ...loaders, loadingSearchedItems: true })
 
@@ -73,7 +74,8 @@ const SelectCustomer = () => {
           showSelectLabel: false, 
           showSelectCustomer: true,
           showSelectSearch: true,
-          showLogoCertra: true 
+          showLogoCertra: true,
+          selected: false,
         })
         setSearchedCustomers([])
       } else { 
@@ -82,11 +84,12 @@ const SelectCustomer = () => {
         setFlowControl({ 
           ...flowControl, 
           showSelectResults: false, 
-          showProducts: true, 
+          showProducts: false, 
           showSelectLabel: true, 
           showSelectCustomer: true,
           showSelectSearch: true,
-          showLogoCertra: true 
+          showLogoCertra: true,
+          selected: false,
         })
         setSearchedCustomers([])
       }
@@ -101,7 +104,8 @@ const SelectCustomer = () => {
           showSelectLabel: false, 
           showSelectCustomer: true,
           showSelectSearch: true,
-          showLogoCertra: true 
+          showLogoCertra: true,
+          selected: false,
         })
         setSearchedCustomers([])
       } else { 
@@ -110,11 +114,12 @@ const SelectCustomer = () => {
         setFlowControl({ 
           ...flowControl, 
           showSelectResults: false, 
-          showProducts: true, 
+          showProducts: false, 
           showSelectLabel: true, 
           showSelectCustomer: true,
           showSelectSearch: true,
-          showLogoCertra: true 
+          showLogoCertra: true,
+          selected: false,
         })
         setSearchedCustomers([])
       }
@@ -130,7 +135,7 @@ const SelectCustomer = () => {
         <View className="mt-3">
 
           {/* label */}
-          {flowControl?.showSelectLabel && !flowControl?.showSelectResults ? (
+          {flowControl?.showSelectLabel && !flowControl?.showSelectResults && flowControl?.selected ? (
             <View className="mb-4">
               <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
               <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
