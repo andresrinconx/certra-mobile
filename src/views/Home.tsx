@@ -10,17 +10,17 @@ import Loader from "../components/loaders/Loader"
 import useLogin from "../hooks/useLogin"
 import useInv from "../hooks/useInv"
 import { items } from "../utils/constants"
-import { utilities } from "../utils/styles"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import IconProfile from "../components/icons/IconProfile"
 import IconHome from "../components/icons/IconHome"
 import { StatusBar } from "expo-status-bar"
 
+
 const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
-  const { products, loaders, getProducts, flowControl } = useInv()
+  const { products, loaders, setLoaders, getProducts, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
 
   // SCREEN

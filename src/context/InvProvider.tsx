@@ -38,13 +38,15 @@ const InvContext = createContext<{
     loadingProducts: boolean,
     loadingSearchedItems: boolean,
     loadingSlectedCustomer: boolean,
-    loadingConfirmOrder: boolean
+    loadingConfirmOrder: boolean,
+    loadingLogOut: boolean,
   }
   setLoaders: (loaders: {
     loadingProducts: boolean,
     loadingSearchedItems: boolean,
     loadingSlectedCustomer: boolean,
-    loadingConfirmOrder: boolean
+    loadingConfirmOrder: boolean,
+    loadingLogOut: boolean,
   }) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
@@ -83,7 +85,8 @@ const InvContext = createContext<{
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
-    loadingConfirmOrder: false
+    loadingConfirmOrder: false,
+    loadingLogOut: false,
   },
   setLoaders: () => { },
   valueSearchCustomers: "",
@@ -143,7 +146,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
-    loadingConfirmOrder: false
+    loadingConfirmOrder: false,
+    loadingLogOut: false,
   })
 
   // ----- STORAGE
