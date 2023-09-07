@@ -18,7 +18,7 @@ const Cart = () => {
 
   const cancelRef = useRef(null);
 
-  const { productsCart, subtotal, total, confirmOrder, flowControl, setProductsCart } = useInv()
+  const { productsCart, subtotal, total, processOrder, flowControl, setProductsCart } = useInv()
   const { myUser } = useLogin()
   const { image_url } = myUser
   const navigation = useNavigation()
@@ -160,7 +160,7 @@ const Cart = () => {
           )}
 
           {/* btn confirm */}
-          <TouchableOpacity onPress={() => confirmOrder(myUser)} className="rounded-xl py-3" 
+          <TouchableOpacity onPress={() => processOrder(myUser)} className="rounded-xl py-3" 
             style={{ backgroundColor: `${productsCart.length === 0 ? processBtn : green}` }}
             disabled={productsCart.length === 0 ? true : false}
           >

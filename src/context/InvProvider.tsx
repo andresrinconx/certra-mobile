@@ -54,7 +54,7 @@ const InvContext = createContext<{
   setTotal: (total: string) => void
   removeElement: (id: number) => void
   addToCart: (product: ProductoInterface) => void
-  confirmOrder: (myUser: any) => void
+  processOrder: (myUser: any) => void
   order: OrderInterface
   getProducts: () => void
 }>({
@@ -93,7 +93,7 @@ const InvContext = createContext<{
   setTotal: () => { },
   removeElement: () => { },
   addToCart: () => { },
-  confirmOrder: () => { },
+  processOrder: () => { },
   order: {
     subtotal: "",
     total: "",
@@ -260,8 +260,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     sendOrder()
   }, [order])
 
-  // confirm order
-  const confirmOrder = async (myUser: any) => {
+  // process order
+  const processOrder = async (myUser: any) => {
     // order data
     setOrder({
       ...order,
@@ -309,7 +309,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setTotal,
       removeElement,
       addToCart,
-      confirmOrder,
+      processOrder,
       order,
       getProducts
     }}>
