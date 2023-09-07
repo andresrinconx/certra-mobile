@@ -112,10 +112,10 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
         </View>
 
         {/* info */}
-        <View className="flex flex-row items-center">
+        <View className="flex flex-row justify-center">
 
           {/* left info */}
-          <View className="w-1/2 pr-2">
+          <View className="w-1/2 pr-2 my-2">
 
             {/* disponibility */}
             <View className="mb-2">
@@ -139,7 +139,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
                   renderItem={({ item: { id, name } }) => {
                     return (
                       <View key={id} className="flex flex-col items-center">
-                        <Text style={{ fontSize: hp(1.6), color: darkTurquoise }} className="w-10 text-center">
+                        <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center">
                           {name}
                         </Text>
 

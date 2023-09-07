@@ -124,7 +124,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
               renderItem={({ item: { id, name } }) => {
                 return (
                   <View key={id} className="flex flex-col items-center">
-                    <Text style={{ fontSize: hp(1.6), color: darkTurquoise }} className="w-10 text-center">
+                    <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center">
                       {name}
                     </Text>
 

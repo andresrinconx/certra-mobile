@@ -15,7 +15,7 @@ const SelectCustomer = () => {
   // theme & styles
   const { themeColors: { list, typography, primary } } = useLogin()
 
-  const { searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers } = useInv()
+  const { searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers, getProducts } = useInv()
   const { myUser } = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -45,7 +45,7 @@ const SelectCustomer = () => {
 
   const handleSearch = async (valueSearchCustomers: string) => {
     setValueSearchCustomers(valueSearchCustomers)
-    if (valueSearchCustomers.length > 2) {
+    if (valueSearchCustomers?.length > 2) {
 
       setFlowControl({ ...flowControl, showSelectResults: true, showProducts: false, showSelectLabel: false })
       setLoaders({ ...loaders, loadingSearchedItems: true })
@@ -57,20 +57,24 @@ const SelectCustomer = () => {
     } else if (valueSearchCustomers.length === 2) {
       if (myUser.customer === undefined) {
         // no customer selected
+        getProducts()
         setFlowControl({ ...flowControl, showSelectResults: false, showProducts: false, showSelectLabel: false })
         setSearchedCustomers([])
       } else { 
         // customer selected
+        getProducts()
         setFlowControl({ ...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true })
         setSearchedCustomers([])
       }
     } else if (valueSearchCustomers.length < 2) {
       if (myUser.customer === undefined) {
         // no customer selected
+        getProducts()
         setFlowControl({ ...flowControl, showSelectResults: false, showProducts: false, showSelectLabel: false })
         setSearchedCustomers([])
       } else { 
         // customer selected
+        getProducts()
         setFlowControl({ ...flowControl, showSelectResults: false, showProducts: true, showSelectLabel: true })
         setSearchedCustomers([])
       }

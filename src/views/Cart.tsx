@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState, useRef } from "react"
 import { View, Text, TouchableOpacity, FlatList, Image } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import useInv from "../hooks/useInv"
@@ -7,22 +7,39 @@ import useLogin from "../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
 import Loader from "../components/loaders/Loader"
+import { AlertDialog, Button } from "native-base"
 
 const Cart = () => {
   // theme
   const { themeColors: { typography, backgrund, processBtn, darkTurquoise, green, icon, primary } } = useLogin()
 
-  const { productsCart, clearCart, subtotal, total, confirmOrder, flowControl, loaders, setLoaders } = useInv()
+  const [loadingCart, setLoadingCart] = useState(true)
+  const [alertClearCart, setAlertClearCart] = useState(false)
+
+  const cancelRef = useRef(null);
+
+  const { productsCart, subtotal, total, confirmOrder, flowControl, setProductsCart } = useInv()
   const { myUser } = useLogin()
   const { image_url } = myUser
   const navigation = useNavigation()
 
   useEffect(() => {
-    setLoaders({ ...loaders, loadingCart: true })
-    setTimeout(() => {
-      setLoaders({ ...loaders, loadingCart: false })
-    }, 200);
+    const load = () => {
+      setTimeout(() => {
+        setLoadingCart(false)
+      }, 200);
+    }
+    load()
   }, [])
+
+  const clearCart = () => {
+    setAlertClearCart(false)
+
+    // clear
+    const updatedProducts = productsCart.filter(item => item.agregado !== true)
+    setProductsCart(updatedProducts)
+  };
+  const onClose = () => setAlertClearCart(false);
 
   return (
     <>
@@ -63,7 +80,7 @@ const Cart = () => {
 
             {productsCart.length !== 0 && (
               <View>
-                <TouchableOpacity onPress={() => clearCart()}>
+                <TouchableOpacity onPress={() => setAlertClearCart(true)}>
                   <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
                     source={require("../assets/trash-can.png")}
                   />
@@ -81,37 +98,35 @@ const Cart = () => {
           )}
 
           {/* products */}
-          <View className="flex-1">
-            {productsCart.length === 0 ? (
-              <Text className="font-extrabold text-center mt-6" style={{ color: typography, fontSize: wp(6) }}>
-                No hay productos
-              </Text>
-            ) : (
-              <View>
-                {loaders.loadingCart ? (
-                  <View className="mt-10">
-                    <Loader color={`${primary}`} />
-                  </View>
-                ) : (
-                  <FlatList
-                    data={productsCart}
-                    numColumns={1}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ 
-                      paddingBottom: 200,
-                      marginTop: 15 
-                    }}
-                    overScrollMode="never"
-                    renderItem={({ item }) => {
-                      return (
-                        <ProductsCart key={item.id} product={item} />
-                      )
-                    }}
-                  />
-                )}
-              </View>
-            )}
-          </View>
+          {loadingCart ? (
+            <View className="mt-10">
+              <Loader color={`${primary}`} />
+            </View>
+          ) : (
+            <View className="flex-1">
+              {productsCart.length === 0 && !loadingCart ? (
+                <Text className="font-extrabold text-center mt-6" style={{ color: typography, fontSize: wp(6) }}>
+                  No hay productos
+                </Text>
+              ) : (
+                <FlatList
+                  data={productsCart}
+                  numColumns={1}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ 
+                    paddingBottom: 200,
+                    marginTop: 15 
+                  }}
+                  overScrollMode="never"
+                  renderItem={({ item }) => {
+                    return (
+                      <ProductsCart key={item.id} product={item} />
+                    )
+                  }}
+                />
+              )}
+            </View>
+          )}
         </View>
 
       </View>
@@ -146,6 +161,28 @@ const Cart = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* alerta */}
+      <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertClearCart} onClose={onClose}>
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>Delete Customer</AlertDialog.Header>
+          <AlertDialog.Body>
+            This will remove all data relating to Alex. This action cannot be
+            reversed. Deleted data can not be recovered.
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+                Cancel
+              </Button>
+              <Button colorScheme="danger" onPress={() => clearCart()}>
+                Delete
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
     </>
   )
 }

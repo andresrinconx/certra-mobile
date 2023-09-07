@@ -3,12 +3,12 @@ import { OrderInterface } from '../interfaces/OrderInterface';
 import axios from 'axios';
 
 // get
-const tableDataEndpoint = (table: string) => `${LOCAL_API_URL}/${table}`;
-const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${LOCAL_API_URL}/${params.table}/${params.searchTerm}`;
-const userDataEndpoint = (params: {code: string; table: string}) => `${LOCAL_API_URL}/${params.table}/${params.code}`;
+const tableDataEndpoint = (table: string) => `${API_URL}/${table}`;
+const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${API_URL}/${params.table}/${params.searchTerm}`;
+const userDataEndpoint = (params: {code: string; table: string}) => `${API_URL}/${params.table}/${params.code}`;
 
 // post
-const sendDataEndpoint = () => `${LOCAL_API_URL}/pedidoguardar`;
+const sendDataEndpoint = () => `${API_URL}/pedidoguardar`;
 
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);

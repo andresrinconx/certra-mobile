@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react"
-import { Alert } from "react-native"
 import ProductoInterface from "../interfaces/ProductoInterface"
 import { setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData, sendData } from "../utils/api"
@@ -13,10 +12,9 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  clearCart: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
-  flowControl: { 
+  flowControl: {
     showProducts: boolean
     showSelectCustomer: boolean
     showSelectSearch: boolean
@@ -26,7 +24,7 @@ const InvContext = createContext<{
     showLogoLab: boolean
     selected: boolean
   }
-  setFlowControl: (flowControl: { 
+  setFlowControl: (flowControl: {
     showProducts: boolean
     showSelectCustomer: boolean
     showSelectSearch: boolean
@@ -36,17 +34,15 @@ const InvContext = createContext<{
     showLogoLab: boolean
     selected: boolean
   }) => void
-  loaders: { 
-    loadingProducts: boolean, 
-    loadingSearchedItems: boolean, 
-    loadingSlectedCustomer: boolean, 
-    loadingCart: boolean,
+  loaders: {
+    loadingProducts: boolean,
+    loadingSearchedItems: boolean,
+    loadingSlectedCustomer: boolean,
   }
-  setLoaders: (loaders: { 
-    loadingProducts: boolean, 
-    loadingSearchedItems: boolean, 
-    loadingSlectedCustomer: boolean, 
-    loadingCart: boolean,
+  setLoaders: (loaders: {
+    loadingProducts: boolean,
+    loadingSearchedItems: boolean,
+    loadingSlectedCustomer: boolean,
   }) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
@@ -60,6 +56,7 @@ const InvContext = createContext<{
   addToCart: (product: ProductoInterface) => void
   confirmOrder: (myUser: any) => void
   order: OrderInterface
+  getProducts: () => void
 }>({
   productsCart: [],
   setProductsCart: () => { },
@@ -67,25 +64,23 @@ const InvContext = createContext<{
   setProducts: () => { },
   searchedProducts: [],
   setSearchedProducts: () => { },
-  clearCart: () => { },
   searchedCustomers: [],
   setSearchedCustomers: () => { },
-  flowControl: { 
-    showProducts: false, 
-    showSelectCustomer: false, 
-    showSelectSearch: false, 
-    showSelectResults: false, 
-    showSelectLabel: false, 
+  flowControl: {
+    showProducts: false,
+    showSelectCustomer: false,
+    showSelectSearch: false,
+    showSelectResults: false,
+    showSelectLabel: false,
     showLogoCertra: false,
     showLogoLab: false,
-    selected: false, 
+    selected: false,
   },
   setFlowControl: () => { },
-  loaders: { 
-    loadingProducts: false, 
-    loadingSearchedItems: false, 
+  loaders: {
+    loadingProducts: false,
+    loadingSearchedItems: false,
     loadingSlectedCustomer: false,
-    loadingCart: true,
   },
   setLoaders: () => { },
   valueSearchCustomers: "",
@@ -102,9 +97,10 @@ const InvContext = createContext<{
   order: {
     subtotal: "",
     total: "",
-    cliente: "",
+    cliente: { name: "", code: 0 },
     productos: []
-  }
+  },
+  getProducts: () => { }
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -115,7 +111,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [order, setOrder] = useState<OrderInterface>({
     subtotal: "",
     total: "",
-    cliente: "",
+    cliente: { name: "", code: 0 },
     productos: []
   })
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
@@ -144,7 +140,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
-    loadingCart: true,
   })
 
   // ----- STORAGE
@@ -175,43 +170,43 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [flowControl])
 
-  useEffect(() => {
-    console.log(loaders)
-  }, [loaders])
-
   // ----- API
   // get products api
-  useEffect(() => {
-    const obtenerProductos = async () => {
-      try {
-        setLoaders({ ...loaders, loadingProducts: true })
-        const data = await fetchTableData("sinv")
+  const getProducts = async () => {
+    try {
+      setLoaders({ ...loaders, loadingProducts: true })
+      const data = await fetchTableData("sinv")
 
-        // Add properties to each producto
-        // const productos = data?.map((producto: ProductoInterface) => ({
-        //   ...producto,
-        //   agregado: false,
-        //   cantidad: 1,
-        // }))
+      // Add properties to each producto
+      const products = data?.map((product: ProductoInterface) => ({
+        ...product,
+        agregado: false,
+        cantidad: 1,
+      }))
 
-        // fail api
-        if (data?.length !== 0) {
-          setProducts(data)
-          setLoaders({ ...loaders, loadingProducts: false })
-        }
-
-        // slow api
-        setTimeout(() => {
-          if (data.length !== 0) {
-            setProducts(data)
-            setLoaders({ ...loaders, loadingProducts: false })
-          }
-        }, 2500);
-      } catch (error) {
-        console.log(error)
+      // fail api
+      if (products?.length !== 0) {
+        setProducts(products)
+        setLoaders({ ...loaders, loadingProducts: false })
       }
+
+      // slow api
+      // setTimeout(() => {
+      //   if (products?.length !== 0) {
+      //     setProducts(products)
+      //     setLoaders({ ...loaders, loadingProducts: false })
+      //   }
+      // }, 2500);
+    } catch (error) {
+      console.log(error)
     }
-    obtenerProductos()
+  }
+
+  useEffect(() => {
+    const getProductsIni = async () => {
+      getProducts()
+    }
+    getProductsIni()
   }, [])
 
   // ----- ACTIONS
@@ -268,23 +263,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setProductsCart(updatedProductsCart)
   }
 
-  // clear cart
-  const clearCart = () => {
-    Alert.alert(
-      "¿Quieres eliminar todos los productos del carrito?",
-      "Esta acción no se puede deshacer",
-      [
-        {
-          text: "Sí, eliminar", onPress: () => {
-            const updatedProducts = productsCart.filter(item => item.agregado !== true)
-            setProductsCart(updatedProducts)
-          }
-        },
-        { text: "Cancelar", style: "cancel", },
-      ]
-    )
-  }
-
   // confirm order
   const confirmOrder = async (myUser: any) => {
     // order data
@@ -293,7 +271,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       subtotal: String(parseInt(subtotal)),
       total: String(parseInt(total)),
       cliente: (myUser.from === "scli" ? {
-        name: myUser.nombre, 
+        name: myUser.nombre,
         code: 123
       } : {
         name: myUser.us_nombre,
@@ -316,7 +294,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setProductsCart,
       products,
       setProducts,
-      clearCart,
       searchedProducts,
       setSearchedProducts,
       searchedCustomers,
@@ -336,7 +313,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       removeElement,
       addToCart,
       confirmOrder,
-      order
+      order,
+      getProducts
     }}>
       {children}
     </InvContext.Provider>
