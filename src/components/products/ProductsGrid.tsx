@@ -39,6 +39,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   // actions
   const handleAddToCart = () => {
     setLoadingAddToCart(true)
+
     addToCart(product) // function
     setTimeout(() => {
       setLoadingAddToCart(false)

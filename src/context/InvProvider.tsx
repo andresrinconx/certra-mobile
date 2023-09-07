@@ -189,25 +189,18 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         setProducts(products)
         setLoaders({ ...loaders, loadingProducts: false })
       }
-
+      
       // slow api
-      // setTimeout(() => {
-      //   if (products?.length !== 0) {
-      //     setProducts(products)
-      //     setLoaders({ ...loaders, loadingProducts: false })
-      //   }
-      // }, 2500);
+      setTimeout(() => {
+        if (products?.length !== 0) {
+          setProducts(products)
+          setLoaders({ ...loaders, loadingProducts: false })
+        }
+      }, 2500);
     } catch (error) {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-    const getProductsIni = async () => {
-      getProducts()
-    }
-    getProductsIni()
-  }, [])
 
   // ----- ACTIONS
   // set subtotal & total
@@ -222,16 +215,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     const totalFormated = total.toLocaleString();
     setTotal(totalFormated);
   }, [productsCart])
-
-  // send order
-  useEffect(() => {
-    if (order.productos.length !== 0) {
-      const sendOrder = async () => {
-        await sendData(order)
-      }
-      sendOrder()
-    }
-  }, [order])
 
   // add to cart
   const addToCart = (product: ProductoInterface) => {
@@ -268,17 +251,17 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     // order data
     setOrder({
       ...order,
-      subtotal: String(parseInt(subtotal)),
-      total: String(parseInt(total)),
+      subtotal: String(subtotal),
+      total: String(total),
       cliente: (myUser.from === "scli" ? {
-        name: myUser.nombre,
-        code: 123
+        name: myUser?.nombre,
+        code: myUser?.cliente
       } : {
         name: myUser.us_nombre,
-        code: 123
+        code: myUser?.customer?.cliente
       }),
       productos: productsCart.map((product: ProductoInterface) => ({
-        codigo: Number(product.codigo),
+        codigo: product.codigo,
         descrip: String(product.descrip),
         base1: Number(product.base1),
         precio1: Number(product.precio1),
@@ -286,6 +269,16 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         cantidad: Number(product.cantidad)
       }))
     })
+
+    setTimeout(() => {
+      sendOrder()
+    }, 2500);
+  }
+
+  const sendOrder = async () => {
+    if (order.productos.length !== 0) {
+      await sendData(order)
+    }
   }
 
   return (

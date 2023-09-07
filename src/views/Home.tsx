@@ -19,10 +19,15 @@ import { StatusBar } from "expo-status-bar"
 const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
-  const { } = utilities
 
-  const { products, loaders, flowControl } = useInv()
+  const { products, loaders, flowControl, getProducts } = useInv()
   const { myUser: { image_url } } = useLogin()
+
+  useEffect(() => {
+    if (products?.length === 0) {
+      getProducts()
+    }
+  }, [])
 
   // SCREEN
   // back HANDLER
@@ -98,11 +103,13 @@ const Home = () => {
                     </View>
                   ) : (
                     <View className="h-full">
-                      <View className="flex-1 justify-center items-center">
+                      <View className="flex-1 justify-center">
                         <FlatList
                           ListHeaderComponent={() => (
                             <View className="mb-2">
-                              <Text className="font-bold text-gray-700" style={{ fontSize: wp(4.5), color: typography }}>Productos</Text>
+                              <Text className="font-bold" style={{ fontSize: wp(4.5), color: typography }}>
+                                Productos
+                              </Text>
                             </View>
                           )}
                           data={products}

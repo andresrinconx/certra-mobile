@@ -90,12 +90,12 @@ const Cart = () => {
           </View>
 
           {/* customer */}
-          {productsCart.length !== 0 && (
+          {productsCart.length !== 0 && myUser?.customer?.nombre ? (
             <View className="mt-4 pb-2">
               <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
               <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
             </View>
-          )}
+          ):null}
 
           {/* products */}
           {loadingCart ? (

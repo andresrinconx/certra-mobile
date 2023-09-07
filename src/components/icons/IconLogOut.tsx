@@ -6,7 +6,7 @@ import { setDataStorage } from "../../utils/asyncStorage"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
 const IconLogOut = () => {
-  const { setProductsCart, setFlowControl, setValueSearchCustomers } = useInv()
+  const { setProductsCart, setFlowControl, setValueSearchCustomers, setProducts } = useInv()
   const { setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
   const navigation = useNavigation()
 
@@ -44,8 +44,9 @@ const IconLogOut = () => {
       processBtn: "",
     })
 
-    // reset cart
+    // reset products
     setProductsCart([])
+    setProducts([])
 
     // reset flow
     setFlowControl({

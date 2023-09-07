@@ -189,7 +189,7 @@ const Profile = () => {
 
                 <View className="w-4/6 rounded-lg py-2 px-1" style={{ backgroundColor: charge }}>
                   <Text className="text-center" style={{ color: typography }}>
-                    {myUser.from === 'scli' ? dataConfig?.us_nombre : dataConfig?.us_nombre}
+                    {myUser.from === 'scli' ? dataConfig?.contacto : dataConfig?.us_nombre}
                   </Text>
                 </View>
               </View>

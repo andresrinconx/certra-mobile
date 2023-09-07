@@ -1,5 +1,5 @@
 export interface ProductoOrderInterface {
-  codigo: number,
+  codigo: string,
   descrip: string,
   base1: number,
   precio1: number,
