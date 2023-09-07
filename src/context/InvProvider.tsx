@@ -1,10 +1,11 @@
 import { createContext, useState, useEffect } from "react"
 import ProductoInterface from "../interfaces/ProductoInterface"
 import { setDataStorage } from "../utils/asyncStorage"
-import { fetchTableData, sendData } from "../utils/api"
+import { fetchTableData, sendData, fetchSearchedItems } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { OrderInterface } from "../interfaces/OrderInterface"
 import { getDate } from "../utils/helpers"
+import useLogin from "../hooks/useLogin"
 
 const InvContext = createContext<{
   productsCart: ProductoInterface[]
@@ -152,6 +153,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingConfirmOrder: false,
     loadingLogOut: false,
   })
+  
+  const { myUser } = useLogin()
 
   // ----- STORAGE
   // set productsCart
@@ -186,7 +189,15 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const getProducts = async () => {
     try {
       setLoaders({ ...loaders, loadingProducts: true })
-      const data = await fetchTableData("sinv")
+
+      let data: ProductoInterface[] = [];
+
+      // fetch data
+      if (myUser.from === "scli") {
+        data = await fetchTableData("sinv");
+      } else if(myUser.from === "usuario-clipro") {
+        data = await fetchSearchedItems({ searchTerm: myUser?.clipro, table: "searchclipr" })
+      }
 
       // Add properties to each producto
       const products = data?.map((product: ProductoInterface) => ({

@@ -12,14 +12,16 @@ import useLogin from "../hooks/useLogin"
 import { debounce } from "lodash"
 import { formatText } from "../utils/helpers"
 import IconCart from "../components/icons/IconCart"
+import ProductoInterface from "../interfaces/ProductoInterface"
 
 const Search = () => {
   // theme
-  const { themeColors: { backgrund, typography, primary, list, green, turquoise } } = useLogin()
+  const { themeColors: { backgrund, typography, primary, list } } = useLogin()
 
   const [value, setValue] = useState("")
 
-  const { searchedProducts, loaders, setLoaders, setSearchedProducts, productsCart } = useInv()
+  const { searchedProducts, loaders, setLoaders, setSearchedProducts, productsCart, products } = useInv()
+  const { myUser } = useLogin()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -50,8 +52,22 @@ const Search = () => {
     setValue(value)
     if (value.length > 2) {
       setLoaders({ ...loaders, loadingSearchedItems: true })
-      // fetching...
-      const data = await fetchSearchedItems({ searchTerm: formatText(value), table: "search" }) // search = sinv
+      
+      let data: ProductoInterface[] = [];
+
+      // fetch data
+      if (myUser.from === "scli") {
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: "search" }) // search = sinv
+      } else if(myUser.from === "usuario-clipro") {
+        data = products?.filter((product: ProductoInterface) => product.descrip.toLowerCase().includes(value.toLocaleLowerCase()))
+        setSearchedProducts(data)
+
+        setTimeout(() => {
+          setLoaders({ ...loaders, loadingSearchedItems: false })
+        }, 500);
+        return
+      }
+      
       setSearchedProducts(data)
       setLoaders({ ...loaders, loadingSearchedItems: false })
     } else {
@@ -113,7 +129,7 @@ const Search = () => {
                 onScroll={handleScroll}
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{
-                  paddingBottom: 20,
+                  paddingBottom: 200,
                   marginTop: 15
                 }}
                 showsVerticalScrollIndicator={false}

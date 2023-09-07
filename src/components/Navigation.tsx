@@ -52,9 +52,9 @@ const Navigation = () => {
   useEffect(() => {
     if (storageLoaded) {
       if (!flowControl.selected) { // is not selected
-        if (myUser.from === 'usuario') {
+        if (myUser.from === "usuario") {
 
-          // 'usuario' will see this
+          // "usuario" will see this
           setFlowControl({
             ...flowControl,
             showProducts: false,
@@ -62,9 +62,9 @@ const Navigation = () => {
             showSelectCustomer: true,
             showSelectSearch: true
           })
-        } else if (myUser.from === 'usuario-clipro') {
+        } else if (myUser.from === "usuario-clipro") {
 
-          // 'usuario-clipro' will see this
+          // "usuario-clipro" will see this
           setFlowControl({
             ...flowControl,
             showProducts: false,
@@ -73,9 +73,9 @@ const Navigation = () => {
             showSelectCustomer: true,
             showSelectSearch: true
           })
-        } else if (myUser.from === 'scli') {
+        } else if (myUser.from === "scli") {
 
-          // 'scli' will see this
+          // "scli" will see this
           setFlowControl({
             ...flowControl,
             showProducts: true,
