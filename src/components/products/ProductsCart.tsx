@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
-import { View, Text, TextInput, TouchableOpacity, FlatList, Modal, Pressable } from "react-native"
-import { theme, styles } from "../../styles"
+import { useState, useEffect, useRef } from "react"
+import { View, Text, TouchableOpacity, FlatList, Pressable } from "react-native"
+import { Modal, FormControl, Input, Button } from "native-base"
 import { MinusSmallIcon, PlusSmallIcon, XMarkIcon } from "react-native-heroicons/outline"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
 import useInv from "../../hooks/useInv"
@@ -23,6 +23,9 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [loadingDecrease, setLoadingDecrease] = useState(false)
   const [loadingIncrease, setLoadingIncrease] = useState(false)
   const [loadingRemoveElement, setLoadingRemoveElement] = useState(false)
+
+  const initialRef = useRef(null);
+  const finalRef = useRef(null);
 
   const { increase, decrease, removeElement, productsCart, setProductsCart } = useInv()
   const { descrip, precio1, id, cantidad, centro, merida, oriente } = product
@@ -226,7 +229,39 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
       </View>
 
       {/* modal input */}
-      <Modal
+      <Modal isOpen={openModal} onClose={() => setOpenModal(false)} initialFocusRef={initialRef} finalFocusRef={finalRef}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>Contact Us</Modal.Header>
+          <Modal.Body>
+            <FormControl>
+              <FormControl.Label>Name</FormControl.Label>
+              <Input ref={initialRef} />
+            </FormControl>
+            <FormControl mt="3">
+              <FormControl.Label>Email</FormControl.Label>
+              <Input />
+            </FormControl>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+              setOpenModal(false);
+            }}>
+                Cancel
+              </Button>
+              <Button onPress={() => {
+              setOpenModal(false);
+            }}>
+                Save
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
+      {/* modal input */}
+      {/* <Modal
         visible={openModal}
         animationType="fade"
         transparent={true}
@@ -263,7 +298,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </>
   )
 }
