@@ -266,46 +266,6 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
         </Modal.Content>
       </Modal>
-
-      {/* modal input */}
-      {/* <Modal
-        visible={openModal}
-        animationType="fade"
-        transparent={true}
-      >
-        <View className="flex-1" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-          <View className="absolute bg-white w-[95%] h-48 left-2.5 right-2.5 bottom-2 rounded-2xl"
-            style={[styles.shadow]}
-          >
-            <Text className="text-2xl text-center text-black mt-3 pb-3 border-b-[0.5px] border-gray-500">Cantidad</Text>
-
-            <View className="rounded-full mx-4 mt-3" style={{ backgroundColor: "#f2f2f2", }}>
-              <TextInput className="h-12 w-full pl-5 text-xl rounded-full text-gray-700"
-                keyboardType="numeric"
-                value={String(localData.cantidad)}
-                onChangeText={text => setLocalData({ ...localData, cantidad: text })}
-                autoFocus
-                selectionColor={theme.turquesaClaro}
-              />
-            </View>
-
-            <View className="flex flex-row items-center justify-between mx-4 mt-4">
-              <TouchableOpacity onPress={() => setOpenModal(false)} className="flex justify-center w-[48%] h-12 rounded-full border-[0.2px] border-gray-400"
-                style={{ backgroundColor: "#f7f7f7" }}
-              >
-                <Text className="text-center text-base uppercase text-blue-500">Cancelar</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => acept()} className="flex justify-center w-[48%] h-12 rounded-full border-[0.2px] border-gray-400"
-                style={{ backgroundColor: "#f7f7f7" }}
-                disabled={disableAcept}
-              >
-                <Text className={`text-center text-base uppercase ${disableAcept ? "text-blue-200" : "text-blue-500"}`}>Aceptar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
     </>
   )
 }

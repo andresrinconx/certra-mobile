@@ -55,17 +55,6 @@ export const sendData = async (order: OrderInterface) => {
     });
     
     console.log(response.data);
-
-    // fetch
-    // const response = await fetch(sendDataUrl, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(order),
-    // });
-
-    // console.log(response)
   } catch (error) {
     console.error('Error en la solicitud:', error);
   }

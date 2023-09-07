@@ -38,11 +38,13 @@ const InvContext = createContext<{
     loadingProducts: boolean,
     loadingSearchedItems: boolean,
     loadingSlectedCustomer: boolean,
+    loadingConfirmOrder: boolean
   }
   setLoaders: (loaders: {
     loadingProducts: boolean,
     loadingSearchedItems: boolean,
     loadingSlectedCustomer: boolean,
+    loadingConfirmOrder: boolean
   }) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
@@ -81,6 +83,7 @@ const InvContext = createContext<{
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
+    loadingConfirmOrder: false
   },
   setLoaders: () => { },
   valueSearchCustomers: "",
@@ -140,6 +143,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
+    loadingConfirmOrder: false
   })
 
   // ----- STORAGE
@@ -252,6 +256,17 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         if (order.productos.length !== 0) {
           await sendData(order)
+
+          setTimeout(() => {
+            // clear cart
+            const updatedProducts = productsCart.filter(item => item.agregado !== true)
+            setProductsCart(updatedProducts)
+          }, 2000);
+
+          setTimeout(() => {
+
+            setLoaders({ ...loaders, loadingConfirmOrder: false }) // loader from alert*
+          }, 3000);
         }
       } catch (error) {
         console.log(error)

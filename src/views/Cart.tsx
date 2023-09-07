@@ -7,7 +7,7 @@ import useLogin from "../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
 import Loader from "../components/loaders/Loader"
-import { AlertDialog, Button } from "native-base"
+import { AlertDialog, Button, Modal } from "native-base"
 
 const Cart = () => {
   // theme
@@ -15,10 +15,12 @@ const Cart = () => {
 
   const [loadingCart, setLoadingCart] = useState(true)
   const [alertClearCart, setAlertClearCart] = useState(false)
+  const [alertProcessOrder, setAlertProcessOrder] = useState(false)
+  const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
 
   const cancelRef = useRef(null);
 
-  const { productsCart, subtotal, total, processOrder, flowControl, setProductsCart } = useInv()
+  const { productsCart, subtotal, total, processOrder, flowControl, setProductsCart, setLoaders, loaders } = useInv()
   const { myUser } = useLogin()
   const { image_url } = myUser
   const navigation = useNavigation()
@@ -32,6 +34,7 @@ const Cart = () => {
     load()
   }, [])
 
+  // actions
   const clearCart = () => {
     setAlertClearCart(false)
 
@@ -39,7 +42,24 @@ const Cart = () => {
     const updatedProducts = productsCart.filter(item => item.agregado !== true)
     setProductsCart(updatedProducts)
   };
-  const onClose = () => setAlertClearCart(false);
+  const onCloseAlertClearCart = () => setAlertClearCart(false);
+  const onCloseAlertProcessOrder = () => setAlertProcessOrder(false);
+
+  // process order
+  const handleProcess = () => {
+    setLoaders({ ...loaders, loadingConfirmOrder: true })
+    processOrder(myUser)
+
+    // close process alert
+    setTimeout(() => {
+      setAlertProcessOrder(false)
+
+      // show success alert
+      setTimeout(() => {
+        setAlertSuccessOrder(true)
+      }, 500);
+    }, 2500);
+  }
 
   return (
     <>
@@ -159,20 +179,21 @@ const Cart = () => {
             </View>
           )}
 
-          {/* btn confirm */}
-          <TouchableOpacity onPress={() => processOrder(myUser)} className="rounded-xl py-3" 
-            style={{ backgroundColor: `${productsCart.length === 0 ? processBtn : green}` }}
-            disabled={productsCart.length === 0 ? true : false}
-          >
-            <Text className="text-center font-bold text-white" style={{ fontSize: wp(5) }}>
-              Procesar pedido {productsCart.length === 0 ? '' : `(${productsCart.length})`}
-            </Text>
-          </TouchableOpacity>
+          {/* btn process */}
+          <View className="rounded-xl py-3" style={{ backgroundColor: `${productsCart.length === 0 ? processBtn : green}`}}>
+            <TouchableOpacity onPress={() => setAlertProcessOrder(true)}
+              disabled={productsCart.length === 0 ? true : false}
+            >
+              <Text className="text-center font-bold text-white" style={{ fontSize: wp(5) }}>
+                Procesar pedido {productsCart.length === 0 ? '' : `(${productsCart.length})`}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
-      {/* alerta */}
-      <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertClearCart} onClose={onClose}>
+      {/* alert clear cart */}
+      <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertClearCart} onClose={onCloseAlertClearCart}>
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
           <AlertDialog.Header>¿Deseas continuar?</AlertDialog.Header>
@@ -181,7 +202,7 @@ const Cart = () => {
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
-              <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={onCloseAlertClearCart} ref={cancelRef}>
                 Cancelar
               </Button>
               <Button color={darkTurquoise} onPress={() => clearCart()}>
@@ -191,6 +212,78 @@ const Cart = () => {
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog>
+
+      {/* alert process order */}
+      <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertProcessOrder} onClose={onCloseAlertProcessOrder}>
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>Confirmar pedido</AlertDialog.Header>
+
+          <AlertDialog.Body>
+            <Text className="font-normal">
+              Presiona "Confirmar" para confirmar tu pedido.
+            </Text>
+          </AlertDialog.Body>
+
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={onCloseAlertProcessOrder} ref={cancelRef}>
+                Cancelar
+              </Button>
+              <Button color={darkTurquoise} onPress={handleProcess}>
+                {loaders.loadingConfirmOrder ? (
+                  <View className="flex flex-row justify-center items-center w-14">
+                    <Loader color="white" size={wp(4)} />
+                  </View>
+                ) : (
+                  <Text className="font-normal text-white">Confirmar</Text>
+                )}
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
+
+      {/* alert success order */}
+      <Modal isOpen={alertSuccessOrder} onClose={() => setAlertSuccessOrder(false)} animationPreset="fade">
+        <Modal.Content style={{ width: 360, height: 500, backgroundColor: primary, marginBottom: 0 }}>
+          <View className="flex flex-1 flex-col items-center justify-between">
+            
+            {/* logo */}
+            <View className="mt-4">
+              {!myUser?.customer?.cliente ? (
+                <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
+                  source={require("../assets/logo-drocerca.png")}
+                />
+              ): (
+                <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
+                  source={require("../assets/certra-process.png")}
+                />  
+              )}
+            </View>
+
+            {/* message */}
+            <View className="flex flex-col justify-center items-center">
+              <Image style={{ width: wp(35), height: wp(25) }} resizeMode="contain"
+                source={require("../assets/cart-check.png")}
+              />
+              <Text className="w-52 pt-4 text-center text-white" style={{ fontSize: wp(6) }}>
+                Su pedido ha sido procesado con éxito
+              </Text>
+            </View>
+
+            {/* btn ok */}
+            <View className="w-64 mb-8 mx-4">
+              <TouchableOpacity style={{ backgroundColor: green }} className="rounded-xl"
+                onPress={() => setAlertSuccessOrder(false)} 
+              >
+                <Text className="p-3 text-center text-white" style={{ fontSize: wp(6) }}>Ok</Text>
+              </TouchableOpacity>
+            </View>
+            
+          </View>
+        </Modal.Content>
+      </Modal>
     </>
   )
 }

@@ -4,19 +4,19 @@ import useLogin from "../../hooks/useLogin"
 import useInv from "../../hooks/useInv"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
-const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
+const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   // theme
   const { themeColors: { charge, typography } } = useLogin()
-  
-  const {setMyUser, myUser} = useLogin()
-  const {flowControl, setFlowControl, setProductsCart, loaders, setLoaders, setValueSearchCustomers} = useInv()
-  const {cliente, nombre} = customer
+
+  const { setMyUser, myUser } = useLogin()
+  const { flowControl, setFlowControl, setProductsCart, loaders, setLoaders, setValueSearchCustomers, getProducts } = useInv()
+  const { cliente, nombre } = customer
 
   // select customer
   const selectCustomer = () => {
-    setLoaders({...loaders, loadingSlectedCustomer: true})
+    setLoaders({ ...loaders, loadingSlectedCustomer: true })
     // user
-    setMyUser({...myUser, customer})
+    setMyUser({ ...myUser, customer })
 
     // products & cart
     setProductsCart([])
@@ -24,14 +24,15 @@ const CustomersSearch = ({customer}: {customer: UserFromScliInterface}) => {
     // flow & reset
     setValueSearchCustomers("")
     setFlowControl({
-      ...flowControl, 
-      showSelectResults: false, 
-      showProducts: true, 
-      showSelectLabel: true, 
+      ...flowControl,
+      showSelectResults: false,
+      showProducts: true,
+      showSelectLabel: true,
       selected: true
     })
     setTimeout(() => {
-      setLoaders({...loaders, loadingSlectedCustomer: false})
+      getProducts()
+      setLoaders({ ...loaders, loadingSlectedCustomer: false })
     }, 100)
   }
 
