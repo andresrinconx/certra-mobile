@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native"
 import useInv from "../hooks/useInv"
 import ProductsCart from "../components/products/ProductsCart"
 import useLogin from "../hooks/useLogin"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
 import Loader from "../components/loaders/Loader"
 import { AlertDialog, Button, Modal } from "native-base"
@@ -125,9 +125,19 @@ const Cart = () => {
           ) : (
             <View className="flex-1">
               {productsCart.length === 0 && !loadingCart ? (
-                <Text className="font-extrabold text-center mt-6" style={{ color: typography, fontSize: wp(6) }}>
-                  No hay productos
-                </Text>
+                <View className="flex flex-col items-center justify-center" style={{ height: hp(65) }}>
+                  <Text className="font-extrabold text-center mt-6" style={{ color: typography, fontSize: wp(6) }}>
+                    No hay productos
+                  </Text>
+
+                  <Text style={{ color: typography, fontSize: wp(4) }} className="font-medium">Continúa comprando {""}
+                    <Text style={{ color: darkTurquoise, fontSize: wp(4) }} className="font-medium"
+                      onPress={() => navigation.navigate("Home")}
+                    >
+                      aquí
+                    </Text>
+                  </Text>
+                </View>
               ) : (
                 <FlatList
                   data={productsCart}

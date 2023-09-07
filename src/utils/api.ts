@@ -48,6 +48,7 @@ export const sendData = async (order: OrderInterface) => {
   try {
 
     // axios
+    console.log(order)
     const response = await axios.post(sendDataUrl, order, {
       headers: {
         'Content-Type': 'application/json',
