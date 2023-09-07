@@ -69,6 +69,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
 
   return (
     <View className="h-[98%] mb-3 mr-2 p-2 rounded-2xl" style={{ backgroundColor: lightList, width: wp("45.5%") }}>
+
       {/* img */}
       <Pressable onPress={() => navigation.navigate("Product", { ...product })} className="mb-2 justify-center items-center">
         {image_url === null ? (
@@ -93,8 +94,8 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
         </Pressable>
 
         {/* price */}
-        <View className="my-2">
-          <Text style={{ fontSize: hp(1.5), color: typography }}>
+        <View className="my-2 ">
+          <Text style={{ fontSize: hp(1.5), color: typography }} className="font-bold">
             Precio:
           </Text>
 
@@ -105,7 +106,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
 
         {/* disponibility */}
         <View className="mb-2">
-          <Text style={{ fontSize: hp(1.6), color: typography }} className="pb-0.5">
+          <Text style={{ fontSize: hp(1.6), color: typography }} className="pb-0.5 font-bold">
             Disponibilidad:
           </Text>
 
@@ -125,11 +126,11 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
               renderItem={({ item: { id, name } }) => {
                 return (
                   <View key={id} className="flex flex-col items-center">
-                    <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center">
+                    <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center font-semibold">
                       {name}
                     </Text>
 
-                    <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center">
+                    <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center font-semibold">
                       {
                         name === 'Mérida' ? parseInt(String(merida)) :
                           name === 'Centro' ? parseInt(String(centro)) :
