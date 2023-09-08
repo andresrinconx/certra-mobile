@@ -1,14 +1,24 @@
-import {LOCAL_API_URL, API_URL} from '@env';
-import { OrderInterface } from '../interfaces/OrderInterface';
-import axios from 'axios';
+import { LOCAL_API_URL, API_URL } from "@env";
+import { OrderInterface } from "../interfaces/OrderInterface";
+import axios from "axios";
 
-// get
-const tableDataEndpoint = (table: string) => `${LOCAL_API_URL}/${table}`;
-const searchedItemsEndpoint = (params: {searchTerm: string; table: string}) => `${LOCAL_API_URL}/${params.table}/${params.searchTerm}`;
-const userDataEndpoint = (params: {code: string; table: string}) => `${LOCAL_API_URL}/${params.table}/${params.code}`;
+// GET
 
-// post
-const sendDataEndpoint = () => `${LOCAL_API_URL}/pedidoguardar`;
+// get all data from a table
+const tableDataEndpoint = (table: string) => `${API_URL}/${table}`;
+
+// get all data from a table that matches a search term
+const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) =>
+  `${API_URL}/${params.table}/${params.searchTerm}`;
+
+// get all info from a user
+const userDataEndpoint = (params: { code: string; table: string }) =>
+  `${API_URL}/${params.table}/${params.code}`;
+
+// POST
+
+// send a order to the server
+const sendDataEndpoint = () => `${API_URL}/pedidoguardar`;
 
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);
@@ -21,7 +31,10 @@ export const fetchTableData = async (table: string) => {
   }
 };
 
-export const fetchSearchedItems = async (params: { searchTerm: string; table: string; }) => {
+export const fetchSearchedItems = async (params: {
+  searchTerm: string;
+  table: string;
+}) => {
   const searchedItemsUrl = searchedItemsEndpoint(params);
   try {
     const response = await fetch(searchedItemsUrl);
@@ -32,7 +45,10 @@ export const fetchSearchedItems = async (params: { searchTerm: string; table: st
   }
 };
 
-export const fetchUserData = async (params: { code: string; table: string; }) => {
+export const fetchUserData = async (params: {
+  code: string;
+  table: string;
+}) => {
   const userDataUrl = userDataEndpoint(params);
   try {
     const response = await fetch(userDataUrl);
@@ -46,17 +62,16 @@ export const fetchUserData = async (params: { code: string; table: string; }) =>
 export const sendData = async (order: OrderInterface) => {
   const sendDataUrl = sendDataEndpoint();
   try {
-
     // axios
-    console.log(order)
+    console.log(order);
     const response = await axios.post(sendDataUrl, order, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
-    
+
     console.log(response.data);
   } catch (error) {
-    console.error('Error en la solicitud:', error);
+    console.error("Error en la solicitud:", error);
   }
 };
