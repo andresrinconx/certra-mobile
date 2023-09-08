@@ -63,3 +63,80 @@ export const profileFields = {
     }
   ]
 }
+
+export const days = [
+  {
+    id: 1,
+    name: "Lunes",
+  },
+  {
+    id: 2,
+    name: "Martes",
+  },
+  {
+    id: 3,
+    name: "Miércoles",
+  },
+  {
+    id: 4,
+    name: "Jueves",
+  },
+  {
+    id: 5,
+    name: "Viernes",
+  },
+  {
+    id: 6,
+    name: "Sábado",
+  },
+  {
+    id: 7,
+    name: "Domingo",
+  },
+]
+
+// delete
+export const testItinerary = [
+  {
+    id: 1,
+    name: "Mérida",
+    date: "2020-10-01",
+    address: "Av. 3",
+    other: ""
+  },
+  {
+    id: 2,
+    name: "Mérida",
+    date: "2020-10-10",
+    address: "Av. 3",
+    other: ""
+  },
+  {
+    id: 3,
+    name: "Mérida",
+    date: "2020-10-13",
+    address: "Av. 3",
+    other: ""
+  },
+  {
+    id: 4,
+    name: "Mérida",
+    date: "2020-10-18",
+    address: "Av. 3",
+    other: ""
+  },
+  {
+    id: 5,
+    name: "Mérida",
+    date: "2020-10-21",
+    address: "Av. 3",
+    other: ""
+  },
+  {
+    id: 6,
+    name: "Mérida",
+    date: "2020-10-26",
+    address: "Av. 3",
+    other: ""
+  },
+]

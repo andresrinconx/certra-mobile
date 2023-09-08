@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
 import useLogin from '../hooks/useLogin'
 import { StatusBar } from 'expo-status-bar'
 import useInv from '../hooks/useInv'
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useNavigation } from '@react-navigation/native'
 import { getMonthAndDays } from '../utils/helpers'
+import { days } from '../utils/constants'
+import Loader from '../components/loaders/Loader'
 
 const Itinerary = () => {
   // theme
-  const { themeColors: { backgrund, typography } } = useLogin()
+  const { themeColors: { backgrund, typography, primary } } = useLogin()
 
   // state
+  const [loadingItinerary, setLoadingItinerary] = useState(true)
   const [currentMonth, setCurrentMonth] = useState("")
   const [currentMonthDays, setCurrentMonthDays] = useState(0)
   const [squareDays, setSetsquareDays] = useState([])
@@ -34,10 +37,16 @@ const Itinerary = () => {
     const newSquareDays = [];
 
     for (let i = 0; i < currentMonthDays; i++) {
-      newSquareDays.push(<Text key={i}>Día {i + 1}</Text>);
-    }
+      newSquareDays.push(
+        <TouchableOpacity key={i} className="">
+          <Text>Día {i + 1}</Text>
+        </TouchableOpacity>
+      );
+    };
 
     setSetsquareDays(newSquareDays);
+
+    setLoadingItinerary(false)
   }, [currentMonthDays])
 
   return (
@@ -62,25 +71,51 @@ const Itinerary = () => {
       </View>
 
       {/* back */}
-      <View className="flex flex-row items-center justify-between mt-2">
-        <View className="flex flex-row items-center gap-2">
-          <TouchableOpacity onPress={() => { navigation.goBack() }}>
-            <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-              source={require("../assets/back.png")}
-            />
-          </TouchableOpacity>
+      <View className="flex flex-row items-center gap-2 mt-2">
+        <TouchableOpacity onPress={() => { navigation.goBack() }}>
+          <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
+            source={require("../assets/back.png")}
+          />
+        </TouchableOpacity>
 
-          <Text className="font-bold" style={{ color: typography, fontSize: wp(4.5) }}>Itinerario</Text>
-        </View>
-
-        <Text className="font-bold" style={{ color: typography, fontSize: wp(5) }}>
-          {currentMonth}
-        </Text>
+        <Text className="font-bold" style={{ color: typography, fontSize: wp(4.5) }}>Itinerario</Text>
       </View>
 
-      {/* calendar */}
       <View className="">
-        {squareDays}
+        {loadingItinerary ? (
+          <View className="mt-5">
+            <Loader color={`${primary}`} />
+          </View>
+        ) : (
+          <>
+            {/* current month */}
+            <View className="mt-2">
+              <Text className="text-center font-bold" style={{ color: typography, fontSize: wp(5) }}>
+                {currentMonth}
+              </Text>
+            </View>
+
+            {/* days view */}
+            <View className="flex flex-row justify-center items-center mt-4">
+              {days.map((item) => {
+                const { id, name } = item;
+
+                return (
+                  <Text key={id} className="uppercase text-center" 
+                    style={{ fontSize: wp(2.4), color: typography, width: wp(13.5) }}
+                  >
+                    {name}
+                  </Text>
+                )
+              })}
+            </View>
+
+            {/* square days view */}
+            <View className="">
+              {squareDays}
+            </View>
+          </>
+        )}
       </View>
 
     </View>
