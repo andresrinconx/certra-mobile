@@ -2,17 +2,17 @@ import { Text, TouchableOpacity, Image } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
-const IconProfile = () => {
+const IconItinerary = () => {
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Profile")} className="flex flex-col items-center">
+    <TouchableOpacity onPress={() => navigation.navigate("Itinerary")} className="flex flex-col items-center">
       <Image style={{ width: wp(6), height: wp(6) }} resizeMode="cover"
-        source={require("../../assets/profile.png")}
+        source={require("../../assets/itinerary.png")}
       />
-      <Text className="text-[8px] text-center text-white">Perfil</Text>
+      <Text className="w-8 text-[8px] text-center text-white">Itinerario</Text>
     </TouchableOpacity>
   )
 }
 
-export default IconProfile
+export default IconItinerary

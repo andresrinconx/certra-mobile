@@ -1,6 +1,7 @@
 import { View, TouchableOpacity, Image } from "react-native"
 import useInv from "../../hooks/useInv"
 import { useNavigation } from "@react-navigation/native"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
 const IconSearchProducts = () => {
   const { setSearchedProducts } = useInv()
@@ -12,7 +13,7 @@ const IconSearchProducts = () => {
       setSearchedProducts([])
     }}>
       <View>
-        <Image className="w-7 h-7" resizeMode="cover"
+        <Image style={{ width: wp(7), height: wp(7) }} resizeMode="cover"
           source={require("../../assets/search.png")}
         />
       </View>

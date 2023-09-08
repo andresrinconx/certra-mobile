@@ -3,4 +3,5 @@ export default interface UserFromUsuarioInterface {
   us_clave: string
   us_nombre: string
   clipro: string
+  image_url: string
 }
