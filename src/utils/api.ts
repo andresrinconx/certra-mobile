@@ -2,7 +2,7 @@ import { LOCAL_API_URL, API_URL } from "@env";
 import { OrderInterface } from "../interfaces/OrderInterface";
 import axios from "axios";
 
-// GET
+// ----- GET
 
 // get all data from a table
 const tableDataEndpoint = (table: string) => `${API_URL}/${table}`;
@@ -15,7 +15,7 @@ const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) =>
 const userDataEndpoint = (params: { code: string; table: string }) =>
   `${API_URL}/${params.table}/${params.code}`;
 
-// POST
+// ----- POST
 
 // send a order to the server
 const sendDataEndpoint = () => `${API_URL}/pedidoguardar`;
