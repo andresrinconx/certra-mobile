@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import useLogin from '../hooks/useLogin'
 import { StatusBar } from 'expo-status-bar'
 import useInv from '../hooks/useInv'
@@ -9,6 +9,8 @@ import { getMonthAndDays } from '../utils/helpers'
 import { days } from '../utils/constants'
 import Loader from '../components/loaders/Loader'
 
+import { testItinerary } from '../utils/constants'
+
 const Itinerary = () => {
   // theme
   const { themeColors: { backgrund, typography, primary } } = useLogin()
@@ -17,6 +19,8 @@ const Itinerary = () => {
   const [loadingItinerary, setLoadingItinerary] = useState(true)
   const [currentMonth, setCurrentMonth] = useState("")
   const [currentMonthDays, setCurrentMonthDays] = useState(0)
+
+  const [itinerary, setItinerary] = useState([])
   const [squareDays, setSetsquareDays] = useState([])
 
   const { flowControl } = useInv()
@@ -25,11 +29,15 @@ const Itinerary = () => {
 
   // set data
   useEffect(() => {
+    // days and month
     const currentDate = new Date();
     const dataMonthAndDays = getMonthAndDays(currentDate);
 
     setCurrentMonth(dataMonthAndDays.month)
     setCurrentMonthDays(dataMonthAndDays.days)
+
+    // itinerary
+    setItinerary(testItinerary)
   }, [])
 
   // month (squares)
@@ -40,6 +48,7 @@ const Itinerary = () => {
       newSquareDays.push(
         <TouchableOpacity key={i} className="">
           <Text>Día {i + 1}</Text>
+          <Text className="">{}</Text>
         </TouchableOpacity>
       );
     };
