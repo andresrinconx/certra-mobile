@@ -145,8 +145,12 @@ const Home = () => {
         {/* main */}
         <View className="flex flex-row items-center gap-4 pl-5">
           <View><IconProfile /></View>
-          {flowControl?.showProducts && (<View className="h-8 border-l-[0.8px] border-l-white" />)}
-          {flowControl?.showProducts && (<View><IconItinerary /></View>)}
+          {flowControl?.showLogoCertra && flowControl?.showProducts ? (
+            <View className="h-8 border-l-[0.8px] border-l-white" />
+          ):null}
+          {flowControl?.showLogoCertra && flowControl?.showProducts ? (
+            <View><IconItinerary /></View>
+          ):null}
         </View>
 
         {/* other */}
