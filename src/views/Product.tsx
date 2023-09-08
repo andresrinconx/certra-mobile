@@ -111,7 +111,7 @@ const Product = () => {
           {product?.descrip}
         </Text>
 
-        <View className={`mr-4 p-3 rounded-2xl bg-[${turquoise}]`}>
+        <View className="mr-4 p-3 rounded-2xl" style={{ backgroundColor: turquoise }}>
           <IconCart />
         </View>
       </View>
