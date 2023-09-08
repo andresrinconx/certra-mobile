@@ -225,7 +225,7 @@ const Product = () => {
             <View className="flex flex-row justify-center items-center rounded-xl h-12 w-full" style={{ backgroundColor: turquoise }}>
               <Loader size={wp(8)} color="white" />
             </View>
-          ):null}
+          ):null} 
 
           {localData.agregado && !loadingAddToCart ? (
             <View className="flex flex-row items-center justify-between" style={{ width: wp("80%") }}>
