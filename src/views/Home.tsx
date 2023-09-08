@@ -117,7 +117,7 @@ const Home = () => {
                           onScroll={handleScroll}
                           numColumns={2}
                           contentContainerStyle={{
-                            paddingBottom: 10,
+                            paddingBottom: 200,
                             marginTop: 15
                           }}
                           showsVerticalScrollIndicator={false}

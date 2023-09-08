@@ -126,7 +126,7 @@ const SelectCustomer = () => {
     }
   }
 
-  const handleTextDebounce = useCallback(debounce(handleSearch, 1000), [])
+  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
 
   return (
     <>
