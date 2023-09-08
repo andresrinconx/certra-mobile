@@ -3,6 +3,7 @@ export interface ThemeColorsInterface {
   backgrund: string
   charge: string
   list: string
+  lightList: string,
   turquoise: string
   darkTurquoise: string
   green: string

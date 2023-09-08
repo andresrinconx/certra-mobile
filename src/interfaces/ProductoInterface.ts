@@ -5,7 +5,7 @@ export default interface ProductoInterface {
   cantidad: number
   agregado: boolean
   image_url: URL | string
-  codigo: number,
+  codigo: string,
   merida?: number,
   centro?: number,
   oriente?: number,

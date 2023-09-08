@@ -1,23 +1,27 @@
-import {useEffect, useRef} from 'react'
-import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList } from 'react-native'
-import { styles, theme } from '../../styles'
-import {XMarkIcon} from 'react-native-heroicons/mini'
-import {UserIcon} from 'react-native-heroicons/outline'
-import useInv from '../../hooks/useInv'
-import { fetchSearchedItems } from '../../utils/api'
-import { items } from '../../utils/constants'
-import LoaderCustomersSearch from '../loaders/LoaderCustomersSearch'
-import CustomersSearch from './CustomersSearch'
-import useLogin from '../../hooks/useLogin'
+import { useEffect, useRef, useCallback } from "react"
+import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList, Image } from "react-native"
+import { XMarkIcon } from "react-native-heroicons/mini"
+import useInv from "../../hooks/useInv"
+import { fetchSearchedItems } from "../../utils/api"
+import { items } from "../../utils/constants"
+import LoaderCustomersSearch from "../loaders/LoaderCustomersSearch"
+import CustomersSearch from "./CustomersSearch"
+import useLogin from "../../hooks/useLogin"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import { debounce } from "lodash"
+import { formatText } from "../../utils/helpers"
 
 const SelectCustomer = () => {
-  const {searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers} = useInv()
-  const {myUser} = useLogin()
+  // theme & styles
+  const { themeColors: { list, typography, primary } } = useLogin()
+
+  const { searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers, getProducts } = useInv()
+  const { myUser } = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
   useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", removeInputFocus)
     return () => {
       keyboardDidHideListener.remove()
     }
@@ -34,78 +38,131 @@ const SelectCustomer = () => {
 
   // SEARCH
   useEffect(() => {
-    if(valueSearchCustomers === '') {
+    if (valueSearchCustomers === "") {
       setSearchedCustomers([])
     }
   }, [valueSearchCustomers])
-  
+
   const handleSearch = async (valueSearchCustomers: string) => {
     setValueSearchCustomers(valueSearchCustomers)
-    if(valueSearchCustomers.length > 2) {
-      if(!flowControl.showSelectResults) {
-        setFlowControl({...flowControl, showSelectResults: true})
-      }
-      setLoaders({...loaders, loadingSearchedItems: true})
+    if (valueSearchCustomers?.length > 2) {
+
+      setFlowControl({ 
+        ...flowControl, 
+        showSelectResults: true, 
+        showProducts: false, 
+        showSelectLabel: false, 
+        showSelectCustomer: true,
+        showSelectSearch: true,
+        showLogoCertra: true,
+        selected: false
+      })
+      setLoaders({ ...loaders, loadingSearchedItems: true })
+
       // fetching...
-      const data = await fetchSearchedItems({searchTerm: valueSearchCustomers, table: 'searchCli'}) // searchCli = scli
-      setSearchedCustomers(data.message === undefined ? data : [])
-      setLoaders({...loaders, loadingSearchedItems: false})
-    } else {
-      setFlowControl({...flowControl, showSelectResults: false})
-      setSearchedCustomers([])
+      const data = await fetchSearchedItems({ searchTerm: formatText(valueSearchCustomers), table: "searchCli" }) // searchCli = scli
+      setSearchedCustomers(data?.length !== 0 ? data : [])
+      setLoaders({ ...loaders, loadingSearchedItems: false })
+    } else if (valueSearchCustomers.length === 2) {
+      if (myUser.customer === undefined) {
+        // no customer selected
+        getProducts()
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: false, 
+          showSelectLabel: false, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true,
+          selected: false,
+        })
+        setSearchedCustomers([])
+      } else { 
+        // customer selected
+        getProducts()
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: false, 
+          showSelectLabel: true, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true,
+          selected: false,
+        })
+        setSearchedCustomers([])
+      }
+    } else if (valueSearchCustomers.length < 2) {
+      if (myUser.customer === undefined) {
+        // no customer selected
+        getProducts()
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: false, 
+          showSelectLabel: false, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true,
+          selected: false,
+        })
+        setSearchedCustomers([])
+      } else { 
+        // customer selected
+        getProducts()
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: false, 
+          showSelectLabel: true, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true,
+          selected: false,
+        })
+        setSearchedCustomers([])
+      }
     }
   }
+
+  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
 
   return (
     <>
       {flowControl?.showSelectCustomer ? (
 
-        <View className='mx-5 mt-5'>
+        <View className="mt-3">
 
           {/* label */}
-          {flowControl?.showSelectLabel && (
-            <View className='mb-3'>
-              <Text className='text-gray-700 text-xl font-bold'>Cliente</Text>
-              <Text className='text-gray-500 text-base'>{myUser?.customer?.nombre}</Text>
+          {flowControl?.showSelectLabel && !flowControl?.showSelectResults && flowControl?.selected ? (
+            <View className="mb-4">
+              <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
+              <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
             </View>
-          )}
+          ) : null}
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
-            <View className={`w-full flex flex-row items-center justify-between rounded-md ${flowControl.showSelectResults ? 'mb-0' : 'mb-4'}`} style={styles.shadow}>
-              <View className='flex flex-row items-center'>
-                <View className='ml-3'>
-                  <UserIcon size={20} color='gray' strokeWidth={2} />
-                </View>
+            <View className="flex flex-row items-center">
+              <Image style={{ width: wp(10), height: wp(10) }} resizeMode="cover"
+                source={require("../../assets/drugstore-search.png")}
+              />
 
-                <TextInput className='text-base text-gray-700 ml-1 w-72'
-                  ref={textInputRef}
-                  placeholder='Buscar un cliente'
-                  placeholderTextColor='gray'
-                  value={valueSearchCustomers}
-                  onChangeText={handleSearch}
-                  selectionColor={theme.turquesaClaro}
+              <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
+                <TextInput className="w-full pl-3" style={{ color: typography }}
+                  placeholder="Buscar un cliente"
+                  placeholderTextColor={typography}
+                  onChangeText={handleTextDebounce}
+                  selectionColor={primary}
                 />
               </View>
-
-              {valueSearchCustomers != '' && (
-                <TouchableOpacity className='relative right-3'
-                  onPress={() => {
-                    setValueSearchCustomers('')
-                    setFlowControl({...flowControl, showSelectResults: false})
-                  }}>
-                  <XMarkIcon size={25} color='black' />
-                </TouchableOpacity>
-              )}
             </View>
-          ):null}
+          ) : null}
 
           {/* results */}
           {flowControl?.showSelectResults ? (
-            <View className={`bg-white mt-2 rounded-md px-3 pt-3 ${flowControl.showSelectLabel ? 'max-h-[78%]' : 'max-h-[87%]'}`}
-              style={styles.shadow}
-            >
-              {/* loadingSearchedItems */}
+            <View>
               {loaders.loadingSearchedItems ? (
                 <FlatList
                   data={items}
@@ -113,18 +170,19 @@ const SelectCustomer = () => {
                   onScroll={handleScroll}
                   contentContainerStyle={{
                     paddingBottom: 5,
+                    marginTop: 15
                   }}
                   showsVerticalScrollIndicator={false}
-                  renderItem={({item}) => {
+                  renderItem={({ item }) => {
                     return (
                       <LoaderCustomersSearch key={item.id} />
                     )
-                  }} 
+                  }}
                 />
               ) : (
                 searchedCustomers?.length === 0 ? (
-                  <View className='flex flex-row items-center justify-center py-8 -mt-3'>
-                    <Text className='text-xl text-gray-700 w-full text-center'>No hay resultados</Text>
+                  <View className="flex flex-row items-center justify-center py-8">
+                    <Text className="text-xl w-full text-center" style={{ color: typography }}>No hay resultados</Text>
                   </View>
                 ) : (
                   <FlatList
@@ -134,20 +192,21 @@ const SelectCustomer = () => {
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{
                       paddingBottom: 5,
+                      marginTop: 15
                     }}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <CustomersSearch key={item.rifci} customer={item} />
                       )
-                    }} 
+                    }}
                   />
                 )
               )}
             </View>
-          ):null}
+          ) : null}
         </View>
-      ):null}
+      ) : null}
     </>
   )
 }

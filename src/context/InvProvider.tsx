@@ -1,10 +1,11 @@
 import { createContext, useState, useEffect } from "react"
-import { Alert } from 'react-native'
 import ProductoInterface from "../interfaces/ProductoInterface"
-import { getDataStorage, setDataStorage } from "../utils/asyncStorage"
-import { fetchTableData, sendData } from "../utils/api"
+import { setDataStorage } from "../utils/asyncStorage"
+import { fetchTableData, sendData, fetchSearchedItems } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { OrderInterface } from "../interfaces/OrderInterface"
+import { getDate } from "../utils/helpers"
+import useLogin from "../hooks/useLogin"
 
 const InvContext = createContext<{
   productsCart: ProductoInterface[]
@@ -13,10 +14,9 @@ const InvContext = createContext<{
   setProducts: (products: ProductoInterface[]) => void
   searchedProducts: ProductoInterface[]
   setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  clearCart: () => void
   searchedCustomers: UserFromScliInterface[]
   setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
-  flowControl: { 
+  flowControl: {
     showProducts: boolean
     showSelectCustomer: boolean
     showSelectSearch: boolean
@@ -26,7 +26,7 @@ const InvContext = createContext<{
     showLogoLab: boolean
     selected: boolean
   }
-  setFlowControl: (flowControl: { 
+  setFlowControl: (flowControl: {
     showProducts: boolean
     showSelectCustomer: boolean
     showSelectSearch: boolean
@@ -36,8 +36,20 @@ const InvContext = createContext<{
     showLogoLab: boolean
     selected: boolean
   }) => void
-  loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }
-  setLoaders: (loaders: { loadingProducts: boolean, loadingSearchedItems: boolean, loadingSlectedCustomer: boolean, }) => void
+  loaders: {
+    loadingProducts: boolean,
+    loadingSearchedItems: boolean,
+    loadingSlectedCustomer: boolean,
+    loadingConfirmOrder: boolean,
+    loadingLogOut: boolean,
+  }
+  setLoaders: (loaders: {
+    loadingProducts: boolean,
+    loadingSearchedItems: boolean,
+    loadingSlectedCustomer: boolean,
+    loadingConfirmOrder: boolean,
+    loadingLogOut: boolean,
+  }) => void
   valueSearchCustomers: string
   setValueSearchCustomers: (valueSearchCustomers: string) => void
   increase: (id: number) => void
@@ -48,8 +60,9 @@ const InvContext = createContext<{
   setTotal: (total: string) => void
   removeElement: (id: number) => void
   addToCart: (product: ProductoInterface) => void
-  confirmOrder: (myUser: any) => void
+  processOrder: (myUser: any) => void
   order: OrderInterface
+  getProducts: () => void
 }>({
   productsCart: [],
   setProductsCart: () => { },
@@ -57,39 +70,46 @@ const InvContext = createContext<{
   setProducts: () => { },
   searchedProducts: [],
   setSearchedProducts: () => { },
-  clearCart: () => { },
   searchedCustomers: [],
   setSearchedCustomers: () => { },
-  flowControl: { 
-    showProducts: false, 
-    showSelectCustomer: false, 
-    showSelectSearch: false, 
-    showSelectResults: false, 
-    showSelectLabel: false, 
+  flowControl: {
+    showProducts: false,
+    showSelectCustomer: false,
+    showSelectSearch: false,
+    showSelectResults: false,
+    showSelectLabel: false,
     showLogoCertra: false,
     showLogoLab: false,
-    selected: false, 
+    selected: false,
   },
   setFlowControl: () => { },
-  loaders: { loadingProducts: false, loadingSearchedItems: false, loadingSlectedCustomer: false, },
+  loaders: {
+    loadingProducts: false,
+    loadingSearchedItems: false,
+    loadingSlectedCustomer: false,
+    loadingConfirmOrder: false,
+    loadingLogOut: false,
+  },
   setLoaders: () => { },
-  valueSearchCustomers: '',
+  valueSearchCustomers: "",
   setValueSearchCustomers: () => { },
   increase: () => { },
   decrease: () => { },
-  subtotal: '',
+  subtotal: "",
   setSubtotal: () => { },
-  total: '',
+  total: "",
   setTotal: () => { },
   removeElement: () => { },
   addToCart: () => { },
-  confirmOrder: () => { },
+  processOrder: () => { },
   order: {
-    subtotal: '',
-    total: '',
-    cliente: '',
-    productos: []
-  }
+    date: "",
+    cliente: { name: "", code: 0 },
+    productos: [],
+    subtotal: "",
+    total: "",
+  },
+  getProducts: () => { }
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -98,19 +118,20 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // order & cart
   const [order, setOrder] = useState<OrderInterface>({
-    subtotal: '',
-    total: '',
-    cliente: '',
-    productos: []
+    date: "",
+    cliente: { name: "", code: 0 },
+    productos: [],
+    subtotal: "",
+    total: "",
   })
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
-  const [subtotal, setSubtotal] = useState('')
-  const [total, setTotal] = useState('')
+  const [subtotal, setSubtotal] = useState("")
+  const [total, setTotal] = useState("")
 
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
-  const [valueSearchCustomers, setValueSearchCustomers] = useState('')
+  const [valueSearchCustomers, setValueSearchCustomers] = useState("")
 
   // layout
   const [flowControl, setFlowControl] = useState({
@@ -129,14 +150,18 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingProducts: false,
     loadingSearchedItems: false,
     loadingSlectedCustomer: false,
+    loadingConfirmOrder: false,
+    loadingLogOut: false,
   })
+  
+  const { myUser } = useLogin()
 
   // ----- STORAGE
   // set productsCart
   useEffect(() => {
     const setProductsStorage = async () => {
       try {
-        await setDataStorage('productsCart', productsCart)
+        await setDataStorage("productsCart", productsCart)
       } catch (error) {
         console.log(error)
       }
@@ -150,7 +175,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     if (flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
       const flowControlStorage = async () => {
         try {
-          await setDataStorage('flowControl', flowControl)
+          await setDataStorage("flowControl", flowControl)
         } catch (error) {
           console.log(error)
         }
@@ -161,53 +186,57 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // ----- API
   // get products api
-  useEffect(() => {
-    const obtenerProductos = async () => {
-      try {
-        setLoaders({ ...loaders, loadingProducts: true })
-        const data = await fetchTableData('Sinv')
+  const getProducts = async () => {
+    try {
+      setLoaders({ ...loaders, loadingProducts: true })
 
-        // fail api
-        if (data === undefined) { return }
+      let data: ProductoInterface[] = [];
 
-        // Add properties to each producto
-        const productos = data?.map((producto: ProductoInterface) => ({
-          ...producto,
-          agregado: false,
-          cantidad: 1,
-        }))
-        setProducts(productos)
-        setLoaders({ ...loaders, loadingProducts: false })
-      } catch (error) {
-        console.log(error)
+      // fetch data
+      if (myUser.from === "scli") {
+        data = await fetchTableData("sinv");
+      } else if(myUser.from === "usuario-clipro") {
+        data = await fetchSearchedItems({ searchTerm: myUser?.clipro, table: "searchclipr" })
       }
+
+      // Add properties to each producto
+      const products = data?.map((product: ProductoInterface) => ({
+        ...product,
+        agregado: false,
+        cantidad: 1,
+      }))
+
+      // fail api
+      if (products?.length !== 0) {
+        setProducts(products)
+        setLoaders({ ...loaders, loadingProducts: false })
+      }
+      
+      // slow api
+      setTimeout(() => {
+        if (products?.length !== 0) {
+          setProducts(products)
+          setLoaders({ ...loaders, loadingProducts: false })
+        }
+      }, 3000);
+    } catch (error) {
+      console.log(error)
     }
-    obtenerProductos()
-  }, [])
+  }
 
   // ----- ACTIONS
   // set subtotal & total
   useEffect(() => {
     // subtotal
     const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0);
-    const formatedSubtotal = subtotal.toLocaleString('es-ES', { minimumFractionDigits: 2 })
-    setSubtotal(formatedSubtotal)
+    const subtotalFormated = subtotal.toLocaleString();
+    setSubtotal(subtotalFormated);
 
     // total
-    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    const formatedTotal = total.toLocaleString('es-ES', { minimumFractionDigits: 2 })
-    setTotal(formatedTotal)
+    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0);
+    const totalFormated = total.toLocaleString();
+    setTotal(totalFormated);
   }, [productsCart])
-
-  // send order
-  useEffect(() => {
-    if (order.productos.length !== 0) {
-      const sendOrder = async () => {
-        await sendData(order)
-      }
-      sendOrder()
-    }
-  }, [order])
 
   // add to cart
   const addToCart = (product: ProductoInterface) => {
@@ -224,19 +253,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
     // If the product is in the cart and has a quantity of 1, show an alert to confirm the deletion.
     if (productInCart !== undefined) {
-      Alert.alert(
-        'Advertencia',
-        '¿Quieres eliminar este producto del carrito?',
-        [
-          {
-            text: 'Eliminar', style: 'destructive', onPress: () => {
-              const updatedProductsCart = productsCart.filter(item => item.id !== id)
-              setProductsCart(updatedProductsCart)
-            }
-          },
-          { text: 'Cancelar', style: 'cancel' },
-        ]
-      )
+      const updatedProductsCart = productsCart.filter(item => item.id !== id)
+      setProductsCart(updatedProductsCart)
     } else {
       // If the product is in the cart and has a quantity greater than 1, decrease the quantity by 1.
       const updatedProductsCart = productsCart.map(item => (item.id === id && item.cantidad > 1) ? { ...item, cantidad: item.cantidad - 1 } : { ...item })
@@ -250,39 +268,54 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setProductsCart(updatedProductsCart)
   }
 
-  // clear cart
-  const clearCart = () => {
-    Alert.alert(
-      '¿Quieres eliminar todos los productos del carrito?',
-      'Esta acción no se puede deshacer',
-      [
-        {
-          text: 'Sí, eliminar', onPress: () => {
+  // send order
+  useEffect(() => {
+    const sendOrder = async () => {
+      try {
+        if (order.productos.length !== 0) {
+          await sendData(order)
+
+          setTimeout(() => {
+            // clear cart
             const updatedProducts = productsCart.filter(item => item.agregado !== true)
             setProductsCart(updatedProducts)
-          }
-        },
-        { text: 'Cancelar', style: 'cancel', },
-      ]
-    )
-  }
+          }, 2000);
 
-  // confirm order
-  const confirmOrder = async (myUser: any) => {
+          setTimeout(() => {
+
+            setLoaders({ ...loaders, loadingConfirmOrder: false }) // loader from alert*
+          }, 3000);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    sendOrder()
+  }, [order])
+
+  // process order
+  const processOrder = async (myUser: any) => {
     // order data
     setOrder({
       ...order,
-      subtotal: subtotal,
-      total: total,
-      cliente: (myUser.from === 'scli' ? myUser.nombre : myUser.us_nombre),
+      date: getDate(new Date()),
+      cliente: (myUser.from === "scli" ? {
+        name: myUser?.nombre,
+        code: myUser?.cliente
+      } : {
+        name: myUser.us_nombre,
+        code: myUser?.customer?.cliente
+      }),
       productos: productsCart.map((product: ProductoInterface) => ({
-        codigo: Number(product.codigo),
+        codigo: product.codigo,
         descrip: String(product.descrip),
         base1: Number(product.base1),
         precio1: Number(product.precio1),
         iva: Number(product.iva),
         cantidad: Number(product.cantidad)
-      }))
+      })),
+      subtotal: String(subtotal),
+      total: String(total),
     })
   }
 
@@ -292,7 +325,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setProductsCart,
       products,
       setProducts,
-      clearCart,
       searchedProducts,
       setSearchedProducts,
       searchedCustomers,
@@ -311,8 +343,9 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setTotal,
       removeElement,
       addToCart,
-      confirmOrder,
-      order
+      processOrder,
+      order,
+      getProducts
     }}>
       {children}
     </InvContext.Provider>

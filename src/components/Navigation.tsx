@@ -11,6 +11,7 @@ import LoaderLogoScreen from "./loaders/LoaderLogoScreen"
 import useInv from "../hooks/useInv"
 import { getDataStorage } from "../utils/asyncStorage"
 import Profile from "../views/Profile"
+import Itinerary from "../views/Itinerary"
 
 const Stack = createNativeStackNavigator()
 
@@ -52,9 +53,9 @@ const Navigation = () => {
   useEffect(() => {
     if (storageLoaded) {
       if (!flowControl.selected) { // is not selected
-        if (myUser.from === 'usuario') {
+        if (myUser.from === "usuario") {
 
-          // 'usuario' will see this
+          // "usuario" will see this
           setFlowControl({
             ...flowControl,
             showProducts: false,
@@ -62,9 +63,9 @@ const Navigation = () => {
             showSelectCustomer: true,
             showSelectSearch: true
           })
-        } else if (myUser.from === 'usuario-clipro') {
+        } else if (myUser.from === "usuario-clipro") {
 
-          // 'usuario-clipro' will see this
+          // "usuario-clipro" will see this
           setFlowControl({
             ...flowControl,
             showProducts: false,
@@ -73,9 +74,9 @@ const Navigation = () => {
             showSelectCustomer: true,
             showSelectSearch: true
           })
-        } else if (myUser.from === 'scli') {
+        } else if (myUser.from === "scli") {
 
-          // 'scli' will see this
+          // "scli" will see this
           setFlowControl({
             ...flowControl,
             showProducts: true,
@@ -95,9 +96,10 @@ const Navigation = () => {
           <Stack.Navigator initialRouteName={login ? "Home" : "Login"}>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false, title: "Login" }} />
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false, title: "Home", headerBackVisible: false }} />
-            <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false, title: "Profile" }} />
+            <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false, title: "Profile", animation: "fade_from_bottom" }} />
+            <Stack.Screen name="Itinerary" component={Itinerary} options={{ headerShown: false, title: "Itinerary" }} />
             <Stack.Screen name="Search" component={Search} options={{ headerShown: false, title: "Search", animation: "none" }} />
-            <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false, title: "Cart", headerTintColor: "#fff" }} />
+            <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false, title: "Cart", animation: "fade_from_bottom" }} />
             <Stack.Screen name="Product" component={Product} options={{ headerShown: false, title: "Product", animation: "fade_from_bottom" }} />
           </Stack.Navigator>
         </NavigationContainer>

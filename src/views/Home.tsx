@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { View, Text, FlatList, BackHandler, Image } from "react-native"
+import { View, Text, FlatList, BackHandler, Image, Keyboard } from "react-native"
 import IconCart from "../components/icons/IconCart"
 import IconLogOut from "../components/icons/IconLogOut"
 import IconSearchProducts from "../components/icons/IconSearchProducts"
@@ -10,20 +10,20 @@ import Loader from "../components/loaders/Loader"
 import useLogin from "../hooks/useLogin"
 import useInv from "../hooks/useInv"
 import { items } from "../utils/constants"
-import { utilities } from "../utils/styles"
-
-import { globalStyles } from "../styles"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import IconProfile from "../components/icons/IconProfile"
-import IconHome from "../components/icons/IconHome"
+import { StatusBar } from "expo-status-bar"
+import IconItinerary from "../components/icons/IconItinerary"
+
 
 const Home = () => {
   // theme & styles
-  const { themeColors: { primary, backgrund, charge, list, turquoise, darkTurquoise, green, blue, icon, typography, processBtn } } = useLogin()
-  const { } = utilities
+  const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
-  const { products, loaders, flowControl } = useInv()
-  const { myUser } = useLogin()
+  const { products, loaders, setLoaders, getProducts, flowControl } = useInv()
+  const { myUser: { image_url } } = useLogin()
 
+  // SCREEN
   // back HANDLER
   useEffect(() => {
     const backAction = () => {
@@ -33,18 +33,41 @@ const Home = () => {
 
     const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction)
   }, [])
+  // hide keyboard
+  const handleScroll = () => {
+    // Cerrar el teclado
+    Keyboard.dismiss()
+  }
+
+  // download products if not exist
+  useEffect(() => {
+    if (products?.length === 0) {
+      getProducts()
+    }
+  }, [])
 
   return (
     <>
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
+        <StatusBar style="dark" />
 
         {/* content */}
-        <View className="flex-1 px-6 pt-6">
+        <View className="flex-1 px-3 pt-6">
 
           {/* logos */}
           <View className="flex-row justify-between">
-            <Image className="w-48 h-16" resizeMode="contain"
-              source={flowControl?.showLogoCertra ? require("../assets/logo-certra.png") : require("../assets/logo-drocerca.png")}
+            {flowControl?.showLogoCertra ? (
+              <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
+                source={require("../assets/logo-certra.png")}
+              />
+            ) : (
+              <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
+                source={require("../assets/logo-drocerca.png")}
+              />
+            )}
+
+            <Image style={{ width: wp(40), height: wp(16) }} resizeMode="contain"
+              source={{uri: `${image_url}`}}
             />
           </View>
           
@@ -59,19 +82,15 @@ const Home = () => {
                 <SelectCustomer />
                 {flowControl?.showProducts && !flowControl?.showSelectResults ? (
 
-                  loaders.loadingProducts || products.length === 0 ? (
-                    <View className="">
+                  loaders.loadingProducts ? (
+                    <View className="h-full">
                       <View className="flex-1 justify-center items-center">
                         <FlatList
-                          ListHeaderComponent={() => (
-                            <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                              <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
-                            </View>
-                          )}
                           data={items}
                           numColumns={2}
                           contentContainerStyle={{
-                            paddingBottom: 10,
+                            paddingBottom: 135,
+                            marginTop: 15
                           }}
                           showsVerticalScrollIndicator={false}
                           overScrollMode="never"
@@ -84,18 +103,22 @@ const Home = () => {
                       </View>
                     </View>
                   ) : (
-                    <View className="">
-                      <View className="flex-1 justify-center items-center">
+                    <View className="h-full">
+                      <View className="flex-1 justify-center">
                         <FlatList
                           ListHeaderComponent={() => (
-                            <View className={`flex-row justify-between mb-3 mx-3 px-1 ${flowControl.showSelectCustomer ? "mt-0" : "mt-3"}`}>
-                              <Text className="text-gray-700 text-xl font-bold w-full text-center">Productos</Text>
+                            <View className="mb-2">
+                              <Text className="font-bold" style={{ fontSize: wp(4.5), color: typography }}>
+                                Productos
+                              </Text>
                             </View>
                           )}
                           data={products}
+                          onScroll={handleScroll}
                           numColumns={2}
                           contentContainerStyle={{
-                            paddingBottom: 10,
+                            paddingBottom: 200,
+                            marginTop: 15
                           }}
                           showsVerticalScrollIndicator={false}
                           overScrollMode="never"
@@ -121,9 +144,9 @@ const Home = () => {
 
         {/* main */}
         <View className="flex flex-row items-center gap-4 pl-5">
-          <View><IconHome /></View>
+          <View><IconProfile /></View>
           {flowControl?.showProducts && (<View className="h-8 border-l-[0.8px] border-l-white" />)}
-          {flowControl?.showProducts && (<View><IconProfile /></View>)}
+          {flowControl?.showProducts && (<View><IconItinerary /></View>)}
         </View>
 
         {/* other */}
