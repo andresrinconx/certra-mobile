@@ -9,8 +9,6 @@ import { getMonthAndDays } from '../utils/helpers'
 import { days } from '../utils/constants'
 import Loader from '../components/loaders/Loader'
 
-import { testItinerary } from '../utils/constants'
-
 const Itinerary = () => {
   // theme
   const { themeColors: { backgrund, typography, primary } } = useLogin()
@@ -37,7 +35,7 @@ const Itinerary = () => {
     setCurrentMonthDays(dataMonthAndDays.days)
 
     // itinerary
-    setItinerary(testItinerary)
+    // setItinerary()
   }, [])
 
   // month (squares)
@@ -46,7 +44,9 @@ const Itinerary = () => {
 
     for (let i = 0; i < currentMonthDays; i++) {
       newSquareDays.push(
-        <TouchableOpacity key={i} className="">
+        <TouchableOpacity key={i} className=""
+          onPress={() => navigation.navigate("ItineraryDay")}
+        >
           <Text>Día {i + 1}</Text>
           <Text className="">{}</Text>
         </TouchableOpacity>
@@ -108,11 +108,8 @@ const Itinerary = () => {
             <View className="flex flex-row justify-center items-center mt-4">
               {days.map((item) => {
                 const { id, name } = item;
-
                 return (
-                  <Text key={id} className="uppercase text-center" 
-                    style={{ fontSize: wp(2.4), color: typography, width: wp(13.5) }}
-                  >
+                  <Text key={id} className="uppercase text-center" style={{ fontSize: wp(2.4), color: typography, width: wp(13.5) }}>
                     {name}
                   </Text>
                 )
