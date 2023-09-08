@@ -2,23 +2,25 @@ import { LOCAL_API_URL, API_URL } from "@env";
 import { OrderInterface } from "../interfaces/OrderInterface";
 import axios from "axios";
 
+const TEST_URL = "http://drocerca.proteoerp.org:7070/proteoerp/app"
+
 // ----- GET
 
 // get all data from a table
-const tableDataEndpoint = (table: string) => `${API_URL}/${table}`;
+const tableDataEndpoint = (table: string) => `http://drocerca.proteoerp.org:7070/proteoerp/app/${table}`;
 
 // get all data from a table that matches a search term
 const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) =>
-  `${API_URL}/${params.table}/${params.searchTerm}`;
+  `http://drocerca.proteoerp.org:7070/proteoerp/app/${params.table}/${params.searchTerm}`;
 
 // get all info from a user
 const userDataEndpoint = (params: { code: string; table: string }) =>
-  `${API_URL}/${params.table}/${params.code}`;
+  `http://drocerca.proteoerp.org:7070/proteoerp/app/${params.table}/${params.code}`;
 
 // ----- POST
 
 // send a order to the server
-const sendDataEndpoint = () => `${API_URL}/pedidoguardar`;
+const sendDataEndpoint = () => `http://drocerca.proteoerp.org:7070/proteoerp/app/pedidoguardar`;
 
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);
