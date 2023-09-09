@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "inv-react-native",
-    "slug": "inv-react-native",
+    "name": "Inventario",
+    "slug": "inventario",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
