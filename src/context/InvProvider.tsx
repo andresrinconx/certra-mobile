@@ -4,7 +4,7 @@ import { setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData, sendData, fetchSearchedItems } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { OrderInterface } from "../interfaces/OrderInterface"
-import { getDate } from "../utils/helpers"
+import { getDate, getHour } from "../utils/helpers"
 import useLogin from "../hooks/useLogin"
 
 const InvContext = createContext<{
@@ -104,6 +104,7 @@ const InvContext = createContext<{
   processOrder: () => { },
   order: {
     date: "",
+    hora: "",
     cliente: { name: "", code: 0 },
     productos: [],
     subtotal: "",
@@ -119,6 +120,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // order & cart
   const [order, setOrder] = useState<OrderInterface>({
     date: "",
+    hora: "",
     cliente: { name: "", code: 0 },
     productos: [],
     subtotal: "",
@@ -299,6 +301,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setOrder({
       ...order,
       date: getDate(new Date()),
+      hora: getHour(new Date()),
       cliente: (myUser.from === "scli" ? {
         name: myUser?.nombre,
         code: myUser?.cliente

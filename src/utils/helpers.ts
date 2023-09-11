@@ -15,8 +15,15 @@ export const getDate = (date: Date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  return `${year}-${month}-${day}`;
+  return `${year}-${String(month).length === 1 ? `0${month}` : `${month}`}-${String(day).length === 1 ? `0${day}` : `${day}`}`;
 };
+
+export const getHour = (date: Date) => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return `${hours}:${minutes}:${seconds}`;
+}
 
 export function getMonthAndDays(date: Date) {
   const data = [

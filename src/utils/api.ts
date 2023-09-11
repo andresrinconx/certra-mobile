@@ -22,10 +22,7 @@ export const fetchTableData = async (table: string) => {
 };
 
 // get all data from a table that matches a search term
-export const fetchSearchedItems = async (params: {
-  searchTerm: string;
-  table: string;
-}) => {
+export const fetchSearchedItems = async (params: { searchTerm: string; table: string; }) => {
   const searchedItemsUrl = searchedItemsEndpoint(params);
   try {
     const response = await fetch(searchedItemsUrl);
@@ -37,10 +34,7 @@ export const fetchSearchedItems = async (params: {
 };
 
 // get all info from a user
-export const fetchUserData = async (params: {
-  code: string;
-  table: string;
-}) => {
+export const fetchUserData = async (params: { code: string; table: string; }) => {
   const userDataUrl = userDataEndpoint(params);
   try {
     const response = await fetch(userDataUrl);
