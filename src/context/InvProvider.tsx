@@ -23,7 +23,7 @@ const InvContext = createContext<{
     showSelectResults: boolean
     showSelectLabel: boolean
     showLogoCertra: boolean
-    showLogoLab: boolean
+    showItinerary: boolean
     selected: boolean
   }
   setFlowControl: (flowControl: {
@@ -33,7 +33,7 @@ const InvContext = createContext<{
     showSelectResults: boolean
     showSelectLabel: boolean
     showLogoCertra: boolean
-    showLogoLab: boolean
+    showItinerary: boolean
     selected: boolean
   }) => void
   loaders: {
@@ -79,7 +79,7 @@ const InvContext = createContext<{
     showSelectResults: false,
     showSelectLabel: false,
     showLogoCertra: false,
-    showLogoLab: false,
+    showItinerary: false,
     selected: false,
   },
   setFlowControl: () => { },
@@ -143,7 +143,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     showSelectResults: false,
     showSelectLabel: false,
     showLogoCertra: false,
-    showLogoLab: false,
+    showItinerary: false,
     selected: false,
   })
 
@@ -157,6 +157,10 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   })
   
   const { myUser } = useLogin()
+
+  useEffect(() => {
+    console.log(flowControl)
+  }, [flowControl])
 
   // ----- STORAGE
   // set productsCart
@@ -195,7 +199,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       let data: ProductoInterface[] = [];
 
       // fetch data
-      if (myUser.from === "scli") {
+      if (myUser.from === "scli" || myUser.from === "usuario") {
         data = await fetchTableData("sinv");
       } else if(myUser.from === "usuario-clipro") {
         data = await fetchSearchedItems({ searchTerm: myUser?.clipro, table: "searchclipr" })

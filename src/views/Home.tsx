@@ -145,10 +145,10 @@ const Home = () => {
         {/* main */}
         <View className="flex flex-row items-center gap-3 pl-3">
           <View><IconProfile /></View>
-          {flowControl?.showLogoCertra && flowControl?.showProducts ? (
+          {flowControl?.showItinerary && flowControl?.showProducts ? (
             <View className="h-8 border-l-[0.8px] border-l-white" />
           ):null}
-          {flowControl?.showLogoCertra && flowControl?.showProducts ? (
+          {flowControl?.showItinerary && flowControl?.showProducts ? (
             <View><IconItinerary /></View>
           ):null}
         </View>

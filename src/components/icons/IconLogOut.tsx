@@ -50,7 +50,7 @@ const IconLogOut = () => {
       showSelectResults: false,
       showSelectLabel: false,
       showLogoCertra: false,
-      showLogoLab: false,
+      showItinerary: false,
       selected: false,
     })
     await setDataStorage("themeColors", {
@@ -80,7 +80,7 @@ const IconLogOut = () => {
         showSelectResults: false,
         showSelectLabel: false,
         showLogoCertra: false,
-        showLogoLab: false,
+        showItinerary: false,
         selected: false,
       })
       setMyUser({})

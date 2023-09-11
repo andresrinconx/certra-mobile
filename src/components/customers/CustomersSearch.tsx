@@ -28,12 +28,13 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
       showSelectResults: false,
       showProducts: true,
       showSelectLabel: true,
+      showItinerary: myUser.from === 'usuario' ? true : false,
       selected: true
     })
     setTimeout(() => {
       getProducts()
       setLoaders({ ...loaders, loadingSlectedCustomer: false })
-    }, 100)
+    }, 300)
   }
 
   return (
