@@ -20,7 +20,7 @@ const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
-  const { products, loaders, setLoaders, getProducts, flowControl } = useInv()
+  const { products, loaders, getProducts, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
 
   // SCREEN

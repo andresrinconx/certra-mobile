@@ -111,7 +111,7 @@ const IconLogOut = () => {
           <Image style={{ width: wp(6), height: wp(6) }} resizeMode="cover"
             source={require("../../assets/leave.png")}
           />
-          <Text className="text-sm w-8 text-white">Salir</Text>
+          <Text className="text-sm w-8 text-white font-bold">Salir</Text>
         </View>
       </TouchableOpacity>
 
