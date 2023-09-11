@@ -10,7 +10,7 @@ const IconProfile = () => {
       <Image style={{ width: wp(6), height: wp(6) }} resizeMode="cover"
         source={require("../../assets/profile.png")}
       />
-      <Text className="text-[8px] text-center text-white">Perfil</Text>
+      <Text className="w-9 text-[8px] text-center text-white font-bold">Perfil</Text>
     </TouchableOpacity>
   )
 }

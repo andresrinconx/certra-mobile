@@ -143,7 +143,7 @@ const Home = () => {
       <View className="flex flex-row justify-between items-center h-16" style={{ backgroundColor: primary }}>
 
         {/* main */}
-        <View className="flex flex-row items-center gap-4 pl-5">
+        <View className="flex flex-row items-center gap-3 pl-3">
           <View><IconProfile /></View>
           {flowControl?.showLogoCertra && flowControl?.showProducts ? (
             <View className="h-8 border-l-[0.8px] border-l-white" />

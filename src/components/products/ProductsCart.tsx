@@ -118,12 +118,12 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
         <View className="flex flex-row justify-center">
 
           {/* left info */}
-          <View className="w-1/2 pr-2 my-2">
+          <View className="w-1/2 pr-2">
 
             {/* disponibility */}
             <View className="mb-2">
-              <Text style={{ fontSize: hp(1.6), color: typography }} className="pb-0.5">
-                Disponibilidad:
+              <Text style={{ fontSize: hp(1.6), color: typography }} className="pb-0.5 font-bold">
+                Disponibilidadddd:
               </Text>
 
               {/* sedes */}
@@ -142,11 +142,11 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
                   renderItem={({ item: { id, name } }) => {
                     return (
                       <View key={id} className="flex flex-col items-center">
-                        <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center">
+                        <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center font-bold">
                           {name}
                         </Text>
 
-                        <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center">
+                        <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center font-bold">
                           {
                             name === "Mérida" ? parseInt(String(merida)) :
                               name === "Centro" ? parseInt(String(centro)) :
@@ -166,7 +166,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
             {/* price */}
             <View className="my-2">
-              <Text style={{ fontSize: hp(1.5), color: typography }}>
+              <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
                 Precio:
               </Text>
 

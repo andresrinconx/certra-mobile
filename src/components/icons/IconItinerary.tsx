@@ -10,7 +10,7 @@ const IconItinerary = () => {
       <Image style={{ width: wp(6), height: wp(6) }} resizeMode="cover"
         source={require("../../assets/itinerary.png")}
       />
-      <Text className="w-8 text-[8px] text-center text-white">Itinerario</Text>
+      <Text className="w-9 text-[8px] text-center text-white font-bold">Itinerario</Text>
     </TouchableOpacity>
   )
 }

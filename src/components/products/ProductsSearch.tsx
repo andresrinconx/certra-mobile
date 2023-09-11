@@ -104,11 +104,11 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
                 renderItem={({ item: { id, name } }) => {
                   return (
                     <View key={id} className="flex flex-col items-center">
-                      <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center font-semibold">
+                      <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center font-bold">
                         {name}
                       </Text>
 
-                      <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center font-semibold">
+                      <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center font-bold">
                         {
                           name === 'Mérida' ? parseInt(String(merida)) :
                             name === 'Centro' ? parseInt(String(centro)) :
