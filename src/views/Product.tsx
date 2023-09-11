@@ -153,7 +153,7 @@ const Product = () => {
 
                 {/* price */}
                 <View className="mt-3 mb-5">
-                  <Text style={{ fontSize: hp(2.5), color: typography }} className="font-bold">
+                  <Text style={{ fontSize: hp(2.5), color: typography }} className="font-medium">
                     Precio:
                   </Text>
                   <Text className="font-bold" style={{ fontSize: hp(3), color: darkTurquoise }}>
@@ -163,7 +163,7 @@ const Product = () => {
 
                 {/* disponibility */}
                 <View className="mb-2">
-                  <Text style={{ fontSize: hp(2.5), color: typography }} className="pb-2 font-bold">
+                  <Text style={{ fontSize: hp(2.5), color: typography }} className="pb-2 font-medium">
                     Disponibilidad:
                   </Text>
 
@@ -185,11 +185,11 @@ const Product = () => {
                           <View key={id} className="flex flex-col items-center"
                             style={{ width: wp(30) }}
                           >
-                            <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className="w-24 text-center font-bold">
+                            <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className="w-24 text-center font-medium">
                               {name}
                             </Text>
 
-                            <Text style={{ fontSize: hp(2.6), color: typography }} className="text-center font-bold">
+                            <Text style={{ fontSize: hp(2.6), color: typography }} className="text-center font-medium">
                               {
                                 name === 'Mérida' ? parseInt(String(product?.merida)) :
                                   name === 'Centro' ? parseInt(String(product?.centro)) :
