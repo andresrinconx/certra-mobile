@@ -2,23 +2,14 @@ import { OrderInterface } from "../interfaces/OrderInterface";
 import axios from "axios";
 
 // ----- GET
-
-// get all data from a table
 const tableDataEndpoint = (table: string) => `${process.env.EXPO_PUBLIC_API_URL}/${table}`;
-
-// get all data from a table that matches a search term
-const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) =>
-  `${process.env.EXPO_PUBLIC_API_URL}/${params.table}/${params.searchTerm}`;
-
-// get all info from a user
-const userDataEndpoint = (params: { code: string; table: string }) =>
-  `${process.env.EXPO_PUBLIC_API_URL}/${params.table}/${params.code}`;
+const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) => `${process.env.EXPO_PUBLIC_API_URL}/${params.table}/${params.searchTerm}`;
+const userDataEndpoint = (params: { code: string; table: string }) => `${process.env.EXPO_PUBLIC_API_URL}/${params.table}/${params.code}`;
 
 // ----- POST
-
-// send a order to the server
 const sendDataEndpoint = () => `${process.env.EXPO_PUBLIC_API_URL}/pedidoguardar`;
 
+// get all data from a table
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);
   try {
@@ -30,6 +21,7 @@ export const fetchTableData = async (table: string) => {
   }
 };
 
+// get all data from a table that matches a search term
 export const fetchSearchedItems = async (params: {
   searchTerm: string;
   table: string;
@@ -44,6 +36,7 @@ export const fetchSearchedItems = async (params: {
   }
 };
 
+// get all info from a user
 export const fetchUserData = async (params: {
   code: string;
   table: string;
@@ -58,6 +51,7 @@ export const fetchUserData = async (params: {
   }
 };
 
+// send a order to the server
 export const sendData = async (order: OrderInterface) => {
   const sendDataUrl = sendDataEndpoint();
   try {
