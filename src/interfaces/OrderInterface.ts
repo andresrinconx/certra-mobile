@@ -6,6 +6,7 @@ export interface OrderInterface {
   cliente: {
     name: string, 
     code: number
+    usuario?: string
   },
   productos: ProductoOrderInterface[],
   subtotal: string,

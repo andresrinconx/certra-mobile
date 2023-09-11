@@ -307,6 +307,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         code: myUser?.cliente
       } : {
         name: myUser.us_nombre,
+        usuario: myUser.us_codigo,
         code: myUser?.customer?.cliente
       }),
       productos: productsCart.map((product: ProductoInterface) => ({
