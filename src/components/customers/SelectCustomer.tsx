@@ -191,7 +191,7 @@ const SelectCustomer = () => {
                     onScroll={handleScroll}
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{
-                      paddingBottom: 5,
+                      paddingBottom: 100,
                       marginTop: 15
                     }}
                     showsVerticalScrollIndicator={false}
