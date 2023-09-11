@@ -80,7 +80,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
       <View className="flex flex-row items-center">
 
         {/* left info */}
-        <View className="w-1/2 pr-2">
+        <View className="w-1/2 pr-2 -mt-4">
 
           {/* disponibility */}
           <View className="mb-2">

@@ -118,12 +118,12 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
         <View className="flex flex-row justify-center">
 
           {/* left info */}
-          <View className="w-1/2 pr-2">
+          <View className="w-1/2 pr-2 my-2">
 
             {/* disponibility */}
             <View className="mb-2">
               <Text style={{ fontSize: hp(1.6), color: typography }} className="pb-0.5 font-bold">
-                Disponibilidadddd:
+                Disponibilidad:
               </Text>
 
               {/* sedes */}
