@@ -98,9 +98,9 @@ const Navigation = () => {
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false, title: "Login" }} />
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false, title: "Home", headerBackVisible: false }} />
             <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false, title: "Profile", animation: "fade_from_bottom" }} />
-            <Stack.Screen name="Itinerary" component={Itinerary} options={{ headerShown: false, title: "Itinerary" }} />
+            <Stack.Screen name="Itinerary" component={Itinerary} options={{ headerShown: false, title: "Itinerary", animation: "fade_from_bottom"  }} />
             <Stack.Screen name="ItineraryDay" component={ItineraryDay} options={{ headerShown: false, title: "ItineraryDay" }} />
-            <Stack.Screen name="Search" component={Search} options={{ headerShown: false, title: "Search", animation: "none" }} />
+            <Stack.Screen name="Search" component={Search} options={{ headerShown: false, title: "Search", animation: "fade_from_bottom"  }} />
             <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false, title: "Cart", animation: "fade_from_bottom" }} />
             <Stack.Screen name="Product" component={Product} options={{ headerShown: false, title: "Product", animation: "fade_from_bottom" }} />
           </Stack.Navigator>
