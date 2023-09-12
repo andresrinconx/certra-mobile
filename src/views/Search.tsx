@@ -26,13 +26,9 @@ const Search = () => {
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
-  // show keyboard
+  // focus input
   useEffect(() => {
-    setTimeout(() => {
-      if (textInputRef.current) {
-        textInputRef.current.focus()
-      }
-    }, 100)
+    textInputRef.current?.focus()
   }, [])
   // hide keyboard
   const handleScroll = () => {
@@ -41,12 +37,12 @@ const Search = () => {
   }
 
   // SEARCH
-  useEffect(() => {
-    if (value === "") {
-      setSearchedProducts([])
-      setLoaders({ ...loaders, loadingSearchedItems: false })
-    }
-  }, [value])
+  // useEffect(() => {
+  //   if (value === "") {
+  //     setSearchedProducts([])
+  //     setLoaders({ ...loaders, loadingSearchedItems: false })
+  //   }
+  // }, [value])
 
   const handleSearch = async (value: string) => {
     setValue(value)
