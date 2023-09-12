@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Animated, Easing } from 'react-native';
-import useLogin from '../../hooks/useLogin';
+import useLogin from '../hooks/useLogin';
 
 const LoaderLogoScreen = () => {
-  const { themeColors: { primary } } = useLogin();
+  const { themeColors } = useLogin();
   const [rotationValue] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const LoaderLogoScreen = () => {
   return (
     <View className='flex-1 justify-center items-center bg-white'>
       <Animated.Image
-        source={require('../../assets/pastilla.png')}
+        source={require('../assets/pastilla.png')}
         style={{
           transform: [{ rotate: rotateInterpolation }],
           width: 100,

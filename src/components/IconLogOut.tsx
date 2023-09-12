@@ -1,12 +1,12 @@
 import { useState, useRef } from "react"
 import { View, TouchableOpacity, Text, Image } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import useInv from "../../hooks/useInv"
-import useLogin from "../../hooks/useLogin"
-import { setDataStorage } from "../../utils/asyncStorage"
+import useInv from "../hooks/useInv"
+import useLogin from "../hooks/useLogin"
+import { setDataStorage } from "../utils/asyncStorage"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { AlertDialog, Button } from "native-base"
-import Loader from "../loaders/Loader"
+import Loader from "./Loader"
 
 const IconLogOut = () => {
   // theme
@@ -109,7 +109,7 @@ const IconLogOut = () => {
       <TouchableOpacity onPress={() => setAlertLogOut(true)}>
         <View className="flex flex-row items-center gap-2">
           <Image style={{ width: wp(6), height: wp(6) }} resizeMode="cover"
-            source={require("../../assets/leave.png")}
+            source={require("../assets/leave.png")}
           />
           <Text className="text-sm w-8 text-white font-bold">Salir</Text>
         </View>

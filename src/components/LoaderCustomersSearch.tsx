@@ -1,5 +1,5 @@
 import { View } from "react-native"
-import useLogin from "../../hooks/useLogin"
+import useLogin from "../hooks/useLogin"
 
 const LoaderCustomersSearch = () => {
   const { themeColors: { charge } } = useLogin()

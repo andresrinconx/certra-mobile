@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from "re
 import { Modal } from "native-base"
 import { MinusSmallIcon, PlusSmallIcon, XMarkIcon } from "react-native-heroicons/outline"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
-import useInv from "../../hooks/useInv"
-import ProductoInterface from "../../interfaces/ProductoInterface"
+import useInv from "../hooks/useInv"
+import ProductoInterface from "../interfaces/ProductoInterface"
 import { useNavigation } from "@react-navigation/native"
-import useLogin from "../../hooks/useLogin"
-import Loader from "../loaders/Loader"
-import { disponibility } from "../../utils/constants"
+import useLogin from "../hooks/useLogin"
+import Loader from "./Loader"
+import { disponibility } from "../utils/constants"
 
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   // theme

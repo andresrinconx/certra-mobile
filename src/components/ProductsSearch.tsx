@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import { View, Text, TouchableOpacity, FlatList, Pressable } from "react-native"
-import ProductoInterface from "../../interfaces/ProductoInterface"
-import useInv from "../../hooks/useInv"
+import ProductoInterface from "../interfaces/ProductoInterface"
+import useInv from "../hooks/useInv"
 import { useNavigation } from "@react-navigation/native"
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon } from "react-native-heroicons/outline"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
-import useLogin from "../../hooks/useLogin"
-import Loader from "../loaders/Loader"
-import { disponibility } from "../../utils/constants"
+import useLogin from "../hooks/useLogin"
+import Loader from "./Loader"
+import { disponibility } from "../utils/constants"
 
 const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   // theme

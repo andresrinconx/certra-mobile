@@ -1,15 +1,15 @@
 import { useEffect, useRef, useCallback } from "react"
-import { View, Text, TextInput, TouchableOpacity, Keyboard, FlatList, Image } from "react-native"
-import { XMarkIcon } from "react-native-heroicons/mini"
-import useInv from "../../hooks/useInv"
-import { fetchSearchedItems } from "../../utils/api"
-import { items } from "../../utils/constants"
-import LoaderCustomersSearch from "../loaders/LoaderCustomersSearch"
+import { View, Text, TextInput, Keyboard, FlatList, Image } from "react-native"
+import useInv from "../hooks/useInv"
+import { fetchSearchedItems } from "../utils/api"
+import { items } from "../utils/constants"
+import LoaderCustomersSearch from "./LoaderCustomersSearch"
 import CustomersSearch from "./CustomersSearch"
-import useLogin from "../../hooks/useLogin"
+import useLogin from "../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { debounce } from "lodash"
-import { formatText } from "../../utils/helpers"
+import { formatText } from "../utils/helpers"
+import LabelCustomer from "./LabelCustomer"
 
 const SelectCustomer = () => {
   // theme & styles
@@ -136,9 +136,10 @@ const SelectCustomer = () => {
 
           {/* label */}
           {flowControl?.showSelectLabel && !flowControl?.showSelectResults && flowControl?.selected ? (
-            <View className="mb-4">
-              <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
-              <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
+            <View className='mb-4'>
+              <LabelCustomer
+                name={myUser?.customer?.nombre}
+              />
             </View>
           ) : null}
 
@@ -146,7 +147,7 @@ const SelectCustomer = () => {
           {flowControl?.showSelectSearch ? (
             <View className="flex flex-row items-center">
               <Image style={{ width: wp(10), height: wp(10) }} resizeMode="cover"
-                source={require("../../assets/drugstore-search.png")}
+                source={require("../assets/drugstore-search.png")}
               />
 
               <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>

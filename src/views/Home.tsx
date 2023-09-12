@@ -1,23 +1,23 @@
 import { useEffect } from "react"
-import { View, Text, FlatList, BackHandler, Image, Keyboard } from "react-native"
-import IconCart from "../components/icons/IconCart"
-import IconLogOut from "../components/icons/IconLogOut"
-import IconSearchProducts from "../components/icons/IconSearchProducts"
-import LoaderProductsGrid from "../components/loaders/LoaderProductsGrid"
-import ProductsGrid from "../components/products/ProductsGrid"
-import SelectCustomer from "../components/customers/SelectCustomer"
-import Loader from "../components/loaders/Loader"
-import useLogin from "../hooks/useLogin" 
+import { View, Text, FlatList, BackHandler, Keyboard } from "react-native"
+import IconCart from "../components/IconCart"
+import IconLogOut from "../components/IconLogOut"
+import IconSearchProducts from "../components/IconSearchProducts"
+import LoaderProductsGrid from "../components/LoaderProductsGrid"
+import ProductsGrid from "../components/ProductsGrid"
+import SelectCustomer from "../components/SelectCustomer"
+import Loader from "../components/Loader"
+import useLogin from "../hooks/useLogin"
 import useInv from "../hooks/useInv"
 import { items } from "../utils/constants"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import IconProfile from "../components/icons/IconProfile"
+import IconProfile from "../components/IconProfile"
 import { StatusBar } from "expo-status-bar"
-import IconItinerary from "../components/icons/IconItinerary"
-
+import IconItinerary from "../components/IconItinerary"
+import Logos from "../components/Logos"
 
 const Home = () => {
-  // theme & styles
+  // theme
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
   const { products, loaders, getProducts, flowControl } = useInv()
@@ -53,23 +53,7 @@ const Home = () => {
 
         {/* content */}
         <View className="flex-1 px-3 pt-6">
-
-          {/* logos */}
-          <View className="flex-row justify-between">
-            {flowControl?.showLogoCertra ? (
-              <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
-                source={require("../assets/logo-certra.png")}
-              />
-            ) : (
-              <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
-                source={require("../assets/logo-drocerca.png")}
-              />
-            )}
-
-            <Image style={{ width: wp(40), height: wp(16) }} resizeMode="contain"
-              source={{uri: `${image_url}`}}
-            />
-          </View>
+          <Logos  image={image_url} />
           
           {/* customers and products */}
           <View className="flex-1">

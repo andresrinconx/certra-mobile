@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import { View, Text, Image, TouchableOpacity, Pressable, FlatList } from "react-native"
-import useInv from "../../hooks/useInv"
+import useInv from "../hooks/useInv"
 import { useNavigation } from "@react-navigation/native"
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon } from "react-native-heroicons/outline"
-import ProductoInterface from "../../interfaces/ProductoInterface"
+import ProductoInterface from "../interfaces/ProductoInterface"
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
-import useLogin from "../../hooks/useLogin"
-import { disponibility } from "../../utils/constants"
-import Loader from "../loaders/Loader"
+import useLogin from "../hooks/useLogin"
+import { disponibility } from "../utils/constants"
+import Loader from "./Loader"
 
 const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   // theme
@@ -74,7 +74,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
       <Pressable onPress={() => navigation.navigate("Product", { ...product })} className="mb-2 justify-center items-center">
         {image_url === null ? (
           <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain"
-            source={require("../../assets/no-image.png")}
+            source={require("../assets/no-image.png")}
           />
         ) : (
           <Image style={{ width: wp(32), height: wp(32) }} resizeMode="contain"
