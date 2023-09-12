@@ -1,0 +1,21 @@
+{
+  "build": {
+    "test": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://drocerca.proteoerp.org:7070/proteoerp/app"
+      }
+    },
+    "production": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://drocerca.proteoerp.org:7070/proteoerp/app"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}

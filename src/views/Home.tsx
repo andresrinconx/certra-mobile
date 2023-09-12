@@ -15,7 +15,6 @@ import IconProfile from "../components/icons/IconProfile"
 import { StatusBar } from "expo-status-bar"
 import IconItinerary from "../components/icons/IconItinerary"
 
-
 const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
@@ -51,7 +50,7 @@ const Home = () => {
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
         <StatusBar style="dark" />
 
-        {/* content */}
+        {/* content */} 
         <View className="flex-1 px-3 pt-6">
 
           {/* logos */}
