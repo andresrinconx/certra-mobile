@@ -50,7 +50,7 @@ const Home = () => {
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
         <StatusBar style="dark" />
 
-        {/* content */}
+        {/* content */} 
         <View className="flex-1 px-3 pt-6">
 
           {/* logos */}
