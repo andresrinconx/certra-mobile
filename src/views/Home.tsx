@@ -20,7 +20,7 @@ const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
-  const { products, loaders, setLoaders, getProducts, flowControl } = useInv()
+  const { products, loaders, getProducts, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
 
   // SCREEN
@@ -143,10 +143,14 @@ const Home = () => {
       <View className="flex flex-row justify-between items-center h-16" style={{ backgroundColor: primary }}>
 
         {/* main */}
-        <View className="flex flex-row items-center gap-4 pl-5">
+        <View className="flex flex-row items-center gap-3 pl-3">
           <View><IconProfile /></View>
-          {flowControl?.showProducts && (<View className="h-8 border-l-[0.8px] border-l-white" />)}
-          {flowControl?.showProducts && (<View><IconItinerary /></View>)}
+          {flowControl?.showItinerary && flowControl?.showProducts ? (
+            <View className="h-8 border-l-[0.8px] border-l-white" />
+          ):null}
+          {flowControl?.showItinerary && flowControl?.showProducts ? (
+            <View><IconItinerary /></View>
+          ):null}
         </View>
 
         {/* other */}

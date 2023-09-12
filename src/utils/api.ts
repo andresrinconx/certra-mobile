@@ -1,25 +1,16 @@
-import { LOCAL_API_URL, API_URL } from "@env";
+import { LOCAL_API_URL, API_URL } from '@env'
 import { OrderInterface } from "../interfaces/OrderInterface";
 import axios from "axios";
 
 // ----- GET
-
-// get all data from a table
-const tableDataEndpoint = (table: string) => `${API_URL}/${table}`;
-
-// get all data from a table that matches a search term
-const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) =>
-  `${API_URL}/${params.table}/${params.searchTerm}`;
-
-// get all info from a user
-const userDataEndpoint = (params: { code: string; table: string }) =>
-  `${API_URL}/${params.table}/${params.code}`;
+const tableDataEndpoint = (table: string) => `${LOCAL_API_URL}/${table}`;
+const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) => `${LOCAL_API_URL}/${params.table}/${params.searchTerm}`;
+const userDataEndpoint = (params: { code: string; table: string }) => `${LOCAL_API_URL}/${params.table}/${params.code}`;
 
 // ----- POST
+const sendDataEndpoint = () => `${LOCAL_API_URL}/pedidoguardar`;
 
-// send a order to the server
-const sendDataEndpoint = () => `${API_URL}/pedidoguardar`;
-
+// get all data from a table
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);
   try {
@@ -31,10 +22,8 @@ export const fetchTableData = async (table: string) => {
   }
 };
 
-export const fetchSearchedItems = async (params: {
-  searchTerm: string;
-  table: string;
-}) => {
+// get all data from a table that matches a search term
+export const fetchSearchedItems = async (params: { searchTerm: string; table: string; }) => {
   const searchedItemsUrl = searchedItemsEndpoint(params);
   try {
     const response = await fetch(searchedItemsUrl);
@@ -45,10 +34,8 @@ export const fetchSearchedItems = async (params: {
   }
 };
 
-export const fetchUserData = async (params: {
-  code: string;
-  table: string;
-}) => {
+// get all info from a user
+export const fetchUserData = async (params: { code: string; table: string; }) => {
   const userDataUrl = userDataEndpoint(params);
   try {
     const response = await fetch(userDataUrl);
@@ -59,6 +46,7 @@ export const fetchUserData = async (params: {
   }
 };
 
+// send a order to the server
 export const sendData = async (order: OrderInterface) => {
   const sendDataUrl = sendDataEndpoint();
   try {
