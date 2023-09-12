@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import useLogin from '../hooks/useLogin'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'native-base'
 import useInv from '../hooks/useInv'
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useNavigation } from '@react-navigation/native'
@@ -60,7 +60,7 @@ const Itinerary = () => {
 
   return (
     <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
-      <StatusBar style="dark" />
+      <StatusBar barStyle="dark-content" />
 
       {/* logos */}
       <View className="flex-row justify-between">

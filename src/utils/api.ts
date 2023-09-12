@@ -1,13 +1,14 @@
+import { LOCAL_API_URL, API_URL } from '@env'
 import { OrderInterface } from "../interfaces/OrderInterface";
 import axios from "axios";
 
 // ----- GET
-const tableDataEndpoint = (table: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}`;
-const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.searchTerm}`;
-const userDataEndpoint = (params: { code: string; table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.code}`;
+const tableDataEndpoint = (table: string) => `${LOCAL_API_URL}/${table}`;
+const searchedItemsEndpoint = (params: { searchTerm: string; table: string }) => `${LOCAL_API_URL}/${params.table}/${params.searchTerm}`;
+const userDataEndpoint = (params: { code: string; table: string }) => `${LOCAL_API_URL}/${params.table}/${params.code}`;
 
 // ----- POST
-const sendDataEndpoint = () => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/pedidoguardar`;
+const sendDataEndpoint = () => `${LOCAL_API_URL}/pedidoguardar`;
 
 // get all data from a table
 export const fetchTableData = async (table: string) => {
