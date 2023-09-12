@@ -6,7 +6,7 @@ import LoaderProductsSearch from "../components/loaders/LoaderProductsSearch"
 import useInv from "../hooks/useInv"
 import { fetchSearchedItems } from "../utils/api"
 import { useNavigation } from "@react-navigation/native"
-import { StatusBar } from "expo-status-bar"
+import { StatusBar } from "native-base"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import useLogin from "../hooks/useLogin"
 import { debounce } from "lodash"
@@ -80,7 +80,7 @@ const Search = () => {
 
   return (
     <View className="flex-1 h-full pt-10" style={{ backgroundColor: backgrund }}>
-      <StatusBar style="dark" />
+      <StatusBar barStyle="dark-content" />
 
       {/* content */}
       <View className="h-6/6">
