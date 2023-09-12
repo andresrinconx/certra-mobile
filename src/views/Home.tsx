@@ -49,7 +49,7 @@ const Home = () => {
   return (
     <>
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
-        <StatusBar barStyle="dark-content" />
+        {/* <StatusBar barStyle="light-content" /> */}
 
         {/* content */}
         <View className="flex-1 px-3 pt-6">
