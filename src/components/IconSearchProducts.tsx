@@ -10,7 +10,7 @@ const IconSearchProducts = () => {
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate("Search")
-      // setSearchedProducts([])
+      setSearchedProducts(null)
     }}>
       <View>
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode="cover"

@@ -39,7 +39,7 @@ const Search = () => {
   // SEARCH
   // useEffect(() => {
   //   if (value === "") {
-  //     setSearchedProducts([])
+  //     setSearchedProducts(null)
   //     setLoaders({ ...loaders, loadingSearchedItems: false })
   //   }
   // }, [value])
