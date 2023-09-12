@@ -150,7 +150,7 @@ const SelectCustomer = () => {
               />
 
               <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
-                <TextInput className="w-full pl-3" style={{ color: typography }}
+                <TextInput className="w-full pl-3" style={{ color: typography, fontSize: wp(4), fontWeight: '200' }}
                   placeholder="Buscar un cliente"
                   placeholderTextColor={typography}
                   onChangeText={handleTextDebounce}
@@ -191,7 +191,7 @@ const SelectCustomer = () => {
                     onScroll={handleScroll}
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{
-                      paddingBottom: 5,
+                      paddingBottom: 100,
                       marginTop: 15
                     }}
                     showsVerticalScrollIndicator={false}

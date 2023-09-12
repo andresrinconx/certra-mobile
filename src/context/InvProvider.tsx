@@ -4,7 +4,7 @@ import { setDataStorage } from "../utils/asyncStorage"
 import { fetchTableData, sendData, fetchSearchedItems } from "../utils/api"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import { OrderInterface } from "../interfaces/OrderInterface"
-import { getDate } from "../utils/helpers"
+import { getDate, getHour } from "../utils/helpers"
 import useLogin from "../hooks/useLogin"
 
 const InvContext = createContext<{
@@ -23,7 +23,7 @@ const InvContext = createContext<{
     showSelectResults: boolean
     showSelectLabel: boolean
     showLogoCertra: boolean
-    showLogoLab: boolean
+    showItinerary: boolean
     selected: boolean
   }
   setFlowControl: (flowControl: {
@@ -33,7 +33,7 @@ const InvContext = createContext<{
     showSelectResults: boolean
     showSelectLabel: boolean
     showLogoCertra: boolean
-    showLogoLab: boolean
+    showItinerary: boolean
     selected: boolean
   }) => void
   loaders: {
@@ -79,7 +79,7 @@ const InvContext = createContext<{
     showSelectResults: false,
     showSelectLabel: false,
     showLogoCertra: false,
-    showLogoLab: false,
+    showItinerary: false,
     selected: false,
   },
   setFlowControl: () => { },
@@ -104,6 +104,7 @@ const InvContext = createContext<{
   processOrder: () => { },
   order: {
     date: "",
+    hora: "",
     cliente: { name: "", code: 0 },
     productos: [],
     subtotal: "",
@@ -119,6 +120,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // order & cart
   const [order, setOrder] = useState<OrderInterface>({
     date: "",
+    hora: "",
     cliente: { name: "", code: 0 },
     productos: [],
     subtotal: "",
@@ -141,7 +143,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     showSelectResults: false,
     showSelectLabel: false,
     showLogoCertra: false,
-    showLogoLab: false,
+    showItinerary: false,
     selected: false,
   })
 
@@ -193,7 +195,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       let data: ProductoInterface[] = [];
 
       // fetch data
-      if (myUser.from === "scli") {
+      if (myUser.from === "scli" || myUser.from === "usuario") {
         data = await fetchTableData("sinv");
       } else if(myUser.from === "usuario-clipro") {
         data = await fetchSearchedItems({ searchTerm: myUser?.clipro, table: "searchclipr" })
@@ -299,11 +301,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setOrder({
       ...order,
       date: getDate(new Date()),
+      hora: getHour(new Date()),
       cliente: (myUser.from === "scli" ? {
         name: myUser?.nombre,
         code: myUser?.cliente
       } : {
         name: myUser.us_nombre,
+        usuario: myUser.us_codigo,
         code: myUser?.customer?.cliente
       }),
       productos: productsCart.map((product: ProductoInterface) => ({

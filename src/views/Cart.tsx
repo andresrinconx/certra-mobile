@@ -231,7 +231,7 @@ const Cart = () => {
 
           <AlertDialog.Body>
             <Text className="font-normal">
-              Presiona "Confirmar" para confirmar tu pedido.
+              ¿Estás seguro de procesar el pedido?
             </Text>
           </AlertDialog.Body>
 

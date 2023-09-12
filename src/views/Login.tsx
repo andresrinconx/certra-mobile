@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking } from "react-native"
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking, PermissionsAndroid } from "react-native"
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/mini"
 import useLogin from "../hooks/useLogin"
 import { useNavigation } from "@react-navigation/native"
@@ -185,7 +185,7 @@ const Login = () => {
             {/* username */}
             <View>
               <View className="flex-row items-center rounded-2xl py-4 bg-white">
-                <TextInput className="w-full pl-5" style={{ fontSize: wp(4.5) }}
+                <TextInput className="w-full pl-5 font-bold" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefUser}
                   placeholder="Usuario"
                   placeholderTextColor="#666666"
@@ -197,7 +197,7 @@ const Login = () => {
 
               {requiredFields.user && (
                 <View className="pl-4 pt-1">
-                  <Text className="text-white" style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
+                  <Text className="text-white font-bold" style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
@@ -205,7 +205,7 @@ const Login = () => {
             {/* password */}
             <View>
               <View className="flex-row items-center rounded-2xl py-4 bg-white">
-                <TextInput className="w-full pl-5" style={{ fontSize: wp(4.5) }}
+                <TextInput className="w-full pl-5 font-bold" style={{ fontSize: wp(4.5) }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder="Contraseña"
@@ -228,7 +228,7 @@ const Login = () => {
 
               {requiredFields.password && (
                 <View className="pl-4 pt-1">
-                  <Text className="text-white" style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
+                  <Text className="text-white font-bold" style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
@@ -236,7 +236,7 @@ const Login = () => {
             {/* Incorrect Credentials */}
             {incorrectCredentials && (
               <View className="pr-4">
-                <Text className="text-white text-right" style={{ fontSize: wp(4.5) }}>* Datos incorrectos</Text>
+                <Text className="text-white font-bold text-right" style={{ fontSize: wp(4.5) }}>* Datos incorrectos</Text>
               </View>
             )}
 
