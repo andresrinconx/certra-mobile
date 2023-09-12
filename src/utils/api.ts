@@ -13,7 +13,7 @@ const sendDataEndpoint = () => `${LOCAL_API_URL}/pedidoguardar`;
 // get all data from a table
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table);
-  try { 
+  try {
     const response = await fetch(generalEndpointUrl);
     const result = await response.json();
     return result;
