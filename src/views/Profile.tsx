@@ -16,7 +16,7 @@ const Profile = () => {
 
   // state
   const [dataConfig, setDataConfig] = useState<any>({})
-  const [loadingProfile, setLoadingProfile] = useState(false)
+  const [loadingProfile, setLoadingProfile] = useState(true)
 
   const { flowControl } = useInv()
   const { myUser } = useLogin()
@@ -26,8 +26,6 @@ const Profile = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        setLoadingProfile(true)
-
         const res = await fetchUserData({ 
           table: `${myUser?.from === 'scli' ? 'scliU' : 'usuarioU'}`, 
           code: `${myUser?.from === 'scli' ? `${myUser?.cliente}` : `${myUser.clipro}`}`
