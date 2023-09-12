@@ -15,7 +15,6 @@ import IconProfile from "../components/icons/IconProfile"
 import { StatusBar } from "expo-status-bar"
 import IconItinerary from "../components/icons/IconItinerary"
 
-
 const Home = () => {
   // theme & styles
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
