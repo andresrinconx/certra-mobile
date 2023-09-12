@@ -7,7 +7,6 @@ import Loader from "../components/Loader"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import { setDataStorage } from "../utils/asyncStorage"
-import { firstTwoLetters } from "../utils/helpers"
 import { pallete } from "../utils/pallete"
 import { widthPercentageToDP as wp} from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
@@ -59,7 +58,7 @@ const Login = () => {
 
       // find in the table "Scli"
       const userFromScli = usersFromScli?.find((userDb: UserFromScliInterface) =>
-        ("W" + userDb.cliente === user.toUpperCase() || "W" + userDb.clave === user) && userDb.clave === password)
+        ("W" + userDb.cliente === user.toUpperCase().trim() || "W" + userDb.clave === user.trim()) && userDb.clave === password)
 
       if (userFromScli === undefined) {
 
@@ -73,18 +72,15 @@ const Login = () => {
 
         // Success from Scli
         setIncorrectCredentials(false)
-        const letters = firstTwoLetters(userFromScli.nombre)
         setMyUser({
           ...userFromScli,
           from: "scli",
-          letters,
         })
         await setDataStorage("themeColors", { ...pallete[1] }) // 1 = Scli
         await setDataStorage("login", true)
         await setDataStorage("myUser", {
           ...userFromScli,
           from: "scli",
-          letters,
         })
         setThemeColors({ ...pallete[1] }) // 1 = Scli
         setLogin(true)
@@ -97,19 +93,15 @@ const Login = () => {
 
       // Success from Usuario
       setIncorrectCredentials(false)
-      const letters = firstTwoLetters(userFromUsuario.us_nombre)
-
       if (userFromUsuario.clipro !== "") { // Success with clipro
         setMyUser({
           ...userFromUsuario,
           from: "usuario-clipro",
-          letters,
         })
       } else {
         setMyUser({
           ...userFromUsuario,
           from: "usuario",
-          letters,
         })
       }
       await setDataStorage("themeColors", { ...pallete[0] }) // 0 = Usuario
@@ -119,13 +111,11 @@ const Login = () => {
         await setDataStorage("myUser", {
           ...userFromUsuario,
           from: "usuario-clipro",
-          letters,
         })
       } else {
         await setDataStorage("myUser", {
           ...userFromUsuario,
           from: "usuario",
-          letters,
         })
       }
 

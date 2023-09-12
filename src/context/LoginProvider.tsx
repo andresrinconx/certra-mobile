@@ -27,7 +27,7 @@ const LoginContext = createContext<{
   setUser: () => { },
   password: "",
   setPassword: () => { },
-  myUser: {},
+  myUser: { },
   setMyUser: () => { },
   loaders: { loadingAuth: false, },
   setLoaders: () => { },
@@ -55,7 +55,6 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [login, setLogin] = useState(false) // go to login or go to home
   const [myUser, setMyUser] = useState<any>({
     from: "",
-    letters: "",
   })
   const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({ // 0 = Usuario, 1 = Scli
     primary: "",
