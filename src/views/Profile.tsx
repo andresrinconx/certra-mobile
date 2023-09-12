@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native"
 import useLogin from "../hooks/useLogin"
 import { fetchUserData } from "../utils/api"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { StatusBar } from "native-base"
+import { StatusBar } from "expo-status-bar"
 import Loader from "../components/loaders/Loader"
 
 const Profile = () => {
@@ -44,7 +44,7 @@ const Profile = () => {
   
   return (
     <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar style="dark" />
 
       {/* logos */}
       <View className="flex-row justify-between">

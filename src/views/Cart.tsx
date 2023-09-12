@@ -5,7 +5,7 @@ import useInv from "../hooks/useInv"
 import ProductsCart from "../components/products/ProductsCart"
 import useLogin from "../hooks/useLogin"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
-import { StatusBar } from "native-base"
+import { StatusBar } from "expo-status-bar"
 import Loader from "../components/loaders/Loader"
 import { AlertDialog, Button, Modal } from "native-base"
 
@@ -64,7 +64,7 @@ const Cart = () => {
   return (
     <>
       <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar style="dark" />
 
         {/* content */}
         <View className="h-full">

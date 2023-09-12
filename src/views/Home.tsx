@@ -12,7 +12,7 @@ import useInv from "../hooks/useInv"
 import { items } from "../utils/constants"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import IconProfile from "../components/icons/IconProfile"
-import { StatusBar } from "native-base"
+import { StatusBar } from "expo-status-bar"
 import IconItinerary from "../components/icons/IconItinerary"
 
 const Home = () => {
@@ -48,7 +48,7 @@ const Home = () => {
   return (
     <>
       <View className="flex-1" style={{ backgroundColor: backgrund }}>
-        {/* <StatusBar barStyle="light-content" /> */}
+        <StatusBar style="dark" />
 
         {/* content */}
         <View className="flex-1 px-3 pt-6">

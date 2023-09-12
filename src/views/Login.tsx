@@ -10,7 +10,7 @@ import { setDataStorage } from "../utils/asyncStorage"
 import { firstTwoLetters } from "../utils/helpers"
 import { pallete } from "../utils/pallete"
 import { widthPercentageToDP as wp} from "react-native-responsive-screen"
-import { StatusBar } from "native-base"
+import { StatusBar } from "expo-status-bar"
 import { socialMedia } from "../utils/constants"
 import useInv from "../hooks/useInv"
 
@@ -162,7 +162,7 @@ const Login = () => {
 
   return (
     <View className="flex-1 relative">
-      <StatusBar barStyle="light-content" />
+      <StatusBar style="light" />
 
       <Image className="absolute w-full h-full" resizeMode="cover"
         source={require("../assets/background.png")}

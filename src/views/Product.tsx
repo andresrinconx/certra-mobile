@@ -7,7 +7,7 @@ import ProductoInterface from "../interfaces/ProductoInterface"
 import IconCart from "../components/icons/IconCart"
 import useInv from "../hooks/useInv"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
-import { StatusBar } from "native-base"
+import { StatusBar } from "expo-status-bar"
 import useLogin from "../hooks/useLogin"
 import { disponibility } from "../utils/constants"
 import Loader from "../components/loaders/Loader"
@@ -95,7 +95,7 @@ const Product = () => {
 
   return (
     <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar style="dark" />
         
       {/* back and cart */}
       <View className="flex flex-row items-center justify-between gap-2 my-3">
