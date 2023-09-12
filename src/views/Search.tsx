@@ -52,7 +52,7 @@ const Search = () => {
       let data: ProductoInterface[] = [];
 
       // fetch data
-      if (myUser.from === "scli") {
+      if (myUser.from === "scli" || myUser.from === "usuario") {
         data = await fetchSearchedItems({ searchTerm: formatText(value), table: "search" }) // search = sinv
       } else if(myUser.from === "usuario-clipro") {
         data = products?.filter((product: ProductoInterface) => product.descrip.toLowerCase().includes(value.toLocaleLowerCase()))
