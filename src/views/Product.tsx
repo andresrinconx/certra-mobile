@@ -4,13 +4,13 @@ import { useNavigation, useRoute } from "@react-navigation/native"
 import { theme, styles } from "../styles"
 import { CheckIcon, MinusSmallIcon, PlusSmallIcon } from "react-native-heroicons/outline"
 import ProductoInterface from "../interfaces/ProductoInterface"
-import IconCart from "../components/icons/IconCart"
+import IconCart from "../components/IconCart"
 import useInv from "../hooks/useInv"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
 import useLogin from "../hooks/useLogin"
 import { disponibility } from "../utils/constants"
-import Loader from "../components/loaders/Loader"
+import Loader from "../components/Loader"
 
 const Product = () => {
   // theme

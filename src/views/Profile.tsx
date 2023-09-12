@@ -6,7 +6,7 @@ import useLogin from "../hooks/useLogin"
 import { fetchUserData } from "../utils/api"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
-import Loader from "../components/loaders/Loader"
+import Loader from "../components/Loader"
 
 const Profile = () => {
   // theme

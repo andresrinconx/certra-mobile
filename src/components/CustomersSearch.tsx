@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native"
-import UserFromScliInterface from "../../interfaces/UserFromScliInterface"
-import useLogin from "../../hooks/useLogin"
-import useInv from "../../hooks/useInv"
+import UserFromScliInterface from "../interfaces/UserFromScliInterface"
+import useLogin from "../hooks/useLogin"
+import useInv from "../hooks/useInv"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {

@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Image } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import useInv from "../../hooks/useInv"
-import useLogin from "../../hooks/useLogin"
+import useInv from "../hooks/useInv"
+import useLogin from "../hooks/useLogin"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 
 const IconCart = () => {
@@ -14,7 +14,7 @@ const IconCart = () => {
   return (
     <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
       <Image style={{ width: wp(7), height: wp(7) }} resizeMode="cover"
-        source={require("../../assets/cart.png")}
+        source={require("../assets/cart.png")}
       />
 
       {productsCart.length > 0

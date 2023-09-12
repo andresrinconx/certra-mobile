@@ -7,7 +7,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useNavigation } from '@react-navigation/native'
 import { getMonthAndDays } from '../utils/helpers'
 import { days } from '../utils/constants'
-import Loader from '../components/loaders/Loader'
+import Loader from '../components/Loader'
 
 const Itinerary = () => {
   // theme

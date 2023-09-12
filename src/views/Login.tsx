@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Lin
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/mini"
 import useLogin from "../hooks/useLogin"
 import { useNavigation } from "@react-navigation/native"
-import Loader from "../components/loaders/Loader"
+import Loader from "../components/Loader"
 import UserFromScliInterface from "../interfaces/UserFromScliInterface"
 import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
 import { setDataStorage } from "../utils/asyncStorage"

@@ -1,6 +1,5 @@
 import { View } from "react-native"
-import useLogin from "../../hooks/useLogin"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import useLogin from "../hooks/useLogin"
 
 const LoaderProductsSearch = () => {
   const { themeColors: { charge } } = useLogin()

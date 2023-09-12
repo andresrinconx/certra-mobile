@@ -2,11 +2,11 @@ import { useEffect, useState, useRef } from "react"
 import { View, Text, TouchableOpacity, FlatList, Image } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import useInv from "../hooks/useInv"
-import ProductsCart from "../components/products/ProductsCart"
+import ProductsCart from "../components/ProductsCart"
 import useLogin from "../hooks/useLogin"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
-import Loader from "../components/loaders/Loader"
+import Loader from "../components/Loader"
 import { AlertDialog, Button, Modal } from "native-base"
 
 const Cart = () => {
@@ -130,7 +130,7 @@ const Cart = () => {
                     No hay productos
                   </Text>
 
-                  <Text style={{ color: typography, fontSize: wp(4) }} className="font-medium">Continúa comprando {""}
+                  <Text style={{ color: typography, fontSize: wp(4) }} className="font-medium">Continúa {""}
                     <Text style={{ color: darkTurquoise, fontSize: wp(4) }} className="font-medium"
                       onPress={() => navigation.navigate("Home")}
                     >
