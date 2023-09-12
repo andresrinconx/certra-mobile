@@ -20,7 +20,7 @@ const Home = () => {
   // theme
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
 
-  const { products, loaders, getProducts, flowControl } = useInv()
+  const { products, loaders, getProducts, flowControl, setSearchedProducts } = useInv()
   const { myUser: { image_url } } = useLogin()
 
   // SCREEN
@@ -39,11 +39,14 @@ const Home = () => {
     Keyboard.dismiss()
   }
 
-  // download products if not exist
+  // actions
   useEffect(() => {
+    // get products
     if (products?.length === 0) {
       getProducts()
     }
+    // reset searched products
+    setSearchedProducts(null)
   }, [])
 
   return (

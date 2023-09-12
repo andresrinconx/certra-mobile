@@ -82,7 +82,9 @@ const Search = () => {
       <View className="h-6/6">
         {/* arrow & input */}
         <View className="flex flex-row items-center px-3">
-          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+          <TouchableOpacity onPress={() => {
+            navigation.goBack()
+          }}>
             <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
               source={require("../assets/back.png")}
             />
