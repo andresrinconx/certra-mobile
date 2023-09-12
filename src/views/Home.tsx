@@ -46,7 +46,7 @@ const Home = () => {
       getProducts()
     }
     // reset searched products
-    setSearchedProducts(null)
+    setSearchedProducts([])
   }, [])
 
   return (

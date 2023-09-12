@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, Text } from "react-native"
 import ProductsSearch from "../components/ProductsSearch"
 import { items } from "../utils/constants"
@@ -18,8 +18,6 @@ const Search = () => {
   // theme
   const { themeColors: { backgrund, typography, primary, list } } = useLogin()
 
-  const [value, setValue] = useState("")
-
   const { searchedProducts, loaders, setLoaders, setSearchedProducts, productsCart, products } = useInv()
   const { myUser } = useLogin()
   const navigation = useNavigation()
@@ -36,16 +34,8 @@ const Search = () => {
     Keyboard.dismiss()
   }
 
-  // SEARCH
-  // useEffect(() => {
-  //   if (value === "") {
-  //     setSearchedProducts(null)
-  //     setLoaders({ ...loaders, loadingSearchedItems: false })
-  //   }
-  // }, [value])
-
+  // search
   const handleSearch = async (value: string) => {
-    setValue(value)
     if (value.length > 2) {
       setLoaders({ ...loaders, loadingSearchedItems: true })
       
