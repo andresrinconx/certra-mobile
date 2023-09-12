@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react"
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native"
+import { View, Text, Image, ScrollView } from "react-native"
 import useInv from "../hooks/useInv"
 import { useNavigation } from "@react-navigation/native"
 import useLogin from "../hooks/useLogin"
@@ -7,6 +7,8 @@ import { fetchUserData } from "../utils/api"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { StatusBar } from "expo-status-bar"
 import Loader from "../components/Loader"
+import Logos from "../components/Logos"
+import BackScreen from "../components/BackScreen"
 
 const Profile = () => {
   // theme
@@ -32,9 +34,10 @@ const Profile = () => {
         })
         setDataConfig(res)
 
-        setTimeout(() => {
+        if (res) {
           setLoadingProfile(false)
-        }, 200);
+        }
+        
       } catch (error) {
         console.log(error)
       }
@@ -46,33 +49,8 @@ const Profile = () => {
     <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
       <StatusBar style="dark" />
 
-      {/* logos */}
-      <View className="flex-row justify-between">
-        {flowControl?.showLogoCertra ? (
-          <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
-            source={require("../assets/logo-certra.png")}
-          />
-        ) : (
-          <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
-            source={require("../assets/logo-drocerca.png")}
-          />
-        )}
-
-        <Image style={{ width: wp(40), height: wp(16) }} resizeMode="contain"
-          source={{uri: `${myUser?.image_url}`}}
-        />
-      </View>
-
-      {/* back */}
-      <View className="flex flex-row items-center gap-2 mt-2">
-        <TouchableOpacity onPress={() => {navigation.goBack()}}>
-          <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-            source={require("../assets/back.png")}
-          />
-        </TouchableOpacity>
-        
-        <Text className="font-bold" style={{ color: typography, fontSize: wp(4.5) }}>Mi Perfil</Text>
-      </View>
+      <Logos image={myUser?.image_url} />
+      <BackScreen title="Mi perfil" />
       
       {/* info */}
       <ScrollView

@@ -8,6 +8,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { StatusBar } from "expo-status-bar"
 import Loader from "../components/Loader"
 import { AlertDialog, Button, Modal } from "native-base"
+import Logos from "../components/Logos"
+import LabelCustomer from "../components/LabelCustomer"
+import BackScreen from "../components/BackScreen"
 
 const Cart = () => {
   // theme
@@ -69,34 +72,11 @@ const Cart = () => {
         {/* content */}
         <View className="h-full">
           
-          {/* logos */}
-          <View className="flex-row justify-between">
-            {flowControl?.showLogoCertra ? (
-              <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
-                source={require("../assets/logo-certra.png")}
-              />
-            ) : (
-              <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
-                source={require("../assets/logo-drocerca.png")}
-              />
-            )}
+          <Logos image={image_url} />
 
-            <Image style={{ width: wp(40), height: wp(16) }} resizeMode="contain"
-              source={{uri: `${image_url}`}}
-            />
-          </View>
-
-          {/* back */}
-          <View className="flex flex-row items-center justify-between gap-2 mt-2">
-            <View className="flex flex-row items-center">
-              <TouchableOpacity onPress={() => {navigation.goBack()}}>
-                <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-                  source={require("../assets/back.png")}
-                />
-              </TouchableOpacity>
-              
-              <Text className="font-bold pl-1" style={{ color: typography, fontSize: wp(4.5) }}>Carrito de compras</Text>
-            </View>
+          {/* back & trash */}
+          <View className="flex flex-row items-center justify-between gap-2 mb-2">
+            <BackScreen title="Carrito de compras" />
 
             {productsCart.length !== 0 && (
               <View>
@@ -111,10 +91,9 @@ const Cart = () => {
 
           {/* customer */}
           {productsCart.length !== 0 && myUser?.customer?.nombre ? (
-            <View className="mt-4 pb-2">
-              <Text className="font-extrabold" style={{ fontSize: wp(4.5), color: typography }}>Cliente</Text>
-              <Text className="font-normal" style={{ fontSize: wp(4), color: typography }}>{myUser?.customer?.nombre}</Text>
-            </View>
+            <LabelCustomer
+              name={myUser?.customer?.nombre}
+            />
           ):null}
 
           {/* products */}
