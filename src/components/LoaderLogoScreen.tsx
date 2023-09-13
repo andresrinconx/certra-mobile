@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Animated, Easing } from 'react-native';
-import useLogin from '../hooks/useLogin';
 
 const LoaderLogoScreen = () => {
-  const { themeColors } = useLogin();
   const [rotationValue] = useState(new Animated.Value(0));
 
   useEffect(() => {

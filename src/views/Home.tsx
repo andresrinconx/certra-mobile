@@ -56,7 +56,7 @@ const Home = () => {
 
         {/* content */}
         <View className="flex-1 px-3 pt-6">
-          <Logos  image={image_url} />
+          <Logos image={image_url} />
           
           {/* customers and products */}
           <View className="flex-1">

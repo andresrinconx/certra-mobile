@@ -64,9 +64,6 @@ const SelectCustomer = () => {
       setSearchedCustomers([])
       if ('customer' in myUser) {
 
-        if (!flowControl?.showSelectLabel) {
-          return
-        }
         // customer selected
         setFlowControl({ 
           ...flowControl, 
