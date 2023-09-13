@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react"
 import { View, Text, Image, ScrollView } from "react-native"
 import useInv from "../hooks/useInv"
-import { useNavigation } from "@react-navigation/native"
 import useLogin from "../hooks/useLogin"
 import { fetchUserData } from "../utils/api"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
@@ -20,7 +19,6 @@ const Profile = () => {
 
   const { flowControl } = useInv()
   const { myUser } = useLogin()
-  const navigation = useNavigation()
 
   // data
   useEffect(() => {
