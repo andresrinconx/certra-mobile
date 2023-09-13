@@ -38,20 +38,16 @@ const InvContext = createContext<{
   }) => void
   loaders: {
     loadingProducts: boolean,
-    loadingSearchedItems: boolean,
     loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }
   setLoaders: (loaders: {
     loadingProducts: boolean,
-    loadingSearchedItems: boolean,
     loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }) => void
-  valueSearchCustomers: string
-  setValueSearchCustomers: (valueSearchCustomers: string) => void
   increase: (id: number) => void
   decrease: (id: number) => void
   subtotal: string
@@ -85,14 +81,11 @@ const InvContext = createContext<{
   setFlowControl: () => { },
   loaders: {
     loadingProducts: false,
-    loadingSearchedItems: false,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
   },
   setLoaders: () => { },
-  valueSearchCustomers: "",
-  setValueSearchCustomers: () => { },
   increase: () => { },
   decrease: () => { },
   subtotal: "",
@@ -133,7 +126,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // search
   const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
-  const [valueSearchCustomers, setValueSearchCustomers] = useState("")
 
   // layout
   const [flowControl, setFlowControl] = useState({
@@ -150,7 +142,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // loaders
   const [loaders, setLoaders] = useState({
     loadingProducts: false,
-    loadingSearchedItems: false,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
@@ -337,8 +328,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setFlowControl,
       loaders,
       setLoaders,
-      valueSearchCustomers,
-      setValueSearchCustomers,
       increase,
       decrease,
       subtotal,

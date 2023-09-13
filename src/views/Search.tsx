@@ -37,7 +37,7 @@ const Search = () => {
   // search
   const handleSearch = async (value: string) => {
     if (value.length > 2) {
-      setLoaders({ ...loaders, loadingSearchedItems: true })
+      // setLoaders({ ...loaders, loadingSearchedItems: true })
       
       let data: ProductoInterface[] = [];
 
@@ -49,16 +49,16 @@ const Search = () => {
         setSearchedProducts(data)
 
         setTimeout(() => {
-          setLoaders({ ...loaders, loadingSearchedItems: false })
+          // setLoaders({ ...loaders, loadingSearchedItems: false })
         }, 500);
         return
       }
       
       setSearchedProducts(data)
-      setLoaders({ ...loaders, loadingSearchedItems: false })
+      // setLoaders({ ...loaders, loadingSearchedItems: false })
     } else {
       setSearchedProducts([])
-      setLoaders({ ...loaders, loadingSearchedItems: false })
+      // setLoaders({ ...loaders, loadingSearchedItems: false })
     }
   }
 
@@ -93,7 +93,7 @@ const Search = () => {
 
         {/* results */}
         <View className="h-full mx-3 mb-16">
-          {loaders.loadingSearchedItems ? (
+          {false ? (
             <FlatList
               data={items}
               numColumns={1}

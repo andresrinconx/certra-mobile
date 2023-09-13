@@ -17,7 +17,7 @@ const IconLogOut = () => {
 
   const cancelRef = useRef(null);
 
-  const { setProductsCart, setFlowControl, setValueSearchCustomers, setProducts, setLoaders, loaders } = useInv()
+  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders } = useInv()
   const { setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
   const navigation = useNavigation()
 
@@ -98,9 +98,14 @@ const IconLogOut = () => {
         typography: "",
         processBtn: "",
       })
-      setValueSearchCustomers("")
   
-      setLoaders({ ...loaders, loadingLogOut: false })
+      setLoaders({
+        ...loaders, 
+        loadingLogOut: false,
+        loadingProducts: false,
+        loadingSlectedCustomer: false,
+        loadingConfirmOrder: false,
+      })
     }, 2000);
   }
 
