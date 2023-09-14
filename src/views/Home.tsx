@@ -19,9 +19,23 @@ import Logos from "../components/Logos"
 const Home = () => {
   // theme
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
-
-  const { products, loaders, getProducts, flowControl, setSearchedProducts } = useInv()
+  
+  const { products, loaders, getProducts, flowControl, searchedProducts, setSearchedProducts } = useInv()
   const { myUser: { image_url } } = useLogin()
+  
+  // ACTIONS
+  // get products
+  useEffect(() => {
+    if (products?.length === 0) {
+      getProducts()
+    }
+  }, [])
+  // reset searched products
+  useEffect(() => {
+    if (searchedProducts?.length !== 0) {
+      setSearchedProducts([])
+    }
+  }, [])
 
   // SCREEN
   // back HANDLER
@@ -38,16 +52,6 @@ const Home = () => {
     // Cerrar el teclado
     Keyboard.dismiss()
   }
-
-  // actions
-  useEffect(() => {
-    // get products
-    if (products?.length === 0) {
-      getProducts()
-    }
-    // reset searched products
-    setSearchedProducts([])
-  }, [])
 
   return (
     <>

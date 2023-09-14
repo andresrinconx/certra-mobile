@@ -148,6 +148,10 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   })
   
   const { myUser } = useLogin()
+  
+  useEffect(() => {
+    console.log(searchedProducts)
+  }, [searchedProducts])
 
   // ----- STORAGE
   // set productsCart

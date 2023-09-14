@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, Text } from "react-native"
 import ProductsSearch from "../components/ProductsSearch"
 import { items } from "../utils/constants"
-import LoaderProductsSearch from "../components/LoaderProductsSearch"
 import useInv from "../hooks/useInv"
 import { fetchSearchedItems } from "../utils/api"
 import { useNavigation } from "@react-navigation/native"
@@ -18,7 +17,7 @@ const Search = () => {
   // theme
   const { themeColors: { backgrund, typography, primary, list } } = useLogin()
 
-  const { searchedProducts, setSearchedProducts, productsCart, products } = useInv()
+  const { searchedProducts, setSearchedProducts, productsCart } = useInv()
   const { myUser } = useLogin()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
@@ -46,7 +45,8 @@ const Search = () => {
         data = await fetchSearchedItems({ searchTerm: formatText(value), table: "search" })
 
       } else if(myUser.from === "usuario-clipro") { // products by lab (usuario-clipro)
-        data = products?.filter((product: ProductoInterface) => product.descrip.toLowerCase().includes(value.toLocaleLowerCase()))
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: `searchPp/${myUser?.clipro}` })
+
       }
 
       setSearchedProducts(data)
@@ -87,41 +87,23 @@ const Search = () => {
 
         {/* results */}
         <View className="h-full mx-3 mb-16">
-          {false ? (
+          {searchedProducts?.length > 0 && (
             <FlatList
-              data={items}
+              data={searchedProducts}
               numColumns={1}
               onScroll={handleScroll}
+              keyboardShouldPersistTaps="handled"
               contentContainerStyle={{
-                paddingBottom: 20,
+                paddingBottom: 200,
                 marginTop: 15
               }}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {
                 return (
-                  <LoaderProductsSearch key={item.id} />
+                  <ProductsSearch key={item.id} product={item} />
                 )
               }}
             />
-          ) : (
-            searchedProducts?.length > 0 && (
-              <FlatList
-                data={searchedProducts}
-                numColumns={1}
-                onScroll={handleScroll}
-                keyboardShouldPersistTaps="handled"
-                contentContainerStyle={{
-                  paddingBottom: 200,
-                  marginTop: 15
-                }}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => {
-                  return (
-                    <ProductsSearch key={item.id} product={item} />
-                  )
-                }}
-              />
-            )
           )}
         </View>
       </View>
