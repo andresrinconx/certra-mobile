@@ -12,7 +12,7 @@ const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
   const { themeColors: { darkTurquoise }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
-  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders } = useInv()
+  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders, setCurrentPage } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
@@ -66,6 +66,7 @@ const IconLogOut = () => {
       // reset products
       setProductsCart([])
       setProducts([])
+      setCurrentPage(1)
   
       // reset flow
       setFlowControl({

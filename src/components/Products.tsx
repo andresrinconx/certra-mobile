@@ -71,11 +71,12 @@ const Products = () => {
                   </View>
                 )}
                 ListFooterComponent={() => (
+                  !loaders.loadingProducts && (
                     <View>
                       <Loader size={40} color={primary} />
                     </View>
                   )
-                }
+                )}
                 renderItem={({ item }) => {
                   return (
                     <ProductsGrid key={item.id} product={item} />

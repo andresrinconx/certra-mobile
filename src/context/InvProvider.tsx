@@ -183,14 +183,16 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
       // fetch data
       if (myUser.from === 'scli' || myUser.from === 'usuario') {
-        data = await fetchSearchedItems({ table: 'sinv', searchTerm: currentPage.toString() })
+        console.log('1' + ' ' + currentPage)
+        data = await fetchSearchedItems({ table: 'sinv', searchTerm: String(currentPage) })
 
       } else if(myUser.from === 'usuario-clipro') {
+        console.log('2' + ' ' + currentPage)
         data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
 
       }
 
-      if (data.length > 0) {
+      if (data?.length > 0) {
         setProducts([ ...products, ...data ])
         setLoaders({ ...loaders, loadingProducts: false })
       }

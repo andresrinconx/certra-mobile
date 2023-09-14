@@ -14,14 +14,14 @@ const Home = () => {
   const { themeColors: { backgrund }, myUser: { image_url } } = useLogin()
   const { products, loaders, getProducts } = useInv()
   
-  // get products
+  // Get products
   useEffect(() => {
     if (products?.length === 0) {
       getProducts()
     }
   }, [])
 
-  // back handler
+  // Back handler
   useEffect(() => {
     const backAction = () => {
       BackHandler.exitApp()
