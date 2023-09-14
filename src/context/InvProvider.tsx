@@ -1,11 +1,10 @@
-import { createContext, useState, useEffect } from "react"
-import ProductoInterface from "../interfaces/ProductoInterface"
-import { setDataStorage } from "../utils/asyncStorage"
-import { fetchTableData, sendData, fetchSearchedItems } from "../utils/api"
-import UserFromScliInterface from "../interfaces/UserFromScliInterface"
-import { OrderInterface } from "../interfaces/OrderInterface"
-import { getDate, getHour } from "../utils/helpers"
-import useLogin from "../hooks/useLogin"
+import { createContext, useState, useEffect } from 'react'
+import ProductoInterface from '../interfaces/ProductoInterface'
+import { setDataStorage } from '../utils/asyncStorage'
+import { sendData, fetchSearchedItems } from '../utils/api'
+import { OrderInterface } from '../interfaces/OrderInterface'
+import { getDate, getHour } from '../utils/helpers'
+import useLogin from '../hooks/useLogin'
 
 const InvContext = createContext<{
   productsCart: ProductoInterface[]
@@ -82,20 +81,20 @@ const InvContext = createContext<{
   setLoaders: () => { },
   increase: () => { },
   decrease: () => { },
-  subtotal: "",
+  subtotal: '',
   setSubtotal: () => { },
-  total: "",
+  total: '',
   setTotal: () => { },
   removeElement: () => { },
   addToCart: () => { },
   processOrder: () => { },
   order: {
-    date: "",
-    hora: "",
-    cliente: { name: "", code: 0 },
+    date: '',
+    hora: '',
+    cliente: { name: '', code: 0 },
     productos: [],
-    subtotal: "",
-    total: "",
+    subtotal: '',
+    total: '',
   },
   getProducts: () => { },
   currentPage: 1,
@@ -103,24 +102,24 @@ const InvContext = createContext<{
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
-  // products
+  // PRODUCTS
   const [products, setProducts] = useState<ProductoInterface[]>([])
   const [currentPage, setCurrentPage] = useState(1)
 
-  // order & cart
+  // ORDER & CART
   const [order, setOrder] = useState<OrderInterface>({
-    date: "",
-    hora: "",
-    cliente: { name: "", code: 0 },
+    date: '',
+    hora: '',
+    cliente: { name: '', code: 0 },
     productos: [],
-    subtotal: "",
-    total: "",
+    subtotal: '',
+    total: '',
   })
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
-  const [subtotal, setSubtotal] = useState("")
-  const [total, setTotal] = useState("")
+  const [subtotal, setSubtotal] = useState('')
+  const [total, setTotal] = useState('')
 
-  // layout
+  // LAYOUT
   const [flowControl, setFlowControl] = useState({
     showProducts: false,
     showSelectCustomer: false,
@@ -132,7 +131,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     selected: false,
   })
 
-  // loaders
+  // LOADERS
   const [loaders, setLoaders] = useState({
     loadingProducts: true,
     loadingSlectedCustomer: false,
@@ -142,12 +141,15 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   
   const { myUser } = useLogin()
 
-  // ----- STORAGE
-  // set productsCart
+  // -----------------------------------------------
+  // STORAGE
+  // -----------------------------------------------
+
+  // Set productsCart
   useEffect(() => {
     const setProductsStorage = async () => {
       try {
-        await setDataStorage("productsCart", productsCart)
+        await setDataStorage('productsCart', productsCart)
       } catch (error) {
         console.log(error)
       }
@@ -155,13 +157,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setProductsStorage()
   }, [productsCart])
 
-  // set flow control
+  // Set flow control
   useEffect(() => {
     // set storage when a customer is selected
     if (flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
       const flowControlStorage = async () => {
         try {
-          await setDataStorage("flowControl", flowControl)
+          await setDataStorage('flowControl', flowControl)
         } catch (error) {
           console.log(error)
         }
@@ -170,18 +172,21 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [flowControl])
 
-  // ----- API
-  // get products api
+  // -----------------------------------------------
+  // API
+  // -----------------------------------------------
+
+  // Get products api
   const getProducts = async () => {
     try {
-      let data: ProductoInterface[] = [];
+      let data: ProductoInterface[] = []
 
       // fetch data
-      if (myUser.from === "scli" || myUser.from === "usuario") {
-        data = await fetchSearchedItems({ table: "sinv", searchTerm: currentPage.toString() })
+      if (myUser.from === 'scli' || myUser.from === 'usuario') {
+        data = await fetchSearchedItems({ table: 'sinv', searchTerm: currentPage.toString() })
 
-      } else if(myUser.from === "usuario-clipro") {
-        data = await fetchSearchedItems({ table: "searchclipr", searchTerm: `${myUser?.clipro}/${currentPage}` })
+      } else if(myUser.from === 'usuario-clipro') {
+        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
 
       }
 
@@ -201,26 +206,29 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  // ----- ACTIONS
-  // set subtotal & total
+  // -----------------------------------------------
+  // CART ACTIONS
+  // -----------------------------------------------
+
+  // Set subtotal & total
   useEffect(() => {
     // subtotal
-    const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0);
-    const subtotalFormated = subtotal.toLocaleString();
-    setSubtotal(subtotalFormated);
+    const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    const subtotalFormated = subtotal.toLocaleString()
+    setSubtotal(subtotalFormated)
 
     // total
-    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0);
-    const totalFormated = total.toLocaleString();
-    setTotal(totalFormated);
+    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
+    const totalFormated = total.toLocaleString()
+    setTotal(totalFormated)
   }, [productsCart])
 
-  // add to cart
+  // Add to cart
   const addToCart = (product: ProductoInterface) => {
     setProductsCart([...productsCart, { ...product, agregado: true, cantidad: 1 }])
   }
 
-  // increase & decrease
+  // Increase & decrease
   const increase = (id: number) => {
     const updatedProductsCart = productsCart.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : { ...item })
     setProductsCart(updatedProductsCart)
@@ -239,13 +247,17 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  // remove element from cart
+  // Remove element from cart
   const removeElement = (id: number) => {
     const updatedProductsCart = productsCart.filter(item => item.id !== id)
     setProductsCart(updatedProductsCart)
   }
 
-  // send order
+  // -----------------------------------------------
+  // ORDER
+  // -----------------------------------------------
+
+  // Send order
   useEffect(() => {
     const sendOrder = async () => {
       try {
@@ -256,12 +268,12 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
             // clear cart
             const updatedProducts = productsCart.filter(item => item.agregado !== true)
             setProductsCart(updatedProducts)
-          }, 2000);
+          }, 2000)
 
           setTimeout(() => {
 
             setLoaders({ ...loaders, loadingConfirmOrder: false }) // loader from alert*
-          }, 3000);
+          }, 3000)
         }
       } catch (error) {
         console.log(error)
@@ -270,14 +282,14 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     sendOrder()
   }, [order])
 
-  // process order
+  // Process order
   const processOrder = async (myUser: any) => {
     // order data
     setOrder({
       ...order,
       date: getDate(new Date()),
       hora: getHour(new Date()),
-      cliente: (myUser.from === "scli" ? {
+      cliente: (myUser.from === 'scli' ? {
         name: myUser?.nombre,
         code: myUser?.cliente
       } : {

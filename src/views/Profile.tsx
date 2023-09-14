@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react"
-import { View, Image, FlatList } from "react-native"
-import useInv from "../hooks/useInv"
-import useLogin from "../hooks/useLogin"
-import { fetchUserData } from "../utils/api"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { StatusBar } from "expo-status-bar"
-import Loader from "../components/Loader"
-import Logos from "../components/Logos"
-import BackScreen from "../components/BackScreen"
-import ProfileGroup from "../components/ProfileGroup"
+import { useEffect, useState } from 'react'
+import { View, Image, FlatList } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { StatusBar } from 'expo-status-bar'
+import useInv from '../hooks/useInv'
+import useLogin from '../hooks/useLogin'
+import { fetchUserData } from '../utils/api'
+import Loader from '../components/Loader'
+import Logos from '../components/Logos'
+import BackScreen from '../components/BackScreen'
+import ProfileGroup from '../components/ProfileGroup'
 
 const Profile = () => {
-  // theme
-  const { themeColors: { primary, backgrund } } = useLogin()
-
-  // state
   const [dataConfig, setDataConfig] = useState<any>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
-
+  
+  const { themeColors: { primary, backgrund }, myUser } = useLogin()
   const { flowControl } = useInv()
-  const { myUser } = useLogin()
 
-  // data
+  // Get data
   useEffect(() => {
     const getData = async () => {
       try {
@@ -50,47 +46,47 @@ const Profile = () => {
   const groups = [
     // main info
     {
-      name: myUser.from === "scli"           ? dataConfig?.nombre : 
+      name: myUser.from === 'scli'           ? dataConfig?.nombre : 
             myUser.from === 'usuario'        ? `${dataConfig?.nombre} ${dataConfig?.apellido}` :
             myUser.from === 'usuario-clipro' ? dataConfig?.nombre : null,
 
-      subname: myUser.from === "scli"           ? `Código: ${dataConfig?.cliente}` : 
-               myUser.from === 'usuario'        ? ""                               :
+      subname: myUser.from === 'scli'           ? `Código: ${dataConfig?.cliente}` : 
+               myUser.from === 'usuario'        ? ''                               :
                myUser.from === 'usuario-clipro' ? `Código: ${dataConfig?.proveed}` : null,
       fields: [
         { 
-          label: myUser.from === "scli"           ? "RIF"    :
-                 myUser.from === 'usuario'        ? "Cédula" :
-                 myUser.from === 'usuario-clipro' ? "RIF"    : null,
+          label: myUser.from === 'scli'           ? 'RIF'    :
+                 myUser.from === 'usuario'        ? 'Cédula' :
+                 myUser.from === 'usuario-clipro' ? 'RIF'    : null,
           
-          value: myUser.from === "scli"           ? dataConfig?.rifci : 
-                 myUser.from === 'usuario'        ? dataConfig?.rif   :
-                 myUser.from === 'usuario-clipro' ? dataConfig?.rif   : null,
+          value: myUser.from === 'scli'           ? dataConfig?.rifci  : 
+                 myUser.from === 'usuario'        ? dataConfig?.cedula :
+                 myUser.from === 'usuario-clipro' ? dataConfig?.rif    : null,
         },
         { 
-          label: "Correo", 
-          value: myUser.from === "scli"           ? dataConfig?.email  : 
+          label: 'Correo', 
+          value: myUser.from === 'scli'           ? dataConfig?.email  : 
                  myUser.from === 'usuario'        ? dataConfig?.email  :
                  myUser.from === 'usuario-clipro' ? dataConfig?.emailc : null,
         },
         { 
-          label: "Teléfono", 
-          value: myUser.from === "scli"           ? dataConfig?.telefono : 
+          label: 'Teléfono', 
+          value: myUser.from === 'scli'           ? dataConfig?.telefono : 
                  myUser.from === 'usuario'        ? dataConfig?.telefono :
                  myUser.from === 'usuario-clipro' ? dataConfig?.telefono : null,
         },
         { 
-          label: myUser.from === "scli"           ? "Aniversario" :
-                 myUser.from === 'usuario'        ? "Cumpleaños"  :
-                 myUser.from === 'usuario-clipro' ? "Aniversario" : null,
+          label: myUser.from === 'scli'           ? 'Aniversario' :
+                 myUser.from === 'usuario'        ? 'Cumpleaños'  :
+                 myUser.from === 'usuario-clipro' ? 'Aniversario' : null,
 
-          value: myUser.from === "scli"           ? dataConfig?.aniversario : 
+          value: myUser.from === 'scli'           ? dataConfig?.aniversario : 
                  myUser.from === 'usuario'        ? dataConfig?.nacimi      :
                  myUser.from === 'usuario-clipro' ? dataConfig?.aniversario : null,
         },
         { 
-          label: "Ubicación", 
-          value: myUser.from === "scli"           ? dataConfig?.dire11 : 
+          label: 'Ubicación', 
+          value: myUser.from === 'scli'           ? dataConfig?.dire11 : 
                  myUser.from === 'usuario'        ? dataConfig?.direc1 :
                  myUser.from === 'usuario-clipro' ? dataConfig?.direc1 : null,
         },
@@ -98,20 +94,20 @@ const Profile = () => {
     },
     // extra info
     {
-      name: myUser.from === "scli"           ? "Datos del representante" : 
-            myUser.from === 'usuario'        ? ""                 :
-            myUser.from === 'usuario-clipro' ? "Datos del representante" : null,
+      name: myUser.from === 'scli'           ? 'Datos del representante' : 
+            myUser.from === 'usuario'        ? ''                 :
+            myUser.from === 'usuario-clipro' ? 'Datos del representante' : null,
             
-      subname: "",
+      subname: '',
       fields: [
         { 
-          label: "Nombre", 
-          value: myUser.from === "scli"           ? dataConfig?.contacto : 
+          label: 'Nombre', 
+          value: myUser.from === 'scli'           ? dataConfig?.contacto : 
                  myUser.from === 'usuario-clipro' ? dataConfig?.us_nombre : null,
         },
         { 
-          label: "Teléfono", 
-          value: myUser.from === "scli"           ? dataConfig?.telefon2 : 
+          label: 'Teléfono', 
+          value: myUser.from === 'scli'           ? dataConfig?.telefon2 : 
                  myUser.from === 'usuario-clipro' ? dataConfig?.telefon2 : null,
         },
       ]
@@ -119,34 +115,34 @@ const Profile = () => {
   ]
   
   return (
-    <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
-      <StatusBar style="dark" />
+    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
+      <StatusBar style='dark' />
 
       <Logos image={myUser?.image_url} />
-      <BackScreen title="Mi perfil" />
+      <BackScreen title='Mi perfil' />
       
       {/* info */}
       <View>
         {loadingProfile ? (
-          <View className="mt-10">
+          <View className='mt-10'>
             <Loader color={`${primary}`} />
           </View>
         ) : (
-          <View className="px-3">
+          <View className='px-3'>
             <FlatList
               data={groups}
               numColumns={1}
               contentContainerStyle={{
                 paddingBottom: 135,
               }}
-              overScrollMode="never"
+              overScrollMode='never'
               showsVerticalScrollIndicator={false}
               ListHeaderComponent={() => (
-                <View className="flex flex-col items-center">
+                <View className='flex flex-col items-center'>
                   {!flowControl?.showLogoCertra && (
                     <View>
-                      <Image style={{ width: wp(32), height: wp(32) }} resizeMode="cover"
-                        source={require("../assets/drugstore.png")}
+                      <Image style={{ width: wp(32), height: wp(32) }} resizeMode='cover'
+                        source={require('../assets/drugstore.png')}
                       />
                     </View>
                   )}

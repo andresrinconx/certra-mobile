@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { View, Animated, Easing } from 'react-native';
+import { useState, useEffect } from 'react'
+import { View, Animated, Easing } from 'react-native'
 
 const LoaderLogoScreen = () => {
-  const [rotationValue] = useState(new Animated.Value(0));
+  const [rotationValue] = useState(new Animated.Value(0))
 
   useEffect(() => {
     const rotateImage = () => {
@@ -12,18 +12,18 @@ const LoaderLogoScreen = () => {
         easing: Easing.linear,
         useNativeDriver: false,
       }).start(() => {
-        rotationValue.setValue(0);
-        rotateImage();
-      });
-    };
+        rotationValue.setValue(0)
+        rotateImage()
+      })
+    }
 
-    rotateImage();
-  }, []);
+    rotateImage()
+  }, [])
 
   const rotateInterpolation = rotationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
-  });
+  })
 
   return (
     <View className='flex-1 justify-center items-center bg-white'>
@@ -34,10 +34,10 @@ const LoaderLogoScreen = () => {
           width: 100,
           height: 100,
         }}
-        resizeMode="contain"
+        resizeMode='contain'
       />
     </View>
-  );
-};
+  )
+}
 
-export default LoaderLogoScreen;
+export default LoaderLogoScreen

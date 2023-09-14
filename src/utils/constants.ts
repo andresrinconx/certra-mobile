@@ -10,72 +10,72 @@ export const items = [
 export const socialMedia = [
   {
     id: 1,
-    name: "Instagram",
-    url: "https://www.instagram.com/drocerca/",
-    image: require("../assets/instagram.png")
+    name: 'Instagram',
+    url: 'https://www.instagram.com/drocerca/',
+    image: require('../assets/instagram.png')
   },
   {
     id: 2,
-    name: "Facebook",
-    url: "https://www.facebook.com/DROCERCA/",
-    image: require("../assets/facebook.png")
+    name: 'Facebook',
+    url: 'https://www.facebook.com/DROCERCA/',
+    image: require('../assets/facebook.png')
   },
   {
     id: 3,
-    name: "YouTube",
-    url: "https://www.youtube.com/channel/UCE63H9js4lEAN8C713SRFrQ",
-    image: require("../assets/youtube.png")
+    name: 'YouTube',
+    url: 'https://www.youtube.com/channel/UCE63H9js4lEAN8C713SRFrQ',
+    image: require('../assets/youtube.png')
   },
   {
     id: 4,
-    name: "X",
-    url: "https://twitter.com/drocerca",
-    image: require("../assets/x.png")
+    name: 'X',
+    url: 'https://twitter.com/drocerca',
+    image: require('../assets/x.png')
   },
 ]
 
 export const disponibility = [
   {
     id: 1,
-    name: "Mérida",
+    name: 'Mérida',
   },
   {
     id: 2,
-    name: "Centro",
+    name: 'Centro',
   },
   {
     id: 3,
-    name: "Oriente",
+    name: 'Oriente',
   },
 ]
 
 export const days = [
   {
     id: 1,
-    name: "Lunes",
+    name: 'Lunes',
   },
   {
     id: 2,
-    name: "Martes",
+    name: 'Martes',
   },
   {
     id: 3,
-    name: "Miércoles",
+    name: 'Miércoles',
   },
   {
     id: 4,
-    name: "Jueves",
+    name: 'Jueves',
   },
   {
     id: 5,
-    name: "Viernes",
+    name: 'Viernes',
   },
   {
     id: 6,
-    name: "Sábado",
+    name: 'Sábado',
   },
   {
     id: 7,
-    name: "Domingo",
+    name: 'Domingo',
   },
 ]

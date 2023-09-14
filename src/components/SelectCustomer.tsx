@@ -1,27 +1,23 @@
-import { useEffect, useRef, useState } from "react"
-import { View, Text, TextInput, Keyboard, FlatList, Image } from "react-native"
-import useInv from "../hooks/useInv"
-import CustomersSearch from "./CustomersSearch"
-import useLogin from "../hooks/useLogin"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { formatText } from "../utils/helpers"
-import LabelCustomer from "./LabelCustomer"
-import UserFromScliInterface from "../interfaces/UserFromScliInterface"
+import { useEffect, useRef, useState } from 'react'
+import { View, Text, TextInput, Keyboard, FlatList, Image } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import UserFromScliInterface from '../interfaces/UserFromScliInterface'
+import { formatText } from '../utils/helpers'
+import useInv from '../hooks/useInv'
+import useLogin from '../hooks/useLogin'
+import CustomersSearch from './CustomersSearch'
+import LabelCustomer from './LabelCustomer'
 
 const SelectCustomer = () => {
-  // theme & styles
-  const { themeColors: { list, typography, primary } } = useLogin()
-
-  // state
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
-
+  
+  const { themeColors: { list, typography, primary }, myUser, usersFromScli } = useLogin()
   const { flowControl, setFlowControl } = useInv()
-  const { myUser, usersFromScli } = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
   useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", removeInputFocus)
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
     return () => {
       keyboardDidHideListener.remove()
     }
@@ -97,7 +93,7 @@ const SelectCustomer = () => {
     <>
       {flowControl?.showSelectCustomer ? (
 
-        <View className="mt-3">
+        <View className='mt-3'>
 
           {/* label */}
           {flowControl?.showSelectLabel && !flowControl?.showSelectResults && flowControl?.selected ? (
@@ -110,14 +106,14 @@ const SelectCustomer = () => {
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
-            <View className="flex flex-row items-center">
-              <Image style={{ width: wp(10), height: wp(10) }} resizeMode="cover"
-                source={require("../assets/drugstore-search.png")}
+            <View className='flex flex-row items-center'>
+              <Image style={{ width: wp(10), height: wp(10) }} resizeMode='cover'
+                source={require('../assets/drugstore-search.png')}
               />
 
-              <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
-                <TextInput className="w-full pl-3" style={{ color: typography, fontSize: wp(4), fontWeight: '300' }}
-                  placeholder="Buscar un cliente"
+              <View className='rounded-lg w-5/6 ml-3' style={{ backgroundColor: list }}>
+                <TextInput className='w-full pl-3' style={{ color: typography, fontSize: wp(4), fontWeight: '300' }}
+                  placeholder='Buscar un cliente'
                   placeholderTextColor={typography}
                   onChangeText={handleSearch}
                   selectionColor={primary}
@@ -134,7 +130,7 @@ const SelectCustomer = () => {
                   data={searchedCustomers}
                   numColumns={1}
                   onScroll={handleScroll}
-                  keyboardShouldPersistTaps="handled"
+                  keyboardShouldPersistTaps='handled'
                   contentContainerStyle={{
                     paddingBottom: 100,
                     marginTop: 15
@@ -147,8 +143,8 @@ const SelectCustomer = () => {
                   }}
                 />
               ) : (
-                <View className="flex flex-row items-center justify-center py-8">
-                  <Text className="text-xl w-full text-center" style={{ color: typography }}>No hay resultados</Text>
+                <View className='flex flex-row items-center justify-center py-8'>
+                  <Text className='text-xl w-full text-center' style={{ color: typography }}>No hay resultados</Text>
                 </View>
               )}
             </View>

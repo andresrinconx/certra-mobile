@@ -1,9 +1,9 @@
-import { createContext, useState, useEffect } from "react"
-import UserFromUsuarioInterface from "../interfaces/UserFromUsuarioInterface"
-import UserFromScliInterface from "../interfaces/UserFromScliInterface"
-import { setDataStorage } from "../utils/asyncStorage"
-import { fetchTableData } from "../utils/api"
-import { ThemeColorsInterface } from "../interfaces/ThemeColorsInterface"
+import { createContext, useState, useEffect } from 'react'
+import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
+import UserFromScliInterface from '../interfaces/UserFromScliInterface'
+import { setDataStorage } from '../utils/asyncStorage'
+import { fetchTableData } from '../utils/api'
+import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
 
 const LoginContext = createContext<{
   login: boolean
@@ -23,9 +23,9 @@ const LoginContext = createContext<{
 }>({
   login: false,
   setLogin: () => { },
-  user: "",
+  user: '',
   setUser: () => { },
-  password: "",
+  password: '',
   setPassword: () => { },
   myUser: { },
   setMyUser: () => { },
@@ -34,60 +34,66 @@ const LoginContext = createContext<{
   usersFromUsuario: [],
   usersFromScli: [],
   themeColors: {
-    primary: "",
-    backgrund: "",
-    charge: "",
-    list: "",
-    lightList: "",
-    turquoise: "",
-    darkTurquoise: "",
-    green: "",
-    blue: "",
-    icon: "",
-    typography: "",
-    processBtn: ""
+    primary: '',
+    backgrund: '',
+    charge: '',
+    list: '',
+    lightList: '',
+    turquoise: '',
+    darkTurquoise: '',
+    green: '',
+    blue: '',
+    icon: '',
+    typography: '',
+    processBtn: ''
   },
   setThemeColors: () => { },
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
-  // user
-  const [login, setLogin] = useState(false) // go to login or go to home
+  // USER
+  const [login, setLogin] = useState(false)
   const [myUser, setMyUser] = useState<any>({
-    from: "",
+    from: '',
   })
-  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({ // 0 = Usuario, 1 = Scli
-    primary: "",
-    backgrund: "",
-    charge: "",
-    list: "",
-    lightList: "",
-    turquoise: "",
-    darkTurquoise: "",
-    green: "",
-    blue: "",
-    icon: "",
-    typography: "",
-    processBtn: "",
+  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
+    primary: '',
+    backgrund: '',
+    charge: '',
+    list: '',
+    lightList: '',
+    turquoise: '',
+    darkTurquoise: '',
+    green: '',
+    blue: '',
+    icon: '',
+    typography: '',
+    processBtn: '',
   })
-  // api
-  const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) // espera que usersFromUsuario sea un arreglo de objetos UserFromUsuarioInterface
+
+  // API
+  const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) 
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
-  // inputs
-  const [user, setUser] = useState("")
-  const [password, setPassword] = useState("")
-  // loaders
+
+  // INPUTS
+  const [user, setUser] = useState('')
+  const [password, setPassword] = useState('')
+
+  // LOADERS
   const [loaders, setLoaders] = useState({
     loadingAuth: false,
   })
 
-  // ---- STORAGE
-  // add myUser storage
+  // -----------------------------------------------
+  // STORAGE
+  // -----------------------------------------------
+
+  // Add myUser storage
   useEffect(() => {
     if (myUser.from) {
       const setMyUserStorage = async () => {
         try {
-          await setDataStorage("myUser", myUser)
+          await setDataStorage('myUser', myUser)
         } catch (error) {
           console.log(error)
         }
@@ -96,13 +102,16 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [myUser])
 
-  // ----- API
-  // get usersFromUsuario & usersFromScli
+  // -----------------------------------------------
+  // API
+  // -----------------------------------------------
+  
+  // Get usersFromUsuario & usersFromScli
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const dataUsuario = fetchTableData("usuario")
-        const dataScli = fetchTableData("scli")
+        const dataUsuario = fetchTableData('usuario')
+        const dataScli = fetchTableData('scli')
         const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
         setUsersFromUsuario(usuario)
         setUsersFromScli(scli)

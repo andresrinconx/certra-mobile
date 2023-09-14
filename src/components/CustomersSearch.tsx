@@ -1,14 +1,12 @@
-import { Text, TouchableOpacity, View } from "react-native"
-import UserFromScliInterface from "../interfaces/UserFromScliInterface"
-import useLogin from "../hooks/useLogin"
-import useInv from "../hooks/useInv"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import { Text, TouchableOpacity, View } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import UserFromScliInterface from '../interfaces/UserFromScliInterface'
+import useLogin from '../hooks/useLogin'
+import useInv from '../hooks/useInv'
 
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
-  // theme
-  const { themeColors: { charge, typography } } = useLogin()
 
-  const { setMyUser, myUser } = useLogin()
+  const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin() // theme
   const { flowControl, setFlowControl, setProductsCart, loaders, setLoaders, getProducts } = useInv()
   const { cliente, nombre } = customer
 
@@ -37,14 +35,14 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   }
 
   return (
-    <TouchableOpacity className="flex flex-col justify-center h-12 mb-4 rounded-xl" style={{ backgroundColor: charge }}
+    <TouchableOpacity className='flex flex-col justify-center h-12 mb-4 rounded-xl' style={{ backgroundColor: charge }}
       onPress={() => selectCustomer()}
     >
-      <View className="flex flex-row items-center">
-        <Text className="px-4 font-extrabold text-sm" style={{ fontSize: wp(4), color: typography }}>
+      <View className='flex flex-row items-center'>
+        <Text className='px-4 font-extrabold text-sm' style={{ fontSize: wp(4), color: typography }}>
           {cliente}
         </Text>
-        <Text className="font-normal" style={{ fontSize: wp(4), color: typography, width: wp(60) }} numberOfLines={1}>
+        <Text className='font-normal' style={{ fontSize: wp(4), color: typography, width: wp(60) }} numberOfLines={1}>
           {nombre}
         </Text>
       </View>
