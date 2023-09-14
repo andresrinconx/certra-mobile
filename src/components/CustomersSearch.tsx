@@ -9,7 +9,7 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   const { themeColors: { charge, typography } } = useLogin()
 
   const { setMyUser, myUser } = useLogin()
-  const { flowControl, setFlowControl, setProductsCart, loaders, setLoaders, getProducts, setSearchedCustomers } = useInv()
+  const { flowControl, setFlowControl, setProductsCart, loaders, setLoaders, getProducts } = useInv()
   const { cliente, nombre } = customer
 
   // select customer
@@ -33,7 +33,6 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
     setTimeout(() => {
       getProducts()
       setLoaders({ ...loaders, loadingSlectedCustomer: false })
-      setSearchedCustomers([])
     }, 300)
   }
 

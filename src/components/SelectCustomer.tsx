@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { View, Text, TextInput, Keyboard, FlatList, Image } from "react-native"
 import useInv from "../hooks/useInv"
 import CustomersSearch from "./CustomersSearch"
@@ -12,7 +12,10 @@ const SelectCustomer = () => {
   // theme & styles
   const { themeColors: { list, typography, primary } } = useLogin()
 
-  const { searchedCustomers, setSearchedCustomers, flowControl, setFlowControl } = useInv()
+  // state
+  const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
+
+  const { flowControl, setFlowControl } = useInv()
   const { myUser, usersFromScli } = useLogin()
   const textInputRef = useRef<TextInput | null>(null)
 

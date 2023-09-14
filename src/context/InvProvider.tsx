@@ -12,10 +12,6 @@ const InvContext = createContext<{
   setProductsCart: (productsCart: ProductoInterface[]) => void
   products: ProductoInterface[]
   setProducts: (products: ProductoInterface[]) => void
-  searchedProducts: ProductoInterface[]
-  setSearchedProducts: (searchedProducts: ProductoInterface[]) => void
-  searchedCustomers: UserFromScliInterface[]
-  setSearchedCustomers: (searchedCustomers: UserFromScliInterface[]) => void
   flowControl: {
     showProducts: boolean
     showSelectCustomer: boolean
@@ -64,10 +60,6 @@ const InvContext = createContext<{
   setProductsCart: () => { },
   products: [],
   setProducts: () => { },
-  searchedProducts: [],
-  setSearchedProducts: () => { },
-  searchedCustomers: [],
-  setSearchedCustomers: () => { },
   flowControl: {
     showProducts: false,
     showSelectCustomer: false,
@@ -122,10 +114,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
   const [subtotal, setSubtotal] = useState("")
   const [total, setTotal] = useState("")
-
-  // search
-  const [searchedProducts, setSearchedProducts] = useState<ProductoInterface[]>([])
-  const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
 
   // layout
   const [flowControl, setFlowControl] = useState({
@@ -318,10 +306,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setProductsCart,
       products,
       setProducts,
-      searchedProducts,
-      setSearchedProducts,
-      searchedCustomers,
-      setSearchedCustomers,
       flowControl,
       setFlowControl,
       loaders,

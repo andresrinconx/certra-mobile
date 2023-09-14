@@ -20,7 +20,7 @@ const Home = () => {
   // theme
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
   
-  const { products, loaders, getProducts, flowControl, searchedProducts, setSearchedProducts } = useInv()
+  const { products, loaders, getProducts, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
   
   // ACTIONS
@@ -28,12 +28,6 @@ const Home = () => {
   useEffect(() => {
     if (products?.length === 0) {
       getProducts()
-    }
-  }, [])
-  // reset searched products
-  useEffect(() => {
-    if (searchedProducts?.length !== 0) {
-      setSearchedProducts([])
     }
   }, [])
 
