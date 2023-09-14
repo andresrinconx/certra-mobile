@@ -1,7 +1,6 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, Text } from "react-native"
 import ProductsSearch from "../components/ProductsSearch"
-import { items } from "../utils/constants"
 import useInv from "../hooks/useInv"
 import { fetchSearchedItems } from "../utils/api"
 import { useNavigation } from "@react-navigation/native"
@@ -13,11 +12,15 @@ import { formatText } from "../utils/helpers"
 import IconCart from "../components/IconCart"
 import ProductoInterface from "../interfaces/ProductoInterface"
 
+
 const Search = () => {
   // theme
   const { themeColors: { backgrund, typography, primary, list } } = useLogin()
 
-  const { searchedProducts, setSearchedProducts, productsCart } = useInv()
+  // state
+  const [searchedProducts, setSearchedProducts] = useState([])
+
+  const { productsCart } = useInv()
   const { myUser } = useLogin()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
