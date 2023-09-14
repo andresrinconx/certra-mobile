@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { View, Text, FlatList, BackHandler, Keyboard } from "react-native"
 import IconCart from "../components/IconCart"
 import IconLogOut from "../components/IconLogOut"
@@ -19,11 +19,8 @@ import Logos from "../components/Logos"
 const Home = () => {
   // theme
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
-
-  // state
-  const [loadingMoreProducts, setLoadingMoreProducts] = useState(false)
   
-  const { products, loaders, getProducts, flowControl } = useInv()
+  const { products, loaders, getProducts, flowControl, setCurrentPage, currentPage } = useInv()
   const { myUser: { image_url } } = useLogin()
   
   // ACTIONS
@@ -52,8 +49,12 @@ const Home = () => {
 
   // SCROLL
   const loadMoreItems = () => {
-    setLoadingMoreProducts(true)
+    setCurrentPage(currentPage + 1);
   }
+
+  useEffect(() => {
+    getProducts()
+  }, [currentPage])
 
   return (
     <>
@@ -75,14 +76,14 @@ const Home = () => {
                 <SelectCustomer />
                 {flowControl?.showProducts && !flowControl?.showSelectResults ? (
 
-                  loaders.loadingProducts ? (
+                  loaders?.loadingProducts ? (
                     <View className="h-full">
                       <View className="flex-1 justify-center items-center">
                         <FlatList
                           data={items}
                           numColumns={2}
                           contentContainerStyle={{
-                            paddingBottom: 135,
+                            paddingBottom: 30,
                             marginTop: 15
                           }}
                           showsVerticalScrollIndicator={false}
@@ -103,13 +104,8 @@ const Home = () => {
                           onScroll={handleScroll}
                           numColumns={2}
                           contentContainerStyle={{
-                            paddingBottom: 200,
+                            paddingBottom: 20,
                             marginTop: 15
-                          }}
-                          renderItem={({ item }) => {
-                          return (
-                            <ProductsGrid key={item.id} product={item} />
-                            )
                           }}
                           showsVerticalScrollIndicator={false}
                           overScrollMode="never"
@@ -121,13 +117,18 @@ const Home = () => {
                             </View>
                           )}
                           ListFooterComponent={() => (
-                              <View className='flex-1'>
-                                <Loader color={primary} />
+                              <View>
+                                <Loader size={40} color={primary} />
                               </View>
                             )
                           }
+                          renderItem={({ item }) => {
+                            return (
+                              <ProductsGrid key={item.id} product={item} />
+                            )
+                          }}
                           onEndReached={loadMoreItems}
-                          // onEndReachedThreshold={0}
+                          onEndReachedThreshold={0}
                         />
                       </View>
                     </View>

@@ -55,6 +55,8 @@ const InvContext = createContext<{
   processOrder: (myUser: any) => void
   order: OrderInterface
   getProducts: () => void
+  currentPage: number
+  setCurrentPage: (currentPage: number) => void
 }>({
   productsCart: [],
   setProductsCart: () => { },
@@ -72,7 +74,7 @@ const InvContext = createContext<{
   },
   setFlowControl: () => { },
   loaders: {
-    loadingProducts: false,
+    loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
@@ -95,7 +97,9 @@ const InvContext = createContext<{
     subtotal: "",
     total: "",
   },
-  getProducts: () => { }
+  getProducts: () => { },
+  currentPage: 1,
+  setCurrentPage: () => { },
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -130,7 +134,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // loaders
   const [loaders, setLoaders] = useState({
-    loadingProducts: false,
+    loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
@@ -169,38 +173,48 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // ----- API
   // get products api
   const getProducts = async () => {
-    setLoaders({ ...loaders, loadingProducts: true })
-
     try {
       let data: ProductoInterface[] = [];
 
       // fetch data
       if (myUser.from === "scli" || myUser.from === "usuario") {
-        data = await fetchTableData("sinv");
+        data = await fetchSearchedItems({ table: "sinv", searchTerm: currentPage.toString() })
+
       } else if(myUser.from === "usuario-clipro") {
-        data = await fetchSearchedItems({ searchTerm: myUser?.clipro, table: "searchclipr" })
+        data = await fetchSearchedItems({ table: "searchclipr", searchTerm: `${myUser?.clipro}/${currentPage}` })
+
       }
 
-      // Add properties to each producto
-      const products = data?.map((product: ProductoInterface) => ({
-        ...product,
-        agregado: false,
-        cantidad: 1,
-      }))
-
-      // fail api
-      if (products?.length !== 0) {
-        setProducts(products)
+      if (data.length > 0) {
+        setProducts([ ...products, ...data ])
         setLoaders({ ...loaders, loadingProducts: false })
       }
+      // setProducts([ ...products, ...data ])
+
+      // if (data.length > 0) {
+      //   setLoaders({ ...loaders, loadingProducts: false })
+      // }
+      // Add properties to each producto
+      // const products = data?.map((product: ProductoInterface) => ({
+      //   ...product,
+      //   agregado: false,
+      //   cantidad: 1,
+      // }))
+
+
+      // fail api
+      // if (products?.length !== 0) {
+      //   setProducts([ ...products, ...data ])
+      //   setLoaders({ ...loaders, loadingProducts: false })
+      // }
       
       // slow api
-      setTimeout(() => {
-        if (products?.length !== 0) {
-          setProducts(products)
-          setLoaders({ ...loaders, loadingProducts: false })
-        }
-      }, 3000);
+      // setTimeout(() => {
+      //   if (products?.length !== 0) {
+      //     setProducts([ ...products, ...data ])
+      //     setLoaders({ ...loaders, loadingProducts: false })
+      //   }
+      // }, 3000);
     } catch (error) {
       console.log(error)
     }
@@ -323,7 +337,9 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       addToCart,
       processOrder,
       order,
-      getProducts
+      getProducts,
+      currentPage,
+      setCurrentPage
     }}>
       {children}
     </InvContext.Provider>
