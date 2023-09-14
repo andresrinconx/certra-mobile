@@ -189,32 +189,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         setProducts([ ...products, ...data ])
         setLoaders({ ...loaders, loadingProducts: false })
       }
-      // setProducts([ ...products, ...data ])
-
-      // if (data.length > 0) {
-      //   setLoaders({ ...loaders, loadingProducts: false })
-      // }
+      
       // Add properties to each producto
       // const products = data?.map((product: ProductoInterface) => ({
       //   ...product,
       //   agregado: false,
       //   cantidad: 1,
       // }))
-
-
-      // fail api
-      // if (products?.length !== 0) {
-      //   setProducts([ ...products, ...data ])
-      //   setLoaders({ ...loaders, loadingProducts: false })
-      // }
-      
-      // slow api
-      // setTimeout(() => {
-      //   if (products?.length !== 0) {
-      //     setProducts([ ...products, ...data ])
-      //     setLoaders({ ...loaders, loadingProducts: false })
-      //   }
-      // }, 3000);
     } catch (error) {
       console.log(error)
     }
