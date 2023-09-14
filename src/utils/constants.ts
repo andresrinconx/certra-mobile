@@ -49,21 +49,6 @@ export const disponibility = [
   },
 ]
 
-export const profileFields = {
-  main: [
-    {
-      id: 1,
-      name: "RIF",
-      data: ''
-    }
-  ],
-  representant: [
-    {
-
-    }
-  ]
-}
-
 export const days = [
   {
     id: 1,
