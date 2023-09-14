@@ -46,69 +46,89 @@ const Profile = () => {
   const groups = [
     // main info
     {
-      name: myUser.from === 'scli'           ? dataConfig?.nombre : 
-            myUser.from === 'usuario'        ? `${dataConfig?.nombre} ${dataConfig?.apellido}` :
-            myUser.from === 'usuario-clipro' ? dataConfig?.nombre : null,
+      name: 
+        myUser.from === 'scli'           ? dataConfig?.nombre : 
+        myUser.from === 'usuario'        ? `${dataConfig?.nombre} ${dataConfig?.apellido}` :
+        myUser.from === 'usuario-clipro' ? dataConfig?.nombre : null,
 
-      subname: myUser.from === 'scli'           ? `Código: ${dataConfig?.cliente}` : 
-               myUser.from === 'usuario'        ? ''                               :
-               myUser.from === 'usuario-clipro' ? `Código: ${dataConfig?.proveed}` : null,
+      subname: 
+        myUser.from === 'scli'           ? `Código: ${dataConfig?.cliente}` : 
+        myUser.from === 'usuario'        ? ''                               :
+        myUser.from === 'usuario-clipro' ? `Código: ${dataConfig?.proveed}` : null,
+
       fields: [
         { 
-          label: myUser.from === 'scli'           ? 'RIF'    :
-                 myUser.from === 'usuario'        ? 'Cédula' :
-                 myUser.from === 'usuario-clipro' ? 'RIF'    : null,
-          
-          value: myUser.from === 'scli'           ? dataConfig?.rifci  : 
-                 myUser.from === 'usuario'        ? dataConfig?.cedula :
-                 myUser.from === 'usuario-clipro' ? dataConfig?.rif    : null,
+          label: 'RIF',
+          value: 
+            myUser.from === 'scli'           ? dataConfig?.rifci  : 
+            myUser.from === 'usuario'        ? dataConfig?.rif    :
+            myUser.from === 'usuario-clipro' ? dataConfig?.rif    : null,
+        },
+        { 
+          label: 
+            myUser.from === 'scli'           ? ''       :
+            myUser.from === 'usuario'        ? 'Cédula' :
+            myUser.from === 'usuario-clipro' ? ''       : null,
+
+          value: 
+            myUser.from === 'scli'           ? '' : 
+            myUser.from === 'usuario'        ? dataConfig?.cedula :
+            myUser.from === 'usuario-clipro' ? '' : null,
         },
         { 
           label: 'Correo', 
-          value: myUser.from === 'scli'           ? dataConfig?.email  : 
-                 myUser.from === 'usuario'        ? dataConfig?.email  :
-                 myUser.from === 'usuario-clipro' ? dataConfig?.emailc : null,
+          value: 
+            myUser.from === 'scli'           ? dataConfig?.email  : 
+            myUser.from === 'usuario'        ? dataConfig?.email  :
+            myUser.from === 'usuario-clipro' ? dataConfig?.emailc : null,
         },
         { 
           label: 'Teléfono', 
-          value: myUser.from === 'scli'           ? dataConfig?.telefono : 
-                 myUser.from === 'usuario'        ? dataConfig?.telefono :
-                 myUser.from === 'usuario-clipro' ? dataConfig?.telefono : null,
+          value: 
+            myUser.from === 'scli'           ? dataConfig?.telefono : 
+            myUser.from === 'usuario'        ? dataConfig?.telefono :
+            myUser.from === 'usuario-clipro' ? dataConfig?.telefono : null,
         },
         { 
-          label: myUser.from === 'scli'           ? 'Aniversario' :
-                 myUser.from === 'usuario'        ? 'Cumpleaños'  :
-                 myUser.from === 'usuario-clipro' ? 'Aniversario' : null,
+          label: 
+            myUser.from === 'scli'           ? 'Aniversario' :
+            myUser.from === 'usuario'        ? 'Cumpleaños'  :
+            myUser.from === 'usuario-clipro' ? 'Aniversario' : null,
 
-          value: myUser.from === 'scli'           ? dataConfig?.aniversario : 
-                 myUser.from === 'usuario'        ? dataConfig?.nacimi      :
-                 myUser.from === 'usuario-clipro' ? dataConfig?.aniversario : null,
+          value: 
+            myUser.from === 'scli'           ? dataConfig?.aniversario : 
+            myUser.from === 'usuario'        ? dataConfig?.nacimi      :
+            myUser.from === 'usuario-clipro' ? dataConfig?.aniversario : null,
         },
         { 
           label: 'Ubicación', 
-          value: myUser.from === 'scli'           ? dataConfig?.dire11 : 
-                 myUser.from === 'usuario'        ? dataConfig?.direc1 :
-                 myUser.from === 'usuario-clipro' ? dataConfig?.direc1 : null,
+          value: 
+            myUser.from === 'scli'           ? dataConfig?.dire11 : 
+            myUser.from === 'usuario'        ? dataConfig?.direc1 :
+            myUser.from === 'usuario-clipro' ? dataConfig?.direc1 : null,
         },
       ],
     },
     // extra info
     {
-      name: myUser.from === 'scli'           ? 'Datos del representante' : 
-            myUser.from === 'usuario'        ? ''                 :
-            myUser.from === 'usuario-clipro' ? 'Datos del representante' : null,
+      name: 
+        myUser.from === 'scli'           ? 'Datos del representante' : 
+        myUser.from === 'usuario'        ? ''                        :
+        myUser.from === 'usuario-clipro' ? 'Datos del representante' : null,
             
       subname: '',
       fields: [
         { 
           label: 'Nombre', 
-          value: myUser.from === 'scli'           ? dataConfig?.contacto : 
-                 myUser.from === 'usuario-clipro' ? dataConfig?.us_nombre : null,
+          value: 
+            myUser.from === 'scli'           ? dataConfig?.contacto  : 
+            myUser.from === 'usuario-clipro' ? dataConfig?.us_nombre : null,
         },
         { 
           label: 'Teléfono', 
-          value: myUser.from === 'scli'           ? dataConfig?.telefon2 : 
-                 myUser.from === 'usuario-clipro' ? dataConfig?.telefon2 : null,
+          value: 
+            myUser.from === 'scli'           ? dataConfig?.telefon2 : 
+            myUser.from === 'usuario-clipro' ? dataConfig?.telefon2 : null,
         },
       ]
     }
