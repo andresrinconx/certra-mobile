@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { View, Text, FlatList, BackHandler, Keyboard } from "react-native"
 import IconCart from "../components/IconCart"
 import IconLogOut from "../components/IconLogOut"
@@ -19,6 +19,9 @@ import Logos from "../components/Logos"
 const Home = () => {
   // theme
   const { themeColors: { primary, backgrund, green, typography } } = useLogin()
+
+  // state
+  const [loadingMoreProducts, setLoadingMoreProducts] = useState(false)
   
   const { products, loaders, getProducts, flowControl } = useInv()
   const { myUser: { image_url } } = useLogin()
@@ -45,6 +48,11 @@ const Home = () => {
   const handleScroll = () => {
     // Cerrar el teclado
     Keyboard.dismiss()
+  }
+
+  // SCROLL
+  const loadMoreItems = () => {
+    setLoadingMoreProducts(true)
   }
 
   return (
@@ -91,13 +99,6 @@ const Home = () => {
                     <View className="h-full">
                       <View className="flex-1 justify-center">
                         <FlatList
-                          ListHeaderComponent={() => (
-                            <View className="mb-2">
-                              <Text className="font-bold" style={{ fontSize: wp(4.5), color: typography }}>
-                                Productos
-                              </Text>
-                            </View>
-                          )}
                           data={products}
                           onScroll={handleScroll}
                           numColumns={2}
@@ -105,13 +106,28 @@ const Home = () => {
                             paddingBottom: 200,
                             marginTop: 15
                           }}
-                          showsVerticalScrollIndicator={false}
-                          overScrollMode="never"
                           renderItem={({ item }) => {
-                            return (
-                              <ProductsGrid key={item.id} product={item} />
+                          return (
+                            <ProductsGrid key={item.id} product={item} />
                             )
                           }}
+                          showsVerticalScrollIndicator={false}
+                          overScrollMode="never"
+                          ListHeaderComponent={() => (
+                            <View className="mb-2">
+                              <Text className="font-bold" style={{ fontSize: wp(4.5), color: typography }}>
+                                Productos
+                              </Text>
+                            </View>
+                          )}
+                          ListFooterComponent={() => (
+                              <View className='flex-1'>
+                                <Loader color={primary} />
+                              </View>
+                            )
+                          }
+                          onEndReached={loadMoreItems}
+                          // onEndReachedThreshold={0}
                         />
                       </View>
                     </View>

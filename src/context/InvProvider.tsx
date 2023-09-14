@@ -72,7 +72,7 @@ const InvContext = createContext<{
   },
   setFlowControl: () => { },
   loaders: {
-    loadingProducts: true,
+    loadingProducts: false,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
@@ -101,6 +101,7 @@ const InvContext = createContext<{
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // products
   const [products, setProducts] = useState<ProductoInterface[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
 
   // order & cart
   const [order, setOrder] = useState<OrderInterface>({
@@ -129,7 +130,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // loaders
   const [loaders, setLoaders] = useState({
-    loadingProducts: true,
+    loadingProducts: false,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
@@ -168,6 +169,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // ----- API
   // get products api
   const getProducts = async () => {
+    setLoaders({ ...loaders, loadingProducts: true })
+
     try {
       let data: ProductoInterface[] = [];
 
