@@ -49,13 +49,11 @@ const SelectCustomer = () => {
         selected: false
       })
 
-      // fetching...
+      // filter data
       const data = usersFromScli?.filter(
         (user: UserFromScliInterface) => 
-          user.nombre.toLowerCase()
-            .includes(formatText(valueSearchCustomers.toLowerCase())) ||
-          user.cliente.toLowerCase()
-          .includes(valueSearchCustomers.toLowerCase())
+          user.nombre.toLowerCase().includes(formatText(valueSearchCustomers.toLowerCase())) || // search by name
+          user.cliente.toLowerCase().includes(valueSearchCustomers.toLowerCase()) // search by number
       )
       setSearchedCustomers(data)
     } else {
@@ -115,7 +113,7 @@ const SelectCustomer = () => {
               />
 
               <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
-                <TextInput className="w-full pl-3" style={{ color: typography, fontSize: wp(4), fontWeight: '200' }}
+                <TextInput className="w-full pl-3" style={{ color: typography, fontSize: wp(4), fontWeight: '300' }}
                   placeholder="Buscar un cliente"
                   placeholderTextColor={typography}
                   onChangeText={handleSearch}

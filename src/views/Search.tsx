@@ -18,7 +18,7 @@ const Search = () => {
   // theme
   const { themeColors: { backgrund, typography, primary, list } } = useLogin()
 
-  const { searchedProducts, loaders, setLoaders, setSearchedProducts, productsCart, products } = useInv()
+  const { searchedProducts, setSearchedProducts, productsCart, products } = useInv()
   const { myUser } = useLogin()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
@@ -34,35 +34,29 @@ const Search = () => {
     Keyboard.dismiss()
   }
 
-  // search
+  // SEARCH
   const handleSearch = async (value: string) => {
     if (value.length > 2) {
-      // setLoaders({ ...loaders, loadingSearchedItems: true })
+      // search
       
       let data: ProductoInterface[] = [];
 
       // fetch data
-      if (myUser.from === "scli" || myUser.from === "usuario") {
-        data = await fetchSearchedItems({ searchTerm: formatText(value), table: "search" }) // search = sinv
-      } else if(myUser.from === "usuario-clipro") {
-        data = products?.filter((product: ProductoInterface) => product.descrip.toLowerCase().includes(value.toLocaleLowerCase()))
-        setSearchedProducts(data)
+      if (myUser.from === "scli" || myUser.from === "usuario") { // all products (scli & usuario)
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: "search" })
 
-        setTimeout(() => {
-          // setLoaders({ ...loaders, loadingSearchedItems: false })
-        }, 500);
-        return
+      } else if(myUser.from === "usuario-clipro") { // products by lab (usuario-clipro)
+        data = products?.filter((product: ProductoInterface) => product.descrip.toLowerCase().includes(value.toLocaleLowerCase()))
       }
-      
+
       setSearchedProducts(data)
-      // setLoaders({ ...loaders, loadingSearchedItems: false })
     } else {
+      // no search
       setSearchedProducts([])
-      // setLoaders({ ...loaders, loadingSearchedItems: false })
     }
   }
 
-  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
+  const handleTextDebounce = debounce(handleSearch, 600)
 
   return (
     <View className="flex-1 h-full pt-10" style={{ backgroundColor: backgrund }}>
