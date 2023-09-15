@@ -83,6 +83,7 @@ const Products = () => {
                   )
                 }}
                 onEndReached={loadMoreItems}
+                onEndReachedThreshold={0.1}
               />
             </View>
           </View>

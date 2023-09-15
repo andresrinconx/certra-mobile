@@ -74,7 +74,7 @@ const Cart = () => {
     }
 
     getFullProductsCart()
-  }, [])
+  }, [productsCart])
 
   // Clear cart
   const clearCart = () => {
@@ -82,21 +82,6 @@ const Cart = () => {
     setProductsCart([])
   }
   
-  const handleProcess = () => {
-    setLoaders({ ...loaders, loadingConfirmOrder: true })
-    processOrder(myUser)
-    
-    // close process alert
-    setTimeout(() => {
-      setAlertProcessOrder(false)
-
-      // show success alert
-      setTimeout(() => {
-        setAlertSuccessOrder(true)
-      }, 500)
-    }, 2500)
-  }
-
   // -----------------------------------------------
   // ORDER
   // -----------------------------------------------
@@ -124,10 +109,12 @@ const Cart = () => {
     }
     sendOrder()
   }, [order])
-
+  
   // Process order
-  const processOrder = async (myUser: any) => {
-    // order data
+  const handleProcess = () => {
+    setLoaders({ ...loaders, loadingConfirmOrder: true })
+
+    // order
     setOrder({
       ...order,
       date: getDate(new Date()),
@@ -151,6 +138,16 @@ const Cart = () => {
       subtotal: String(subtotal),
       total: String(total),
     })
+    
+    // close process alert
+    setTimeout(() => {
+      setAlertProcessOrder(false)
+
+      // show success alert
+      setTimeout(() => {
+        setAlertSuccessOrder(true)
+      }, 500)
+    }, 2500)
   }
 
   return (
@@ -159,7 +156,7 @@ const Cart = () => {
         <StatusBar style='dark' />
 
         {/* content */}
-        <View className='h-full'>
+        <View className='h-full px-3'>
           
           <Logos image={image_url} />
 
@@ -212,7 +209,7 @@ const Cart = () => {
                   numColumns={1}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ 
-                    paddingBottom: 200,
+                    paddingBottom: 300,
                     marginTop: 15 
                   }}
                   overScrollMode='never'
@@ -230,7 +227,7 @@ const Cart = () => {
       </View>
 
       {/* process order */}
-      <View className='flex flex-col justify-center h-32 w-[100%] bottom-1.5 absolute border-t-[0.5px] border-t-[#999999]'>
+      <View className='flex flex-col justify-center h-32 w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'>
         <View className='flex flex-col justify-center h-full w-[92%]'
           style={{ backgroundColor: backgrund, borderTopColor: icon, marginLeft: 16 }}
         >
