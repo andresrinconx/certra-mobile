@@ -1,15 +1,23 @@
 import axios from 'axios'
 import { OrderInterface } from '../interfaces/OrderInterface'
 
-// ----- GET
+// -----------------------------------------------
+// ENDPOINTS
+// -----------------------------------------------
+
+// GET
 const tableDataEndpoint = (table: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}`
 const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.searchTerm}`
 const userDataEndpoint = (params: { code: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.code}`
 
-// ----- POST
+// POST
 const sendDataEndpoint = () => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/pedidoguardar`
 
-// get all data from a table
+// -----------------------------------------------
+// FUNCTIONS
+// -----------------------------------------------
+
+// Get all data from a table
 export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table)
   try {
@@ -21,7 +29,7 @@ export const fetchTableData = async (table: string) => {
   }
 }
 
-// get all data from a table that matches a search term
+// Get all data from a table that matches a search term
 export const fetchSearchedItems = async (params: { searchTerm: string, table: string }) => {
   const searchedItemsUrl = searchedItemsEndpoint(params)
   try {
@@ -33,7 +41,7 @@ export const fetchSearchedItems = async (params: { searchTerm: string, table: st
   }
 }
 
-// get all info from a user
+// Get all info from a user
 export const fetchUserData = async (params: { code: string, table: string }) => {
   const userDataUrl = userDataEndpoint(params)
   try {
@@ -45,11 +53,10 @@ export const fetchUserData = async (params: { code: string, table: string }) => 
   }
 }
 
-// send a order to the server
+// Send a order to the server
 export const sendData = async (order: OrderInterface) => {
   const sendDataUrl = sendDataEndpoint()
   try {
-    // axios
     console.log(order)
     const response = await axios.post(sendDataUrl, order, {
       headers: {

@@ -183,11 +183,9 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
       // fetch data
       if (myUser.from === 'scli' || myUser.from === 'usuario') {
-        console.log('1' + ' ' + currentPage)
         data = await fetchSearchedItems({ table: 'sinv', searchTerm: String(currentPage) })
 
       } else if(myUser.from === 'usuario-clipro') {
-        console.log('2' + ' ' + currentPage)
         data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
 
       }
