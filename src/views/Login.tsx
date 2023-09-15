@@ -177,7 +177,7 @@ const Login = () => {
             {/* username */}
             <View>
               <View className='flex-row items-center rounded-2xl py-4 bg-white'>
-                <TextInput className='w-full pl-5 font-bold' style={{ fontSize: wp(4.5) }}
+                <TextInput className='w-full pl-5 font-semibold' style={{ fontSize: wp(4.5), color: '#666666' }}
                   ref={textInputRefUser}
                   placeholder='Usuario'
                   placeholderTextColor='#666666'
@@ -197,7 +197,7 @@ const Login = () => {
             {/* password */}
             <View>
               <View className='flex-row items-center rounded-2xl py-4 bg-white'>
-                <TextInput className='w-full pl-5 font-bold' style={{ fontSize: wp(4.5) }}
+                <TextInput className='w-full pl-5 font-semibold' style={{ fontSize: wp(4.5), color: '#666666' }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder='Contraseña'

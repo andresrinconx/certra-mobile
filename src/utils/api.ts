@@ -7,6 +7,7 @@ import { OrderInterface } from '../interfaces/OrderInterface'
 
 // GET
 const tableDataEndpoint = (table: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}`
+const searchOneItemEndpoint = (table: string, code: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}/${code}`
 const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.searchTerm}`
 const userDataEndpoint = (params: { code: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.code}`
 
@@ -22,6 +23,18 @@ export const fetchTableData = async (table: string) => {
   const generalEndpointUrl = tableDataEndpoint(table)
   try {
     const response = await fetch(generalEndpointUrl)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// Get one item from a table that matches a code
+export const fetchOneItem = async (table: string, code: string) => {
+  const oneItemEndpointUrl = searchOneItemEndpoint(table, code)
+  try {
+    const response = await fetch(oneItemEndpointUrl)
     const result = await response.json()
     return result
   } catch (error) {

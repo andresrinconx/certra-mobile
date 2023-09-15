@@ -11,9 +11,12 @@ import Loader from '../components/Loader'
 import Logos from '../components/Logos'
 import LabelCustomer from '../components/LabelCustomer'
 import BackScreen from '../components/BackScreen'
+import { fetchOneItem } from '../utils/api'
 
 const Cart = () => {
+  const [fullProductsCart, setFullProductsCart] = useState([])
   const [loadingCart, setLoadingCart] = useState(true)
+
   const [alertClearCart, setAlertClearCart] = useState(false)
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
@@ -24,13 +27,36 @@ const Cart = () => {
   const navigation = useNavigation()
   const { image_url } = myUser
 
+  // useEffect(() => {
+  //   const load = () => {
+  //     setTimeout(() => {
+  //       setLoadingCart(false)
+  //     }, 200)
+  //   }
+  //   load()
+  // }, [])
+
+  // Get full products cart
   useEffect(() => {
-    const load = () => {
-      setTimeout(() => {
-        setLoadingCart(false)
-      }, 200)
+    const getFullProductsCart = async () => {
+      const newFullProductsCart = []
+  
+      for (let i = 0; i < productsCart.length; i++) {
+        const code = productsCart[i].codigo
+  
+        // get product api
+        const res = await fetchOneItem('searchC', code)
+        newFullProductsCart.push(res[0])
+  
+        // last item
+        if (i === productsCart.length - 1) {
+          setFullProductsCart(newFullProductsCart)
+          setLoadingCart(false)
+        }
+      }
     }
-    load()
+
+    getFullProductsCart()
   }, [])
 
   // actions
@@ -38,17 +64,14 @@ const Cart = () => {
     setAlertClearCart(false)
 
     // clear
-    const updatedProducts = productsCart.filter(item => item.agregado !== true)
-    setProductsCart(updatedProducts)
+    // const updatedProducts = productsCart.filter(item => item.agregado !== true)
+    // setProductsCart(updatedProducts)
   }
-  const onCloseAlertClearCart = () => setAlertClearCart(false)
-  const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
-
-  // process order
+  
   const handleProcess = () => {
     setLoaders({ ...loaders, loadingConfirmOrder: true })
     processOrder(myUser)
-
+    
     // close process alert
     setTimeout(() => {
       setAlertProcessOrder(false)
@@ -59,6 +82,9 @@ const Cart = () => {
       }, 500)
     }, 2500)
   }
+
+  const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
+  const onCloseAlertClearCart = () => setAlertClearCart(false)
 
   return (
     <>
@@ -98,7 +124,7 @@ const Cart = () => {
               <Loader color={`${primary}`} />
             </View>
           ) : (
-            <View className='flex-1'>
+            <View className='mt-3'>
               {productsCart.length === 0 && !loadingCart ? (
                 <View className='flex flex-col items-center justify-center' style={{ height: hp(65) }}>
                   <Text className='font-extrabold text-center mt-6' style={{ color: typography, fontSize: wp(6) }}>
@@ -115,7 +141,7 @@ const Cart = () => {
                 </View>
               ) : (
                 <FlatList
-                  data={productsCart}
+                  data={fullProductsCart}
                   numColumns={1}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ 

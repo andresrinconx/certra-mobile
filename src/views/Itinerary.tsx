@@ -16,7 +16,7 @@ const Itinerary = () => {
   const [currentMonthDays, setCurrentMonthDays] = useState(0)
 
   const [itinerary, setItinerary] = useState([])
-  const [squareDays, setSetsquareDays] = useState([])
+  const [squareDays, setSquareDays] = useState([])
 
   const { themeColors: { backgrund, typography, primary }, myUser } = useLogin()
   const navigation = useNavigation()
@@ -49,7 +49,7 @@ const Itinerary = () => {
       )
     }
 
-    setSetsquareDays(newSquareDays)
+    setSquareDays(newSquareDays)
 
     setLoadingItinerary(false)
   }, [currentMonthDays])

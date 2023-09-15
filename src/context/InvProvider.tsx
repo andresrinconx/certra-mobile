@@ -7,8 +7,8 @@ import { getDate, getHour } from '../utils/helpers'
 import useLogin from '../hooks/useLogin'
 
 const InvContext = createContext<{
-  productsCart: ProductoInterface[]
-  setProductsCart: (productsCart: ProductoInterface[]) => void
+  productsCart: { codigo: string, ammount: number }[]
+  setProductsCart: (productsCart: { codigo: string, ammount: number }[]) => void
   products: ProductoInterface[]
   setProducts: (products: ProductoInterface[]) => void
   flowControl: {
@@ -50,7 +50,7 @@ const InvContext = createContext<{
   total: string
   setTotal: (total: string) => void
   removeElement: (id: number) => void
-  addToCart: (product: ProductoInterface) => void
+  addToCart: (codigo: string, ammount: number) => void
   processOrder: (myUser: any) => void
   order: OrderInterface
   getProducts: () => void
@@ -115,7 +115,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     subtotal: '',
     total: '',
   })
-  const [productsCart, setProductsCart] = useState<ProductoInterface[]>([])
+  const [productsCart, setProductsCart] = useState([]) // code and ammount
   const [subtotal, setSubtotal] = useState('')
   const [total, setTotal] = useState('')
 
@@ -224,8 +224,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   }, [productsCart])
 
   // Add to cart
-  const addToCart = (product: ProductoInterface) => {
-    setProductsCart([...productsCart, { ...product, agregado: true, cantidad: 1 }])
+  const addToCart = (codigo: string, ammount: number) => {
+    setProductsCart([ ...productsCart, {codigo, ammount} ])
   }
 
   // Increase & decrease
