@@ -4,64 +4,82 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useNavigation } from '@react-navigation/native'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { StatusBar } from 'expo-status-bar'
+import ProductoInterface from '../interfaces/ProductoInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
+import { fetchOneItem, sendData } from '../utils/api'
+import { getDate, getHour } from '../utils/helpers'
 import ProductsCart from '../components/ProductsCart'
 import Loader from '../components/Loader'
 import Logos from '../components/Logos'
 import LabelCustomer from '../components/LabelCustomer'
 import BackScreen from '../components/BackScreen'
-import { fetchOneItem } from '../utils/api'
 
 const Cart = () => {
   const [fullProductsCart, setFullProductsCart] = useState([])
+  const [subtotal, setSubtotal] = useState(0)
+  const [total, setTotal] = useState(0)
+  
   const [loadingCart, setLoadingCart] = useState(true)
-
   const [alertClearCart, setAlertClearCart] = useState(false)
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
 
   const { themeColors: { typography, backgrund, processBtn, darkTurquoise, green, icon, primary }, myUser } = useLogin()
-  const { productsCart, subtotal, total, processOrder, setProductsCart, setLoaders, loaders } = useInv()
+  const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
   const { image_url } = myUser
 
-  // useEffect(() => {
-  //   const load = () => {
-  //     setTimeout(() => {
-  //       setLoadingCart(false)
-  //     }, 200)
-  //   }
-  //   load()
-  // }, [])
+  const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
+  const onCloseAlertClearCart = () => setAlertClearCart(false)
+
+  // -----------------------------------------------
+  // ACTIONS
+  // -----------------------------------------------
 
   // Get full products cart
   useEffect(() => {
     const getFullProductsCart = async () => {
-      const newFullProductsCart = []
-  
-      for (let i = 0; i < productsCart.length; i++) {
-        const code = productsCart[i].codigo
-  
-        // get product api
-        const res = await fetchOneItem('searchC', code)
-        newFullProductsCart.push(res[0])
-  
-        // last item
-        if (i === productsCart.length - 1) {
-          setFullProductsCart(newFullProductsCart)
-          setLoadingCart(false)
+
+      if (productsCart?.length > 0) {
+        let newFullProductsCart = []
+    
+        for (let i = 0; i < productsCart.length; i++) {
+          const code = productsCart[i].codigo
+          const ammount = productsCart[i].ammount
+    
+          // get product api
+          const res = await fetchOneItem('searchC', code)
+          newFullProductsCart.push({ ...res[0], ammount })
+          
+          // last item
+          if (i === productsCart.length - 1) {
+            setFullProductsCart(newFullProductsCart)
+            setLoadingCart(false)
+          }
         }
+
+        // subtotal & total
+        const subtotal = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.ammount, 0)
+        const subtotalFormated = subtotal.toLocaleString()
+        setSubtotal(subtotalFormated)
+
+        const total = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.ammount, 0)
+        const totalFormated = total.toLocaleString()
+        setTotal(totalFormated)
+      } else {
+        setLoadingCart(false)
       }
     }
 
     getFullProductsCart()
   }, [])
 
-  // actions
+  // Clear cart
   const clearCart = () => {
     setAlertClearCart(false)
+    setProductsCart([])
 
     // clear
     // const updatedProducts = productsCart.filter(item => item.agregado !== true)
@@ -83,8 +101,62 @@ const Cart = () => {
     }, 2500)
   }
 
-  const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
-  const onCloseAlertClearCart = () => setAlertClearCart(false)
+  // -----------------------------------------------
+  // ORDER
+  // -----------------------------------------------
+
+  // Send order
+  useEffect(() => {
+    const sendOrder = async () => {
+      try {
+        if (order.productos.length !== 0) {
+          await sendData(order)
+
+          setTimeout(() => {
+            // clear cart
+            // const updatedProducts = productsCart.filter(item => item.agregado !== true)
+            setProductsCart([])
+          }, 2000)
+
+          setTimeout(() => {
+
+            setLoaders({ ...loaders, loadingConfirmOrder: false }) // loader from alert*
+          }, 3000)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    sendOrder()
+  }, [order])
+
+  // Process order
+  const processOrder = async (myUser: any) => {
+    // order data
+    setOrder({
+      ...order,
+      date: getDate(new Date()),
+      hora: getHour(new Date()),
+      cliente: (myUser.from === 'scli' ? {
+        name: myUser?.nombre,
+        code: myUser?.cliente
+      } : {
+        name: myUser.us_nombre,
+        usuario: myUser.us_codigo,
+        code: myUser?.customer?.cliente
+      }),
+      productos: fullProductsCart.map((product: ProductoInterface) => ({
+        codigo: product.codigo,
+        descrip: String(product.descrip),
+        base1: Number(product.base1),
+        precio1: Number(product.precio1),
+        iva: Number(product.iva),
+        cantidad: Number(product.cantidad)
+      })),
+      subtotal: String(subtotal),
+      total: String(total),
+    })
+  }
 
   return (
     <>

@@ -14,25 +14,35 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
 
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise } } = useLogin()
   const { addToCart, productsCart, removeElement } = useInv()
-  const { descrip, precio1, id, image_url, merida, centro, oriente, codigo } = product
+  const { descrip, precio1, image_url, merida, centro, oriente, codigo } = product
   const navigation = useNavigation()
 
-  // refresh data when cart change
+  // -----------------------------------------------
+  // ACTIONS
+  // -----------------------------------------------
+
+   // Refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
     if (productInCart !== undefined) { // product in cart
       setAdded(true)
       setAmmount(productInCart.ammount)
+    } else {
+      setAdded(false)
+      setAmmount(1)
     }
   }, [productsCart])
 
-  // actions
+  // Add or remove element from cart
   useEffect(() => {
     if (added) {
       addToCart(codigo, ammount)
+    } else {
+      removeElement(codigo)
     }
   }, [added])
 
+  // Handle actions
   const handleAddToCart = () => {
     setAdded(true)
   }
@@ -45,12 +55,31 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
     setAmmount(ammount + 1)
   }
   const handleRemoveElement = () => {
-    removeElement(id)
+    setAdded(false)
+    setAmmount(1)
   }
 
   return (
-    <View className=''>
-      <View className='h-[98%] mb-3 mr-2 p-2 rounded-2xl' style={{ backgroundColor: lightList, width: wp('45.5%') }}>
+    <View className='h-[98%] mb-3 mr-2 p-2 rounded-2xl' style={{ backgroundColor: lightList, width: wp('45.5%') }}>
+
+      {/* remove element icon */}
+      {added && (
+        <TouchableOpacity className='absolute top-0 right-0 z-50' 
+          style={{ width: wp(12), height: wp(12) }}
+          onPress={handleRemoveElement}
+        >
+          <View className='absolute top-0 right-0 flex flex-col justify-center items-center rounded-tr-2xl rounded-bl-2xl' 
+            style={{ width: wp(10), height: wp(10), backgroundColor: turquoise }}
+          >
+            <Image style={{ width: wp(3), height: hp(3) }} resizeMode='cover'
+              source={require('../assets/white-trash-can.png')}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
+
+      {/* content */}
+      <View>
 
         {/* img */}
         <Pressable onPress={() => navigation.navigate('Product', { ...product })} className='mb-2 justify-center items-center'>
@@ -174,7 +203,6 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
           
         </View>
       </View>
-
 
     </View>
   )

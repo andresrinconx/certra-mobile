@@ -45,14 +45,10 @@ const InvContext = createContext<{
   }) => void
   increase: (id: number) => void
   decrease: (id: number) => void
-  subtotal: string
-  setSubtotal: (subtotal: string) => void
-  total: string
-  setTotal: (total: string) => void
-  removeElement: (id: number) => void
+  removeElement: (codigo: string) => void
   addToCart: (codigo: string, ammount: number) => void
-  processOrder: (myUser: any) => void
   order: OrderInterface
+  setOrder: (order: OrderInterface) => void
   getProducts: () => void
   currentPage: number
   setCurrentPage: (currentPage: number) => void
@@ -81,13 +77,8 @@ const InvContext = createContext<{
   setLoaders: () => { },
   increase: () => { },
   decrease: () => { },
-  subtotal: '',
-  setSubtotal: () => { },
-  total: '',
-  setTotal: () => { },
   removeElement: () => { },
   addToCart: () => { },
-  processOrder: () => { },
   order: {
     date: '',
     hora: '',
@@ -96,6 +87,7 @@ const InvContext = createContext<{
     subtotal: '',
     total: '',
   },
+  setOrder: () => { },
   getProducts: () => { },
   currentPage: 1,
   setCurrentPage: () => { },
@@ -106,7 +98,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [products, setProducts] = useState<ProductoInterface[]>([])
   const [currentPage, setCurrentPage] = useState(1)
 
-  // ORDER & CART
+  // CART & ORDER 
+  const [productsCart, setProductsCart] = useState([]) // code and ammount
   const [order, setOrder] = useState<OrderInterface>({
     date: '',
     hora: '',
@@ -115,9 +108,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     subtotal: '',
     total: '',
   })
-  const [productsCart, setProductsCart] = useState([]) // code and ammount
-  const [subtotal, setSubtotal] = useState('')
-  const [total, setTotal] = useState('')
 
   // LAYOUT
   const [flowControl, setFlowControl] = useState({
@@ -210,29 +200,12 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // CART ACTIONS
   // -----------------------------------------------
 
-  // Set subtotal & total
-  useEffect(() => {
-    // subtotal
-    const subtotal = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    const subtotalFormated = subtotal.toLocaleString()
-    setSubtotal(subtotalFormated)
-
-    // total
-    const total = productsCart.reduce((total, product) => total + product.precio1 * product.cantidad, 0)
-    const totalFormated = total.toLocaleString()
-    setTotal(totalFormated)
-  }, [productsCart])
-
   // Add to cart
   const addToCart = (codigo: string, ammount: number) => {
     setProductsCart([ ...productsCart, {codigo, ammount} ])
   }
 
-  // Increase & decrease
-  const increase = (id: number) => {
-    const updatedProductsCart = productsCart.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : { ...item })
-    setProductsCart(updatedProductsCart)
-  }
+  // Decrease & increase 
   const decrease = (id: number) => {
     const productInCart = productsCart.find(item => item.id === id && item.cantidad === 1)
 
@@ -246,68 +219,15 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setProductsCart(updatedProductsCart)
     }
   }
-
-  // Remove element from cart
-  const removeElement = (id: number) => {
-    const updatedProductsCart = productsCart.filter(item => item.id !== id)
+  const increase = (id: number) => {
+    const updatedProductsCart = productsCart.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : { ...item })
     setProductsCart(updatedProductsCart)
   }
 
-  // -----------------------------------------------
-  // ORDER
-  // -----------------------------------------------
-
-  // Send order
-  useEffect(() => {
-    const sendOrder = async () => {
-      try {
-        if (order.productos.length !== 0) {
-          await sendData(order)
-
-          setTimeout(() => {
-            // clear cart
-            const updatedProducts = productsCart.filter(item => item.agregado !== true)
-            setProductsCart(updatedProducts)
-          }, 2000)
-
-          setTimeout(() => {
-
-            setLoaders({ ...loaders, loadingConfirmOrder: false }) // loader from alert*
-          }, 3000)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    sendOrder()
-  }, [order])
-
-  // Process order
-  const processOrder = async (myUser: any) => {
-    // order data
-    setOrder({
-      ...order,
-      date: getDate(new Date()),
-      hora: getHour(new Date()),
-      cliente: (myUser.from === 'scli' ? {
-        name: myUser?.nombre,
-        code: myUser?.cliente
-      } : {
-        name: myUser.us_nombre,
-        usuario: myUser.us_codigo,
-        code: myUser?.customer?.cliente
-      }),
-      productos: productsCart.map((product: ProductoInterface) => ({
-        codigo: product.codigo,
-        descrip: String(product.descrip),
-        base1: Number(product.base1),
-        precio1: Number(product.precio1),
-        iva: Number(product.iva),
-        cantidad: Number(product.cantidad)
-      })),
-      subtotal: String(subtotal),
-      total: String(total),
-    })
+  // Remove element from cart
+  const removeElement = (codigo: string) => {
+    const updatedProductsCart = productsCart.filter(item => item.codigo !== codigo)
+    setProductsCart(updatedProductsCart)
   }
 
   return (
@@ -322,14 +242,10 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setLoaders,
       increase,
       decrease,
-      subtotal,
-      setSubtotal,
-      total,
-      setTotal,
       removeElement,
       addToCart,
-      processOrder,
       order,
+      setOrder,
       getProducts,
       currentPage,
       setCurrentPage
