@@ -32,6 +32,12 @@ export const socialMedia = [
     url: 'https://twitter.com/drocerca',
     image: require('../assets/x.png')
   },
+  {
+    id: 5,
+    name: 'Telegram',
+    url: 'https://t.me/Drocerca_bot',
+    image: require('../assets/telegram.png')
+  }
 ]
 
 export const disponibility = [
