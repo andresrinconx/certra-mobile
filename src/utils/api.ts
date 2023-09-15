@@ -6,13 +6,13 @@ import { OrderInterface } from '../interfaces/OrderInterface'
 // -----------------------------------------------
 
 // GET
-const tableDataEndpoint = (table: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}`
-const searchOneItemEndpoint = (table: string, code: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}/${code}`
-const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.searchTerm}`
-const userDataEndpoint = (params: { code: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.code}`
+const tableDataEndpoint = (table: string) => `http://drocerca.proteoerp.org:7070/proteoerp/app/${table}`
+const searchOneItemEndpoint = (table: string, code: string) => `http://drocerca.proteoerp.org:7070/proteoerp/app/${table}/${code}`
+const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `http://drocerca.proteoerp.org:7070/proteoerp/app/${params.table}/${params.searchTerm}`
+const userDataEndpoint = (params: { code: string, table: string }) => `http://drocerca.proteoerp.org:7070/proteoerp/app/${params.table}/${params.code}`
 
 // POST
-const sendDataEndpoint = () => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/pedidoguardar`
+const sendDataEndpoint = () => `http://drocerca.proteoerp.org:7070/proteoerp/app/pedidoguardar`
 
 // -----------------------------------------------
 // FUNCTIONS

@@ -80,10 +80,6 @@ const Cart = () => {
   const clearCart = () => {
     setAlertClearCart(false)
     setProductsCart([])
-
-    // clear
-    // const updatedProducts = productsCart.filter(item => item.agregado !== true)
-    // setProductsCart(updatedProducts)
   }
   
   const handleProcess = () => {
@@ -114,7 +110,6 @@ const Cart = () => {
 
           setTimeout(() => {
             // clear cart
-            // const updatedProducts = productsCart.filter(item => item.agregado !== true)
             setProductsCart([])
           }, 2000)
 

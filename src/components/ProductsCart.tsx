@@ -11,50 +11,52 @@ import useLogin from '../hooks/useLogin'
 import Loader from './Loader'
 
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
+  const [added, setAdded] = useState(true)
+  const [ammount, setAmmount] = useState(1)
+  
   const [openModal, setOpenModal] = useState(false)
   const [disableAcept, setDisableAcept] = useState(false)
-  const [localData, setLocalData] = useState({
-    agregado: false,
-    cantidad: ''
-  })
   const [loadingDecrease, setLoadingDecrease] = useState(false)
   const [loadingIncrease, setLoadingIncrease] = useState(false)
   const [loadingRemoveElement, setLoadingRemoveElement] = useState(false)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn } } = useLogin()
-  const { increase, decrease, removeElement, productsCart, setProductsCart } = useInv()
-  const { descrip, precio1, id, cantidad, centro, merida, oriente } = product
+  const { removeElement, productsCart, setProductsCart } = useInv()
+  const { descrip, precio1, codigo, cantidad, centro, merida, oriente } = product
   const initialRef = useRef(null)
   const navigation = useNavigation()
 
-  // refresh data when cart change
+  // -----------------------------------------------
+  // ACTIONS
+  // -----------------------------------------------
+
+  // Add or remove element from cart
   useEffect(() => {
-    const productInCart = productsCart.find(productInCart => productInCart.id === id)
-    if (productInCart !== undefined) { // product in cart
-      setLocalData({ ...localData, agregado: productInCart.agregado, cantidad: String(productInCart.cantidad) })
-    } else {
-      setLocalData({ ...localData, agregado: false, cantidad: String(1) })
+    if (!added) {
+      removeElement(codigo)
     }
-  }, [productsCart])
+  }, [added])
+
+  // ----------------------------------------------
 
   // change 'cantidad' (input)
   useEffect(() => {
-    const productInCart = productsCart.find(item => item.id === id)
+    const productInCart = productsCart.find(item => item.codigo === codigo)
 
     // btns
     if (productInCart !== undefined) {
-      if ((productInCart.cantidad === Number(localData.cantidad) || productInCart.cantidad < Number(localData.cantidad) || productInCart.cantidad > Number(localData.cantidad) && Number(localData.cantidad) !== 0)) { // igual, mayor o menor (y no es cero)
+      if ((productInCart.ammount === ammount || productInCart.ammount < ammount || productInCart.ammount > ammount && ammount !== 0)) { // igual, mayor o menor (y no es cero)
         setDisableAcept(false)
-      } else if (Number(localData.cantidad) === 0 || Number(localData.cantidad) < 0) { // cero o NaN
+      } else if (ammount === 0 || ammount < 0) { // cero o NaN
         setDisableAcept(true)
       }
     }
-  }, [localData.cantidad])
+  }, [ammount])
 
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
-      if (item.id === id) {
-        const cleanCantidad = parseInt(localData.cantidad.replace(/-/g, ''))
+      if (item.codigo === codigo) {
+        const cleanCantidad = parseInt(String(ammount).replace(/-/g, ''))
 
         return { ...item, cantidad: cleanCantidad }
       } else {
@@ -65,27 +67,20 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setOpenModal(false)
   }
 
-  // actions
+  // ----------------------------------------------
+
+  // Handle actions
   const handleDecrease = () => {
-    setLoadingDecrease(true)
-    decrease(id) // function
-    setTimeout(() => {
-      setLoadingDecrease(false)
-    }, 1000)
+    if (ammount > 1) {
+      setAmmount(ammount - 1)
+    }
   }
   const handleIncrease = () => {
-    setLoadingIncrease(true)
-    increase(id) // function
-    setTimeout(() => {
-      setLoadingIncrease(false)
-    }, 1000)
+    setAmmount(ammount + 1)
   }
   const handleRemoveElement = () => {
-    setLoadingRemoveElement(true)
-    removeElement(id) // function
-    setTimeout(() => {
-      setLoadingRemoveElement(false)
-    }, 1000)
+    setAdded(false)
+    setAmmount(1)
   }
 
   return (
@@ -102,7 +97,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
             </Text>
           </Pressable>
 
-          {localData.agregado && !loadingRemoveElement ? (
+          {added && !loadingRemoveElement ? (
             <View className='pl-5'>
               <TouchableOpacity onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-7 h-7'>
                 <XMarkIcon size={20} color={icon} strokeWidth={3} />
@@ -173,50 +168,34 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
             </View>
 
             {/* ammount and added */}
-            <View className='flex flex-row px-3 pt-2 pb-2'>
-              {localData.agregado && !loadingRemoveElement ? (
-                <View className='flex flex-row items-center justify-between w-full'>
+            <View className='flex flex-row items-center justify-between w-full'>
 
-                  {/* increase & decrease */}
-                  <View className='flex-1 flex-row items-center justify-around'>
-                    <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                      <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
-                        <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
-                      </TouchableOpacity>
-                    </View>
+              <View className='flex-1 flex-row items-center justify-around'>
 
-                    {/* loadingDecrease || loadingIncrease */}
-                    {loadingDecrease || loadingIncrease ? (
-                      <View className='flex flex-row justify-center items-center' style={{ width: wp(12) }}>
-                        <Loader size={wp(4.5)} color={darkTurquoise} />
-                      </View>
-                    ) : (
-                      <View style={{ width: wp(12) }}>
-                        <TouchableOpacity onPress={() => setOpenModal(true)}>
-                          <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
-                            {cantidad}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                      
-                    )}
-
-                    <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                      <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
-                        <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-
-                  {/* added */}
-                  {localData.agregado && loadingRemoveElement ? (
-                    <View className='flex flex-row justify-center items-center rounded-md h-7 w-7 ml-5' style={{ backgroundColor: green }}>
-                      <Loader size={wp(4.5)} color='white' />
-                    </View>
-                  ):null}
+                {/* decrease */}
+                <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+                  <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
+                    <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
+                  </TouchableOpacity>
                 </View>
-                
-              ):null}
+
+                {/* ammount */}
+                <View style={{ width: wp(12) }}>
+                  <TouchableOpacity onPress={() => setOpenModal(true)}>
+                    <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                      {ammount}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* increase */}
+                <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+                  <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
+                    <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
             </View>
           </View>
 
@@ -235,8 +214,8 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
           <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
             <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
               keyboardType='numeric'
-              value={String(localData.cantidad)}
-              onChangeText={text => setLocalData({ ...localData, cantidad: text })}
+              value={String(ammount)}
+              onChangeText={text => setAmmount(Number(text))}
               autoFocus
               selectionColor={primary}
             />

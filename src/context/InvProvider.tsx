@@ -1,9 +1,8 @@
 import { createContext, useState, useEffect } from 'react'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import { setDataStorage } from '../utils/asyncStorage'
-import { sendData, fetchSearchedItems } from '../utils/api'
+import { fetchSearchedItems } from '../utils/api'
 import { OrderInterface } from '../interfaces/OrderInterface'
-import { getDate, getHour } from '../utils/helpers'
 import useLogin from '../hooks/useLogin'
 
 const InvContext = createContext<{
@@ -43,8 +42,6 @@ const InvContext = createContext<{
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }) => void
-  increase: (id: number) => void
-  decrease: (id: number) => void
   removeElement: (codigo: string) => void
   addToCart: (codigo: string, ammount: number) => void
   order: OrderInterface
@@ -75,8 +72,6 @@ const InvContext = createContext<{
     loadingLogOut: false,
   },
   setLoaders: () => { },
-  increase: () => { },
-  decrease: () => { },
   removeElement: () => { },
   addToCart: () => { },
   order: {
@@ -184,13 +179,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
         setProducts([ ...products, ...data ])
         setLoaders({ ...loaders, loadingProducts: false })
       }
-      
-      // Add properties to each producto
-      // const products = data?.map((product: ProductoInterface) => ({
-      //   ...product,
-      //   agregado: false,
-      //   cantidad: 1,
-      // }))
     } catch (error) {
       console.log(error)
     }
@@ -203,25 +191,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // Add to cart
   const addToCart = (codigo: string, ammount: number) => {
     setProductsCart([ ...productsCart, {codigo, ammount} ])
-  }
-
-  // Decrease & increase 
-  const decrease = (id: number) => {
-    const productInCart = productsCart.find(item => item.id === id && item.cantidad === 1)
-
-    // If the product is in the cart and has a quantity of 1, show an alert to confirm the deletion.
-    if (productInCart !== undefined) {
-      const updatedProductsCart = productsCart.filter(item => item.id !== id)
-      setProductsCart(updatedProductsCart)
-    } else {
-      // If the product is in the cart and has a quantity greater than 1, decrease the quantity by 1.
-      const updatedProductsCart = productsCart.map(item => (item.id === id && item.cantidad > 1) ? { ...item, cantidad: item.cantidad - 1 } : { ...item })
-      setProductsCart(updatedProductsCart)
-    }
-  }
-  const increase = (id: number) => {
-    const updatedProductsCart = productsCart.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : { ...item })
-    setProductsCart(updatedProductsCart)
   }
 
   // Remove element from cart
@@ -240,8 +209,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setFlowControl,
       loaders,
       setLoaders,
-      increase,
-      decrease,
       removeElement,
       addToCart,
       order,

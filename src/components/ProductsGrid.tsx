@@ -21,7 +21,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   // ACTIONS
   // -----------------------------------------------
 
-   // Refresh data when cart change
+  // Refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
     if (productInCart !== undefined) { // product in cart
