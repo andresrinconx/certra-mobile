@@ -38,7 +38,6 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   }, [added])
 
   // ----------------------------------------------
-
   // change 'cantidad' (input)
   useEffect(() => {
     const productInCart = productsCart.find(item => item.codigo === codigo)
@@ -66,7 +65,6 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setProductsCart(updatedProductsCart)
     setOpenModal(false)
   }
-
   // ----------------------------------------------
 
   // Handle actions

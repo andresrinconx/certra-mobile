@@ -24,10 +24,14 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   // Refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
-    if (productInCart !== undefined) { // product in cart
+    if (productInCart !== undefined) { 
+
+      // product in cart
       setAdded(true)
       setAmmount(productInCart.ammount)
     } else {
+
+      // product not in cart
       setAdded(false)
       setAmmount(1)
     }
