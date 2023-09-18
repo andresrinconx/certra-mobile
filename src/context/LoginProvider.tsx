@@ -4,7 +4,6 @@ import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
 import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
-import axios from 'axios'
 
 const LoginContext = createContext<{
   login: boolean
@@ -21,8 +20,6 @@ const LoginContext = createContext<{
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
-  message: string
-  message2: string
 }>({
   login: false,
   setLogin: () => { },
@@ -51,8 +48,6 @@ const LoginContext = createContext<{
     processBtn: ''
   },
   setThemeColors: () => { },
-  message: '',
-  message2: ''
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
@@ -89,10 +84,6 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     loadingAuth: false,
   })
 
-  // test
-  const [message, setMessage] = useState('')
-  const [message2, setMessage2] = useState('')
-
   // -----------------------------------------------
   // STORAGE
   // -----------------------------------------------
@@ -119,26 +110,13 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const dataAPI = await axios.get('https://jsonplaceholder.typicode.com/comments')
-        const dataLOCAL = await axios.get('http://192.168.230.19/proteoerp/app/usuario')
-
-        if (dataAPI) {
-          setMessage2('Usuarios obtenidos (API externa)')
-        }
-
-        if (dataLOCAL) {
-          setMessage('Usuarios obtenidos (API local)')
-          setUsersFromUsuario(dataLOCAL.data)
-        }
-        // const dataUsuario = fetchTableData('usuario')
-        // const dataScli = fetchTableData('scli')
-        // const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
-        // setUsersFromUsuario(usuario)
-        // setUsersFromScli(scli)
-        // setMessage('Usuarios obtenidos')
+        const dataUsuario = fetchTableData('usuario')
+        const dataScli = fetchTableData('scli')
+        const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
+        setUsersFromUsuario(usuario)
+        setUsersFromScli(scli)
       } catch (error) {
-        setMessage(String(error.message))
-        // setMessage(error.response.data.message)
+        console.log(error)
       }
     }
     getUsers()
@@ -159,9 +137,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       usersFromScli,
       usersFromUsuario,
       themeColors,
-      setThemeColors,
-      message,
-      message2
+      setThemeColors
     }}>
       {children}
     </LoginContext.Provider>
