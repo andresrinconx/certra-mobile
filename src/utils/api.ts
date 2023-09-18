@@ -5,80 +5,50 @@ import { OrderInterface } from '../interfaces/OrderInterface'
 // ENDPOINTS
 // -----------------------------------------------
 
-// GET
-const tableDataEndpoint = (table: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}`
-const searchOneItemEndpoint = (table: string, code: string) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${table}/${code}`
-const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.searchTerm}`
-const userDataEndpoint = (params: { code: string, table: string }) => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/${params.table}/${params.code}`
+const apiBaseUrl = process.env.EXPO_PUBLIC_LOCAL_API_URL
 
-// POST
-const sendDataEndpoint = () => `${process.env.EXPO_PUBLIC_LOCAL_API_URL}/pedidoguardar`
+// Get
+const tableDataEndpoint = (table: string) => `${apiBaseUrl}/${table}`
+const searchOneItemEndpoint = (table: string, code: string) => `${apiBaseUrl}/${table}/${code}`
+const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.searchTerm}`
+const userDataEndpoint = (params: { code: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.code}`
+
+// Post
+const sendDataEndpoint = () => `${apiBaseUrl}/pedidoguardar`
+
+// -----------------------------------------------
+// API CALL
+// -----------------------------------------------
+
+const apiCall = async (endpoint: string, method: Uppercase<string>, data?: any)=>{
+  try {
+    const response = await axios.request({
+      method,
+      url: endpoint,
+      data: data ? data : null
+    })
+    return response.data
+  } catch(error) {
+    throw new Error(error?.response?.data?.msg)
+  }
+}
 
 // -----------------------------------------------
 // FUNCTIONS
 // -----------------------------------------------
 
-// Get all data from a table
-export const fetchTableData = async (table: string) => {
-  const generalEndpointUrl = tableDataEndpoint(table)
-  try {
-    const response = await fetch(generalEndpointUrl)
-    const result = await response.json()
-    return result
-  } catch (error) {
-    console.log(error)
-  }
+export const fetchTableData = (table: string) => {
+  return apiCall(tableDataEndpoint(table), 'GET')
 }
-
-// Get one item from a table that matches a code
-export const fetchOneItem = async (table: string, code: string) => {
-  const oneItemEndpointUrl = searchOneItemEndpoint(table, code)
-  try {
-    const response = await fetch(oneItemEndpointUrl)
-    const result = await response.json()
-    return result
-  } catch (error) {
-    console.log(error)
-  }
+export const fetchOneItem = (table: string, code: string) => {
+  return apiCall(searchOneItemEndpoint(table, code), 'GET')
 }
-
-// Get all data from a table that matches a search term
 export const fetchSearchedItems = async (params: { searchTerm: string, table: string }) => {
-  const searchedItemsUrl = searchedItemsEndpoint(params)
-  try {
-    const response = await fetch(searchedItemsUrl)
-    const result = await response.json()
-    return result
-  } catch (error) {
-    console.log(error)
-  }
+  return apiCall(searchedItemsEndpoint(params), 'GET')
 }
-
-// Get all info from a user
 export const fetchUserData = async (params: { code: string, table: string }) => {
-  const userDataUrl = userDataEndpoint(params)
-  try {
-    const response = await fetch(userDataUrl)
-    const result = await response.json()
-    return result
-  } catch (error) {
-    console.log(error)
-  }
+  return apiCall(userDataEndpoint(params), 'GET')
 }
-
-// Send a order to the server
-export const sendData = async (order: OrderInterface) => {
-  const sendDataUrl = sendDataEndpoint()
-  try {
-    console.log(order)
-    const response = await axios.post(sendDataUrl, order, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    console.log(response.data)
-  } catch (error) {
-    console.error('Error en la solicitud:', error)
-  }
+export const fetchSendData = async (order: OrderInterface) => {
+  return apiCall(sendDataEndpoint(), 'POST', order)
 }

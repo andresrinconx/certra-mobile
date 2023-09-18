@@ -12,6 +12,7 @@ import useLogin from '../hooks/useLogin'
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(true)
   const [ammount, setAmmount] = useState(1)
+  const [ammountInput, setAmmountInput] = useState(1)
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -30,6 +31,22 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   // ACTIONS
   // -----------------------------------------------
 
+  // Refresh data when cart change
+  useEffect(() => {
+    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
+    if (productInCart !== undefined) { 
+
+      // product in cart
+      setAdded(true)
+      setAmmount(productInCart.ammount)
+    } else {
+
+      // product not in cart
+      setAdded(false)
+      setAmmount(1)
+    }
+  }, [productsCart])
+
   // Add or remove element from cart
   useEffect(() => {
     if (!added) {
@@ -37,6 +54,33 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     }
   }, [added])
 
+  // change "cantidad" (input)
+  // useEffect(() => {
+  //   const productInCart = productsCart.find(item => item.id === id)
+
+  //   // btns
+  //   if (productInCart !== undefined) {
+  //     if ((productInCart.cantidad === Number(localData.cantidad) || productInCart.cantidad < Number(localData.cantidad) || productInCart.cantidad > Number(localData.cantidad) && Number(localData.cantidad) !== 0)) { // igual, mayor o menor (y no es cero)
+  //       setDisableAcept(false)
+  //     } else if (Number(localData.cantidad) === 0 || Number(localData.cantidad) < 0) { // cero o NaN
+  //       setDisableAcept(true)
+  //     }
+  //   }
+  // }, [localData.cantidad])
+
+  // const acept = () => {
+  //   const updatedProductsCart = productsCart.map(item => {
+  //     if (item.id === id) {
+  //       const cleanCantidad = parseInt(localData.cantidad.replace(/-/g, ""))
+
+  //       return { ...item, cantidad: cleanCantidad }
+  //     } else {
+  //       return { ...item }
+  //     }
+  //   })
+  //   setProductsCart(updatedProductsCart)
+  //   setOpenModal(false)
+  // }
   // ----------------------------------------------
   // Change 'cantidad' (input)
   useEffect(() => {
@@ -65,6 +109,9 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setOpenModal(false)
   }
   // ----------------------------------------------
+
+
+
 
   // Handle actions
   const handleDecrease = () => {

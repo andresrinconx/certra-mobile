@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import { fetchOneItem, sendData } from '../utils/api'
+import { fetchOneItem, fetchSendData } from '../utils/api'
 import { getDate, getHour } from '../utils/helpers'
 import ProductsCart from '../components/ProductsCart'
 import Loader from '../components/Loader'
@@ -91,7 +91,7 @@ const Cart = () => {
     const sendOrder = async () => {
       try {
         if (order.productos.length !== 0) {
-          await sendData(order)
+          await fetchSendData(order)
 
           setTimeout(() => {
             // clear cart
