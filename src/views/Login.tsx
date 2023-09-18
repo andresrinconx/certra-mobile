@@ -21,7 +21,7 @@ const Login = () => {
     password: false,
   })
 
-  const { user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin, setThemeColors } = useLogin()
+  const { user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin, setThemeColors, message } = useLogin()
   const { getProducts } = useInv()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
@@ -238,8 +238,9 @@ const Login = () => {
                 style={{ backgroundColor: '#92BF1E' }}
               >
                 {!loaders.loadingAuth && (
-                  <View className='h-6'>
+                  <View className='h-24'>
                     <Text className='text-black font-medium text-center' style={{ fontSize: wp(4.5) }}>Iniciar Sesión</Text>
+                    <Text className='text-red-400 font-medium text-center' style={{ fontSize: wp(4.5) }}>{message ? message : 'Usuarios Obtenidos'}</Text>
                   </View>
                 )}
 

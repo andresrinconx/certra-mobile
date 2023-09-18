@@ -20,6 +20,7 @@ const LoginContext = createContext<{
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
+  message: string
 }>({
   login: false,
   setLogin: () => { },
@@ -48,6 +49,7 @@ const LoginContext = createContext<{
     processBtn: ''
   },
   setThemeColors: () => { },
+  message: ''
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
@@ -84,6 +86,9 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     loadingAuth: false,
   })
 
+  // test
+  const [message, setMessage] = useState('')
+
   // -----------------------------------------------
   // STORAGE
   // -----------------------------------------------
@@ -115,8 +120,10 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
         const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
         setUsersFromUsuario(usuario)
         setUsersFromScli(scli)
+        // setMessage('Usuarios obtenidos')
       } catch (error) {
-        console.log(error)
+        setMessage(String(error.message))
+        // setMessage(error.response.data.message)
       }
     }
     getUsers()
@@ -137,7 +144,8 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       usersFromScli,
       usersFromUsuario,
       themeColors,
-      setThemeColors
+      setThemeColors,
+      message
     }}>
       {children}
     </LoginContext.Provider>
