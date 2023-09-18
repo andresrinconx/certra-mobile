@@ -5,6 +5,7 @@ import { OrderInterface } from '../interfaces/OrderInterface'
 // ENDPOINTS
 // -----------------------------------------------
 
+// const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL
 const apiBaseUrl = process.env.EXPO_PUBLIC_LOCAL_API_URL
 
 // Get

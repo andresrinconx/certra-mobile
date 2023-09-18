@@ -12,7 +12,7 @@ import useLogin from '../hooks/useLogin'
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(true)
   const [ammount, setAmmount] = useState(1)
-  const [ammountInput, setAmmountInput] = useState(1)
+  const [ammountInput, setAmmountInput] = useState('')
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -39,11 +39,13 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
       // product in cart
       setAdded(true)
       setAmmount(productInCart.ammount)
+      setAmmountInput(String(productInCart.ammount))
     } else {
 
       // product not in cart
       setAdded(false)
       setAmmount(1)
+      setAmmountInput(String(1))
     }
   }, [productsCart])
 
@@ -88,13 +90,24 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
     // btns
     if (productInCart !== undefined) {
-      if ((productInCart.ammount === ammount || productInCart.ammount < ammount || productInCart.ammount > ammount && ammount !== 0)) { // igual, mayor o menor (y no es cero)
+      if ( 
+        // igual, mayor o menor (y no es cero)
+        productInCart.ammount === Number(ammountInput) || 
+        productInCart.ammount < Number(ammountInput) || 
+        productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
+      ) {
         setDisableAcept(false)
-      } else if (ammount === 0 || ammount < 0) { // cero o NaN
+      } else if ( 
+        // cero o NaN
+        Number(ammountInput) === 0 || 
+        Number(ammountInput) < 0
+      ) {
         setDisableAcept(true)
       }
     }
-  }, [ammount])
+  }, [ammountInput])
+
+  // Btn acept (input)
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
       if (item.codigo === codigo) {
@@ -259,8 +272,8 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
           <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
             <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
               keyboardType='numeric'
-              value={String(ammount)}
-              onChangeText={text => setAmmount(Number(text))}
+              value={String(ammountInput)}
+              onChangeText={text => setAmmountInput(text)}
               autoFocus
               selectionColor={primary}
             />
@@ -269,7 +282,10 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
           {/* btns */}
           <View className='flex flex-row items-center justify-between'>
             <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
-              <TouchableOpacity onPress={() => setOpenModal(false)}>
+              <TouchableOpacity onPress={() => {
+                setOpenModal(false)
+                setAmmountInput(String(ammount))
+              }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Cancelar
                 </Text>
