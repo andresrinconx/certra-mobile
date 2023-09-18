@@ -55,55 +55,25 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
       removeElement(codigo)
     }
   }, [added])
-
-  // change "cantidad" (input)
-  // useEffect(() => {
-  //   const productInCart = productsCart.find(item => item.id === id)
-
-  //   // btns
-  //   if (productInCart !== undefined) {
-  //     if ((productInCart.cantidad === Number(localData.cantidad) || productInCart.cantidad < Number(localData.cantidad) || productInCart.cantidad > Number(localData.cantidad) && Number(localData.cantidad) !== 0)) { // igual, mayor o menor (y no es cero)
-  //       setDisableAcept(false)
-  //     } else if (Number(localData.cantidad) === 0 || Number(localData.cantidad) < 0) { // cero o NaN
-  //       setDisableAcept(true)
-  //     }
-  //   }
-  // }, [localData.cantidad])
-
-  // const acept = () => {
-  //   const updatedProductsCart = productsCart.map(item => {
-  //     if (item.id === id) {
-  //       const cleanCantidad = parseInt(localData.cantidad.replace(/-/g, ""))
-
-  //       return { ...item, cantidad: cleanCantidad }
-  //     } else {
-  //       return { ...item }
-  //     }
-  //   })
-  //   setProductsCart(updatedProductsCart)
-  //   setOpenModal(false)
-  // }
-  // ----------------------------------------------
+  
   // Change 'cantidad' (input)
   useEffect(() => {
     const productInCart = productsCart.find(item => item.codigo === codigo)
 
     // btns
-    if (productInCart !== undefined) {
-      if ( 
-        // igual, mayor o menor (y no es cero)
-        productInCart.ammount === Number(ammountInput) || 
-        productInCart.ammount < Number(ammountInput) || 
-        productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
-      ) {
-        setDisableAcept(false)
-      } else if ( 
-        // cero o NaN
-        Number(ammountInput) === 0 || 
-        Number(ammountInput) < 0
-      ) {
-        setDisableAcept(true)
-      }
+    if ( 
+      // igual, mayor o menor (y no es cero)
+      productInCart.ammount === Number(ammountInput) || 
+      productInCart.ammount < Number(ammountInput) || 
+      productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
+    ) {
+      setDisableAcept(false)
+    } else if ( 
+      // cero o NaN
+      Number(ammountInput) === 0 || 
+      Number(ammountInput) < 0
+    ) {
+      setDisableAcept(true)
     }
   }, [ammountInput])
 
@@ -111,9 +81,9 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
       if (item.codigo === codigo) {
-        const cleanCantidad = parseInt(String(ammount).replace(/-/g, ''))
+        const cleanCantidad = parseInt(String(ammountInput).replace(/-/g, ''))
 
-        return { ...item, cantidad: cleanCantidad }
+        return { ...item, ammount: cleanCantidad }
       } else {
         return { ...item }
       }
@@ -121,10 +91,6 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setProductsCart(updatedProductsCart)
     setOpenModal(false)
   }
-  // ----------------------------------------------
-
-
-
 
   // Handle actions
   const handleDecrease = () => {

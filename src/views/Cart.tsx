@@ -227,45 +227,47 @@ const Cart = () => {
       </View>
 
       {/* process order */}
-      <View className='flex flex-col justify-center h-32 w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'>
-        <View className='flex flex-col justify-center h-full w-[92%]'
-          style={{ backgroundColor: backgrund, borderTopColor: icon, marginLeft: 16 }}
-        >
-          {productsCart.length !== 0 && (
-            <View className='px-2'>
-              {/* subtotal & total */}
-              <View className='flex flex-row justify-between'>
-                <Text style={{ fontSize: wp(4.5), color: typography }} className='font-semibold'>
-                  Subtotal:
-                </Text>
-                <Text style={{ fontSize: wp(4.5), color: typography, }} className='font-semibold'>
-                  Bs. {subtotal}
-                </Text>
-              </View>
+      {!loadingCart && (
+        <View className='flex flex-col justify-center h-32 w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'>
+          <View className='flex flex-col justify-center h-full w-[92%]'
+            style={{ backgroundColor: backgrund, borderTopColor: icon, marginLeft: 16 }}
+          >
+            {productsCart.length !== 0 && (
+              <View className='px-2'>
+                {/* subtotal & total */}
+                <View className='flex flex-row justify-between'>
+                  <Text style={{ fontSize: wp(4.5), color: typography }} className='font-semibold'>
+                    Subtotal:
+                  </Text>
+                  <Text style={{ fontSize: wp(4.5), color: typography, }} className='font-semibold'>
+                    Bs. {subtotal}
+                  </Text>
+                </View>
 
-              <View className='flex flex-row justify-between'>
-                <Text style={{ fontSize: wp(5), color: typography }} className='mb-2 font-extrabold'>
-                  Total:
-                </Text>
-                <Text style={{ fontSize: wp(5), color: darkTurquoise, }} className='font-extrabold mb-2'>
-                  Bs. {total}
-                </Text>
+                <View className='flex flex-row justify-between'>
+                  <Text style={{ fontSize: wp(5), color: typography }} className='mb-2 font-extrabold'>
+                    Total:
+                  </Text>
+                  <Text style={{ fontSize: wp(5), color: darkTurquoise, }} className='font-extrabold mb-2'>
+                    Bs. {total}
+                  </Text>
+                </View>
               </View>
+            )}
+
+            {/* btn process */}
+            <View className='rounded-xl py-3' style={{ backgroundColor: `${productsCart.length === 0 ? processBtn : green}`}}>
+              <TouchableOpacity onPress={() => setAlertProcessOrder(true)}
+                disabled={productsCart.length === 0 ? true : false}
+              >
+                <Text className='text-center font-bold text-white' style={{ fontSize: wp(5) }}>
+                  Procesar pedido {productsCart.length === 0 ? '' : `(${productsCart.length})`}
+                </Text>
+              </TouchableOpacity>
             </View>
-          )}
-
-          {/* btn process */}
-          <View className='rounded-xl py-3' style={{ backgroundColor: `${productsCart.length === 0 ? processBtn : green}`}}>
-            <TouchableOpacity onPress={() => setAlertProcessOrder(true)}
-              disabled={productsCart.length === 0 ? true : false}
-            >
-              <Text className='text-center font-bold text-white' style={{ fontSize: wp(5) }}>
-                Procesar pedido {productsCart.length === 0 ? '' : `(${productsCart.length})`}
-              </Text>
-            </TouchableOpacity>
           </View>
         </View>
-      </View>
+      )}
 
       {/* alert clear cart */}
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertClearCart} onClose={onCloseAlertClearCart}>
