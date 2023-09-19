@@ -6,8 +6,7 @@ import { OrderInterface } from '../interfaces/OrderInterface'
 // -----------------------------------------------
 
 // const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL
-// const apiBaseUrl = process.env.EXPO_PUBLIC_LOCAL_API_URL
-const apiBaseUrl = 'https://drocerca.com/proteoerp/app'
+const apiBaseUrl = 'http://192.168.230.19/proteoerp/app'
 
 // Get
 const tableDataEndpoint = (table: string) => `${apiBaseUrl}/${table}`

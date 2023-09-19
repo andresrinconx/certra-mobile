@@ -1,21 +1,35 @@
 {
+  "cli": {
+    "version": ">= 1.0.0"
+  },
   "build": {
-    "test": {
-      "android": {
-        "buildType": "apk"
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
       },
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://drocerca.proteoerp.org:7070/proteoerp/app"
+      "channel": "development"
+    },
+    "preview": {
+      "channel": "preview",
+      "android": {
+        "buildType": "apk",
+        "withoutCredentials": true
+      },
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
       }
     },
     "production": {
-      "distribution": "internal",
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://drocerca.proteoerp.org:7070/proteoerp/app"
+      "ios": {
+        "resourceClass": "m-medium"
       },
-      "android": {
-        "buildType": "apk"
-      }
+      "channel": "production"
     }
+  },
+  "submit": {
+    "production": {}
   }
 }

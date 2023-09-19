@@ -110,11 +110,11 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const dataUsuario = await fetchTableData('usuario')
-        // const dataScli = fetchTableData('scli')
-        // const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
-        setUsersFromUsuario(dataUsuario)
-        // setUsersFromScli(scli)
+        const dataUsuario = fetchTableData('usuario')
+        const dataScli = fetchTableData('scli')
+        const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
+        setUsersFromUsuario(usuario)
+        setUsersFromScli(scli)
       } catch (error) {
         console.log(error)
       }
