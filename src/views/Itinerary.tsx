@@ -1,35 +1,31 @@
 import { useState, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import useLogin from '../hooks/useLogin'
-import { StatusBar } from 'expo-status-bar'
-import useInv from '../hooks/useInv'
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import { View, Text, TouchableOpacity } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
+import { StatusBar } from 'react-native'
+import useLogin from '../hooks/useLogin'
 import { getMonthAndDays } from '../utils/helpers'
 import { days } from '../utils/constants'
-import Loader from '../components/loaders/Loader'
+import Loader from '../components/Loader'
+import Logos from '../components/Logos'
+import BackScreen from '../components/BackScreen'
 
 const Itinerary = () => {
-  // theme
-  const { themeColors: { backgrund, typography, primary } } = useLogin()
-
-  // state
   const [loadingItinerary, setLoadingItinerary] = useState(true)
-  const [currentMonth, setCurrentMonth] = useState("")
+  const [currentMonth, setCurrentMonth] = useState('')
   const [currentMonthDays, setCurrentMonthDays] = useState(0)
 
   const [itinerary, setItinerary] = useState([])
-  const [squareDays, setSetsquareDays] = useState([])
+  const [squareDays, setSquareDays] = useState([])
 
-  const { flowControl } = useInv()
-  const { myUser } = useLogin()
+  const { themeColors: { backgrund, typography, primary }, myUser } = useLogin()
   const navigation = useNavigation()
 
   // set data
   useEffect(() => {
     // days and month
-    const currentDate = new Date();
-    const dataMonthAndDays = getMonthAndDays(currentDate);
+    const currentDate = new Date()
+    const dataMonthAndDays = getMonthAndDays(currentDate)
 
     setCurrentMonth(dataMonthAndDays.month)
     setCurrentMonthDays(dataMonthAndDays.days)
@@ -40,76 +36,51 @@ const Itinerary = () => {
 
   // month (squares)
   useEffect(() => {
-    const newSquareDays = [];
+    const newSquareDays = []
 
     for (let i = 0; i < currentMonthDays; i++) {
       newSquareDays.push(
-        <TouchableOpacity key={i} className=""
-          onPress={() => navigation.navigate("ItineraryDay")}
+        <TouchableOpacity key={i} className=''
+          onPress={() => navigation.navigate('ItineraryDay')}
         >
           <Text>Día {i + 1}</Text>
-          <Text className="">{}</Text>
+          <Text className=''>{}</Text>
         </TouchableOpacity>
-      );
-    };
+      )
+    }
 
-    setSetsquareDays(newSquareDays);
+    setSquareDays(newSquareDays)
 
     setLoadingItinerary(false)
   }, [currentMonthDays])
 
   return (
-    <View className="flex-1 px-3 pt-6" style={{ backgroundColor: backgrund }}>
-      <StatusBar style="dark" />
+    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
+      <StatusBar barStyle='dark-content' />
 
-      {/* logos */}
-      <View className="flex-row justify-between">
-        {flowControl?.showLogoCertra ? (
-          <Image style={{ width: wp(32), height: wp(16) }} resizeMode="contain"
-            source={require("../assets/logo-certra.png")}
-          />
-        ) : (
-          <Image style={{ width: wp(40), height: wp(20) }} resizeMode="contain"
-            source={require("../assets/logo-drocerca.png")}
-          />
-        )}
+      <Logos image={myUser?.image_url} />
+      <BackScreen title='Itinerario' />
 
-        <Image style={{ width: wp(40), height: wp(16) }} resizeMode="contain"
-          source={{ uri: `${myUser?.image_url}` }}
-        />
-      </View>
-
-      {/* back */}
-      <View className="flex flex-row items-center gap-2 mt-2">
-        <TouchableOpacity onPress={() => { navigation.goBack() }}>
-          <Image style={{ width: wp(8), height: wp(8) }} resizeMode="cover"
-            source={require("../assets/back.png")}
-          />
-        </TouchableOpacity>
-
-        <Text className="font-bold" style={{ color: typography, fontSize: wp(4.5) }}>Itinerario</Text>
-      </View>
-
-      <View className="">
+      <View>
         {loadingItinerary ? (
-          <View className="mt-5">
+          <View className='mt-5'>
             <Loader color={`${primary}`} />
           </View>
         ) : (
           <>
             {/* current month */}
-            <View className="mt-2">
-              <Text className="text-center font-bold" style={{ color: typography, fontSize: wp(5) }}>
+            <View className='mt-2'>
+              <Text className='text-center font-bold' style={{ color: typography, fontSize: wp(5) }}>
                 {currentMonth}
               </Text>
             </View>
 
             {/* days view */}
-            <View className="flex flex-row justify-center items-center mt-4">
+            <View className='flex flex-row justify-center items-center mt-4'>
               {days.map((item) => {
-                const { id, name } = item;
+                const { id, name } = item
                 return (
-                  <Text key={id} className="uppercase text-center" style={{ fontSize: wp(2.4), color: typography, width: wp(13.5) }}>
+                  <Text key={id} className='uppercase text-center' style={{ fontSize: wp(2.4), color: typography, width: wp(13.5) }}>
                     {name}
                   </Text>
                 )
@@ -117,7 +88,7 @@ const Itinerary = () => {
             </View>
 
             {/* square days view */}
-            <View className="">
+            <View className=''>
               {squareDays}
             </View>
           </>
