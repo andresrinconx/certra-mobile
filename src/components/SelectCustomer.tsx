@@ -1,27 +1,23 @@
-import { useEffect, useRef, useCallback } from "react"
-import { View, Text, TextInput, Keyboard, FlatList, Image } from "react-native"
-import useInv from "../hooks/useInv"
-import { fetchSearchedItems } from "../utils/api"
-import { items } from "../utils/constants"
-import LoaderCustomersSearch from "./LoaderCustomersSearch"
-import CustomersSearch from "./CustomersSearch"
-import useLogin from "../hooks/useLogin"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { debounce } from "lodash"
-import { formatText } from "../utils/helpers"
-import LabelCustomer from "./LabelCustomer"
+import { useEffect, useRef, useState } from 'react'
+import { View, Text, TextInput, Keyboard, FlatList, Image } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import UserFromScliInterface from '../interfaces/UserFromScliInterface'
+import { formatText } from '../utils/helpers'
+import useInv from '../hooks/useInv'
+import useLogin from '../hooks/useLogin'
+import CustomersSearch from './CustomersSearch'
+import LabelCustomer from './LabelCustomer'
 
 const SelectCustomer = () => {
-  // theme & styles
-  const { themeColors: { list, typography, primary } } = useLogin()
-
-  const { searchedCustomers, setSearchedCustomers, loaders, setLoaders, flowControl, setFlowControl, valueSearchCustomers, setValueSearchCustomers, getProducts } = useInv()
-  const { myUser } = useLogin()
+  const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
+  
+  const { themeColors: { list, typography, primary }, myUser, usersFromScli } = useLogin()
+  const { flowControl, setFlowControl } = useInv()
   const textInputRef = useRef<TextInput | null>(null)
 
   // SCREEN
   useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", removeInputFocus)
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
     return () => {
       keyboardDidHideListener.remove()
     }
@@ -37,15 +33,9 @@ const SelectCustomer = () => {
   }
 
   // SEARCH
-  useEffect(() => {
-    if (valueSearchCustomers === "") {
-      setSearchedCustomers([])
-    }
-  }, [valueSearchCustomers])
-
   const handleSearch = async (valueSearchCustomers: string) => {
-    setValueSearchCustomers(valueSearchCustomers)
-    if (valueSearchCustomers?.length > 2) {
+    if (valueSearchCustomers.length > 2) {
+      // search
 
       setFlowControl({ 
         ...flowControl, 
@@ -57,16 +47,34 @@ const SelectCustomer = () => {
         showLogoCertra: true,
         selected: false
       })
-      setLoaders({ ...loaders, loadingSearchedItems: true })
 
-      // fetching...
-      const data = await fetchSearchedItems({ searchTerm: formatText(valueSearchCustomers), table: "searchCli" }) // searchCli = scli
-      setSearchedCustomers(data?.length !== 0 ? data : [])
-      setLoaders({ ...loaders, loadingSearchedItems: false })
-    } else if (valueSearchCustomers.length === 2) {
-      if (myUser.customer === undefined) {
+      // filter data
+      const data = usersFromScli?.filter(
+        (user: UserFromScliInterface) => 
+          user.nombre.toLowerCase().includes(formatText(valueSearchCustomers.toLowerCase())) || // search by name
+          user.cliente.toLowerCase().includes(valueSearchCustomers.toLowerCase()) // search by number
+      )
+      setSearchedCustomers(data)
+    } else {
+      // no search
+      
+      setSearchedCustomers([])
+      if ('customer' in myUser) {
+
+        // customer selected
+        setFlowControl({ 
+          ...flowControl, 
+          showSelectResults: false, 
+          showProducts: true, 
+          showSelectLabel: true, 
+          showSelectCustomer: true,
+          showSelectSearch: true,
+          showLogoCertra: true,
+          selected: true,
+        })
+      } else { 
+
         // no customer selected
-        getProducts()
         setFlowControl({ 
           ...flowControl, 
           showSelectResults: false, 
@@ -77,62 +85,15 @@ const SelectCustomer = () => {
           showLogoCertra: true,
           selected: false,
         })
-        setSearchedCustomers([])
-      } else { 
-        // customer selected
-        getProducts()
-        setFlowControl({ 
-          ...flowControl, 
-          showSelectResults: false, 
-          showProducts: false, 
-          showSelectLabel: true, 
-          showSelectCustomer: true,
-          showSelectSearch: true,
-          showLogoCertra: true,
-          selected: false,
-        })
-        setSearchedCustomers([])
-      }
-    } else if (valueSearchCustomers.length < 2) {
-      if (myUser.customer === undefined) {
-        // no customer selected
-        getProducts()
-        setFlowControl({ 
-          ...flowControl, 
-          showSelectResults: false, 
-          showProducts: false, 
-          showSelectLabel: false, 
-          showSelectCustomer: true,
-          showSelectSearch: true,
-          showLogoCertra: true,
-          selected: false,
-        })
-        setSearchedCustomers([])
-      } else { 
-        // customer selected
-        getProducts()
-        setFlowControl({ 
-          ...flowControl, 
-          showSelectResults: false, 
-          showProducts: false, 
-          showSelectLabel: true, 
-          showSelectCustomer: true,
-          showSelectSearch: true,
-          showLogoCertra: true,
-          selected: false,
-        })
-        setSearchedCustomers([])
       }
     }
   }
-
-  const handleTextDebounce = useCallback(debounce(handleSearch, 600), [])
 
   return (
     <>
       {flowControl?.showSelectCustomer ? (
 
-        <View className="mt-3">
+        <View className='mt-3'>
 
           {/* label */}
           {flowControl?.showSelectLabel && !flowControl?.showSelectResults && flowControl?.selected ? (
@@ -145,16 +106,16 @@ const SelectCustomer = () => {
 
           {/* input */}
           {flowControl?.showSelectSearch ? (
-            <View className="flex flex-row items-center">
-              <Image style={{ width: wp(10), height: wp(10) }} resizeMode="cover"
-                source={require("../assets/drugstore-search.png")}
+            <View className='flex flex-row items-center'>
+              <Image style={{ width: wp(10), height: wp(10) }} resizeMode='cover'
+                source={require('../assets/drugstore-search.png')}
               />
 
-              <View className="rounded-lg w-5/6 ml-3" style={{ backgroundColor: list }}>
-                <TextInput className="w-full pl-3" style={{ color: typography, fontSize: wp(4), fontWeight: '200' }}
-                  placeholder="Buscar un cliente"
+              <View className='rounded-lg w-5/6 ml-3' style={{ backgroundColor: list }}>
+                <TextInput className='w-full pl-3' style={{ fontSize: wp(4), color: typography }}
+                  placeholder='Buscar un cliente'
                   placeholderTextColor={typography}
-                  onChangeText={handleTextDebounce}
+                  onChangeText={handleSearch}
                   selectionColor={primary}
                 />
               </View>
@@ -164,45 +125,27 @@ const SelectCustomer = () => {
           {/* results */}
           {flowControl?.showSelectResults ? (
             <View>
-              {loaders.loadingSearchedItems ? (
+              {searchedCustomers?.length !== 0 ? (
                 <FlatList
-                  data={items}
+                  data={searchedCustomers}
                   numColumns={1}
                   onScroll={handleScroll}
+                  keyboardShouldPersistTaps='handled'
                   contentContainerStyle={{
-                    paddingBottom: 5,
+                    paddingBottom: 100,
                     marginTop: 15
                   }}
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item }) => {
                     return (
-                      <LoaderCustomersSearch key={item.id} />
+                      <CustomersSearch key={item.rifci} customer={item} />
                     )
                   }}
                 />
               ) : (
-                searchedCustomers?.length === 0 ? (
-                  <View className="flex flex-row items-center justify-center py-8">
-                    <Text className="text-xl w-full text-center" style={{ color: typography }}>No hay resultados</Text>
-                  </View>
-                ) : (
-                  <FlatList
-                    data={searchedCustomers}
-                    numColumns={1}
-                    onScroll={handleScroll}
-                    keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{
-                      paddingBottom: 100,
-                      marginTop: 15
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => {
-                      return (
-                        <CustomersSearch key={item.rifci} customer={item} />
-                      )
-                    }}
-                  />
-                )
+                <View className='flex flex-row items-center justify-center py-8'>
+                  <Text className='text-xl w-full text-center' style={{ color: typography }}>No hay resultados</Text>
+                </View>
               )}
             </View>
           ) : null}

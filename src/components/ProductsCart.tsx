@@ -1,65 +1,98 @@
-import { useState, useEffect, useRef } from "react"
-import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from "react-native"
-import { Modal } from "native-base"
-import { MinusSmallIcon, PlusSmallIcon, XMarkIcon } from "react-native-heroicons/outline"
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
-import useInv from "../hooks/useInv"
-import ProductoInterface from "../interfaces/ProductoInterface"
-import { useNavigation } from "@react-navigation/native"
-import useLogin from "../hooks/useLogin"
-import Loader from "./Loader"
-import { disponibility } from "../utils/constants"
+import { useState, useEffect, useRef } from 'react'
+import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from 'react-native'
+import { MinusSmallIcon, PlusSmallIcon, XMarkIcon } from 'react-native-heroicons/outline'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { AlertDialog, Button, Modal } from 'native-base'
+import { useNavigation } from '@react-navigation/native'
+import { disponibility } from '../utils/constants'
+import ProductoInterface from '../interfaces/ProductoInterface'
+import useInv from '../hooks/useInv'
+import useLogin from '../hooks/useLogin'
 
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
-  // theme
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn } } = useLogin()
+  const [added, setAdded] = useState(true)
+  const [ammount, setAmmount] = useState(1)
+  const [ammountInput, setAmmountInput] = useState('')
+  const [touch, setTouch] = useState(false)
   
+  const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [disableAcept, setDisableAcept] = useState(false)
-  const [localData, setLocalData] = useState({
-    agregado: false,
-    cantidad: ""
-  })
-  const [loadingDecrease, setLoadingDecrease] = useState(false)
-  const [loadingIncrease, setLoadingIncrease] = useState(false)
-  const [loadingRemoveElement, setLoadingRemoveElement] = useState(false)
-
-  const initialRef = useRef(null);
-
-  const { increase, decrease, removeElement, productsCart, setProductsCart } = useInv()
-  const { descrip, precio1, id, cantidad, centro, merida, oriente } = product
+  
+  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn } } = useLogin()
+  const { removeElement, productsCart, setProductsCart } = useInv()
+  const { descrip, precio1, codigo, centro, merida, oriente } = product
+  const cancelRef = useRef(null)
+  const initialRef = useRef(null)
   const navigation = useNavigation()
 
-  // refresh data when cart change
+  const onCloseAlertRemoveElement = () => setAlertRemoveElement(false)
+
+  // -----------------------------------------------
+  // ACTIONS
+  // -----------------------------------------------
+
+  // Refresh data when cart change
   useEffect(() => {
-    const productInCart = productsCart.find(productInCart => productInCart.id === id)
-    if (productInCart !== undefined) { // product in cart
-      setLocalData({ ...localData, agregado: productInCart.agregado, cantidad: String(productInCart.cantidad) })
+    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
+    if (productInCart !== undefined) { 
+
+      // product in cart
+      setAdded(true)
+      setAmmount(productInCart.ammount)
+      setAmmountInput(String(productInCart.ammount))
     } else {
-      setLocalData({ ...localData, agregado: false, cantidad: String(1) })
+
+      // product not in cart
+      setAdded(false)
+      setAmmount(1)
+      setAmmountInput(String(1))
     }
   }, [productsCart])
 
-  // change "cantidad" (input)
+  // Add or remove element from cart
+  // useEffect(() => {
+  //   if (!added) {
+  //     removeElement(codigo)
+  //   }
+  // }, [added])
   useEffect(() => {
-    const productInCart = productsCart.find(item => item.id === id)
-
-    // btns
-    if (productInCart !== undefined) {
-      if ((productInCart.cantidad === Number(localData.cantidad) || productInCart.cantidad < Number(localData.cantidad) || productInCart.cantidad > Number(localData.cantidad) && Number(localData.cantidad) !== 0)) { // igual, mayor o menor (y no es cero)
-        setDisableAcept(false)
-      } else if (Number(localData.cantidad) === 0 || Number(localData.cantidad) < 0) { // cero o NaN
-        setDisableAcept(true)
+    if(!added && touch) {
+      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
+        setTouch(false)
+        removeElement(codigo)
       }
     }
-  }, [localData.cantidad])
+  }, [added])
 
+  // Change 'cantidad' (input)
+  useEffect(() => {
+    const productInCart = productsCart.find(item => item.codigo === codigo)
+
+    // btns
+    if ( 
+      // igual, mayor o menor (y no es cero)
+      productInCart.ammount === Number(ammountInput) || 
+      productInCart.ammount < Number(ammountInput) || 
+      productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
+    ) {
+      setDisableAcept(false)
+    } else if ( 
+      // cero o NaN
+      Number(ammountInput) === 0 || 
+      Number(ammountInput) < 0
+    ) {
+      setDisableAcept(true)
+    }
+  }, [ammountInput])
+
+  // Btn acept (input)
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
-      if (item.id === id) {
-        const cleanCantidad = parseInt(localData.cantidad.replace(/-/g, ""))
+      if (item.codigo === codigo) {
+        const cleanCantidad = parseInt(String(ammountInput).replace(/-/g, ''))
 
-        return { ...item, cantidad: cleanCantidad }
+        return { ...item, ammount: cleanCantidad }
       } else {
         return { ...item }
       }
@@ -68,196 +101,180 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setOpenModal(false)
   }
 
-  // actions
+  // Handle actions
   const handleDecrease = () => {
-    setLoadingDecrease(true)
-    decrease(id) // function
-    setTimeout(() => {
-      setLoadingDecrease(false)
-    }, 1000);
+    if (ammount > 1) {
+      setAmmount(ammount - 1)
+    }
   }
   const handleIncrease = () => {
-    setLoadingIncrease(true)
-    increase(id) // function
-    setTimeout(() => {
-      setLoadingIncrease(false)
-    }, 1000);
+    setAmmount(ammount + 1)
   }
   const handleRemoveElement = () => {
-    setLoadingRemoveElement(true)
-    removeElement(id) // function
-    setTimeout(() => {
-      setLoadingRemoveElement(false)
-    }, 1000);
+    if (productsCart.length === 1) {
+      setProductsCart([])
+    }
+
+    setAdded(false)
+    setAmmount(1)
+    setTouch(true)
+    setAlertRemoveElement(false)
   }
 
   return (
     <>
-      <View className="flex flex-col mb-3 p-2 rounded-2xl" style={{ backgroundColor: lightList }}>
+      {added && (
+        <View className='flex flex-col mb-3 p-2 rounded-2xl' style={{ backgroundColor: lightList }}>
 
-        {/* descrip & remove */}
-        <View className="flex flex-row items-center justify-between">
-          
-          {/* descrip */}
-          <Pressable onPress={() => navigation.navigate("Product", { ...product })}>
-            <Text style={{ fontSize: wp(4), color: typography }} className="font-bold max-w-[85%]" numberOfLines={1}>
-              {descrip}
-            </Text>
-          </Pressable>
+          {/* descrip & remove */}
+          <View className='flex flex-row items-center justify-between'>
+            
+            {/* descrip */}
+            <Pressable onPress={() => navigation.navigate('Product', { ...product })}>
+              <Text style={{ fontSize: wp(4), color: typography }} className='font-bold max-w-[85%]' numberOfLines={1}>
+                {descrip}
+              </Text>
+            </Pressable>
 
-          {localData.agregado && !loadingRemoveElement ? (
-            <View className="pl-5">
-              <TouchableOpacity onPress={handleRemoveElement} className="flex flex-row items-center justify-center rounded-md w-7 h-7">
+            <View className='pl-5'>
+              <TouchableOpacity onPress={() => setAlertRemoveElement(true)} className='flex flex-row items-center justify-center rounded-md w-7 h-7'>
                 <XMarkIcon size={20} color={icon} strokeWidth={3} />
               </TouchableOpacity>
             </View>
-          ):null}
-        </View>
+          </View>
 
-        {/* info */}
-        <View className="flex flex-row justify-center">
+          {/* info */}
+          <View className='flex flex-row justify-center'>
 
-          {/* left info */}
-          <View className="w-1/2 pr-2 my-2">
+            {/* left info */}
+            <View className='w-1/2 pr-2 my-2'>
 
-            {/* disponibility */}
-            <View className="mb-2">
-              <Text style={{ fontSize: hp(1.6), color: typography }} className="pb-0.5 font-bold">
-                Disponibilidad:
-              </Text>
+              {/* disponibility */}
+              <View className='mb-2'>
+                <Text style={{ fontSize: hp(1.6), color: typography }} className='pb-0.5 font-bold'>
+                  Disponibilidad:
+                </Text>
 
-              {/* sedes */}
-              <View className="px-3">
-                <FlatList
-                  data={disponibility}
-                  horizontal={true}
-                  contentContainerStyle={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                  showsVerticalScrollIndicator={false}
-                  renderItem={({ item: { id, name } }) => {
-                    return (
-                      <View key={id} className="flex flex-col items-center">
-                        <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className="w-10 text-center font-bold">
-                          {name}
-                        </Text>
+                {/* sedes */}
+                <View className='px-3'>
+                  <FlatList
+                    data={disponibility}
+                    horizontal={true}
+                    contentContainerStyle={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item: { id, name } }) => {
+                      return (
+                        <View key={id} className='flex flex-col items-center'>
+                          <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                            {name}
+                          </Text>
 
-                        <Text style={{ fontSize: hp(1.6), color: typography }} className="text-center font-bold">
-                          {
-                            name === "Mérida" ? parseInt(String(merida)) :
-                              name === "Centro" ? parseInt(String(centro)) :
-                                name === "Oriente" ? parseInt(String(oriente)) : null
-                          }
-                        </Text>
-                      </View>
-                    )
-                  }}
-                />
+                          <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                            {
+                              name === 'Mérida' ? parseInt(String(merida)) :
+                              name === 'Centro' ? parseInt(String(centro)) :
+                              name === 'Oriente' ? parseInt(String(oriente)) : null
+                            }
+                          </Text>
+                        </View>
+                      )
+                    }}
+                  />
+                </View>
               </View>
             </View>
-          </View>
 
-          {/* right info */}
-          <View className="w-1/2 pl-2">
+            {/* right info */}
+            <View className='w-1/2 pl-2'>
 
-            {/* price */}
-            <View className="my-2">
-              <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
-                Precio:
-              </Text>
+              {/* price */}
+              <View className='my-2'>
+                <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                  Precio:
+                </Text>
 
-              <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className="font-bold">
-                Bs. {precio1}
-              </Text>
-            </View>
+                <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                  Bs. {precio1}
+                </Text>
+              </View>
 
-            {/* ammount and added */}
-            <View className="flex flex-row px-3 pt-2 pb-2">
-              {localData.agregado && !loadingRemoveElement ? (
-                <View className="flex flex-row items-center justify-between w-full">
+              {/* ammount and added */}
+              <View className='flex flex-row items-center justify-between w-full'>
 
-                  {/* increase & decrease */}
-                  <View className="flex-1 flex-row items-center justify-around">
-                    <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>
-                      <TouchableOpacity onPress={handleDecrease} className="p-0.5">
-                        <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
-                      </TouchableOpacity>
-                    </View>
+                <View className='flex-1 flex-row items-center justify-around'>
 
-                    {/* loadingDecrease || loadingIncrease */}
-                    {loadingDecrease || loadingIncrease ? (
-                      <View className="flex flex-row justify-center items-center" style={{ width: wp(12) }}>
-                        <Loader size={wp(4.5)} color={darkTurquoise} />
-                      </View>
-                    ) : (
-                      <View style={{ width: wp(12) }}>
-                        <TouchableOpacity onPress={() => setOpenModal(true)}>
-                          <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className="text-center">
-                            {cantidad}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                      
-                    )}
-
-                    <View className="rounded-md" style={{ borderColor: turquoise, borderWidth: .5 }}>
-                      <TouchableOpacity onPress={handleIncrease} className="p-0.5">
-                        <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-                      </TouchableOpacity>
-                    </View>
+                  {/* decrease */}
+                  <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+                    <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
+                      <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
+                    </TouchableOpacity>
                   </View>
 
-                  {/* added */}
-                  {localData.agregado && loadingRemoveElement ? (
-                    <View className="flex flex-row justify-center items-center rounded-md h-7 w-7 ml-5" style={{ backgroundColor: green }}>
-                      <Loader size={wp(4.5)} color="white" />
-                    </View>
-                  ):null}
+                  {/* ammount */}
+                  <View style={{ width: wp(12) }}>
+                    <TouchableOpacity onPress={() => setOpenModal(true)}>
+                      <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                        {ammount}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* increase */}
+                  <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+                    <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
+                      <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                
-              ):null}
+
+              </View>
             </View>
+
+          {/* info */}
           </View>
 
-        {/* info */}
         </View>
-
-      </View>
+      )}
 
       {/* modal input */}
-      <Modal isOpen={openModal} onClose={() => setOpenModal(false)} initialFocusRef={initialRef}>
+      <Modal isOpen={openModal} initialFocusRef={initialRef}>
         <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
-          <Text className="text-center mb-3" style={{ fontSize: wp(5), color: typography }}>Cantidad</Text>
+          <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Cantidad</Text>
 
           {/* input */}
-          <View className="w-full rounded-xl mb-4" style={{ backgroundColor: list }}>
-            <TextInput className="h-12 text-center rounded-xl" style={{ color: turquoise, fontSize: wp(5) }}
-              keyboardType="numeric"
-              value={String(localData.cantidad)}
-              onChangeText={text => setLocalData({ ...localData, cantidad: text })}
+          <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
+            <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
+              keyboardType='numeric'
+              value={String(ammountInput)}
+              onChangeText={text => setAmmountInput(text)}
               autoFocus
               selectionColor={primary}
             />
           </View>
           
           {/* btns */}
-          <View className="flex flex-row items-center justify-between">
-            <View style={{ backgroundColor: green }} className="flex justify-center w-[48%] rounded-xl">
-              <TouchableOpacity onPress={() => setOpenModal(false)}>
-                <Text style={{ fontSize: wp(4.5) }} className="py-2 text-center font-bold text-white">
+          <View className='flex flex-row items-center justify-between'>
+            <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
+              <TouchableOpacity onPress={() => {
+                setOpenModal(false)
+                setAmmountInput(String(ammount))
+              }}>
+                <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Cancelar
                 </Text>
               </TouchableOpacity>
             </View>
 
-            <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className="flex justify-center w-[48%] rounded-xl">
+            <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
               <TouchableOpacity onPress={() => acept()} disabled={disableAcept}>
-                <Text style={{ fontSize: wp(4.5) }} className="py-2 text-center font-bold text-white">
+                <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Aceptar
                 </Text>
               </TouchableOpacity>
@@ -266,6 +283,27 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
         </Modal.Content>
       </Modal>
+
+      {/* alert clear cart */}
+      <AlertDialog leastDestructiveRef={cancelRef} isOpen={alertRemoveElement} onClose={onCloseAlertRemoveElement}>
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>Eliminar producto</AlertDialog.Header>
+          <AlertDialog.Body>
+            ¿Estás seguro que deseas eliminar este producto del carrito?
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant='unstyled' colorScheme='coolGray' onPress={onCloseAlertRemoveElement} ref={cancelRef}>
+                Cancelar
+              </Button>
+              <Button color={darkTurquoise} onPress={handleRemoveElement}>
+                Aceptar
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
     </>
   )
 }
