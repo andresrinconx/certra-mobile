@@ -14,6 +14,7 @@ import Loader from '../components/Loader'
 const Product = () => {
   const [added, setAdded] = useState(false)
   const [ammount, setAmmount] = useState(1)
+  const [touch, setTouch] = useState(false)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
   const { themeColors: { backgrund, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn } } = useLogin()
@@ -37,26 +38,29 @@ const Product = () => {
     } else {
 
       // product not in cart
-      setAdded(false)
-      setAmmount(1)
       setLoadingProduct(false)
     }
   }, [productsCart])
 
   // Add or remove element from cart
-  // useEffect(() => {
-  //   if (added) {
-  //     addToCart(codigo, ammount)
-  //     console.log('no')
-  //   } else {
-  //     removeElement(codigo)
-  //     console.log('nor')
-  //   }
-  // }, [added])
+  useEffect(() => {
+    if (added && touch) {
+      if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
+        setTouch(false)
+        addToCart(codigo, ammount)
+      }
+    } else if(!added && touch) {
+      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
+        setTouch(false)
+        removeElement(codigo)
+      }
+    }
+  }, [added])
 
   // Handle actions
   const handleAddToCart = () => {
     setAdded(true)
+    setTouch(true)
   }
   const handleDecrease = () => {
     if (ammount > 1) {
@@ -69,6 +73,7 @@ const Product = () => {
   const handleRemoveElement = () => {
     setAdded(false)
     setAmmount(1)
+    setTouch(true)
   }
 
   return (

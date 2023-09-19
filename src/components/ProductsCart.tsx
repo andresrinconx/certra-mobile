@@ -8,12 +8,12 @@ import { disponibility } from '../utils/constants'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import { set } from 'lodash'
 
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(true)
   const [ammount, setAmmount] = useState(1)
   const [ammountInput, setAmmountInput] = useState('')
+  const [touch, setTouch] = useState(false)
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -56,6 +56,14 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   //     removeElement(codigo)
   //   }
   // }, [added])
+  useEffect(() => {
+    if(!added && touch) {
+      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
+        setTouch(false)
+        removeElement(codigo)
+      }
+    }
+  }, [added])
 
   // Change 'cantidad' (input)
   useEffect(() => {
@@ -109,6 +117,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
     setAdded(false)
     setAmmount(1)
+    setTouch(true)
     setAlertRemoveElement(false)
   }
 

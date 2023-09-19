@@ -38,6 +38,7 @@ const apiCall = async (endpoint: string, method: Uppercase<string>, data?: any)=
 // FUNCTIONS
 // -----------------------------------------------
 
+// Get
 export const fetchTableData = (table: string) => {
   return apiCall(tableDataEndpoint(table), 'GET')
 }
@@ -50,6 +51,8 @@ export const fetchSearchedItems = async (params: { searchTerm: string, table: st
 export const fetchUserData = async (params: { code: string, table: string }) => {
   return apiCall(userDataEndpoint(params), 'GET')
 }
+
+// Post
 export const fetchSendData = async (order: OrderInterface) => {
   return apiCall(sendDataEndpoint(), 'POST', order)
 }

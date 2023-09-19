@@ -11,6 +11,7 @@ import useLogin from '../hooks/useLogin'
 const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(false)
   const [ammount, setAmmount] = useState(1)
+  const [touch, setTouch] = useState(false)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise } } = useLogin()
   const { descrip, precio1, merida, centro, oriente, codigo } = product
@@ -38,17 +39,24 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   }, [productsCart])
 
   // Add or remove element from cart
-  // useEffect(() => {
-  //   if (added) {
-  //     addToCart(codigo, ammount)
-  //   } else {
-  //     removeElement(codigo)
-  //   }
-  // }, [added])
+  useEffect(() => {
+    if (added && touch) {
+      if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
+        setTouch(false)
+        addToCart(codigo, ammount)
+      }
+    } else if(!added && touch) {
+      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
+        setTouch(false)
+        removeElement(codigo)
+      }
+    }
+  }, [added])
 
   // Handle actions
   const handleAddToCart = () => {
     setAdded(true)
+    setTouch(true)
   }
   const handleDecrease = () => {
     if (ammount > 1) {
@@ -61,6 +69,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   const handleRemoveElement = () => {
     setAdded(false)
     setAmmount(1)
+    setTouch(true)
   }
 
   return (

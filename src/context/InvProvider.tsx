@@ -168,11 +168,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
       // fetch data
       if (myUser.from === 'scli' || myUser.from === 'usuario') {
+
+        // inv farmacia
         data = await fetchSearchedItems({ table: 'sinv', searchTerm: String(currentPage) })
-
       } else if(myUser.from === 'usuario-clipro') {
-        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
 
+        // inv lab
+        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
       }
 
       if (data?.length > 0) {
