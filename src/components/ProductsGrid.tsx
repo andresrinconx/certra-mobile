@@ -38,13 +38,13 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   }, [productsCart])
 
   // Add or remove element from cart
-  useEffect(() => {
-    if (added) {
-      addToCart(codigo, ammount)
-    } else {
-      removeElement(codigo)
-    }
-  }, [added])
+  // useEffect(() => {
+  //   if (added) {
+  //     addToCart(codigo, ammount)
+  //   } else {
+  //     removeElement(codigo)
+  //   }
+  // }, [added])
 
   // Handle actions
   const handleAddToCart = () => {

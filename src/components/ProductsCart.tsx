@@ -8,6 +8,7 @@ import { disponibility } from '../utils/constants'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
+import { set } from 'lodash'
 
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(true)
@@ -50,12 +51,12 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   }, [productsCart])
 
   // Add or remove element from cart
-  useEffect(() => {
-    if (!added) {
-      removeElement(codigo)
-    }
-  }, [added])
-  
+  // useEffect(() => {
+  //   if (!added) {
+  //     removeElement(codigo)
+  //   }
+  // }, [added])
+
   // Change 'cantidad' (input)
   useEffect(() => {
     const productInCart = productsCart.find(item => item.codigo === codigo)
@@ -102,6 +103,10 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setAmmount(ammount + 1)
   }
   const handleRemoveElement = () => {
+    if (productsCart.length === 1) {
+      setProductsCart([])
+    }
+
     setAdded(false)
     setAmmount(1)
     setAlertRemoveElement(false)

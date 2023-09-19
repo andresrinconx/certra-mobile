@@ -155,10 +155,10 @@ const Cart = () => {
       <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
         <StatusBar style='dark' />
 
+        <Logos image={image_url} />
+
         {/* content */}
         <View className='h-full px-3'>
-          
-          <Logos image={image_url} />
 
           {/* back & trash */}
           <View className='flex flex-row items-center justify-between gap-2 mb-2'>
