@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { View, Image, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'react-native'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { fetchUserData } from '../utils/api'
@@ -136,7 +136,7 @@ const Profile = () => {
   
   return (
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar style='dark' />
+      <StatusBar barStyle='dark-content' />
 
       <Logos image={myUser?.image_url} />
       <BackScreen title='Mi perfil' />

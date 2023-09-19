@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Lin
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
 import { widthPercentageToDP as wp} from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'react-native'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import useLogin from '../hooks/useLogin'
@@ -154,7 +154,7 @@ const Login = () => {
 
   return (
     <View className='flex-1 relative'>
-      <StatusBar style='light' />
+      <StatusBar barStyle='light-content' />
 
       <Image className='absolute w-full h-full' resizeMode='cover'
         source={require('../assets/background.png')}

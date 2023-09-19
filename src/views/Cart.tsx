@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { AlertDialog, Button, Modal } from 'native-base'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'react-native'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
@@ -55,7 +55,7 @@ const Cart = () => {
           
           // last item
           if (i === productsCart.length - 1) {
-            setFullProductsCart(newFullProductsCart)
+            setFullProductsCart(newFullProductsCart as any)
             setLoadingCart(false)
           }
         }
@@ -153,7 +153,7 @@ const Cart = () => {
   return (
     <>
       <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-        <StatusBar style='dark' />
+        <StatusBar barStyle='dark-content' />
 
         <Logos image={image_url} />
 
@@ -213,7 +213,7 @@ const Cart = () => {
                     marginTop: 15 
                   }}
                   overScrollMode='never'
-                  renderItem={({ item }) => {
+                  renderItem={({ item }: { item: any }) => {
                     return (
                       <ProductsCart key={item.id} product={item} />
                     )

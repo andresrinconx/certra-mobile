@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'react-native'
 import { debounce } from 'lodash'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import useInv from '../hooks/useInv'
@@ -63,7 +63,7 @@ const Search = () => {
 
   return (
     <View className='flex-1 h-full pt-10' style={{ backgroundColor: backgrund }}>
-      <StatusBar style='dark' />
+      <StatusBar barStyle='dark-content' />
 
       {/* content */}
       <View className='h-6/6'>

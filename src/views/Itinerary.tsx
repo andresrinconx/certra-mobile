@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
 import { getMonthAndDays } from '../utils/helpers'
 import { days } from '../utils/constants'
@@ -56,7 +56,7 @@ const Itinerary = () => {
 
   return (
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar style='dark' />
+      <StatusBar barStyle='dark-content' />
 
       <Logos image={myUser?.image_url} />
       <BackScreen title='Itinerario' />

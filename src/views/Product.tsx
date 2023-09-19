@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, ScrollView, FlatList } from 'react
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'react-native'
 import ProductoInterface from '../interfaces/ProductoInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
@@ -78,7 +78,7 @@ const Product = () => {
 
   return (
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar style='dark' />
+      <StatusBar barStyle='dark-content' />
         
       {/* back and cart */}
       <View className='flex flex-row items-center justify-between gap-2 my-3'>
