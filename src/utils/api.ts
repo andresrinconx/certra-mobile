@@ -1,12 +1,13 @@
 import axios from 'axios'
+import { LOCAL_API_URL, API_URL } from '@env'
 import { OrderInterface } from '../interfaces/OrderInterface'
 
 // -----------------------------------------------
 // ENDPOINTS
 // -----------------------------------------------
  
-// const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL
-const apiBaseUrl = 'http://192.168.230.19/proteoerp/app'
+const apiBaseUrl = LOCAL_API_URL
+// const apiBaseUrl = API_URL
 
 // Get
 const tableDataEndpoint = (table: string) => `${apiBaseUrl}/${table}`
@@ -30,7 +31,8 @@ const apiCall = async (endpoint: string, method: Uppercase<string>, data?: any)=
     })
     return response.data
   } catch(error) {
-    throw new Error(error)
+    console.log(error)
+    // throw new Error(error)
   }
 }
 
