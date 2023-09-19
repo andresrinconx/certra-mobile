@@ -117,8 +117,8 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
                       <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
                         {
                           name === 'Mérida' ? parseInt(String(merida)) :
-                            name === 'Centro' ? parseInt(String(centro)) :
-                              name === 'Oriente' ? parseInt(String(oriente)) : null
+                          name === 'Centro' ? parseInt(String(centro)) :
+                          name === 'Oriente' ? parseInt(String(oriente)) : null
                         }
                       </Text>
                     </View>
