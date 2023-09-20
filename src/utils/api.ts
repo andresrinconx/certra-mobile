@@ -27,7 +27,7 @@ const apiCall = async (endpoint: string, method: Uppercase<string>, data?: any)=
     const response = await axios.request({
       method,
       url: endpoint,
-      data: data ? data : null
+      data: data ? data : { }
     })
     return response.data
   } catch(error) {

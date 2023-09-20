@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking } from 'react-native'
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
-import { widthPercentageToDP as wp} from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
@@ -12,6 +12,7 @@ import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
 import { socialMedia } from '../utils/constants'
 import Loader from '../components/Loader'
+import { background } from 'native-base/lib/typescript/theme/styled-system'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -154,7 +155,7 @@ const Login = () => {
 
   return (
     <View className='flex-1 relative'>
-      <StatusBar barStyle='light-content' />
+      <StatusBar translucent={true} backgroundColor='transparent' barStyle='light-content' />
 
       <Image className='absolute w-full h-full' resizeMode='cover'
         source={require('../assets/background.png')}
@@ -176,11 +177,11 @@ const Login = () => {
 
             {/* username */}
             <View>
-              <View className='flex-row items-center rounded-2xl py-4 bg-white'>
-                <TextInput className='w-full pl-5 font-semibold' style={{ fontSize: wp(4.5), color: '#666666' }}
+              <View className='flex-row items-center rounded-2xl py-2 bg-white'>
+                <TextInput className='w-full pl-5' style={{ fontSize: wp(4.5), color: '#666666' }}
                   ref={textInputRefUser}
                   placeholder='Usuario'
-                  placeholderTextColor='#666666'
+                  placeholderTextColor='#999999'
                   value={user}
                   onChangeText={setUser}
                   selectionColor='#006283'
@@ -196,12 +197,12 @@ const Login = () => {
 
             {/* password */}
             <View>
-              <View className='flex-row items-center rounded-2xl py-4 bg-white'>
-                <TextInput className='w-full pl-5 font-semibold' style={{ fontSize: wp(4.5), color: '#666666' }}
+              <View className='flex-row items-center rounded-2xl py-2 bg-white'>
+                <TextInput className='w-full pl-5' style={{ fontSize: wp(4.5), color: '#666666' }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder='Contraseña'
-                  placeholderTextColor='#666666'
+                  placeholderTextColor='#999999'
                   value={password}
                   onChangeText={setPassword}
                   selectionColor='#006283'

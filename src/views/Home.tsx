@@ -33,9 +33,9 @@ const Home = () => {
   return (
     <>
       <View className='flex-1' style={{ backgroundColor: backgrund }}>
-        <StatusBar barStyle='dark-content' />
+        <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
 
-        <View className='flex-1 px-3 pt-6'>
+        <View className='flex-1 px-3'>
           <Logos image={image_url} />
 
           <View className='flex-1'>

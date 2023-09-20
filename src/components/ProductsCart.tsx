@@ -290,7 +290,9 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
           <AlertDialog.CloseButton />
           <AlertDialog.Header>Eliminar producto</AlertDialog.Header>
           <AlertDialog.Body>
-            ¿Estás seguro que deseas eliminar este producto del carrito?
+            <Text className='font-normal' style={{ color: typography }}>
+              ¿Estás seguro que deseas eliminar este producto del carrito?
+            </Text>
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>

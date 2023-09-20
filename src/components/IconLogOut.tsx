@@ -11,7 +11,7 @@ import Loader from './Loader'
 const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
-  const { themeColors: { darkTurquoise }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
+  const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
   const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders, setCurrentPage } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -123,7 +123,7 @@ const IconLogOut = () => {
           <AlertDialog.Header>¿Deseas cerrar sesión?</AlertDialog.Header>
 
           <AlertDialog.Body>
-            <Text className='font-normal'>
+            <Text className='font-normal' style={{ color: typography }}>
               Se eliminarán todos los productos de tu carrito.
             </Text>
           </AlertDialog.Body>

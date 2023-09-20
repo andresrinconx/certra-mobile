@@ -77,7 +77,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
 
       {/* remove element icon */}
       {added && (
-        <TouchableOpacity className='absolute top-0 right-0 z-50' 
+        <Pressable className='absolute top-0 right-0 z-50' 
           style={{ width: wp(12), height: wp(12) }}
           onPress={handleRemoveElement}
         >
@@ -88,7 +88,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
               source={require('../assets/white-trash-can.png')}
             />
           </View>
-        </TouchableOpacity>
+        </Pressable>
       )}
 
       {/* content */}
@@ -198,11 +198,11 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
             {/* add & added */}
             <View className='pl-5'>
               {!added ? (
-                <TouchableOpacity onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
+                <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
                   style={{ backgroundColor: darkTurquoise }}
                 >
                   <PlusIcon size={25} color='white' strokeWidth={2} />
-                </TouchableOpacity>
+                </Pressable>
               ) : (
                 <View className='flex flex-row items-center justify-center rounded-md w-7 h-7'
                   style={{ backgroundColor: green }}

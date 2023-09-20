@@ -17,6 +17,10 @@ const Profile = () => {
   const { themeColors: { primary, backgrund }, myUser } = useLogin()
   const { flowControl } = useInv()
 
+  useEffect(() => {
+    console.log(dataConfig)
+  }, [dataConfig])
+
   // Get data
   useEffect(() => {
     const getData = async () => {
@@ -135,8 +139,8 @@ const Profile = () => {
   ]
   
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar barStyle='dark-content' />
+    <View className='flex-1 px-3' style={{ backgroundColor: backgrund }}>
+      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url} />
       <BackScreen title='Mi perfil' />

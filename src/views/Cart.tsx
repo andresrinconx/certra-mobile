@@ -152,8 +152,8 @@ const Cart = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-        <StatusBar barStyle='dark-content' />
+      <View className='flex-1 px-3' style={{ backgroundColor: backgrund }}>
+        <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
 
         <Logos image={image_url} />
 
@@ -188,7 +188,7 @@ const Cart = () => {
               <Loader color={`${primary}`} />
             </View>
           ) : (
-            <View className='mt-3'>
+            <View className='flex flex-col justify-center'>
               {productsCart.length === 0 && !loadingCart ? (
                 <View className='flex flex-col items-center justify-center' style={{ height: hp(65) }}>
                   <Text className='font-extrabold text-center mt-6' style={{ color: typography, fontSize: wp(6) }}>
@@ -275,7 +275,9 @@ const Cart = () => {
           <AlertDialog.CloseButton />
           <AlertDialog.Header>¿Deseas continuar?</AlertDialog.Header>
           <AlertDialog.Body>
-            Se eliminarán todos los productos de tu carrito.
+            <Text className='font-normal' style={{ color: typography }}>
+              Se eliminarán todos los productos de tu carrito.
+            </Text>
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
@@ -297,7 +299,7 @@ const Cart = () => {
           <AlertDialog.Header>Confirmar pedido</AlertDialog.Header>
 
           <AlertDialog.Body>
-            <Text className='font-normal'>
+            <Text className='font-normal' style={{ color: typography }}>
               ¿Estás seguro de procesar el pedido?
             </Text>
           </AlertDialog.Body>

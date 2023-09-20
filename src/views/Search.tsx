@@ -59,11 +59,11 @@ const Search = () => {
       setSearchedProducts([])
     }
   }
-  const handleTextDebounce = debounce(handleSearch, 600)
+  const handleTextDebounce = debounce(handleSearch, 400)
 
   return (
-    <View className='flex-1 h-full pt-10' style={{ backgroundColor: backgrund }}>
-      <StatusBar barStyle='dark-content' />
+    <View className='flex-1 h-full pt-4' style={{ backgroundColor: backgrund }}>
+      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
 
       {/* content */}
       <View className='h-6/6'>
@@ -78,7 +78,7 @@ const Search = () => {
           </TouchableOpacity>
 
           <View className='rounded-lg w-5/6 ml-3' style={{ backgroundColor: list }}>
-            <TextInput className='mx-4 text-base' style={{ color: typography }}
+            <TextInput className='mx-3 text-base py-0' style={{ color: typography }}
               placeholder='Buscar Inventario'
               placeholderTextColor={typography}
               ref={textInputRef}
@@ -89,7 +89,7 @@ const Search = () => {
         </View>
 
         {/* results */}
-        <View className='h-full mx-3 mb-16'>
+        <View className='h-full mx-3 mb-16 mt-1'>
           {searchedProducts?.length > 0 && (
             <FlatList
               data={searchedProducts}
@@ -98,7 +98,7 @@ const Search = () => {
               keyboardShouldPersistTaps='handled'
               contentContainerStyle={{
                 paddingBottom: 200,
-                marginTop: 15
+                marginTop: 10
               }}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {

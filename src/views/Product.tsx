@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -38,6 +38,8 @@ const Product = () => {
     } else {
 
       // product not in cart
+      setAdded(false)
+      setAmmount(1)
       setLoadingProduct(false)
     }
   }, [productsCart])
@@ -77,9 +79,9 @@ const Product = () => {
   }
 
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar barStyle='dark-content' />
-        
+    <View className='flex-1 px-3' style={{ backgroundColor: backgrund }}>
+      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+      
       {/* back and cart */}
       <View className='flex flex-row items-center justify-between gap-2 my-3'>
         <TouchableOpacity onPress={() => {navigation.goBack()}}>
@@ -192,14 +194,14 @@ const Product = () => {
 
           {/* remove */}
           <View>
-            <TouchableOpacity onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+            <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
               style={{ backgroundColor: added ? turquoise : processBtn }}
               disabled={added ? false : true}
             >
               <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
                 source={require('../assets/white-trash-can.png')}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <View className='flex-1 flex-row items-center justify-between mx-6'>
@@ -229,11 +231,11 @@ const Product = () => {
           {/* add & added */}
           <View>
             {!added ? (
-              <TouchableOpacity onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+              <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
                 style={{ backgroundColor: darkTurquoise }}
               >
                 <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
-              </TouchableOpacity>
+              </Pressable>
             ) : (
               <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
                 style={{ backgroundColor: green }}

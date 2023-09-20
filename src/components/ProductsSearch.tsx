@@ -173,11 +173,11 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
             {/* add & added */}
             <View className='pl-5'>
               {!added ? (
-                <TouchableOpacity onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
+                <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
                   style={{ backgroundColor: darkTurquoise }}
                 >
                   <PlusIcon size={25} color='white' strokeWidth={2} />
-                </TouchableOpacity>
+                </Pressable>
               ) : (
                 <View className='flex flex-row items-center justify-center rounded-md w-7 h-7'
                   style={{ backgroundColor: green }}
