@@ -11,15 +11,8 @@ import Footer from '../components/Footer'
 
 const Home = () => {
   const { themeColors: { backgrund }, myUser: { image_url } } = useLogin()
-  const { products, loaders, getProducts } = useInv()
+  const { loaders } = useInv()
   
-  // Get products
-  useEffect(() => {
-    if (products?.length === 0) {
-      getProducts()
-    }
-  }, [])
-
   // Back handler
   useEffect(() => {
     const backAction = () => {

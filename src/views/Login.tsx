@@ -30,7 +30,6 @@ const Login = () => {
 
   useEffect(() => {
     if (login) {
-      getProducts()
       navigation.navigate('Home')
     }
   }, [login])

@@ -29,7 +29,6 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
       selected: true
     })
     setTimeout(() => {
-      getProducts()
       setLoaders({ ...loaders, loadingSlectedCustomer: false })
     }, 300)
   }

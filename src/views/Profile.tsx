@@ -17,10 +17,6 @@ const Profile = () => {
   const { themeColors: { primary, backgrund }, myUser } = useLogin()
   const { flowControl } = useInv()
 
-  useEffect(() => {
-    console.log(dataConfig)
-  }, [dataConfig])
-
   // Get data
   useEffect(() => {
     const getData = async () => {

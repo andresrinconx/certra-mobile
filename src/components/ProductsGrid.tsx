@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { View, Text, Image, TouchableOpacity, Pressable, FlatList } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
@@ -221,4 +221,4 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   )
 }
 
-export default ProductsGrid
+export default memo(ProductsGrid)

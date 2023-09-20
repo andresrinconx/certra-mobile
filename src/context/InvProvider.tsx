@@ -31,17 +31,20 @@ const InvContext = createContext<{
     selected: boolean
   }) => void
   loaders: {
+    loadingGridProducts: boolean,
     loadingProducts: boolean,
     loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }
   setLoaders: (loaders: {
+    loadingGridProducts: boolean,
     loadingProducts: boolean,
     loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }) => void
+  loadingProductsGrid: boolean
   removeElement: (codigo: string) => void
   addToCart: (codigo: string, ammount: number) => void
   order: OrderInterface
@@ -66,12 +69,14 @@ const InvContext = createContext<{
   },
   setFlowControl: () => { },
   loaders: {
+    loadingGridProducts: false,
     loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
   },
   setLoaders: () => { },
+  loadingProductsGrid: true,
   removeElement: () => { },
   addToCart: () => { },
   order: {
@@ -117,7 +122,10 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   })
 
   // LOADERS
+  const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
   const [loaders, setLoaders] = useState({
+    loadingGridProducts: false,
+    
     loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
@@ -161,6 +169,10 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // API
   // -----------------------------------------------
 
+  useEffect(() => {
+    console.log(currentPage)
+  }, [currentPage])
+
   // Get products api
   const getProducts = async () => {
     try {
@@ -170,7 +182,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       if (myUser.from === 'scli' || myUser.from === 'usuario') {
 
         // inv farmacia
-        data = await fetchSearchedItems({ table: 'sinv', searchTerm: String(currentPage) })
+        data = await fetchSearchedItems({ table: 'sinv', searchTerm: `${currentPage}` })
       } else if(myUser.from === 'usuario-clipro') {
 
         // inv lab
@@ -180,6 +192,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       if (data?.length > 0) {
         setProducts([ ...products, ...data ])
         setLoaders({ ...loaders, loadingProducts: false })
+        setLoadingProductsGrid(false)
       }
     } catch (error) {
       console.log(error)
@@ -211,6 +224,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setFlowControl,
       loaders,
       setLoaders,
+      loadingProductsGrid,
       removeElement,
       addToCart,
       order,
