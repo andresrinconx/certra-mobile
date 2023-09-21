@@ -55,7 +55,7 @@ const Itinerary = () => {
   }, [currentMonthDays])
 
   return (
-    <View className='flex-1 px-3' style={{ backgroundColor: backgrund }}>
+    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
       <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url} />
