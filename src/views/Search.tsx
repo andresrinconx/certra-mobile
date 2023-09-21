@@ -62,7 +62,7 @@ const Search = () => {
   const handleTextDebounce = debounce(handleSearch, 400)
 
   return (
-    <View className='flex-1 h-full pt-4' style={{ backgroundColor: backgrund }}>
+    <View className='flex-1 h-full pt-10' style={{ backgroundColor: backgrund }}>
       <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
 
       {/* content */}
