@@ -23,7 +23,6 @@ const Products = () => {
   }
 
   const loadMoreItems = () => {
-    console.log('load more')
     setCurrentPage(currentPage + 1)
   }
 

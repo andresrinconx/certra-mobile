@@ -16,10 +16,17 @@ export const getHour = (date: Date) => {
   return `${hours}:${minutes}:${seconds}`
 }
 
+export const getDayOfWeekInText = (date: Date) => {
+  const DAYS_OF_WEEK = [
+    "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
+  ];
+  return DAYS_OF_WEEK[date.getDay()];
+}
+
 export function getMonthAndDays(date: Date) {
   const data = [
     { month: 'Enero      ', days: 31 },
-    { month: 'Febrero    ', days: 29 },
+    { month: 'Febrero    ', days: isLeapYear(date.getFullYear()) ? 29 : 28 },
     { month: 'Marzo      ', days: 31 },
     { month: 'Abril      ', days: 30 },
     { month: 'Mayo       ', days: 31 },
@@ -31,6 +38,10 @@ export function getMonthAndDays(date: Date) {
     { month: 'Noviembre  ', days: 30 },
     { month: 'Diciembre  ', days: 31 },
   ]
+
+  function isLeapYear(year: number) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  }
   
   return data[date.getMonth()] // object {month: string, days: number}
 }

@@ -4,6 +4,7 @@ import { setDataStorage } from '../utils/asyncStorage'
 import { fetchSearchedItems } from '../utils/api'
 import { OrderInterface } from '../interfaces/OrderInterface'
 import useLogin from '../hooks/useLogin'
+import { ProductCartInterface } from '../interfaces/ProductCartInterface'
 
 const InvContext = createContext<{
   productsCart: { codigo: string, ammount: number }[]
@@ -31,14 +32,12 @@ const InvContext = createContext<{
     selected: boolean
   }) => void
   loaders: {
-    loadingGridProducts: boolean,
     loadingProducts: boolean,
     loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }
   setLoaders: (loaders: {
-    loadingGridProducts: boolean,
     loadingProducts: boolean,
     loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
@@ -69,7 +68,6 @@ const InvContext = createContext<{
   },
   setFlowControl: () => { },
   loaders: {
-    loadingGridProducts: false,
     loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
@@ -99,7 +97,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   // CART & ORDER 
-  const [productsCart, setProductsCart] = useState([]) // code and ammount
+  const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]) // code and ammount
   const [order, setOrder] = useState<OrderInterface>({
     date: '',
     hora: '',
@@ -124,8 +122,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // LOADERS
   const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
   const [loaders, setLoaders] = useState({
-    loadingGridProducts: false,
-    
     loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
@@ -169,10 +165,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // API
   // -----------------------------------------------
 
-  useEffect(() => {
-    console.log(currentPage)
-  }, [currentPage])
-
   // Get products api
   const getProducts = async () => {
     try {
@@ -205,7 +197,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add to cart
   const addToCart = (codigo: string, ammount: number) => {
-    setProductsCart([ ...productsCart, {codigo, ammount} ])
+    setProductsCart([ ...productsCart, { codigo, ammount } ])
   }
 
   // Remove element from cart

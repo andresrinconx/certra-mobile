@@ -14,6 +14,7 @@ const tableDataEndpoint = (table: string) => `${apiBaseUrl}/${table}`
 const searchOneItemEndpoint = (table: string, code: string) => `${apiBaseUrl}/${table}/${code}`
 const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.searchTerm}`
 const userDataEndpoint = (params: { code: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.code}`
+const getItineraryEndpoint = (salesperson: string) => `${apiBaseUrl}/itinerarioP/${salesperson}`
 
 // Post
 const sendDataEndpoint = () => `${apiBaseUrl}/pedidoguardar`
@@ -52,6 +53,9 @@ export const fetchSearchedItems = async (params: { searchTerm: string, table: st
 }
 export const fetchUserData = async (params: { code: string, table: string }) => {
   return apiCall(userDataEndpoint(params), 'GET')
+}
+export const fetchItinerary = async (salesperson: string) => {
+  return apiCall(getItineraryEndpoint(salesperson), 'GET')
 }
 
 // Post
