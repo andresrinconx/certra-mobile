@@ -56,7 +56,6 @@ const Itinerary = () => {
         // first day of month
         const currentYear = currentDate.getFullYear()
         const currentMonth = currentDate.getMonth()
-        console.log(currentYear, currentMonth)
         const currentFirstDay = new Date(currentYear, currentMonth, 1)
         const currentFirstDayInText = getDayOfWeekInText(currentFirstDay).substring(0, 3)
 
@@ -119,7 +118,7 @@ const Itinerary = () => {
           year: String(currentYear), 
           month: String(currentMonth + 1)
         })
-        
+
         const daysItinerary: daysItineraryInterface[] = []
 
         // previous days
