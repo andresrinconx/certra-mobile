@@ -8,7 +8,6 @@ import BackScreen from '../components/BackScreen'
 import ItineraryDayEvent from '../components/ItineraryDayEvent'
 
 const ItineraryDay = () => {
-
   const { params: { month, day, dayOfWeekInText, events } } = useRoute() as { params: { month: string, day: string, dayOfWeekInText: string, events: ItineraryEventInterface[] } }
   const { themeColors: { backgrund, typography }, myUser } = useLogin()
 
@@ -30,10 +29,18 @@ const ItineraryDay = () => {
           <FlatList
             data={events}
             numColumns={1}
+            contentContainerStyle={{
+              paddingBottom: 135,
+            }}
             showsVerticalScrollIndicator={false}
-            renderItem={({item: {cliente}}) => {
+            renderItem={({item: {cliente, direccion}}) => {
               return (
-                <ItineraryDayEvent day={day} cliente={cliente} dayOfWeekInText={dayOfWeekInText} />
+                <ItineraryDayEvent 
+                  day={day} 
+                  dayOfWeekInText={dayOfWeekInText} 
+                  cliente={cliente} 
+                  direccion={direccion}
+                />
               )
             }} 
           />

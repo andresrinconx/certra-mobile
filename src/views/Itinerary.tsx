@@ -227,11 +227,11 @@ const Itinerary = () => {
                         numColumns={1}
                         className='max-h-[50%]'
                         showsVerticalScrollIndicator={false}
-                        renderItem={({item}) => {
+                        renderItem={({item: {cliente}}) => {
                           return (
                             <Text className='mb-0.5 px-1 rounded font-normal text-white' numberOfLines={1}
                               style={{ fontSize: wp(2.5), backgroundColor: turquoise }}
-                            >{item.cliente}</Text>
+                            >{cliente}</Text>
                           )
                         }} 
                       />

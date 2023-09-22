@@ -32,7 +32,7 @@ export function getMonthAndDays(date: Date) {
     { month: 'Mayo       ', days: 31 },
     { month: 'Junio      ', days: 30 },
     { month: 'Julio      ', days: 31 },
-    { month: 'Augosto    ', days: 31 },
+    { month: 'Agosto    ', days: 31 },
     { month: 'Septiembre ', days: 30 },
     { month: 'Octubre    ', days: 31 },
     { month: 'Noviembre  ', days: 30 },

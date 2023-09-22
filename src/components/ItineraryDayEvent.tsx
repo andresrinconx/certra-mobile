@@ -1,20 +1,30 @@
 import { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { PresenceTransition, Center } from 'native-base'
+import { PresenceTransition } from 'native-base'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../hooks/useLogin'
 
-const ItineraryDayEvent = ({ cliente, day, dayOfWeekInText }: { cliente: string, day: string, dayOfWeekInText: string }) => {
-
+const ItineraryDayEvent = ({ 
+  day, 
+  dayOfWeekInText, 
+  cliente, 
+  direccion,
+}: { 
+  day: string
+  dayOfWeekInText: string 
+  cliente: string
+  direccion: string
+}) => {
   const [openDetails, setOpenDetails] = useState(false)
 
   const { themeColors: { typography, turquoise } } = useLogin()
 
   return (
     <View className='flex flex-col'>
+      
       {/* day & descrip */}
-      <View className='flex flex-row items-center justify-between mb-2'>
-        <View className='flex flex-col items-center' style={{ width: wp(10) }}>
+      <View className='flex flex-row items-center justify-between'>
+        <View className='flex flex-col items-center mb-2' style={{ width: wp(10) }}>
           <Text className='-mb-2 text-sm lowercase' style={{ color: typography }}>{dayOfWeekInText.substring(0, 4)}</Text>
           <Text className='text-lg' style={{ color: typography }}>{day}</Text>
         </View>
@@ -30,20 +40,29 @@ const ItineraryDayEvent = ({ cliente, day, dayOfWeekInText }: { cliente: string,
       <View className='flex flex-row items-center justify-between'>
         <View style={{ width: wp(10) }} />
 
-        <PresenceTransition visible={openDetails} initial={{
-          opacity: 0,
-          scale: 0
-        }} animate={{
-          opacity: 1,
-          scale: 1,
-          transition: {
-            duration: 250
-          }
-        }}>
-          <View className=''>
-            <Text className='text-gray-700'>Hola</Text>
-          </View>
-        </PresenceTransition>
+        {openDetails && (
+          <PresenceTransition visible={openDetails} initial={{
+            opacity: 0,
+            scale: 0
+          }} animate={{
+            opacity: 1,
+            scale: 1,
+            transition: {
+              duration: 250
+            }
+          }}>
+            {/* address */}
+            <View className='pl-2' style={{ width: wp(83) }}>
+              <Text className='text-base font-bold' style={{ color: typography }}>Dirección</Text>
+              <Text className='text-base font-normal' style={{ color: typography }}>{direccion}</Text>
+            </View>
+
+            {/* more details */}
+            <View className=''>
+              
+            </View>
+          </PresenceTransition>
+        )}
       </View>
     </View>
   )
