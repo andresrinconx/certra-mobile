@@ -56,6 +56,7 @@ const Itinerary = () => {
         // first day of month
         const currentYear = currentDate.getFullYear()
         const currentMonth = currentDate.getMonth()
+        console.log(currentYear, currentMonth)
         const currentFirstDay = new Date(currentYear, currentMonth, 1)
         const currentFirstDayInText = getDayOfWeekInText(currentFirstDay).substring(0, 3)
 
@@ -113,7 +114,12 @@ const Itinerary = () => {
         // -----------------------------------------------
   
         // days with info
-        const dataItinerary = await fetchItinerary(myUser?.vendedor)
+        const dataItinerary = await fetchItinerary({
+          salesperson: myUser?.vendedor, 
+          year: String(currentYear), 
+          month: String(currentMonth + 1)
+        })
+        
         const daysItinerary: daysItineraryInterface[] = []
 
         // previous days
