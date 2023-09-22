@@ -220,25 +220,12 @@ const Itinerary = () => {
                           {day}
                         </Text>
                       </View>
-
-                      {/* day events */}
-                      <FlatList
-                        data={events}
-                        numColumns={1}
-                        className='max-h-[50%]'
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({item: {cliente}}) => {
-                          return (
-                            <Text className='mb-0.5 px-1 rounded font-normal text-white' numberOfLines={1}
-                              style={{ fontSize: wp(2.5), backgroundColor: turquoise }}
-                            >{cliente}</Text>
-                          )
-                        }} 
-                      />
-
-                      {/* more events */}
-                      {events?.length > 3 && (
-                        <EllipsisHorizontalIcon size={18} color={typography} />
+  
+                      {/* events */}
+                      {events?.length > 0 && (
+                        <View className='flex flex-row items-center justify-center h-[50%]'>
+                          <EllipsisHorizontalIcon size={18} color={turquoise} />
+                        </View>
                       )}
                     </TouchableOpacity>
                   )

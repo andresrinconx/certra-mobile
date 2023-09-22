@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { PresenceTransition } from 'native-base'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { ChevronDownIcon } from 'react-native-heroicons/mini'
 import useLogin from '../hooks/useLogin'
 
 const ItineraryDayEvent = ({ 
@@ -21,7 +22,7 @@ const ItineraryDayEvent = ({
 
   return (
     <View className='flex flex-col'>
-      
+
       {/* day & descrip */}
       <View className='flex flex-row items-center justify-between'>
         <View className='flex flex-col items-center mb-2' style={{ width: wp(10) }}>
@@ -29,10 +30,14 @@ const ItineraryDayEvent = ({
           <Text className='text-lg' style={{ color: typography }}>{day}</Text>
         </View>
 
-        <TouchableOpacity className='p-1.5 rounded-lg' style={{ backgroundColor: turquoise, width: wp(83) }}
-          onPress={() => setOpenDetails(!openDetails)}
-        >
-          <Text className='font-normal text-white'>{cliente}</Text>
+        <TouchableOpacity className='flex-row' onPress={() => setOpenDetails(!openDetails)}>
+          <View className='p-1.5 rounded-lg' style={{ backgroundColor: turquoise, width: wp(83) }}>
+            <Text className='font-normal text-white'>{cliente}</Text>
+          </View>
+
+          <View className='flex flex-row justify-center items-center absolute right-1 top-1.5'>
+            <ChevronDownIcon size={18} color='white' />
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -42,11 +47,9 @@ const ItineraryDayEvent = ({
 
         {openDetails && (
           <PresenceTransition visible={openDetails} initial={{
-            opacity: 0,
-            scale: 0
+            opacity: 0
           }} animate={{
             opacity: 1,
-            scale: 1,
             transition: {
               duration: 250
             }
