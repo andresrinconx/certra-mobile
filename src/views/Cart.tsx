@@ -25,7 +25,7 @@ const Cart = () => {
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
 
-  const { themeColors: { typography, backgrund, processBtn, darkTurquoise, green, icon, primary }, myUser } = useLogin()
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser } = useLogin()
   const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -152,8 +152,8 @@ const Cart = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-        <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+        <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url} />
 
@@ -230,7 +230,7 @@ const Cart = () => {
       {!loadingCart && (
         <View className='flex flex-col justify-center h-32 w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'>
           <View className='flex flex-col justify-center h-full w-[92%]'
-            style={{ backgroundColor: backgrund, borderTopColor: icon, marginLeft: 16 }}
+            style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
           >
             {productsCart.length !== 0 && (
               <View className='px-2'>

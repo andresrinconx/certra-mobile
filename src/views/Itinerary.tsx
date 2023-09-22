@@ -27,7 +27,7 @@ const Itinerary = () => {
   const [currentMonthInText, setCurrentMonthInText] = useState('')
   const [daysItinerary, setDaysItinerary] = useState<daysItineraryInterface[]>([])
 
-  const { themeColors: { backgrund, typography, primary, turquoise, lightList }, myUser } = useLogin()
+  const { themeColors: { background, typography, primary, turquoise, lightList }, myUser } = useLogin()
   const navigation = useNavigation()
 
   // Set data
@@ -153,8 +153,8 @@ const Itinerary = () => {
   }, [])
 
   return (
-    <View className='flex-1 px-2.5 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+    <View className='flex-1 px-2.5 pt-6' style={{ backgroundColor: background }}>
+      <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url} />
       <BackScreen title='Itinerario' />
@@ -198,7 +198,7 @@ const Itinerary = () => {
                         width: wp(13.5), 
                         height: wp(20), 
                         borderColor: typography, 
-                        backgroundColor: current ? backgrund : lightList,
+                        backgroundColor: current ? background : lightList,
                       }}
                       onPress={() => current ? navigation.navigate('ItineraryDay', {
                         month: currentMonthInText,

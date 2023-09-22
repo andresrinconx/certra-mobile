@@ -35,7 +35,7 @@ const LoginContext = createContext<{
   usersFromScli: [],
   themeColors: {
     primary: '',
-    backgrund: '',
+    background: '',
     charge: '',
     list: '',
     lightList: '',
@@ -58,7 +58,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   })
   const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
     primary: '',
-    backgrund: '',
+    background: '',
     charge: '',
     list: '',
     lightList: '',

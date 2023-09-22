@@ -17,7 +17,7 @@ const Product = () => {
   const [touch, setTouch] = useState(false)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
-  const { themeColors: { backgrund, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn } } = useLogin()
+  const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn } } = useLogin()
   const { productsCart, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
   const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductoInterface }
@@ -79,8 +79,8 @@ const Product = () => {
   }
 
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <StatusBar backgroundColor={background} barStyle='dark-content' />
       
       {/* back and cart */}
       <View className='flex flex-row items-center justify-between gap-2 my-3'>

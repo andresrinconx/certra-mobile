@@ -9,11 +9,11 @@ import ItineraryDayEvent from '../components/ItineraryDayEvent'
 
 const ItineraryDay = () => {
   const { params: { month, day, dayOfWeekInText, events } } = useRoute() as { params: { month: string, day: string, dayOfWeekInText: string, events: ItineraryEventInterface[] } }
-  const { themeColors: { backgrund, typography }, myUser } = useLogin()
+  const { themeColors: { background, typography }, myUser } = useLogin()
 
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url} />
       <BackScreen title={month} />

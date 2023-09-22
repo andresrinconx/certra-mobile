@@ -50,7 +50,7 @@ const IconLogOut = () => {
     })
     await setDataStorage('themeColors', {
       primary: '',
-      backgrund: '',
+      background: '',
       charge: '',
       list: '',
       turquoise: '',
@@ -82,7 +82,7 @@ const IconLogOut = () => {
       setMyUser({})
       setThemeColors({
         primary: '',
-        backgrund: '',
+        background: '',
         charge: '',
         list: '',
         lightList: '',

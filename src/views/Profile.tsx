@@ -14,7 +14,7 @@ const Profile = () => {
   const [dataConfig, setDataConfig] = useState<any>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
-  const { themeColors: { primary, backgrund }, myUser } = useLogin()
+  const { themeColors: { primary, background }, myUser } = useLogin()
   const { flowControl } = useInv()
 
   // Get data
@@ -135,8 +135,8 @@ const Profile = () => {
   ]
   
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url} />
       <BackScreen title='Mi perfil' />

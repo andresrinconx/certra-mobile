@@ -15,7 +15,7 @@ import IconCart from '../components/IconCart'
 const Search = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
 
-  const { themeColors: { backgrund, typography, primary, list }, myUser } = useLogin()
+  const { themeColors: { background, typography, primary, list }, myUser } = useLogin()
   const { productsCart } = useInv()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
@@ -62,8 +62,8 @@ const Search = () => {
   const handleTextDebounce = debounce(handleSearch, 400)
 
   return (
-    <View className='flex-1 h-full pt-10' style={{ backgroundColor: backgrund }}>
-      <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+    <View className='flex-1 h-full pt-10' style={{ backgroundColor: background }}>
+      <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* content */}
       <View className='h-6/6'>

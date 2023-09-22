@@ -10,7 +10,7 @@ import Products from '../components/Products'
 import Footer from '../components/Footer'
 
 const Home = () => {
-  const { themeColors: { backgrund }, myUser: { image_url } } = useLogin()
+  const { themeColors: { background }, myUser: { image_url } } = useLogin()
   const { loaders } = useInv()
   
   // Back handler
@@ -25,8 +25,8 @@ const Home = () => {
 
   return (
     <>
-      <View className='flex-1' style={{ backgroundColor: backgrund }}>
-        <StatusBar backgroundColor={backgrund} barStyle='dark-content' />
+      <View className='flex-1' style={{ backgroundColor: background }}>
+        <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <View className='flex-1 px-3 pt-6'>
           <Logos image={image_url} />
