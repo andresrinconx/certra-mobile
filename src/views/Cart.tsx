@@ -110,7 +110,7 @@ const Cart = () => {
             })
           } else {
             // network error
-
+            console.log('network error')
           }
         }
       } catch (error) {

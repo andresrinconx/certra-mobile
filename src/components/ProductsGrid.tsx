@@ -149,19 +149,22 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: { id, name } }) => {
                   return (
-                    <View key={id} className='flex flex-col items-center'>
-                      <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
-                        {name}
-                      </Text>
+                    <>
+                      {/* condicionar segun el deposito para mostrar el name dependiendo del mismo */}
+                      <View key={id} className='flex flex-col items-center'>
+                        <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                          {name}
+                        </Text>
 
-                      <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
-                        {
-                          name === 'Mérida' ? parseInt(String(merida)) :
-                          name === 'Centro' ? parseInt(String(centro)) :
-                          name === 'Oriente' ? parseInt(String(oriente)) : null
-                        }
-                      </Text>
-                    </View>
+                        <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                          {
+                            name === 'Mérida' ? parseInt(String(merida)) :
+                            name === 'Centro' ? parseInt(String(centro)) :
+                            name === 'Oriente' ? parseInt(String(oriente)) : null
+                          }
+                        </Text>
+                      </View>
+                    </>
                   )
                 }}
               />
