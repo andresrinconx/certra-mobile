@@ -45,7 +45,7 @@ const Cart = () => {
       if (productsCart?.length > 0) {
         let newFullProductsCart = []
     
-        for (let i = 0; i < productsCart.length; i++) {
+        for (let i = 0; i < productsCart?.length; i++) {
           const code = productsCart[i].codigo
           const ammount = productsCart[i].ammount
     
@@ -54,7 +54,7 @@ const Cart = () => {
           newFullProductsCart.push({ ...res[0], ammount })
           
           // last item
-          if (i === productsCart.length - 1) {
+          if (i === productsCart?.length - 1) {
             setFullProductsCart(newFullProductsCart as any)
             setLoadingCart(false)
           }
@@ -90,18 +90,28 @@ const Cart = () => {
   useEffect(() => {
     const sendOrder = async () => {
       try {
-        if (order.productos.length !== 0) {
-          await fetchSendData(order)
+        if (order.productos?.length !== 0) {
+          const res = await fetchSendData(order)
 
-          setTimeout(() => {
-            // clear cart
+          if (res?.message) {
             setProductsCart([])
-          }, 2000)
+            setAlertSuccessOrder(true)
+            setOrder({
+              ...order,
+              date: '',
+              hora: '',
+              cliente: {
+                name: '',
+                code: Number(''),
+              },
+              productos: [],
+              subtotal: '',
+              total: '',
+            })
+          } else {
+            // network error
 
-          setTimeout(() => {
-
-            setLoaders({ ...loaders, loadingConfirmOrder: false }) // loader from alert*
-          }, 3000)
+          }
         }
       } catch (error) {
         console.log(error)
@@ -109,7 +119,7 @@ const Cart = () => {
     }
     sendOrder()
   }, [order])
-  
+
   // Process order
   const handleProcess = () => {
     setLoaders({ ...loaders, loadingConfirmOrder: true })
@@ -140,14 +150,7 @@ const Cart = () => {
     })
     
     // close process alert
-    setTimeout(() => {
-      setAlertProcessOrder(false)
-
-      // show success alert
-      setTimeout(() => {
-        setAlertSuccessOrder(true)
-      }, 500)
-    }, 2500)
+    setAlertProcessOrder(false)
   }
 
   return (
@@ -176,7 +179,7 @@ const Cart = () => {
           </View>
 
           {/* customer */}
-          {productsCart.length !== 0 && myUser?.customer?.nombre ? (
+          {productsCart?.length !== 0 && myUser?.customer?.nombre ? (
             <LabelCustomer
               name={myUser?.customer?.nombre}
             />
@@ -230,7 +233,7 @@ const Cart = () => {
           <View className='flex flex-col justify-center h-full w-[92%]'
             style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
           >
-            {productsCart.length !== 0 && (
+            {productsCart?.length !== 0 && (
               <View className='px-2'>
                 {/* subtotal & total */}
                 <View className='flex flex-row justify-between'>
@@ -254,12 +257,12 @@ const Cart = () => {
             )}
 
             {/* btn process */}
-            <View className='rounded-xl py-3' style={{ backgroundColor: `${productsCart.length === 0 ? processBtn : green}`}}>
+            <View className='rounded-xl py-3' style={{ backgroundColor: `${productsCart?.length === 0 ? processBtn : green}`}}>
               <TouchableOpacity onPress={() => setAlertProcessOrder(true)}
-                disabled={productsCart.length === 0 ? true : false}
+                disabled={productsCart?.length === 0 ? true : false}
               >
                 <Text className='text-center font-bold text-white' style={{ fontSize: wp(5) }}>
-                  Procesar pedido {productsCart.length === 0 ? '' : `(${productsCart.length})`}
+                  Procesar pedido {productsCart?.length === 0 ? '' : `(${productsCart?.length})`}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -308,13 +311,13 @@ const Cart = () => {
                 Cancelar
               </Button>
               <Button color={darkTurquoise} onPress={handleProcess}>
-                {loaders.loadingConfirmOrder ? (
+                {/* {loaders.loadingConfirmOrder ? (
                   <View className='flex flex-row justify-center items-center w-14'>
                     <Loader color='white' size={wp(4)} />
                   </View>
                 ) : (
-                  <Text className='font-normal text-white'>Confirmar</Text>
-                )}
+                  )} */}
+                <Text className='font-normal text-white'>Confirmar</Text>
               </Button>
             </Button.Group>
           </AlertDialog.Footer>

@@ -30,6 +30,11 @@ const Itinerary = () => {
   const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
   const navigation = useNavigation()
 
+  // GPS
+  useEffect(() => {
+    checkLocationPermission()
+  }, [])
+
   // Set data
   useEffect(() => {
     const setData = async () => {
@@ -172,11 +177,7 @@ const Itinerary = () => {
         ) : (
           !locationPermissionGranted ? (
             <View className='mt-5'>
-              <Text className='text-center font-bold' style={{ fontSize: wp(4) }}>Por favor {''}
-                <Text className='text-center font-bold' style={{ color: turquoise }}
-                  onPress={() => checkLocationPermission()}
-                >activar GPS</Text>
-              </Text>
+              <Text className='text-center font-bold' style={{ color: typography, fontSize: wp(4) }}>Por favor activar GPS</Text>
             </View>
           ) : (
             <>

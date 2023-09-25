@@ -12,8 +12,7 @@ export const getDate = (date: Date) => {
 export const getHour = (date: Date) => {
   const hours = date.getHours()
   const minutes = date.getMinutes()
-  const seconds = date.getSeconds()
-  return `${hours}:${minutes}:${seconds}`
+  return `${hours}:${minutes}`
 }
 
 export const getDayOfWeekInText = (date: Date) => {

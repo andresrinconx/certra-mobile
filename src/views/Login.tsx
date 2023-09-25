@@ -115,10 +115,9 @@ const Login = () => {
           from: 'scli',
         })
         setThemeColors({ ...pallete[1] }) // 1 = Scli
+        
         setLogin(true)
-        setTimeout(() => {
-          setLoaders({ ...loaders, loadingAuth: false })
-        }, 1500)
+        setLoaders({ ...loaders, loadingAuth: false })
         setShowPassword(false)
       }
     } else {
@@ -152,10 +151,9 @@ const Login = () => {
       }
 
       setThemeColors({ ...pallete[0] }) // 0 = Usuario
+
       setLogin(true)
-      setTimeout(() => {
-        setLoaders({ ...loaders, loadingAuth: false })
-      }, 1500)
+      setLoaders({ ...loaders, loadingAuth: false })
       setShowPassword(false)
     }
   }

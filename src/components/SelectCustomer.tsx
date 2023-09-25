@@ -34,7 +34,7 @@ const SelectCustomer = () => {
 
   // SEARCH
   const handleSearch = async (valueSearchCustomers: string) => {
-    if (valueSearchCustomers.length > 2) {
+    if (valueSearchCustomers?.length > 2) {
       // search
 
       setFlowControl({ 

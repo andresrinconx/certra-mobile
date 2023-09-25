@@ -51,11 +51,6 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   }, [productsCart])
 
   // Add or remove element from cart
-  // useEffect(() => {
-  //   if (!added) {
-  //     removeElement(codigo)
-  //   }
-  // }, [added])
   useEffect(() => {
     if(!added && touch) {
       if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
@@ -69,23 +64,24 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   useEffect(() => {
     const productInCart = productsCart.find(item => item.codigo === codigo)
 
-    // btns
-    if ( 
-      // igual, mayor o menor (y no es cero)
-      productInCart.ammount === Number(ammountInput) || 
-      productInCart.ammount < Number(ammountInput) || 
-      productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
-    ) {
-      setDisableAcept(false)
-    } else if ( 
-      // cero o NaN
-      Number(ammountInput) === 0 || 
-      Number(ammountInput) < 0
-    ) {
-      setDisableAcept(true)
+    if (productInCart) {
+      if ( 
+        // cero o NaN
+        Number(ammountInput) < 1
+      ) {
+        setDisableAcept(true)
+      } else if ( 
+        // igual, mayor o menor (y no es cero)
+        productInCart.ammount === Number(ammountInput) || 
+        productInCart.ammount < Number(ammountInput) || 
+        productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
+      ) {
+        setDisableAcept(false)
+      }
     }
-  }, [ammountInput])
 
+  }, [ammountInput])
+  
   // Btn acept (input)
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
@@ -111,7 +107,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setAmmount(ammount + 1)
   }
   const handleRemoveElement = () => {
-    if (productsCart.length === 1) {
+    if (productsCart?.length === 1) {
       setProductsCart([])
     }
 

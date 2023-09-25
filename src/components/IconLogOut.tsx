@@ -26,13 +26,8 @@ const IconLogOut = () => {
     setPassword('')
     setLogin(false)
 
-    // redirect
-    setTimeout(() => {
-      navigation.navigate('Login')
-
-      // reset alert
-      setAlertLogOut(false)
-    }, 2000)
+    navigation.navigate('Login')
+    setAlertLogOut(false)
 
     await setDataStorage('login', false)
     await setDataStorage('themeColors', {})
@@ -62,47 +57,45 @@ const IconLogOut = () => {
       processBtn: '',
     })
 
-    setTimeout(() => {
-      // reset products
-      setProductsCart([])
-      setProducts([])
-      setCurrentPage(1)
-  
-      // reset flow
-      setFlowControl({
-        showProducts: false,
-        showSelectCustomer: false,
-        showSelectSearch: false,
-        showSelectResults: false,
-        showSelectLabel: false,
-        showLogoCertra: false,
-        showItinerary: false,
-        selected: false,
-      })
-      setMyUser({})
-      setThemeColors({
-        primary: '',
-        background: '',
-        charge: '',
-        list: '',
-        lightList: '',
-        turquoise: '',
-        darkTurquoise: '',
-        green: '',
-        blue: '',
-        icon: '',
-        typography: '',
-        processBtn: '',
-      })
-  
-      setLoaders({
-        ...loaders, 
-        loadingLogOut: false,
-        loadingProducts: false,
-        loadingSlectedCustomer: false,
-        loadingConfirmOrder: false,
-      })
-    }, 2000)
+    // reset products
+    setProductsCart([])
+    setProducts([])
+    setCurrentPage(1)
+
+    // reset flow
+    setFlowControl({
+      showProducts: false,
+      showSelectCustomer: false,
+      showSelectSearch: false,
+      showSelectResults: false,
+      showSelectLabel: false,
+      showLogoCertra: false,
+      showItinerary: false,
+      selected: false,
+    })
+    setMyUser({})
+    setThemeColors({
+      primary: '',
+      background: '',
+      charge: '',
+      list: '',
+      lightList: '',
+      turquoise: '',
+      darkTurquoise: '',
+      green: '',
+      blue: '',
+      icon: '',
+      typography: '',
+      processBtn: '',
+    })
+
+    setLoaders({
+      ...loaders, 
+      loadingLogOut: false,
+      loadingProducts: false,
+      loadingSlectedCustomer: false,
+      loadingConfirmOrder: false,
+    })
   }
 
   return (

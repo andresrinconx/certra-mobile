@@ -16,13 +16,13 @@ const IconCart = () => {
         source={require('../assets/cart.png')}
       />
 
-      {productsCart.length > 0
+      {productsCart?.length > 0
         && (
           <View className='flex flex-row justify-center items-center absolute -top-1 -right-1 w-4 h-4 rounded-full'
             style={{ backgroundColor: green, }}
           >
             <Text className='w-full text-center color-black text-[10px]'>
-              {productsCart.length}
+              {productsCart?.length}
             </Text>
           </View>
         )
