@@ -24,7 +24,7 @@ const Products = () => {
         getProducts()
       }
     }
-  }, [currentPage])
+  }, [currentPage, flowControl?.showProducts])
 
   // hide keyboard
   const handleScroll = () => {
