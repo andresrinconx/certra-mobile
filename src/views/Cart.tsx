@@ -131,6 +131,7 @@ const Cart = () => {
       hora: getHour(new Date()),
       cliente: (myUser.from === 'scli' ? {
         name: myUser?.nombre,
+        usuario: myUser?.cliente,
         code: myUser?.cliente
       } : {
         name: myUser.us_nombre,

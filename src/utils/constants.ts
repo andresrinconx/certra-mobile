@@ -85,3 +85,34 @@ export const days = [
     name: 'Domingo',
   },
 ]
+
+export const orderRecordCols = [
+  {
+    id: 1,
+    name: 'ID'
+  },
+  {
+    id: 2,
+    name: 'Fecha'
+  },
+  {
+    id: 3,
+    name: 'Sub Total'
+  },
+  {
+    id: 4,
+    name: 'IVA'
+  },
+  {
+    id: 5,
+    name: 'Importe'
+  },
+  {
+    id: 6,
+    name: 'Unidades'
+  },
+  {
+    id: 7,
+    name: 'Estatus'
+  }
+]
