@@ -27,7 +27,7 @@ const Itinerary = () => {
   const [currentMonthInText, setCurrentMonthInText] = useState('')
   const [daysItinerary, setDaysItinerary] = useState<daysItineraryInterface[]>([])
 
-  const { themeColors: { background, typography, primary, turquoise, lightList }, myUser } = useLogin()
+  const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
   const navigation = useNavigation()
 
   // Set data
@@ -170,74 +170,85 @@ const Itinerary = () => {
             <Loader color={primary} />
           </View>
         ) : (
-          <>
-            {/* current month */}
-            <View className='mt-2'>
-              <Text className='text-center font-bold' style={{ color: typography, fontSize: wp(5) }}>
-                {currentMonthInText}
+          !locationPermissionGranted ? (
+            <View className='mt-5'>
+              <Text className='text-center font-bold' style={{ fontSize: wp(4) }}>Por favor {''}
+                <Text className='text-center font-bold' style={{ color: turquoise }}
+                  onPress={() => checkLocationPermission()}
+                >activar GPS</Text>
               </Text>
             </View>
+          ) : (
+            <>
 
-            {/* days view */}
-            <View className='flex flex-row justify-center items-center mt-4'>
-              {days.map((item) => {
-                const { id, name } = item
-                return (
-                  <Text key={id} className='uppercase text-center' 
-                    style={{ fontSize: wp(2.4), color: name === dayOfWeekInText ? turquoise : typography, width: wp(13.5) }}
-                  >{name}</Text>
-                )
-              })}
-            </View>
+              {/* current month */}
+              <View className='mt-2'>
+                <Text className='text-center font-bold' style={{ color: typography, fontSize: wp(5) }}>
+                  {currentMonthInText}
+                </Text>
+              </View>
 
-            {/* square days view */}
-            <View className='border-[0.5px] mt-1' style={{ borderColor: typography }}>
-              <FlatList
-                data={daysItinerary}
-                numColumns={7}
-                showsVerticalScrollIndicator={false}
-                renderItem={({item: {current, day, events}, index}) => {
+              {/* days view */}
+              <View className='flex flex-row justify-center items-center mt-4'>
+                {days.map((item) => {
+                  const { id, name } = item
                   return (
-                    <TouchableOpacity key={index} className='border-[0.5px] p-0.5'
-                      style={{ 
-                        width: wp(13.5), 
-                        height: wp(20), 
-                        borderColor: typography, 
-                        backgroundColor: current ? background : lightList,
-                      }}
-                      onPress={() => current ? navigation.navigate('ItineraryDay', {
-                        month: currentMonthInText,
-                        day,
-                        dayOfWeekInText,
-                        events
-                      }) : ''}
-                    >
-                      {/* circle day */}
-                      <View className='flex flex-row justify-center items-center mb-0.5'
-                        style={{ 
-                          backgroundColor: day === Number(currentDay) ? turquoise : 'transparent', 
-                          width: wp(4), 
-                          height: wp(4),
-                          borderRadius: day === Number(currentDay) ? 999 : 0, 
-                        }}
-                      >
-                        <Text style={{ fontSize: wp(2.5), color: day === Number(currentDay) ? 'white' : typography }}>
-                          {day}
-                        </Text>
-                      </View>
-  
-                      {/* events */}
-                      {events?.length > 0 && (
-                        <View className='flex flex-row items-center justify-center h-[50%]'>
-                          <EllipsisHorizontalIcon size={18} color={turquoise} />
-                        </View>
-                      )}
-                    </TouchableOpacity>
+                    <Text key={id} className='uppercase text-center' 
+                      style={{ fontSize: wp(2.4), color: name === dayOfWeekInText ? turquoise : typography, width: wp(13.5) }}
+                    >{name}</Text>
                   )
-                }} 
-              />
-            </View>
-          </>
+                })}
+              </View>
+
+              {/* square days view */}
+              <View className='border-[0.5px] mt-1' style={{ borderColor: typography }}>
+                <FlatList
+                  data={daysItinerary}
+                  numColumns={7}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item: {current, day, events}, index}) => {
+                    return (
+                      <TouchableOpacity key={index} className='border-[0.5px] p-0.5'
+                        style={{ 
+                          width: wp(13.5), 
+                          height: wp(20), 
+                          borderColor: typography, 
+                          backgroundColor: current ? background : lightList,
+                        }}
+                        onPress={() => current ? navigation.navigate('ItineraryDay', {
+                          month: currentMonthInText,
+                          day,
+                          dayOfWeekInText,
+                          events
+                        }) : ''}
+                      >
+                        {/* circle day */}
+                        <View className='flex flex-row justify-center items-center mb-0.5'
+                          style={{ 
+                            backgroundColor: day === Number(currentDay) ? turquoise : 'transparent', 
+                            width: wp(4), 
+                            height: wp(4),
+                            borderRadius: day === Number(currentDay) ? 999 : 0, 
+                          }}
+                        >
+                          <Text style={{ fontSize: wp(2.5), color: day === Number(currentDay) ? 'white' : typography }}>
+                            {day}
+                          </Text>
+                        </View>
+    
+                        {/* events */}
+                        {events?.length > 0 && (
+                          <View className='flex flex-row items-center justify-center h-[50%]'>
+                            <EllipsisHorizontalIcon size={18} color={turquoise} />
+                          </View>
+                        )}
+                      </TouchableOpacity>
+                    )
+                  }} 
+                />
+              </View>
+            </>
+          )
         )}
       </View>
 

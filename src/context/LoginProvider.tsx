@@ -1,9 +1,10 @@
 import { createContext, useState, useEffect } from 'react'
+import { PermissionsAndroid } from 'react-native'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
+import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
-import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
 
 const LoginContext = createContext<{
   login: boolean
@@ -20,6 +21,8 @@ const LoginContext = createContext<{
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
+  checkLocationPermission: () => void
+  locationPermissionGranted: boolean
 }>({
   login: false,
   setLogin: () => { },
@@ -48,6 +51,8 @@ const LoginContext = createContext<{
     processBtn: ''
   },
   setThemeColors: () => { },
+  checkLocationPermission: () => { },
+  locationPermissionGranted: false
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
@@ -70,6 +75,9 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     typography: '',
     processBtn: '',
   })
+
+  // LOCATION
+  const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
 
   // API
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) 
@@ -101,6 +109,24 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       setMyUserStorage()
     }
   }, [myUser])
+
+  // -----------------------------------------------
+  // PERMISSIONS
+  // -----------------------------------------------
+
+  const checkLocationPermission = async () => {
+    let granted = await getLocationPermission()
+    setLocationPermissionGranted(granted)
+  }
+
+  const getLocationPermission = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    ).catch((err) => {
+      console.warn(err)
+    })
+    return granted === PermissionsAndroid.RESULTS.GRANTED
+  }
 
   // -----------------------------------------------
   // API
@@ -137,7 +163,9 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       usersFromScli,
       usersFromUsuario,
       themeColors,
-      setThemeColors
+      setThemeColors,
+      checkLocationPermission,
+      locationPermissionGranted
     }}>
       {children}
     </LoginContext.Provider>

@@ -133,7 +133,7 @@ const Cart = () => {
         base1: Number(product.base1),
         precio1: Number(product.precio1),
         iva: Number(product.iva),
-        cantidad: Number(product.cantidad)
+        cantidad: Number(product.ammount)
       })),
       subtotal: String(subtotal),
       total: String(total),
@@ -198,9 +198,7 @@ const Cart = () => {
                   <Text style={{ color: typography, fontSize: wp(4) }} className='font-medium'>Continúa {''}
                     <Text style={{ color: darkTurquoise, fontSize: wp(4) }} className='font-medium'
                       onPress={() => navigation.navigate('Home')}
-                    >
-                      aquí
-                    </Text>
+                    >aquí</Text>
                   </Text>
                 </View>
               ) : (
