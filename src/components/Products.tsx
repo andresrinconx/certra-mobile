@@ -10,10 +10,20 @@ import ProductsGrid from './ProductsGrid'
 
 const Products = () => {
   const { themeColors: { typography, primary } } = useLogin()
-  const { flowControl, loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid } = useInv()
+  const { flowControl, loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useInv()
   
   useEffect(() => {
-    getProducts()
+    if (products?.length !== 0) {
+      if (flowControl?.showProducts) {
+        getProducts()
+      }
+    } else {
+      setCurrentPage(1)
+      setProducts([])
+      if (flowControl?.showProducts) {
+        getProducts()
+      }
+    }
   }, [currentPage])
 
   // hide keyboard
@@ -23,7 +33,9 @@ const Products = () => {
   }
 
   const loadMoreItems = () => {
-    setCurrentPage(currentPage + 1)
+    if (products?.length !== 0) {
+      setCurrentPage(currentPage + 1)
+    }
   }
 
   return (

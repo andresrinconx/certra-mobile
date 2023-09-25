@@ -12,7 +12,7 @@ const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
   const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
-  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders, setCurrentPage } = useInv()
+  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
@@ -96,6 +96,7 @@ const IconLogOut = () => {
       loadingSlectedCustomer: false,
       loadingConfirmOrder: false,
     })
+    setLoadingProductsGrid(true)
   }
 
   return (

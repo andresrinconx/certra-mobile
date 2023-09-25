@@ -7,7 +7,7 @@ import useInv from '../hooks/useInv'
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
 
   const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin() // theme
-  const { flowControl, setFlowControl, setProductsCart, loaders, setLoaders } = useInv()
+  const { flowControl, setFlowControl, setProductsCart, loaders, setLoaders, setCurrentPage } = useInv()
   const { cliente, nombre } = customer
 
   // select customer
@@ -28,6 +28,8 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
       showItinerary: myUser.from === 'usuario' ? true : false,
       selected: true
     })
+    setCurrentPage(1)
+    
     setTimeout(() => {
       setLoaders({ ...loaders, loadingSlectedCustomer: false })
     }, 300)

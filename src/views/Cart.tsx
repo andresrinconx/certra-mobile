@@ -180,9 +180,11 @@ const Cart = () => {
 
           {/* customer */}
           {productsCart?.length !== 0 && myUser?.customer?.nombre ? (
-            <LabelCustomer
-              name={myUser?.customer?.nombre}
-            />
+            <View className='pb-1'>
+              <LabelCustomer
+                name={myUser?.customer?.nombre}
+              />
+            </View>
           ):null}
 
           {/* products */}
@@ -211,7 +213,7 @@ const Cart = () => {
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ 
                     paddingBottom: 300,
-                    marginTop: 15 
+                    marginTop: 5 
                   }}
                   overScrollMode='never'
                   renderItem={({ item }: { item: any }) => {

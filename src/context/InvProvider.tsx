@@ -44,6 +44,7 @@ const InvContext = createContext<{
     loadingLogOut: boolean,
   }) => void
   loadingProductsGrid: boolean
+  setLoadingProductsGrid: (loadingProductsGrid: boolean) => void
   removeElement: (codigo: string) => void
   addToCart: (codigo: string, ammount: number) => void
   order: OrderInterface
@@ -75,6 +76,7 @@ const InvContext = createContext<{
   },
   setLoaders: () => { },
   loadingProductsGrid: true,
+  setLoadingProductsGrid: () => { },
   removeElement: () => { },
   addToCart: () => { },
   order: {
@@ -165,6 +167,18 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // API
   // -----------------------------------------------
 
+  useEffect(() => {
+    console.log(loadingProductsGrid)
+  }, [loadingProductsGrid])
+
+  // useEffect(() => {
+  //   console.log(products)
+  // }, [products])
+
+  // useEffect(() => {
+  //   console.log(currentPage)
+  // }, [currentPage])
+
   // Get products api
   const getProducts = async () => {
     try {
@@ -217,6 +231,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       loaders,
       setLoaders,
       loadingProductsGrid,
+      setLoadingProductsGrid,
       removeElement,
       addToCart,
       order,

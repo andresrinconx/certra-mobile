@@ -25,7 +25,7 @@ const Login = () => {
   const textInputRefUser = useRef<TextInput | null>(null)
   const textInputRefPassword = useRef<TextInput | null>(null)
 
-  // Location Permission
+  // Start login
   useEffect(() => {
     checkLocationPermission()
   }, [])
