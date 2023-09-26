@@ -15,7 +15,8 @@ const searchOneItemEndpoint = (table: string, code: string) => `${apiBaseUrl}/${
 const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.searchTerm}`
 const userDataEndpoint = (params: { code: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.code}`
 const itineraryEndpoint = (params: { salesperson: string, year: string, month: string }) => `${apiBaseUrl}/itinerarioP2/${params.salesperson}/${params.year}/${params.month}`
-const last10Endpoint = () => `${apiBaseUrl}/historialPedi/9822/aless`
+const lastItemsEndpoint = () => `${apiBaseUrl}/historialPedi/9822/aless`
+const reasonsEndpoint = () => `${apiBaseUrl}/motivo`
 
 // Post
 const sendDataEndpoint = () => `${apiBaseUrl}/pedidoguardar`
@@ -58,8 +59,11 @@ export const fetchUserData = async (params: { code: string, table: string }) => 
 export const fetchItinerary = async (params: { salesperson: string, year: string, month: string }) => {
   return apiCall(itineraryEndpoint(params), 'GET')
 }
-export const fetchLast10 = () => {
-  return apiCall(last10Endpoint(), 'GET', )
+export const fetchLastItems = () => {
+  return apiCall(lastItemsEndpoint(), 'GET', )
+}
+export const fetchReasons = () => {
+  return apiCall(reasonsEndpoint(), 'GET', )
 }
 
 // Post

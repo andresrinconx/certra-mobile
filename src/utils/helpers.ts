@@ -39,7 +39,7 @@ export function getMonthAndDays(date: Date) {
   ]
 
   function isLeapYear(year: number) {
-    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
   }
   
   return data[date.getMonth()] // object {month: string, days: number}

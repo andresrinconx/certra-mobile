@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { View, Text, StatusBar, FlatList, TouchableOpacity, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../hooks/useLogin'
-import { fetchLast10 } from '../utils/api'
+import { fetchLastItems } from '../utils/api'
 import { orderRecordCols } from '../utils/constants'
 import BackScreen from '../components/BackScreen'
 import Logos from '../components/Logos'
@@ -18,7 +18,7 @@ const OrderRecord = () => {
   useEffect(() => {
     const getLastItems = async () => {
       try {
-        const res = await fetchLast10()
+        const res = await fetchLastItems()
         setLastItems(res)
 
         if (res) {

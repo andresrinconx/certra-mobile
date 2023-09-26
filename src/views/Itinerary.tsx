@@ -7,7 +7,7 @@ import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
 import { ItineraryEventInterface } from '../interfaces/ItineraryEventInterface'
 import useLogin from '../hooks/useLogin'
 import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
-import { fetchItinerary } from '../utils/api'
+import { fetchItinerary, fetchReasons } from '../utils/api'
 import { days } from '../utils/constants'
 import Loader from '../components/Loader'
 import Logos from '../components/Logos'
@@ -28,6 +28,8 @@ const Itinerary = () => {
   const [currentDay, setCurrentDay] = useState('')
   const [dayOfWeekInText, setDayOfWeekInText] = useState('')
   const [daysItinerary, setDaysItinerary] = useState<daysItineraryInterface[]>([])
+
+  const [reasons, setReasons] = useState([])
 
   const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
   const navigation = useNavigation()
@@ -161,7 +163,15 @@ const Itinerary = () => {
           })
         }
         setDaysItinerary(daysItinerary)
-  
+
+        // -----------------------------------------------
+        // OTHER
+        // -----------------------------------------------
+
+        // reasons
+        const reasons = await fetchReasons()
+        setReasons(reasons)
+
         setLoadingItinerary(false)
       } catch (error) {
         console.log(error)
@@ -231,7 +241,8 @@ const Itinerary = () => {
                           month: currentMonthInText,
                           day,
                           dayInText,
-                          events
+                          events,
+                          reasons
                         }) : ''}
                       >
                         {/* circle day */}

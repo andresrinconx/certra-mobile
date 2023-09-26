@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
 import { PermissionsAndroid } from 'react-native'
+import GetLocation from 'react-native-get-location'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
@@ -23,6 +24,7 @@ const LoginContext = createContext<{
   setThemeColors: (themeColors: ThemeColorsInterface) => void
   checkLocationPermission: () => void
   locationPermissionGranted: boolean
+  getCurrentLocation: () => void
 }>({
   login: false,
   setLogin: () => { },
@@ -52,7 +54,8 @@ const LoginContext = createContext<{
   },
   setThemeColors: () => { },
   checkLocationPermission: () => { },
-  locationPermissionGranted: false
+  locationPermissionGranted: false,
+  getCurrentLocation: () => { }
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
@@ -128,6 +131,17 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     return granted === PermissionsAndroid.RESULTS.GRANTED
   }
 
+  const getCurrentLocation = async () => {
+    const location = await GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+    
+    if (location) {
+      return location
+    }
+  }
+
   // -----------------------------------------------
   // API
   // -----------------------------------------------
@@ -165,7 +179,8 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       themeColors,
       setThemeColors,
       checkLocationPermission,
-      locationPermissionGranted
+      locationPermissionGranted,
+      getCurrentLocation
     }}>
       {children}
     </LoginContext.Provider>
