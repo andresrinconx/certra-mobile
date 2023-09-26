@@ -31,12 +31,12 @@ const ItineraryDayEvent = ({
 
       // get location
       const currentLocation = await getCurrentLocation()
+      const { latitude, longitude } = currentLocation
 
       // send data
       if (currentLocation) {
         const requestData = {
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
+          coordenadas: `${latitude}, ${longitude}`,
           observacion: observation,
           motivo: selectedReason,
           fecha: getDate(new Date())

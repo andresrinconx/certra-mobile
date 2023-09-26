@@ -24,6 +24,7 @@ const Cart = () => {
   const [alertClearCart, setAlertClearCart] = useState(false)
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
+  const [alertErrorOrder, setAlertErrorOrder] = useState(false)
 
   const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser } = useLogin()
   const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder } = useInv()
@@ -90,7 +91,7 @@ const Cart = () => {
   useEffect(() => {
     const sendOrder = async () => {
       try {
-        if (order.productos?.length !== 0) {
+        if (order.cliente.usuario) {
           const res = await fetchSendData(order)
 
           if (res?.message) {
@@ -110,11 +111,11 @@ const Cart = () => {
             })
           } else {
             // network error
-            console.log('network error')
+            setAlertErrorOrder(true)
           }
         }
       } catch (error) {
-        console.log(error)
+        setAlertErrorOrder(true)
       }
     }
     sendOrder()
@@ -314,12 +315,6 @@ const Cart = () => {
                 Cancelar
               </Button>
               <Button color={darkTurquoise} onPress={handleProcess}>
-                {/* {loaders.loadingConfirmOrder ? (
-                  <View className='flex flex-row justify-center items-center w-14'>
-                    <Loader color='white' size={wp(4)} />
-                  </View>
-                ) : (
-                  )} */}
                 <Text className='font-normal text-white'>Confirmar</Text>
               </Button>
             </Button.Group>
@@ -361,6 +356,35 @@ const Cart = () => {
                 onPress={() => setAlertSuccessOrder(false)} 
               >
                 <Text className='p-3 text-center text-white' style={{ fontSize: wp(6) }}>Ok</Text>
+              </TouchableOpacity>
+            </View>
+            
+          </View>
+        </Modal.Content>
+      </Modal>
+
+      {/* alert error order */}
+      <Modal isOpen={alertErrorOrder} onClose={() => setAlertErrorOrder(false)} animationPreset='fade'>
+        <Modal.Content style={{ width: 360, height: 500, backgroundColor: processBtn, marginBottom: 0 }}>
+          <View className='flex flex-1 flex-col items-center justify-between'>
+            <View />
+            
+            {/* message */}
+            <View className='flex flex-col justify-center items-center'>
+              <Image style={{ width: wp(35), height: wp(25) }} resizeMode='contain'
+                source={require('../assets/cart-error.png')}
+              />
+              <Text className='w-52 pt-4 text-center text-white' style={{ fontSize: wp(6) }}>
+                Su pedido no ha sido procesado
+              </Text>
+            </View>
+
+            {/* btn retry */}
+            <View className='w-64 mb-8 mx-4'>
+              <TouchableOpacity style={{ backgroundColor: green }} className='rounded-xl'
+                onPress={() => setAlertErrorOrder(false)} 
+              >
+                <Text className='p-3 text-center text-white' style={{ fontSize: wp(6) }}>Volver a intentarlo</Text>
               </TouchableOpacity>
             </View>
             

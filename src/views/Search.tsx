@@ -86,7 +86,9 @@ const Search = () => {
             />
           </View>
 
-          <IconCart />
+          <IconCart 
+            cartBlue={true}
+          />
         </View>
 
         {/* results */}
