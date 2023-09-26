@@ -21,6 +21,9 @@ const reasonsEndpoint = () => `${apiBaseUrl}/motivo`
 // Post
 const sendDataEndpoint = () => `${apiBaseUrl}/pedidoguardar`
 
+// Put
+const itineraryItemEndpoint = () => `${apiBaseUrl}/itinerarioDetalle2`
+
 // -----------------------------------------------
 // API CALL
 // -----------------------------------------------
@@ -60,13 +63,18 @@ export const fetchItinerary = async (params: { salesperson: string, year: string
   return apiCall(itineraryEndpoint(params), 'GET')
 }
 export const fetchLastItems = () => {
-  return apiCall(lastItemsEndpoint(), 'GET', )
+  return apiCall(lastItemsEndpoint(), 'GET')
 }
 export const fetchReasons = () => {
-  return apiCall(reasonsEndpoint(), 'GET', )
+  return apiCall(reasonsEndpoint(), 'GET')
 }
 
 // Post
 export const fetchSendData = async (order: OrderInterface) => {
   return apiCall(sendDataEndpoint(), 'POST', order)
+}
+
+// Put
+export const fetchItineraryItem = (data: { numero: string, coordenadas: string, observacion: string, motivo: string, fecha: string }) => {
+  return apiCall(itineraryItemEndpoint(), 'PUT', data)
 }

@@ -3,5 +3,6 @@ export interface ItineraryEventInterface {
   fecha: string
   telefono: string
   cliente: string
+  numero: string
   direccion: string
 }
