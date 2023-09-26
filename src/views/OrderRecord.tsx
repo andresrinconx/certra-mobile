@@ -12,7 +12,7 @@ const OrderRecord = () => {
   const [loadingOrderRecord, setLoadingOrderRecord] = useState(true)
   const [lastItems, setLastItems] = useState([])
 
-  const { themeColors: { background, primary, typography, list, green }, myUser } = useLogin()
+  const { themeColors: { background, primary, typography, list, green, turquoise }, myUser } = useLogin()
 
   // Get last items
   useEffect(() => {
@@ -105,6 +105,13 @@ const OrderRecord = () => {
                 }} 
               />
             </View>
+
+            {/* older ones */}
+            {/* <TouchableOpacity onPress={() => ''} className='py-3 rounded-xl' 
+              style={{ backgroundColor: turquoise }}
+            >
+              <Text className='text-center font-bold text-white' style={{ fontSize: wp(5) }}>Ver más antiguos</Text>
+            </TouchableOpacity> */}
           </View>
         )}
       </View>
