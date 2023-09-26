@@ -7,12 +7,12 @@ import useLogin from '../hooks/useLogin'
 
 const ItineraryDayEvent = ({ 
   day, 
-  dayOfWeekInText, 
+  dayInText, 
   cliente, 
   direccion,
 }: { 
   day: string
-  dayOfWeekInText: string 
+  dayInText: string 
   cliente: string
   direccion: string
 }) => {
@@ -25,8 +25,8 @@ const ItineraryDayEvent = ({
 
       {/* day & descrip */}
       <View className='flex flex-row items-center justify-between'>
-        <View className='flex flex-col items-center mb-2' style={{ width: wp(10) }}>
-          <Text className='-mb-2 text-sm lowercase' style={{ color: typography }}>{dayOfWeekInText.substring(0, 4)}</Text>
+        <View className='flex flex-col justify-center items-center mb-2' style={{ width: wp(10) }}>
+          <Text className='-mb-2 text-sm lowercase' style={{ color: typography }}>{dayInText.substring(0, 3)}</Text>
           <Text className='text-lg' style={{ color: typography }}>{day}</Text>
         </View>
 

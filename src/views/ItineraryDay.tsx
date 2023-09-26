@@ -8,7 +8,7 @@ import BackScreen from '../components/BackScreen'
 import ItineraryDayEvent from '../components/ItineraryDayEvent'
 
 const ItineraryDay = () => {
-  const { params: { month, day, dayOfWeekInText, events } } = useRoute() as { params: { month: string, day: string, dayOfWeekInText: string, events: ItineraryEventInterface[] } }
+  const { params: { month, day, dayInText, events } } = useRoute() as { params: { month: string, day: string, dayInText: string, events: ItineraryEventInterface[] } }
   const { themeColors: { background, typography }, myUser } = useLogin()
 
   return (
@@ -37,7 +37,7 @@ const ItineraryDay = () => {
               return (
                 <ItineraryDayEvent 
                   day={day} 
-                  dayOfWeekInText={dayOfWeekInText} 
+                  dayInText={dayInText} 
                   cliente={cliente} 
                   direccion={direccion}
                 />

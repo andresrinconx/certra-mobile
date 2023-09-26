@@ -22,9 +22,11 @@ interface daysItineraryInterface {
 const Itinerary = () => {
   const [loadingItinerary, setLoadingItinerary] = useState(true)
 
+  const [currentYear, setCurrentYear] = useState('')
+  const [currentMonth, setCurrentMonth] = useState('')
+  const [currentMonthInText, setCurrentMonthInText] = useState('')
   const [currentDay, setCurrentDay] = useState('')
   const [dayOfWeekInText, setDayOfWeekInText] = useState('')
-  const [currentMonthInText, setCurrentMonthInText] = useState('')
   const [daysItinerary, setDaysItinerary] = useState<daysItineraryInterface[]>([])
 
   const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
@@ -46,9 +48,17 @@ const Itinerary = () => {
         // CURRENT DATA
         // -----------------------------------------------
 
-        // month 
+        // year
+        const currentYear = currentDate.getFullYear()
+        setCurrentYear(String(currentYear))
+
+        // month and days
         const currentMonthAndDays = getMonthAndDays(currentDate) // object {month: string, days: number}
         setCurrentMonthInText(currentMonthAndDays.month)
+
+        // month
+        const currentMonth = currentDate.getMonth()
+        setCurrentMonth(String(currentMonth + 1))
 
         // day
         const currentDay = currentDate.getDate()
@@ -59,8 +69,6 @@ const Itinerary = () => {
         setDayOfWeekInText(currentDayOfWeekInText)
 
         // first day of month
-        const currentYear = currentDate.getFullYear()
-        const currentMonth = currentDate.getMonth()
         const currentFirstDay = new Date(currentYear, currentMonth, 1)
         const currentFirstDayInText = getDayOfWeekInText(currentFirstDay).substring(0, 3)
 
@@ -208,6 +216,9 @@ const Itinerary = () => {
                   numColumns={7}
                   showsVerticalScrollIndicator={false}
                   renderItem={({item: {current, day, events}, index}) => {
+                    let date = new Date(`${currentYear}-${currentMonth}-${Number(day) + 1}`)
+                    let dayInText = getDayOfWeekInText(date)
+
                     return (
                       <TouchableOpacity key={index} className='border-[0.5px] p-0.5'
                         style={{ 
@@ -219,7 +230,7 @@ const Itinerary = () => {
                         onPress={() => current ? navigation.navigate('ItineraryDay', {
                           month: currentMonthInText,
                           day,
-                          dayOfWeekInText,
+                          dayInText,
                           events
                         }) : ''}
                       >
