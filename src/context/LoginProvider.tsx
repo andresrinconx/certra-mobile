@@ -24,7 +24,7 @@ const LoginContext = createContext<{
   setThemeColors: (themeColors: ThemeColorsInterface) => void
   checkLocationPermission: () => void
   locationPermissionGranted: boolean
-  getCurrentLocation: () => void
+  getCurrentLocation: () => any
 }>({
   login: false,
   setLogin: () => { },
@@ -139,6 +139,8 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     
     if (location) {
       return location
+    } else {
+      throw new Error("No se pudo obtener la ubicación.")
     }
   }
 

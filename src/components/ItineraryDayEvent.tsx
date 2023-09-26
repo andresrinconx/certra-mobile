@@ -4,6 +4,7 @@ import { PresenceTransition, Menu } from 'native-base'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini'
 import useLogin from '../hooks/useLogin'
+import { getDate } from '../utils/helpers'
 
 const ItineraryDayEvent = ({ 
   day, 
@@ -20,14 +21,29 @@ const ItineraryDayEvent = ({
 }) => {
   const [openDetails, setOpenDetails] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
-  const [description, setDescription] = useState('')
+  const [observation, setObservation] = useState('')
 
   const { themeColors: { typography, turquoise, lightList, charge, primary }, locationPermissionGranted, getCurrentLocation } = useLogin()
 
   // Save
-  const handleSave = () => {
+  const handleSave = async () => {
     if (locationPermissionGranted) {
-      const currentLocation = getCurrentLocation()
+
+      // get location
+      const currentLocation = await getCurrentLocation()
+
+      // send data
+      if (currentLocation) {
+        const requestData = {
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          observacion: observation,
+          motivo: selectedReason,
+          fecha: getDate(new Date())
+        }
+  
+        console.log(requestData)
+      }
     }
   }
 
@@ -96,7 +112,7 @@ const ItineraryDayEvent = ({
                            {selectedReason ? selectedReason : '----------------------'}
                          </Text>
 
-                         <View className='flex flex-row justify-center items-center absolute right-2 top-3'>
+                         <View className='flex flex-row justify-center items-center absolute right-2 top-2.5'>
                            <ChevronDownIcon size={18} color={turquoise} strokeWidth={2} />
                          </View>
                        </Pressable>
@@ -116,14 +132,14 @@ const ItineraryDayEvent = ({
               </Menu>
             </View>
 
-            {/* description */}
+            {/* observation */}
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
-              <Text className='text-base font-bold' style={{ color: typography }}>Descripción</Text>
+              <Text className='text-base font-bold' style={{ color: typography }}>Observación</Text>
 
-              <TextInput className='rounded-lg px-1 text-sm'
+              <TextInput className='px-2 rounded-lg text-sm'
                 style={{ color: typography, backgroundColor: charge, minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}
-                value={description}
-                onChangeText={setDescription}
+                value={observation}
+                onChangeText={setObservation}
                 selectionColor={primary}
                 multiline={true}
               />
