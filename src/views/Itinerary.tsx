@@ -150,7 +150,7 @@ const Itinerary = () => {
           daysItinerary.push({
             current: true,
             day: i + 1,
-            events: dataItinerary.filter((item: ItineraryEventInterface) => String(item.fecha).substring(8, 10) === (String(i + 1).length === 1 ? `0${i + 1}` : String(i + 1)))
+            events: dataItinerary?.filter((item: ItineraryEventInterface) => String(item.fecha).substring(8, 10) === (String(i + 1).length === 1 ? `0${i + 1}` : String(i + 1)))
           })
         }
 

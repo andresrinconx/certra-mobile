@@ -191,7 +191,7 @@ const Cart = () => {
 
           {/* products */}
           {loadingCart ? (
-            <View className='mt-10'>
+            <View className='mt-5'>
               <Loader color={`${primary}`} />
             </View>
           ) : (

@@ -45,13 +45,14 @@ const ItineraryDay = () => {
               paddingBottom: 135,
             }}
             showsVerticalScrollIndicator={false}
-            renderItem={({item: {cliente, direccion}}) => {
+            renderItem={({item: {cliente, direccion, telefono}}) => {
               return (
                 <ItineraryDayEvent 
-                  day={day} 
-                  dayInText={dayInText} 
                   cliente={cliente} 
                   direccion={direccion}
+                  telefono={telefono}
+                  day={day} 
+                  dayInText={dayInText} 
                   reasons={reasons}
                 />
               )

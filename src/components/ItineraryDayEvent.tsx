@@ -11,13 +11,15 @@ const ItineraryDayEvent = ({
   dayInText, 
   cliente, 
   direccion,
-  reasons
+  reasons,
+  telefono
 }: { 
   day: string
   dayInText: string 
   cliente: string
   direccion: string
   reasons: []
+  telefono: string
 }) => {
   const [openDetails, setOpenDetails] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
@@ -52,14 +54,19 @@ const ItineraryDayEvent = ({
 
       {/* day & descrip */}
       <View className='flex flex-row items-center justify-between'>
+
+        {/* day */}
         <View className='flex flex-col justify-center mb-2' style={{ width: wp(10) }}>
           <Text className='-mb-2 text-center text-sm lowercase' style={{ color: typography }}>{dayInText.substring(0, 3)}</Text>
           <Text className='text-lg text-center' style={{ color: typography }}>{day}</Text>
         </View>
 
+        {/* drugstore */}
         <TouchableOpacity className='flex-row' onPress={() => setOpenDetails(!openDetails)}>
           <View className='p-1.5 rounded-lg' style={{ backgroundColor: turquoise, width: wp(openDetails ? 75 : 83) }}>
-            <Text className='font-normal text-white'>{cliente}</Text>
+            <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(70) }}>
+              {cliente}
+            </Text>
           </View>
 
           <View className='flex flex-row justify-center items-center absolute right-1 top-1.5'>
@@ -99,6 +106,15 @@ const ItineraryDayEvent = ({
               <Text className='text-base font-normal' style={{ color: typography }}>{direccion}</Text>
             </View>
 
+            {/* phone number */}
+            <View className='flex flex-row items-center justify-between pl-2 mb-1.5' style={{ width: wp(83) }}>
+              <Text className='text-base font-bold' style={{ color: typography }}>Teléfono</Text>
+              
+              <View className='flex flex-row items-center justify-center rounded-lg' style={{ backgroundColor: charge, width: wp(55), height: wp(10) }}>
+                <Text className='text-base font-normal' style={{ color: typography }}>{telefono}</Text>
+              </View>
+            </View>
+
             {/* reasons */}
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
               <Text className='text-base font-bold' style={{ color: typography, width: wp(20) }}>Motivo</Text>
@@ -121,8 +137,7 @@ const ItineraryDayEvent = ({
                   const { motivo } = reason
                   let isLast = index === reasons.length - 1
                   return (
-                    <Menu.Item key={motivo}
-                      onPress={() => setSelectedReason(motivo)}
+                    <Menu.Item key={motivo} onPress={() => setSelectedReason(motivo)}
                       style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}
                     >
                       <Text className='font-normal' style={{ color: typography }}>{motivo}</Text>

@@ -21,14 +21,27 @@ const IconLogOut = () => {
   const logOut = async () => {
     setLoaders({ ...loaders, loadingLogOut: true })
 
-    // reset login and navigate
+    // reset login
     setUser('')
     setPassword('')
     setLogin(false)
 
-    navigation.navigate('Login')
-    setAlertLogOut(false)
+    // reset products
+    setProductsCart([])
+    setProducts([])
+    setCurrentPage(1)
 
+    // reset loaders
+    setLoaders({
+      ...loaders, 
+      loadingLogOut: false,
+      loadingProducts: false,
+      loadingSlectedCustomer: false,
+      loadingConfirmOrder: false,
+    })
+    setLoadingProductsGrid(true)
+
+    // reset storage
     await setDataStorage('login', false)
     await setDataStorage('themeColors', {})
     await setDataStorage('myUser', {})
@@ -57,10 +70,9 @@ const IconLogOut = () => {
       processBtn: '',
     })
 
-    // reset products
-    setProductsCart([])
-    setProducts([])
-    setCurrentPage(1)
+    // go login
+    navigation.navigate('Login')
+    setAlertLogOut(false)
 
     // reset flow
     setFlowControl({
@@ -88,25 +100,16 @@ const IconLogOut = () => {
       typography: '',
       processBtn: '',
     })
-
-    setLoaders({
-      ...loaders, 
-      loadingLogOut: false,
-      loadingProducts: false,
-      loadingSlectedCustomer: false,
-      loadingConfirmOrder: false,
-    })
-    setLoadingProductsGrid(true)
   }
 
   return (
     <>
-      <TouchableOpacity onPress={() => setAlertLogOut(true)}>
+      <TouchableOpacity onPress={() => setAlertLogOut(true)} className='w-full flex flex-row justify-center items-center'>
         <View className='flex flex-row items-center gap-2'>
           <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
             source={require('../assets/leave.png')}
           />
-          <Text className='text-sm w-8 text-white font-bold'>Salir</Text>
+          <Text className='text-lg text-white font-bold'>Salir</Text>
         </View>
       </TouchableOpacity>
 

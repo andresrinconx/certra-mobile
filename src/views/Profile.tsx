@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Image, FlatList } from 'react-native'
+import { View, Image, FlatList, TouchableOpacity, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import useInv from '../hooks/useInv'
@@ -9,12 +9,13 @@ import Loader from '../components/Loader'
 import Logos from '../components/Logos'
 import BackScreen from '../components/BackScreen'
 import ProfileGroup from '../components/ProfileGroup'
+import IconLogOut from '../components/IconLogOut'
 
 const Profile = () => {
   const [dataConfig, setDataConfig] = useState<any>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
-  const { themeColors: { primary, background }, myUser } = useLogin()
+  const { themeColors: { primary, background, darkTurquoise }, myUser } = useLogin()
   const { flowControl } = useInv()
 
   // Get data
@@ -142,9 +143,9 @@ const Profile = () => {
       <BackScreen title='Mi perfil' />
       
       {/* info */}
-      <View>
+      <View className='h-full'>
         {loadingProfile ? (
-          <View className='mt-10'>
+          <View className='mt-5'>
             <Loader color={`${primary}`} />
           </View>
         ) : (
@@ -153,7 +154,7 @@ const Profile = () => {
               data={groups}
               numColumns={1}
               contentContainerStyle={{
-                paddingBottom: 135,
+                paddingBottom: 180,
               }}
               overScrollMode='never'
               showsVerticalScrollIndicator={false}
@@ -173,7 +174,7 @@ const Profile = () => {
                 return (
                   <ProfileGroup 
                     name={name}
-                    subname={subname}
+                    subname={String(subname)}
                     fields={fields}
                   />
                 )
@@ -181,8 +182,18 @@ const Profile = () => {
             />
           </View>
         )}
-        
       </View>
+
+      {/* log out */}
+      {!loadingProfile && (
+        <View className='flex flex-row items-center justify-center bottom-0 py-2.5 w-screen absolute'
+          style={{ backgroundColor: background }}
+        >
+          <View className='flex flex-row justify-center items-center w-5/6 rounded-xl py-3' style={{ backgroundColor: darkTurquoise}}>
+            <IconLogOut />
+          </View>
+        </View>
+      )}
     </View>
   )
 }
