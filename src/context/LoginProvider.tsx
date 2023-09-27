@@ -140,7 +140,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     if (location) {
       return location
     } else {
-      throw new Error("No se pudo obtener la ubicación.")
+      return null
     }
   }
 

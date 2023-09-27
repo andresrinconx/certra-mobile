@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Pressable, TextInput } from 'react-native'
 import { PresenceTransition, Menu, useToast } from 'native-base'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -10,32 +10,47 @@ import { fetchItineraryItem } from '../utils/api'
 const ItineraryDayEvent = ({ 
   day, 
   dayInText, 
-  cliente, 
-  direccion,
   reasons,
-  telefono,
-  numero
+  item
 }: { 
   day: string
   dayInText: string 
-  cliente: string
-  direccion: string
   reasons: []
-  telefono: string
-  numero: string
+  item: { cliente: string, direccion: string, telefono: string, numero: string, motivo: string, descrip: string }
 }) => {
   const [openDetails, setOpenDetails] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
   const [observation, setObservation] = useState('')
 
+  const { cliente, direccion, telefono, numero, motivo, descrip } = item
+  const { themeColors: { typography, turquoise, lightList, charge, primary, green }, getCurrentLocation } = useLogin()
+
   // toast
   const toast = useToast()
-  const id = "test-toast"
-  const { themeColors: { typography, turquoise, lightList, charge, primary }, locationPermissionGranted, getCurrentLocation } = useLogin()
+  const id = 'toast'
+
+  // Saved Event
+  useEffect(() => {
+    if (motivo || descrip) {
+      setSelectedReason(motivo)
+      setObservation(descrip)
+    }
+  }, [])
 
   // Save
   const handleSave = async () => {
-    if (locationPermissionGranted) {
+    try {
+
+      if ([selectedReason, observation].includes('')) {
+        if (!toast.isActive(id)) {
+          toast.show({
+            id,
+            title: selectedReason ? 'Debe escribir una observación' : 'Debe seleccionar un motivo',
+            duration: 1500
+          })
+        } 
+        return
+      }
 
       // get location
       const currentLocation = await getCurrentLocation()
@@ -50,7 +65,7 @@ const ItineraryDayEvent = ({
           fecha: getDate(new Date())
         }
 
-        // sen data
+        // send data
         const res = await fetchItineraryItem(requestData)
         
         // toast message
@@ -60,6 +75,13 @@ const ItineraryDayEvent = ({
             title: res ? 'Se ha enviado correctamente' : 'No se ha podido enviar',
           })
         }
+      }
+    } catch (error) {
+      if (!toast.isActive(id)) {
+        toast.show({
+          id,
+          title: 'No se ha podido enviar'
+        })
       }
     }
   }
@@ -78,7 +100,7 @@ const ItineraryDayEvent = ({
 
         {/* drugstore */}
         <TouchableOpacity className='flex-row' onPress={() => setOpenDetails(!openDetails)}>
-          <View className='p-1.5 rounded-lg' style={{ backgroundColor: turquoise, width: wp(openDetails ? 75 : 83) }}>
+          <View className='p-1.5 rounded-lg' style={{ backgroundColor: motivo ? green : turquoise, width: wp(openDetails && !motivo ? 75 : 83) }}>
             <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(70) }}>
               {cliente}
             </Text>
@@ -93,13 +115,13 @@ const ItineraryDayEvent = ({
           </View>
         </TouchableOpacity>
 
-        {openDetails && (
+        {openDetails && !motivo ? (
           <TouchableOpacity onPress={handleSave}>
             <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
               source={require('../assets/file.png')}
             />
           </TouchableOpacity>
-        )}
+        ):null}
       </View>
 
       {/* details */}
@@ -134,7 +156,7 @@ const ItineraryDayEvent = ({
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
               <Text className='text-base font-bold' style={{ color: typography, width: wp(20) }}>Motivo</Text>
 
-              <Menu style={{ backgroundColor: lightList }} shadow={1} w="210" trigger={triggerProps => {
+              <Menu style={{ backgroundColor: lightList }} shadow={1} w='210' trigger={triggerProps => {
                 return <Pressable className='flex flex-col justify-center rounded-lg' 
                          style={{ height: wp(10), width: wp(55), backgroundColor: charge }} 
                          {...triggerProps}
@@ -148,17 +170,19 @@ const ItineraryDayEvent = ({
                          </View>
                        </Pressable>
               }}>
-                {reasons?.map((reason, index) => {
-                  const { motivo } = reason
-                  let isLast = index === reasons.length - 1
-                  return (
-                    <Menu.Item key={motivo} onPress={() => setSelectedReason(motivo)}
-                      style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}
-                    >
-                      <Text className='font-normal' style={{ color: typography }}>{motivo}</Text>
-                    </Menu.Item>
-                  )
-                })}
+                {!motivo ? (
+                  reasons?.map((reason, index) => {
+                    const { motivo } = reason
+                    let isLast = index === reasons.length - 1
+                    return (
+                      <Menu.Item key={motivo} onPress={() => setSelectedReason(motivo)}
+                        style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}
+                      >
+                        <Text className='font-normal' style={{ color: typography }}>{motivo}</Text>
+                      </Menu.Item>
+                    )
+                  })
+                ):null}
               </Menu>
             </View>
 
@@ -166,13 +190,21 @@ const ItineraryDayEvent = ({
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
               <Text className='text-base font-bold' style={{ color: typography }}>Observación</Text>
 
-              <TextInput className='px-2 rounded-lg text-sm'
-                style={{ color: typography, backgroundColor: charge, minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}
-                value={observation}
-                onChangeText={setObservation}
-                selectionColor={primary}
-                multiline={true}
-              />
+              {!descrip ? (
+                <TextInput className='px-2 rounded-lg text-sm'
+                  style={{ color: typography, backgroundColor: charge, minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}
+                  value={observation}
+                  onChangeText={setObservation}
+                  selectionColor={primary}
+                  multiline={true}
+                />
+              ) : (
+                <View className='flex flex-row items-center px-2 py-3.5 rounded-lg text-sm' style={{ backgroundColor: charge, minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}>
+                  <Text style={{ color: typography }}>
+                    {descrip}
+                  </Text>
+                </View>
+              )}
             </View>
           </PresenceTransition>
         )}
