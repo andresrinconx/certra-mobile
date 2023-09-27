@@ -13,12 +13,12 @@ const ItineraryDay = () => {
     day, 
     dayInText, 
     events, 
-    reasons 
+    reasons
   } } = useRoute() as { params: { 
-    month: string, 
-    day: string, 
-    dayInText: string, 
-    events: ItineraryEventInterface[], 
+    month: string
+    day: string
+    dayInText: string
+    events: ItineraryEventInterface[]
     reasons: []
   } }
   const { themeColors: { background, typography }, myUser } = useLogin()
@@ -30,7 +30,7 @@ const ItineraryDay = () => {
       <Logos image={myUser?.image_url} />
       <BackScreen title={month} />
 
-      {events?.length === 0 ? (
+      {events?.length === 0 || !events ? (
         <View className='flex flex-col items-center justify-center'>
           <Text className='font-extrabold text-center mt-6' style={{ color: typography, fontSize: wp(6) }}>
             No hay eventos

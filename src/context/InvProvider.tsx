@@ -52,6 +52,8 @@ const InvContext = createContext<{
   getProducts: () => void
   currentPage: number
   setCurrentPage: (currentPage: number) => void
+  reloadItinerary: boolean
+  setReloadItinerary: (reloadItinerary: boolean) => void
 }>({
   productsCart: [],
   setProductsCart: () => { },
@@ -91,6 +93,8 @@ const InvContext = createContext<{
   getProducts: () => { },
   currentPage: 1,
   setCurrentPage: () => { },
+  reloadItinerary: false,
+  setReloadItinerary: () => { },
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -129,6 +133,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingConfirmOrder: false,
     loadingLogOut: false,
   })
+  const [reloadItinerary, setReloadItinerary] = useState(false)
   
   const { myUser } = useLogin()
 
@@ -226,7 +231,9 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setOrder,
       getProducts,
       currentPage,
-      setCurrentPage
+      setCurrentPage,
+      reloadItinerary,
+      setReloadItinerary
     }}>
       {children}
     </InvContext.Provider>

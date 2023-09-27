@@ -1,8 +1,9 @@
 export interface ItineraryEventInterface {
-  id: string
-  fecha: string
-  telefono: string
   cliente: string
-  numero: string
   direccion: string
+  telefono: string
+  numero: string
+  motivo: string
+  descrip: string
+  fecha: string
 }

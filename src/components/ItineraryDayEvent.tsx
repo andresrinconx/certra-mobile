@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Pressable, TextInput } from 'react-native'
 import { PresenceTransition, Menu, useToast } from 'native-base'
+import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini'
 import useLogin from '../hooks/useLogin'
+import useInv from '../hooks/useInv'
 import { getDate } from '../utils/helpers'
 import { fetchItineraryItem } from '../utils/api'
 
@@ -21,9 +23,12 @@ const ItineraryDayEvent = ({
   const [openDetails, setOpenDetails] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
   const [observation, setObservation] = useState('')
+  const [touch, setTouch] = useState(false)
 
+  const navigation = useNavigation()
   const { cliente, direccion, telefono, numero, motivo, descrip } = item
   const { themeColors: { typography, turquoise, lightList, charge, primary, green }, getCurrentLocation } = useLogin()
+  const { setReloadItinerary } = useInv()
 
   // toast
   const toast = useToast()
@@ -39,8 +44,7 @@ const ItineraryDayEvent = ({
 
   // Save
   const handleSave = async () => {
-    try {
-
+    if (!touch) {
       if ([selectedReason, observation].includes('')) {
         if (!toast.isActive(id)) {
           toast.show({
@@ -49,39 +53,47 @@ const ItineraryDayEvent = ({
             duration: 1500
           })
         } 
+        setTouch(false)
         return
       }
-
-      // get location
-      const currentLocation = await getCurrentLocation()
-      const { latitude, longitude } = currentLocation
-
-      if (currentLocation) {
-        const requestData = {
-          numero,
-          coordenadas: `${latitude}, ${longitude}`,
-          observacion: observation,
-          motivo: selectedReason,
-          fecha: getDate(new Date())
+  
+      try {
+        // get location
+        const currentLocation = await getCurrentLocation()
+        const { latitude, longitude } = currentLocation
+  
+        if (currentLocation) {
+          const requestData = {
+            numero,
+            coordenadas: `${latitude}, ${longitude}`,
+            observacion: observation,
+            motivo: selectedReason,
+            fecha: getDate(new Date())
+          }
+  
+          // send data
+          const res = await fetchItineraryItem(requestData)
+          
+          // toast message
+          if (!toast.isActive(id)) {
+            toast.show({
+              id,
+              title: res ? 'Se ha enviado correctamente' : 'No se ha podido enviar',
+            })
+          }
+  
+          navigation.navigate('Itinerary')
+          setReloadItinerary(true)
+          setTouch(false)
         }
-
-        // send data
-        const res = await fetchItineraryItem(requestData)
-        
-        // toast message
+      } catch (error) {
         if (!toast.isActive(id)) {
           toast.show({
             id,
-            title: res ? 'Se ha enviado correctamente' : 'No se ha podido enviar',
+            title: 'No se ha podido enviar'
           })
         }
-      }
-    } catch (error) {
-      if (!toast.isActive(id)) {
-        toast.show({
-          id,
-          title: 'No se ha podido enviar'
-        })
+        setTouch(false)
       }
     }
   }
@@ -116,7 +128,12 @@ const ItineraryDayEvent = ({
         </TouchableOpacity>
 
         {openDetails && !motivo ? (
-          <TouchableOpacity onPress={handleSave}>
+          <TouchableOpacity onPress={() => {
+            if (!touch) {
+              setTouch(true)
+              handleSave()
+            }
+          }}>
             <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
               source={require('../assets/file.png')}
             />

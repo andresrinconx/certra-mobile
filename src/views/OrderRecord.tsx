@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { View, Text, StatusBar, FlatList, TouchableOpacity, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../hooks/useLogin'
-import { fetchLastItems } from '../utils/api'
+import { fetchLastItems, fetchLastItemsLab } from '../utils/api'
 import { orderRecordCols } from '../utils/constants'
 import BackScreen from '../components/BackScreen'
 import Logos from '../components/Logos'
@@ -12,16 +12,25 @@ const OrderRecord = () => {
   const [loadingOrderRecord, setLoadingOrderRecord] = useState(true)
   const [lastItems, setLastItems] = useState([])
 
-  const { themeColors: { background, primary, typography, list, green, turquoise }, myUser } = useLogin()
+  const { themeColors: { background, primary, typography, list, green }, myUser } = useLogin()
 
   // Get last items
   useEffect(() => {
     const getLastItems = async () => {
       try {
-        const res = await fetchLastItems()
-        setLastItems(res)
+        let data
 
-        if (res) {
+        if (myUser.from === 'usuario-clipro') {
+          data = await fetchLastItemsLab({ clipro: myUser?.clipro, code: myUser?.us_codigo })
+        } else {
+          data = await fetchLastItems({
+            table: myUser.from === 'scli' ? 'historialPediC' : 'pedidoTrabajador',
+            customer: myUser.from === 'scli' ? myUser.cliente : myUser.us_codigo,
+          })
+        }
+        
+        if (data) {
+          setLastItems(data)
           setLoadingOrderRecord(false)
         }
       } catch (error) {
@@ -66,11 +75,11 @@ const OrderRecord = () => {
                 contentContainerStyle={{ paddingBottom: wp(10) }}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item, index}) => {
-                  const { id, fecha, subTotal, iva, importe, unidades } = item
+                  const { numero, fecha, subTotal, iva, importe, unidades, total } = item
                   let isPair = index % 2 === 0
                   let isLast = index === lastItems.length - 1
                   return (
-                    <View key={id} className='flex flex-row justify-center items-center mb-[1px]' 
+                    <View key={numero} className='flex flex-row justify-center items-center mb-[1px]' 
                       style={{ 
                         backgroundColor: !isPair ? background : list, 
                         height: wp(14),
@@ -80,11 +89,11 @@ const OrderRecord = () => {
                         borderBottomLeftRadius: isLast ? wp(5) : 0,
                       }}
                     >
-                      <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{id}</Text>
+                      <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{numero}</Text>
                       <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{fecha}</Text>
                       <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
                       <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{iva}</Text>
-                      <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{importe}</Text>
+                      <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{importe ?? total}</Text>
                       <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{unidades}</Text>
                       <TouchableOpacity className='flex flex-col justify-center items-center' 
                         style={{ 
@@ -95,10 +104,9 @@ const OrderRecord = () => {
                           borderBottomRightRadius: isLast ? wp(5) : 0,
                         }}
                       >
-                        <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
+                        <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
                           source={require('../assets/search.png')}
                         />
-                        <Text className='text-white font-normal' style={{ fontSize: wp(2.4) }}>Enviado</Text>
                       </TouchableOpacity>
                     </View>
                   )
@@ -106,12 +114,6 @@ const OrderRecord = () => {
               />
             </View>
 
-            {/* older ones */}
-            {/* <TouchableOpacity onPress={() => ''} className='py-3 rounded-xl' 
-              style={{ backgroundColor: turquoise }}
-            >
-              <Text className='text-center font-bold text-white' style={{ fontSize: wp(5) }}>Ver más antiguos</Text>
-            </TouchableOpacity> */}
           </View>
         )}
       </View>

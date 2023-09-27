@@ -6,6 +6,7 @@ import { StatusBar } from 'react-native'
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
 import { ItineraryEventInterface } from '../interfaces/ItineraryEventInterface'
 import useLogin from '../hooks/useLogin'
+import useInv from '../hooks/useInv'
 import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
 import { fetchItinerary, fetchReasons } from '../utils/api'
 import { days } from '../utils/constants'
@@ -32,153 +33,159 @@ const Itinerary = () => {
   const [reasons, setReasons] = useState([])
 
   const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
+  const { reloadItinerary } = useInv()
   const navigation = useNavigation()
 
-  // GPS
+  // Load
   useEffect(() => {
     checkLocationPermission()
-  }, [])
-
-  // Set data
-  useEffect(() => {
-    const setData = async () => {
-      try {
-        // date
-        const currentDate = new Date()
-  
-        // -----------------------------------------------
-        // CURRENT DATA
-        // -----------------------------------------------
-
-        // year
-        const currentYear = currentDate.getFullYear()
-        setCurrentYear(String(currentYear))
-
-        // month and days
-        const currentMonthAndDays = getMonthAndDays(currentDate) // object {month: string, days: number}
-        setCurrentMonthInText(currentMonthAndDays.month)
-
-        // month
-        const currentMonth = currentDate.getMonth()
-        setCurrentMonth(String(currentMonth + 1))
-
-        // day
-        const currentDay = currentDate.getDate()
-        setCurrentDay(String(currentDay))
-
-        // day name
-        const currentDayOfWeekInText = getDayOfWeekInText(currentDate)
-        setDayOfWeekInText(currentDayOfWeekInText)
-
-        // first day of month
-        const currentFirstDay = new Date(currentYear, currentMonth, 1)
-        const currentFirstDayInText = getDayOfWeekInText(currentFirstDay).substring(0, 3)
-
-        // prev days number
-        const prevDaysNumber = 
-          'Lun' === currentFirstDayInText ? 0 : 
-          'Mar' === currentFirstDayInText ? 1 : 
-          'Mié' === currentFirstDayInText ? 2 : 
-          'Jue' === currentFirstDayInText ? 3 : 
-          'Vie' === currentFirstDayInText ? 4 : 
-          'Sáb' === currentFirstDayInText ? 5 : 
-          'Dom' === currentFirstDayInText ? 6 : 0
-
-
-        // post days number
-        const postDaysNumber = 
-          'Lun' === currentFirstDayInText ?
-            currentMonthAndDays.days === 31 ? 11 :
-            currentMonthAndDays.days === 30 ? 12 :
-            currentMonthAndDays.days === 29 ? 13 :
-            currentMonthAndDays.days === 28 ? 14 : 0 :
-          'Mar' === currentFirstDayInText ?
-            currentMonthAndDays.days === 31 ? 10 :
-            currentMonthAndDays.days === 30 ? 11 :
-            currentMonthAndDays.days === 29 ? 12 :
-            currentMonthAndDays.days === 28 ? 13 : 0 :
-          'Mié' === currentFirstDayInText ?
-            currentMonthAndDays.days === 31 ? 9 :
-            currentMonthAndDays.days === 30 ? 10 :
-            currentMonthAndDays.days === 29 ? 11 :
-            currentMonthAndDays.days === 28 ? 12 : 0 :
-          'Jue' === currentFirstDayInText ?
-            currentMonthAndDays.days === 31 ? 8 :
-            currentMonthAndDays.days === 30 ? 9 :
-            currentMonthAndDays.days === 29 ? 10 :
-            currentMonthAndDays.days === 28 ? 11 : 0 :
-          'Vie' === currentFirstDayInText ?
-            currentMonthAndDays.days === 31 ? 7 :
-            currentMonthAndDays.days === 30 ? 8 :
-            currentMonthAndDays.days === 29 ? 9 :
-            currentMonthAndDays.days === 28 ? 10 : 0 :
-          'Sáb' === currentFirstDayInText ?
-            currentMonthAndDays.days === 31 ? 6 :
-            currentMonthAndDays.days === 30 ? 7 :
-            currentMonthAndDays.days === 29 ? 8 :
-            currentMonthAndDays.days === 28 ? 9 : 0 :
-          'Dom' === currentFirstDayInText ?
-            currentMonthAndDays.days === 31 ? 5 :
-            currentMonthAndDays.days === 30 ? 6 :
-            currentMonthAndDays.days === 29 ? 7 :
-            currentMonthAndDays.days === 28 ? 8 : 0 : 0
-        
-        // -----------------------------------------------
-        // MONTH ITINERARY
-        // -----------------------------------------------
-  
-        // days with info
-        const dataItinerary = await fetchItinerary({
-          salesperson: myUser?.vendedor, 
-          year: String(currentYear), 
-          month: String(currentMonth + 1)
-        })
-
-        const daysItinerary: daysItineraryInterface[] = []
-
-        // previous days
-        for (let i = 0; i < prevDaysNumber; i++) {
-          daysItinerary.push({
-            current: false,
-            day: '',
-            events: []
-          })
-        }
-
-        // days itinerary
-        for (let i = 0; i < currentMonthAndDays.days; i++) {
-          daysItinerary.push({
-            current: true,
-            day: i + 1,
-            events: dataItinerary?.filter((item: ItineraryEventInterface) => String(item.fecha).substring(8, 10) === (String(i + 1).length === 1 ? `0${i + 1}` : String(i + 1)))
-          })
-        }
-
-        // post days
-        for (let i = 0; i < postDaysNumber; i++) {
-          daysItinerary.push({
-            current: false,
-            day: '',
-            events: []
-          })
-        }
-        setDaysItinerary(daysItinerary)
-
-        // -----------------------------------------------
-        // OTHER
-        // -----------------------------------------------
-
-        // reasons
-        const reasons = await fetchReasons()
-        setReasons(reasons)
-
-        setLoadingItinerary(false)
-      } catch (error) {
-        console.log(error)
-      }
-    }
     setData()
   }, [])
+
+  // Reload
+  useEffect(() => {
+    setLoadingItinerary(true)
+    setData()
+  }, [reloadItinerary])
+
+  // Set data
+  const setData = async () => {
+    try {
+      // date
+      const currentDate = new Date()
+
+      // -----------------------------------------------
+      // CURRENT DATA
+      // -----------------------------------------------
+
+      // year
+      const currentYear = currentDate.getFullYear()
+      setCurrentYear(String(currentYear))
+
+      // month and days
+      const currentMonthAndDays = getMonthAndDays(currentDate) // object {month: string, days: number}
+      setCurrentMonthInText(currentMonthAndDays.month)
+
+      // month
+      const currentMonth = currentDate.getMonth()
+      setCurrentMonth(String(currentMonth + 1))
+
+      // day
+      const currentDay = currentDate.getDate()
+      setCurrentDay(String(currentDay))
+
+      // day name
+      const currentDayOfWeekInText = getDayOfWeekInText(currentDate)
+      setDayOfWeekInText(currentDayOfWeekInText)
+
+      // first day of month
+      const currentFirstDay = new Date(currentYear, currentMonth, 1)
+      const currentFirstDayInText = getDayOfWeekInText(currentFirstDay).substring(0, 3)
+
+      // prev days number
+      const prevDaysNumber = 
+        'Lun' === currentFirstDayInText ? 0 : 
+        'Mar' === currentFirstDayInText ? 1 : 
+        'Mié' === currentFirstDayInText ? 2 : 
+        'Jue' === currentFirstDayInText ? 3 : 
+        'Vie' === currentFirstDayInText ? 4 : 
+        'Sáb' === currentFirstDayInText ? 5 : 
+        'Dom' === currentFirstDayInText ? 6 : 0
+
+
+      // post days number
+      const postDaysNumber = 
+        'Lun' === currentFirstDayInText ?
+          currentMonthAndDays.days === 31 ? 11 :
+          currentMonthAndDays.days === 30 ? 12 :
+          currentMonthAndDays.days === 29 ? 13 :
+          currentMonthAndDays.days === 28 ? 14 : 0 :
+        'Mar' === currentFirstDayInText ?
+          currentMonthAndDays.days === 31 ? 10 :
+          currentMonthAndDays.days === 30 ? 11 :
+          currentMonthAndDays.days === 29 ? 12 :
+          currentMonthAndDays.days === 28 ? 13 : 0 :
+        'Mié' === currentFirstDayInText ?
+          currentMonthAndDays.days === 31 ? 9 :
+          currentMonthAndDays.days === 30 ? 10 :
+          currentMonthAndDays.days === 29 ? 11 :
+          currentMonthAndDays.days === 28 ? 12 : 0 :
+        'Jue' === currentFirstDayInText ?
+          currentMonthAndDays.days === 31 ? 8 :
+          currentMonthAndDays.days === 30 ? 9 :
+          currentMonthAndDays.days === 29 ? 10 :
+          currentMonthAndDays.days === 28 ? 11 : 0 :
+        'Vie' === currentFirstDayInText ?
+          currentMonthAndDays.days === 31 ? 7 :
+          currentMonthAndDays.days === 30 ? 8 :
+          currentMonthAndDays.days === 29 ? 9 :
+          currentMonthAndDays.days === 28 ? 10 : 0 :
+        'Sáb' === currentFirstDayInText ?
+          currentMonthAndDays.days === 31 ? 6 :
+          currentMonthAndDays.days === 30 ? 7 :
+          currentMonthAndDays.days === 29 ? 8 :
+          currentMonthAndDays.days === 28 ? 9 : 0 :
+        'Dom' === currentFirstDayInText ?
+          currentMonthAndDays.days === 31 ? 5 :
+          currentMonthAndDays.days === 30 ? 6 :
+          currentMonthAndDays.days === 29 ? 7 :
+          currentMonthAndDays.days === 28 ? 8 : 0 : 0
+      
+      // -----------------------------------------------
+      // MONTH ITINERARY
+      // -----------------------------------------------
+
+      // days with info
+      const dataItinerary = await fetchItinerary({
+        salesperson: myUser?.vendedor, 
+        year: String(currentYear), 
+        month: String(currentMonth + 1)
+      })
+      console.log('exe')
+
+      const daysItinerary: daysItineraryInterface[] = []
+
+      // previous days
+      for (let i = 0; i < prevDaysNumber; i++) {
+        daysItinerary.push({
+          current: false,
+          day: '',
+          events: []
+        })
+      }
+
+      // days itinerary
+      for (let i = 0; i < currentMonthAndDays.days; i++) {
+        daysItinerary.push({
+          current: true,
+          day: i + 1,
+          events: dataItinerary?.filter((item: ItineraryEventInterface) => String(item.fecha).substring(8, 10) === (String(i + 1).length === 1 ? `0${i + 1}` : String(i + 1)))
+        })
+      }
+
+      // post days
+      for (let i = 0; i < postDaysNumber; i++) {
+        daysItinerary.push({
+          current: false,
+          day: '',
+          events: []
+        })
+      }
+      setDaysItinerary(daysItinerary)
+
+      // -----------------------------------------------
+      // OTHER
+      // -----------------------------------------------
+
+      // reasons
+      const reasons = await fetchReasons()
+      setReasons(reasons)
+
+      setLoadingItinerary(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <View className='flex-1 px-2.5 pt-6' style={{ backgroundColor: background }}>
