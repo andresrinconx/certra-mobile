@@ -263,7 +263,7 @@ const Login = () => {
         </View>
 
         {/* social media */}
-        <View className='h-1/6 flex justify-center items-center pt-8 space-x-5'>
+        <View className='flex justify-center items-center pt-8 space-x-5'>
           <FlatList
             data={socialMedia}
             numColumns={1}
@@ -285,6 +285,13 @@ const Login = () => {
           />
         </View>
 
+        {/* proteo logo */}
+        <View className='flex flex-row justify-center bottom-5'>
+          <Image style={{ width: wp(30), height: wp(30) }} resizeMode='contain'
+            source={require('../assets/logo-proteo.png')}
+          />
+        </View>
+        
       </View>
     </View>
   )

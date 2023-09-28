@@ -5,7 +5,7 @@ import IconCart from '../components/IconCart'
 import IconSearchProducts from '../components/IconSearchProducts'
 import IconProfile from '../components/IconProfile'
 import IconItinerary from '../components/IconItinerary'
-import IconHistory from './IconHistory'
+import IconOrderRecord from './IconOrderRecord'
 
 const Footer = () => {
   const { flowControl } = useInv()
@@ -24,7 +24,7 @@ const Footer = () => {
           <View><IconItinerary /></View>
         ):null}
         {flowControl?.showProducts ? (
-          <View><IconHistory /></View>
+          <View><IconOrderRecord /></View>
         ):null}
       </View>
 

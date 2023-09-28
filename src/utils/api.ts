@@ -23,8 +23,8 @@ const itineraryItemEndpoint = () => `${apiBaseUrl}/itinerarioDetalle2`
 const reasonsEndpoint = () => `${apiBaseUrl}/motivo`
 
 // Order Record
+const lastItemsScliEndpoint = (customer: string) => `${apiBaseUrl}/historialPediC/${customer}`
 const lastItemsLabEndpoint = (params: { clipro: string, code: string }) => `${apiBaseUrl}/historialPedi/${params.clipro}/${params.code}`
-const lastItemsEndpoint = (params: { table: string, customer: string }) => `${apiBaseUrl}/${params.table}/${params.customer}`
 
 // -----------------------------------------------
 // API CALL
@@ -79,9 +79,9 @@ export const fetchReasons = () => {
 }
 
 // Order Record
+export const fetchLastItemsScli = (customer: string) => {
+  return apiCall(lastItemsScliEndpoint(customer), 'GET')
+}
 export const fetchLastItemsLab = (params: { clipro: string, code: string }) => {
   return apiCall(lastItemsLabEndpoint(params), 'GET')
-}
-export const fetchLastItems = (params: { table: string, customer: string }) => {
-  return apiCall(lastItemsEndpoint(params), 'GET')
 }

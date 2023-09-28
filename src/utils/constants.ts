@@ -87,32 +87,100 @@ export const days = [
 ]
 
 export const orderRecordCols = [
-  {
-    id: 1,
-    name: 'ID'
-  },
-  {
-    id: 2,
-    name: 'Fecha'
-  },
-  {
-    id: 3,
-    name: 'Sub Total'
-  },
-  {
-    id: 4,
-    name: 'IVA'
-  },
-  {
-    id: 5,
-    name: 'Importe'
-  },
-  {
-    id: 6,
-    name: 'Unidades'
-  },
-  {
-    id: 7,
-    name: 'Estatus'
-  }
+  [ // scli
+    {
+      id: 1,
+      size: 13.5,
+      name: 'ID'
+    },
+    {
+      id: 2,
+      size: 13.5,
+      name: 'Fecha'
+    },
+    {
+      id: 3,
+      size: 13.5,
+      name: 'Sub Total'
+    },
+    {
+      id: 4,
+      size: 13.5,
+      name: 'IVA'
+    },
+    {
+      id: 5,
+      size: 13.5,
+      name: 'Importe'
+    },
+    {
+      id: 6,
+      size: 13.5,
+      name: 'Unidades'
+    },
+    {
+      id: 7,
+      size: 13.5,
+      name: 'Estatus'
+    }
+  ],
+  [ // lab & salesperson
+    {
+      id: 1,
+      size: 18,
+      name: 'Número'
+    },
+    {
+      id: 2,
+      size: 18,
+      name: 'Nombre'
+    },
+    {
+      id: 3,
+      size: 18,
+      name: 'Fecha'
+    },
+    {
+      id: 4,
+      size: 18,
+      name: 'Importe'
+    },
+    {
+      id: 5,
+      size: 18,
+      name: 'Estatus'
+    }
+  ],
+  [ // status
+    {
+      id: 1,
+      size: 18,
+      name: 'Código'
+    },
+    {
+      id: 2,
+      size: 18,
+      name: 'Nombre'
+    },
+    {
+      id: 3,
+      size: 18,
+      name: 'Unidades'
+    },
+    {
+      id: 4,
+      size: 18,
+      name: 'Precio'
+    },
+    {
+      id: 5,
+      size: 18,
+      name: 'Iva'
+    },
+    {
+      id: 6,
+      size: 18,
+      name: 'Importe'
+    }
+  ]
 ]
