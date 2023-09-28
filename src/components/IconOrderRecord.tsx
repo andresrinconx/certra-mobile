@@ -28,7 +28,7 @@ const IconOrderRecord = () => {
 
       {/* Action Sheet */}
       <Actionsheet isOpen={isOpen} onClose={onClose} size="full">
-        <Actionsheet.Content style={{ backgroundColor: background }} height={wp(45)}>
+        <Actionsheet.Content style={{ backgroundColor: background }} height={wp(43)}>
           <TouchableHighlight onPress={() => ''} className='w-full h-16'
             style={{ backgroundColor: background }}
             underlayColor='#e0e0e0'
