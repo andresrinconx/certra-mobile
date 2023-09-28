@@ -182,21 +182,67 @@ const Product = () => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: { id, name } }) => {
                   return (
-                    <View key={id} className='flex flex-col items-center mt-1'
-                      style={{ width: wp(25) }}
-                    >
-                      <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
-                        {name}
-                      </Text>
+                    <>
+                      {deposito === 'MERIDA' ? (
+                        <View key={id} className='flex flex-col items-center'>
+                          <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                            {name === 'Oriente' ? '' : name}
+                          </Text>
 
-                      <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
-                        {
-                          name === 'Mérida' ? parseInt(String(merida)) :
-                          name === 'Centro' ? parseInt(String(centro)) :
-                          name === 'Oriente' ? parseInt(String(oriente)) : null
-                        }
-                      </Text>
-                    </View>
+                          <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                            {
+                              name === 'Mérida' ? parseInt(String(merida)) :
+                              name === 'Centro' ? parseInt(String(centro)) : null
+                            }
+                          </Text>
+                        </View>
+                      ) : 
+                        deposito === 'CARACAS' ? (
+                          <View key={id} className='flex flex-col items-center'>
+                            <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                              {name}
+                            </Text>
+
+                            <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                              {
+                                name === 'Mérida' ? parseInt(String(merida)) :
+                                name === 'Centro' ? parseInt(String(centro)) :
+                                name === 'Oriente' ? parseInt(String(oriente)) : null
+                              }
+                            </Text>
+                          </View>
+                        ) : (
+                          deposito === 'ORIENTE' ? (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                                {name === 'Mérida' ? '' : name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                                {
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          ) : (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                                {name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                                {
+                                  name === 'Mérida' ? parseInt(String(merida)) :
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          )
+                        )
+                      }
+                    </>
                   )
                 }}
               />
@@ -254,7 +300,8 @@ const Product = () => {
           <View>
             {!added ? (
               <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                style={{ backgroundColor: darkTurquoise }}
+                style={{ backgroundColor: maxAmmount === 0 ? processBtn : darkTurquoise }}
+                disabled={maxAmmount === 0}
               >
                 <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
               </Pressable>

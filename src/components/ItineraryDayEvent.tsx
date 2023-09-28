@@ -81,7 +81,8 @@ const ItineraryDayEvent = ({
               title: res ? 'Se ha enviado correctamente' : 'No se ha podido enviar',
             })
           }
-  
+          
+          // success
           navigation.navigate('Itinerary')
           setReloadItinerary(true)
           setTouch(false)

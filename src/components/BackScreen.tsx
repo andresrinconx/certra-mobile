@@ -10,7 +10,7 @@ const BackScreen = ({title}: {title: string}) => {
   
   return (
     <View className='flex flex-row items-center gap-2 mt-2'>
-      <TouchableOpacity onPress={() => {navigation.goBack()}}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
           source={require('../assets/back.png')}
         />

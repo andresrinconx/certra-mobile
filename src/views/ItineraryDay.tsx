@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { View, Text, FlatList, StatusBar } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -6,6 +7,7 @@ import useLogin from '../hooks/useLogin'
 import Logos from '../components/Logos'
 import BackScreen from '../components/BackScreen'
 import ItineraryDayEvent from '../components/ItineraryDayEvent'
+import useInv from '../hooks/useInv'
 
 const ItineraryDay = () => {
   const { params: { 
@@ -22,6 +24,11 @@ const ItineraryDay = () => {
     reasons: []
   } }
   const { themeColors: { background, typography }, myUser } = useLogin()
+  const { setReloadItinerary } = useInv()
+
+  useEffect(() => {
+    setReloadItinerary(false)
+  }, [])
 
   return (
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>

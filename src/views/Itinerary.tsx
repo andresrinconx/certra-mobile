@@ -141,7 +141,6 @@ const Itinerary = () => {
         year: String(currentYear), 
         month: String(currentMonth + 1)
       })
-      console.log('exe')
 
       const daysItinerary: daysItineraryInterface[] = []
 
