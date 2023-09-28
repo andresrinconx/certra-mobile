@@ -15,12 +15,32 @@ const Product = () => {
   const [added, setAdded] = useState(false)
   const [ammount, setAmmount] = useState(1)
   const [touch, setTouch] = useState(false)
+  const [maxAmmount, setMaxAmmount] = useState(0)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
-  const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn } } = useLogin()
+  const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito } } = useLogin()
   const { productsCart, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
   const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductoInterface }
+
+  // Get max ammount
+  useEffect(() => {
+    if (maxAmmount === 0) {
+      if (merida || centro || oriente) {
+        if (deposito) {
+          if (deposito === 'MERIDA') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+          } else if (deposito === 'CARACAS') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          } else if (deposito === 'ORIENTE') {
+            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+          }
+        } else {
+          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+        }
+      }
+    }
+  }, [])
 
   // -----------------------------------------------
   // ACTIONS
@@ -70,7 +90,9 @@ const Product = () => {
     }
   }
   const handleIncrease = () => {
-    setAmmount(ammount + 1)
+    if (ammount < maxAmmount) {
+      setAmmount(ammount + 1)
+    }
   }
   const handleRemoveElement = () => {
     setAdded(false)
