@@ -154,32 +154,32 @@ export const orderRecordCols = [
   [ // status
     {
       id: 1,
-      size: 18,
+      size: 10,
       name: 'Código'
     },
     {
       id: 2,
-      size: 18,
+      size: 42,
       name: 'Nombre'
     },
     {
       id: 3,
-      size: 18,
+      size: 10,
       name: 'Unidades'
     },
     {
       id: 4,
-      size: 18,
+      size: 10,
       name: 'Precio'
     },
     {
       id: 5,
-      size: 18,
+      size: 10,
       name: 'Iva'
     },
     {
       id: 6,
-      size: 18,
+      size: 10,
       name: 'Importe'
     }
   ]

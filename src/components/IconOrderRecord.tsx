@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { TouchableOpacity, Text, Image } from 'react-native'
+import { TouchableOpacity, Text, Image, TouchableHighlight, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useDisclose, Actionsheet } from 'native-base'
 import { CreditCardIcon } from 'react-native-heroicons/solid'
@@ -9,7 +9,7 @@ const IconOrderRecord = () => {
   const { isOpen, onOpen, onClose } = useDisclose()
 
   const navigation = useNavigation()
-  const { themeColors: { background }, myUser } = useLogin()
+  const { themeColors: { background, typography }, myUser } = useLogin()
 
   return (
     <>
@@ -29,18 +29,25 @@ const IconOrderRecord = () => {
       {/* Action Sheet */}
       <Actionsheet isOpen={isOpen} onClose={onClose} size="full">
         <Actionsheet.Content style={{ backgroundColor: background }} height={wp(45)}>
-          <Actionsheet.Item bgColor={background} 
-            startIcon={<CreditCardIcon size={30} color='gray' />}
-            onPress={() => navigation.navigate('OrderRecord')}
+          <TouchableHighlight onPress={() => ''} className='w-full h-16'
+            style={{ backgroundColor: background }}
+            underlayColor='#e0e0e0'
           >
-            Delete
-          </Actionsheet.Item>
-          <Actionsheet.Item bgColor={background} 
-            startIcon={<CreditCardIcon size={30} color='gray' />}
-            onPress={() => ''}
+            <View className='flex flex-row w-full items-center h-16 pl-3'>
+              <CreditCardIcon size={30} color='gray' />
+              <Text className='w-full pl-3' style={{ fontSize: wp(4), color: typography }}>Hola</Text>
+            </View>
+          </TouchableHighlight>
+
+          <TouchableHighlight onPress={() => ''} className='w-full h-16'
+            style={{ backgroundColor: background }}
+            underlayColor='#e0e0e0'
           >
-            Share
-          </Actionsheet.Item>
+            <View className='flex flex-row w-full items-center h-16 pl-3'>
+              <CreditCardIcon size={30} color='gray' />
+              <Text className='w-full pl-3' style={{ fontSize: wp(4), color: typography }}>Hola</Text>
+            </View>
+          </TouchableHighlight>
         </Actionsheet.Content>
       </Actionsheet>
     </>

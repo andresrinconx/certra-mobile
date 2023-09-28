@@ -19,6 +19,7 @@
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.71.8",
+    "react-native-date-picker": "^4.3.3",
     "react-native-dotenv": "^3.4.9",
     "react-native-get-location": "^4.0.0",
     "react-native-heroicons": "^3.2.0",

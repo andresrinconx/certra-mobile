@@ -1,25 +1,41 @@
 import { useState, useEffect } from 'react'
 import { View, Text, StatusBar, FlatList, TouchableOpacity, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Modal } from 'native-base'
+import { Modal, useToast } from 'native-base'
 import { XMarkIcon } from 'react-native-heroicons/outline'
+import DatePicker from 'react-native-date-picker'
+import { OrderRecordItemInterface } from '../interfaces/OrderRecordItemInterface'
 import useLogin from '../hooks/useLogin'
 import { fetchLastItemsLab, fetchLastItemsScli } from '../utils/api'
+import { getDate } from '../utils/helpers'
 import { orderRecordCols } from '../utils/constants'
 import BackScreen from '../components/BackScreen'
 import Logos from '../components/Logos'
 import Loader from '../components/Loader'
-import { OrderRecordItemInterface } from '../interfaces/OrderRecordItemInterface'
 
 const OrderRecord = () => {
   const [loadingOrderRecord, setLoadingOrderRecord] = useState(true)
   const [lastItems, setLastItems] = useState([])
   const [selectedItem, setSelectedItem] = useState({})
 
-  const [modalOlderOnes, setModalOlderOnes] = useState(false)
   const [modalDetails, setModalDetails] = useState(false)
+  const [modalOlderOnes, setModalOlderOnes] = useState(false)
+
+  const [openDatePickerFrom, setOpenDatePickerFrom] = useState(false)
+  const [dateFrom, setDateFrom] = useState(new Date())
+  const [openDatePickerTo, setOpenDatePickerTo] = useState(false)
+  const [dateTo, setDateTo] = useState(new Date())
 
   const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser } = useLogin()
+  const toast = useToast()
+  const id = 'toast'
+
+  // Start
+  useEffect(() => {
+    let currentDate = new Date()
+    currentDate.setMonth(currentDate.getMonth() - 1)
+    setDateFrom(currentDate)
+  }, [])
 
   // Get last items
   useEffect(() => {
@@ -52,6 +68,18 @@ const OrderRecord = () => {
 
   // Filter range
   const filter = () => {
+    // invalid date
+    if (dateFrom > dateTo) {
+      if (!toast.isActive(id)) {
+        toast.show({
+          id,
+          title: 'Rango de fechas no válido',
+          duration: 1500
+        })
+      } 
+    }
+
+    // filter
     
   }
 
@@ -172,8 +200,15 @@ const OrderRecord = () => {
           </View>
 
           {/* columns */}
-          <View className=''>
-            
+          <View className='flex flex-row items-center py-2' style={{ borderBottomWidth: 0.3, borderBottomColor: turquoise }}>
+            {orderRecordCols[2].map((item) => {
+              const { id, size, name } = item
+              return (
+                <Text key={id} className='text-center'
+                  style={{ fontSize: wp(2.4), color: typography, width: wp(size) }}
+                >{name}</Text>
+              )
+            })}
           </View>
 
           {/* content */}
@@ -198,12 +233,14 @@ const OrderRecord = () => {
               <Text className='font-bold mb-0.5' style={{ fontSize: wp(3.5), color: typography }}>Desde</Text>
 
               <View className='flex flex-row items-center rounded-lg pl-2' style={{ backgroundColor: lightList, height: wp(10) }}>
-                <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
-                  source={require('../assets/calendar.png')}
-                />
-                <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
-                  aaaa-mm-dd
-                </Text>
+                <TouchableOpacity onPress={() => setOpenDatePickerFrom(true)} className='flex flex-row items-center'>
+                  <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
+                    source={require('../assets/calendar.png')}
+                  />
+                  <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
+                    {getDate(dateFrom)}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -211,12 +248,14 @@ const OrderRecord = () => {
               <Text className='font-bold mb-0.5' style={{ fontSize: wp(3.5), color: typography }}>Hasta</Text>
 
               <View className='flex flex-row items-center rounded-lg pl-2' style={{ backgroundColor: lightList, height: wp(10) }}>
-                <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
-                  source={require('../assets/calendar.png')}
-                />
-                <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
-                  aaaa-mm-dd
-                </Text>
+                <TouchableOpacity onPress={() => setOpenDatePickerTo(true)} className='flex flex-row items-center'>
+                  <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
+                    source={require('../assets/calendar.png')}
+                  />
+                  <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
+                    {getDate(dateTo)}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -234,6 +273,36 @@ const OrderRecord = () => {
 
         </Modal.Content>
       </Modal>
+
+      {/* date picker from */}
+      <DatePicker
+        modal
+        mode='date'
+        open={openDatePickerFrom}
+        date={dateFrom}
+        onConfirm={(date) => {
+          setOpenDatePickerFrom(false)
+          setDateFrom(date)
+        }}
+        onCancel={() => {
+          setOpenDatePickerFrom(false)
+        }}
+      />
+
+      {/* date picker to */}
+      <DatePicker
+        modal
+        mode='date'
+        open={openDatePickerTo}
+        date={dateTo}
+        onConfirm={(date) => {
+          setOpenDatePickerTo(false)
+          setDateTo(date)
+        }}
+        onCancel={() => {
+          setOpenDatePickerTo(false)
+        }}
+      />
     </>
   )
 }
