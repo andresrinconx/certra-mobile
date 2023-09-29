@@ -4,6 +4,7 @@ import { setDataStorage } from '../utils/asyncStorage'
 import { fetchSearchedItems } from '../utils/api'
 import { OrderInterface } from '../interfaces/OrderInterface'
 import useLogin from '../hooks/useLogin'
+import { ProductCartInterface } from '../interfaces/ProductCartInterface'
 
 const InvContext = createContext<{
   productsCart: { codigo: string, ammount: number }[]
@@ -42,6 +43,8 @@ const InvContext = createContext<{
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }) => void
+  loadingProductsGrid: boolean
+  setLoadingProductsGrid: (loadingProductsGrid: boolean) => void
   removeElement: (codigo: string) => void
   addToCart: (codigo: string, ammount: number) => void
   order: OrderInterface
@@ -49,6 +52,8 @@ const InvContext = createContext<{
   getProducts: () => void
   currentPage: number
   setCurrentPage: (currentPage: number) => void
+  reloadItinerary: boolean
+  setReloadItinerary: (reloadItinerary: boolean) => void
 }>({
   productsCart: [],
   setProductsCart: () => { },
@@ -72,6 +77,8 @@ const InvContext = createContext<{
     loadingLogOut: false,
   },
   setLoaders: () => { },
+  loadingProductsGrid: true,
+  setLoadingProductsGrid: () => { },
   removeElement: () => { },
   addToCart: () => { },
   order: {
@@ -86,6 +93,8 @@ const InvContext = createContext<{
   getProducts: () => { },
   currentPage: 1,
   setCurrentPage: () => { },
+  reloadItinerary: false,
+  setReloadItinerary: () => { },
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -94,7 +103,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   // CART & ORDER 
-  const [productsCart, setProductsCart] = useState([]) // code and ammount
+  const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]) // code and ammount
   const [order, setOrder] = useState<OrderInterface>({
     date: '',
     hora: '',
@@ -117,12 +126,14 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   })
 
   // LOADERS
+  const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
   const [loaders, setLoaders] = useState({
     loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
   })
+  const [reloadItinerary, setReloadItinerary] = useState(false)
   
   const { myUser } = useLogin()
 
@@ -170,7 +181,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       if (myUser.from === 'scli' || myUser.from === 'usuario') {
 
         // inv farmacia
-        data = await fetchSearchedItems({ table: 'sinv', searchTerm: String(currentPage) })
+        data = await fetchSearchedItems({ table: 'sinv', searchTerm: `${currentPage}` })
       } else if(myUser.from === 'usuario-clipro') {
 
         // inv lab
@@ -180,6 +191,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       if (data?.length > 0) {
         setProducts([ ...products, ...data ])
         setLoaders({ ...loaders, loadingProducts: false })
+        setLoadingProductsGrid(false)
       }
     } catch (error) {
       console.log(error)
@@ -192,7 +204,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add to cart
   const addToCart = (codigo: string, ammount: number) => {
-    setProductsCart([ ...productsCart, {codigo, ammount} ])
+    setProductsCart([ ...productsCart, { codigo, ammount } ])
   }
 
   // Remove element from cart
@@ -211,13 +223,17 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setFlowControl,
       loaders,
       setLoaders,
+      loadingProductsGrid,
+      setLoadingProductsGrid,
       removeElement,
       addToCart,
       order,
       setOrder,
       getProducts,
       currentPage,
-      setCurrentPage
+      setCurrentPage,
+      reloadItinerary,
+      setReloadItinerary
     }}>
       {children}
     </InvContext.Provider>

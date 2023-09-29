@@ -1,6 +1,6 @@
 export interface ThemeColorsInterface {
   primary: string
-  backgrund: string
+  background: string
   charge: string
   list: string
   lightList: string,

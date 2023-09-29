@@ -10,11 +10,21 @@ import ProductsGrid from './ProductsGrid'
 
 const Products = () => {
   const { themeColors: { typography, primary } } = useLogin()
-  const { flowControl, loaders, products, setCurrentPage, currentPage, getProducts } = useInv()
+  const { flowControl, loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useInv()
   
   useEffect(() => {
-    getProducts()
-  }, [currentPage])
+    if (products?.length !== 0) {
+      if (flowControl?.showProducts) {
+        getProducts()
+      }
+    } else {
+      setCurrentPage(1)
+      setProducts([])
+      if (flowControl?.showProducts) {
+        getProducts()
+      }
+    }
+  }, [currentPage, flowControl?.showProducts])
 
   // hide keyboard
   const handleScroll = () => {
@@ -23,14 +33,16 @@ const Products = () => {
   }
 
   const loadMoreItems = () => {
-    setCurrentPage(currentPage + 1)
+    if (products?.length !== 0) {
+      setCurrentPage(currentPage + 1)
+    }
   }
 
   return (
     <>
       {flowControl?.showProducts && !flowControl?.showSelectResults ? (
 
-        loaders?.loadingProducts ? (
+        loadingProductsGrid ? (
           <View className='h-full'>
             <View className='flex-1 justify-center items-center'>
               <FlatList
@@ -55,6 +67,7 @@ const Products = () => {
             <View className='flex-1 justify-center'>
               <FlatList
                 data={products}
+                initialNumToRender={10}
                 onScroll={handleScroll}
                 numColumns={2}
                 contentContainerStyle={{
@@ -77,13 +90,11 @@ const Products = () => {
                     </View>
                   )
                 )}
-                renderItem={({ item }) => {
-                  return (
-                    <ProductsGrid key={item.id} product={item} />
-                  )
-                }}
+                renderItem={({ item }) => (
+                  <ProductsGrid key={item.id} product={item} />
+                )}
                 onEndReached={loadMoreItems}
-                onEndReachedThreshold={0.1}
+                onEndReachedThreshold={0}
               />
             </View>
           </View>

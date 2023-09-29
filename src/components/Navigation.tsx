@@ -13,6 +13,7 @@ import useInv from '../hooks/useInv'
 import Profile from '../views/Profile'
 import Itinerary from '../views/Itinerary'
 import ItineraryDay from '../views/ItineraryDay'
+import OrderRecord from '../views/OrderRecord'
 
 const Stack = createNativeStackNavigator()
 
@@ -85,9 +86,10 @@ const Navigation = () => {
             <Stack.Screen name='Login' component={Login} options={{ headerShown: false, title: 'Login' }} />
             <Stack.Screen name='Home' component={Home} options={{ headerShown: false, title: 'Home', headerBackVisible: false }} />
             <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false, title: 'Profile', animation: 'fade_from_bottom' }} />
-            <Stack.Screen name='Itinerary' component={Itinerary} options={{ headerShown: false, title: 'Itinerary', animation: 'fade_from_bottom'  }} />
-            <Stack.Screen name='ItineraryDay' component={ItineraryDay} options={{ headerShown: false, title: 'ItineraryDay' }} />
-            <Stack.Screen name='Search' component={Search} options={{ headerShown: false, title: 'Search', animation: 'fade_from_bottom'  }} />
+            <Stack.Screen name='Itinerary' component={Itinerary} options={{ headerShown: false, title: 'Itinerary', animation: 'fade_from_bottom' }} />
+            <Stack.Screen name='ItineraryDay' component={ItineraryDay} options={{ headerShown: false, title: 'ItineraryDay', animation: 'fade_from_bottom' }} />
+            <Stack.Screen name='OrderRecord' component={OrderRecord} options={{ headerShown: false, title: 'OrderRecord', animation: 'fade_from_bottom' }} />
+            <Stack.Screen name='Search' component={Search} options={{ headerShown: false, title: 'Search', animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Cart' component={Cart} options={{ headerShown: false, title: 'Cart', animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Product' component={Product} options={{ headerShown: false, title: 'Product', animation: 'fade_from_bottom' }} />
           </Stack.Navigator>

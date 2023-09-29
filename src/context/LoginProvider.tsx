@@ -1,9 +1,11 @@
 import { createContext, useState, useEffect } from 'react'
+import { PermissionsAndroid } from 'react-native'
+import GetLocation from 'react-native-get-location'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
+import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
-import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
 
 const LoginContext = createContext<{
   login: boolean
@@ -20,6 +22,9 @@ const LoginContext = createContext<{
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
+  checkLocationPermission: () => void
+  locationPermissionGranted: boolean
+  getCurrentLocation: () => any
 }>({
   login: false,
   setLogin: () => { },
@@ -35,7 +40,7 @@ const LoginContext = createContext<{
   usersFromScli: [],
   themeColors: {
     primary: '',
-    backgrund: '',
+    background: '',
     charge: '',
     list: '',
     lightList: '',
@@ -48,6 +53,9 @@ const LoginContext = createContext<{
     processBtn: ''
   },
   setThemeColors: () => { },
+  checkLocationPermission: () => { },
+  locationPermissionGranted: false,
+  getCurrentLocation: () => { }
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
@@ -58,7 +66,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   })
   const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
     primary: '',
-    backgrund: '',
+    background: '',
     charge: '',
     list: '',
     lightList: '',
@@ -70,6 +78,9 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     typography: '',
     processBtn: '',
   })
+
+  // LOCATION
+  const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
 
   // API
   const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) 
@@ -103,6 +114,37 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   }, [myUser])
 
   // -----------------------------------------------
+  // PERMISSIONS
+  // -----------------------------------------------
+
+  const checkLocationPermission = async () => {
+    let granted = await getLocationPermission()
+    setLocationPermissionGranted(granted)
+  }
+
+  const getLocationPermission = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    ).catch((err) => {
+      console.warn(err)
+    })
+    return granted === PermissionsAndroid.RESULTS.GRANTED
+  }
+
+  const getCurrentLocation = async () => {
+    const location = await GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+    
+    if (location) {
+      return location
+    } else {
+      return null
+    }
+  }
+
+  // -----------------------------------------------
   // API
   // -----------------------------------------------
   
@@ -110,11 +152,11 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const dataUsuario = fetchTableData('usuario')
-        const dataScli = fetchTableData('scli')
-        const [usuario, scli] = await Promise.all([dataUsuario, dataScli]) // recibe un arreglo con los JSON, y unicamente se resuelve cuando se resuelvan todas al mismo tiempo
-        setUsersFromUsuario(usuario)
-        setUsersFromScli(scli)
+        const resUser = await fetchTableData('usuario')
+        setUsersFromUsuario(resUser)
+
+        const resScli = await fetchTableData('scli')
+        setUsersFromScli(resScli)
       } catch (error) {
         console.log(error)
       }
@@ -137,7 +179,10 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       usersFromScli,
       usersFromUsuario,
       themeColors,
-      setThemeColors
+      setThemeColors,
+      checkLocationPermission,
+      locationPermissionGranted,
+      getCurrentLocation
     }}>
       {children}
     </LoginContext.Provider>

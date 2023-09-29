@@ -4,25 +4,30 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 
-const IconCart = () => {
-
+const IconCart = ({ cartBlue }: { cartBlue?: boolean }) => {
   const { themeColors: { green } } = useLogin()
   const { productsCart } = useInv()
   const navigation = useNavigation()
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-      <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-        source={require('../assets/cart.png')}
-      />
+      {!cartBlue ? (
+        <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+          source={require('../assets/cart.png')}
+        />
+      ) : (
+        <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+          source={require('../assets/cart-blue.png')}
+        />
+      )}
 
-      {productsCart.length > 0
+      {productsCart?.length > 0
         && (
           <View className='flex flex-row justify-center items-center absolute -top-1 -right-1 w-4 h-4 rounded-full'
-            style={{ backgroundColor: green, }}
+            style={{ backgroundColor: green }}
           >
             <Text className='w-full text-center color-black text-[10px]'>
-              {productsCart.length}
+              {productsCart?.length}
             </Text>
           </View>
         )

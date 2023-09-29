@@ -10,16 +10,9 @@ import Products from '../components/Products'
 import Footer from '../components/Footer'
 
 const Home = () => {
-  const { themeColors: { backgrund }, myUser: { image_url } } = useLogin()
-  const { products, loaders, getProducts } = useInv()
+  const { themeColors: { background }, myUser: { image_url } } = useLogin()
+  const { loaders } = useInv()
   
-  // Get products
-  useEffect(() => {
-    if (products?.length === 0) {
-      getProducts()
-    }
-  }, [])
-
   // Back handler
   useEffect(() => {
     const backAction = () => {
@@ -32,8 +25,8 @@ const Home = () => {
 
   return (
     <>
-      <View className='flex-1' style={{ backgroundColor: backgrund }}>
-        <StatusBar barStyle='dark-content' />
+      <View className='flex-1' style={{ backgroundColor: background }}>
+        <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <View className='flex-1 px-3 pt-6'>
           <Logos image={image_url} />

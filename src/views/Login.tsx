@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking } from 'react-native'
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
-import { widthPercentageToDP as wp} from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
 import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
 import { socialMedia } from '../utils/constants'
@@ -21,23 +20,28 @@ const Login = () => {
     password: false,
   })
 
-  const { user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin, setThemeColors } = useLogin()
-  const { getProducts } = useInv()
+  const { user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
   const textInputRefPassword = useRef<TextInput | null>(null)
 
+  // Start login
   useEffect(() => {
-    if (login) {
-      getProducts()
-      navigation.navigate('Home')
-    }
-  }, [login])
-
+    checkLocationPermission()
+  }, [])
+  
   // -----------------------------------------------
   // SCREEN
   // -----------------------------------------------
+
+  // Go home
+  useEffect(() => {
+    if (login) {
+      navigation.navigate('Home')
+    }
+  }, [login])
   
+  // Input
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
     return () => {
@@ -52,6 +56,10 @@ const Login = () => {
       textInputRefPassword.current.blur()
     }
   }
+
+  // -----------------------------------------------
+  // AUTH
+  // -----------------------------------------------
 
   const auth = async () => {
     // required fields
@@ -107,10 +115,9 @@ const Login = () => {
           from: 'scli',
         })
         setThemeColors({ ...pallete[1] }) // 1 = Scli
+        
         setLogin(true)
-        setTimeout(() => {
-          setLoaders({ ...loaders, loadingAuth: false })
-        }, 1500)
+        setLoaders({ ...loaders, loadingAuth: false })
         setShowPassword(false)
       }
     } else {
@@ -144,17 +151,16 @@ const Login = () => {
       }
 
       setThemeColors({ ...pallete[0] }) // 0 = Usuario
+
       setLogin(true)
-      setTimeout(() => {
-        setLoaders({ ...loaders, loadingAuth: false })
-      }, 1500)
+      setLoaders({ ...loaders, loadingAuth: false })
       setShowPassword(false)
     }
   }
 
   return (
     <View className='flex-1 relative'>
-      <StatusBar barStyle='light-content' />
+      <StatusBar translucent={true} backgroundColor='transparent' barStyle='light-content' />
 
       <Image className='absolute w-full h-full' resizeMode='cover'
         source={require('../assets/background.png')}
@@ -176,11 +182,11 @@ const Login = () => {
 
             {/* username */}
             <View>
-              <View className='flex-row items-center rounded-2xl py-4 bg-white'>
-                <TextInput className='w-full pl-5 font-semibold' style={{ fontSize: wp(4.5), color: '#666666' }}
+              <View className='flex-row items-center rounded-2xl py-2 bg-white'>
+                <TextInput className='w-full pl-5' style={{ fontSize: wp(4.5), color: '#666666' }}
                   ref={textInputRefUser}
                   placeholder='Usuario'
-                  placeholderTextColor='#666666'
+                  placeholderTextColor='#999999'
                   value={user}
                   onChangeText={setUser}
                   selectionColor='#006283'
@@ -196,12 +202,12 @@ const Login = () => {
 
             {/* password */}
             <View>
-              <View className='flex-row items-center rounded-2xl py-4 bg-white'>
-                <TextInput className='w-full pl-5 font-semibold' style={{ fontSize: wp(4.5), color: '#666666' }}
+              <View className='flex-row items-center rounded-2xl py-2 bg-white'>
+                <TextInput className='w-full pl-5' style={{ fontSize: wp(4.5), color: '#666666' }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder='Contraseña'
-                  placeholderTextColor='#666666'
+                  placeholderTextColor='#999999'
                   value={password}
                   onChangeText={setPassword}
                   selectionColor='#006283'
@@ -233,18 +239,20 @@ const Login = () => {
             )}
 
             {/* sign in */}
-            <View className='flex flex-col items-center'>
+            <View className='flex flex-col items-center justify-center'>
               <TouchableOpacity onPress={() => auth()} className='flex flex-col justify-center items-center rounded-xl p-1.5 w-36'
                 style={{ backgroundColor: '#92BF1E' }}
               >
                 {!loaders.loadingAuth && (
-                  <View className='h-6'>
-                    <Text className='text-black font-medium text-center' style={{ fontSize: wp(4.5) }}>Iniciar Sesión</Text>
+                  <View className='flex flex-col items-center justify-center h-6'>
+                    <Text className='font-medium text-center' style={{ fontSize: wp(4.5), color: 'black' }}>
+                      Iniciar Sesión
+                    </Text>
                   </View>
                 )}
 
                 {loaders.loadingAuth && (
-                  <View className='h-6'>
+                  <View className='flex flex-col items-center justify-center h-6'>
                     <Loader color='white' size={24} />
                   </View>
                 )}
@@ -255,7 +263,7 @@ const Login = () => {
         </View>
 
         {/* social media */}
-        <View className='h-1/6 flex justify-center items-center pt-8 space-x-5'>
+        <View className='flex justify-center items-center pt-8 space-x-5'>
           <FlatList
             data={socialMedia}
             numColumns={1}
@@ -277,6 +285,13 @@ const Login = () => {
           />
         </View>
 
+        {/* proteo logo */}
+        <View className='flex flex-row justify-center bottom-5'>
+          <Image style={{ width: wp(30), height: wp(30) }} resizeMode='contain'
+            source={require('../assets/logo-proteo.png')}
+          />
+        </View>
+        
       </View>
     </View>
   )

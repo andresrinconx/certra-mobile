@@ -24,8 +24,9 @@ const Cart = () => {
   const [alertClearCart, setAlertClearCart] = useState(false)
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
+  const [alertErrorOrder, setAlertErrorOrder] = useState(false)
 
-  const { themeColors: { typography, backgrund, processBtn, darkTurquoise, green, icon, primary }, myUser } = useLogin()
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser } = useLogin()
   const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -45,7 +46,7 @@ const Cart = () => {
       if (productsCart?.length > 0) {
         let newFullProductsCart = []
     
-        for (let i = 0; i < productsCart.length; i++) {
+        for (let i = 0; i < productsCart?.length; i++) {
           const code = productsCart[i].codigo
           const ammount = productsCart[i].ammount
     
@@ -54,7 +55,7 @@ const Cart = () => {
           newFullProductsCart.push({ ...res[0], ammount })
           
           // last item
-          if (i === productsCart.length - 1) {
+          if (i === productsCart?.length - 1) {
             setFullProductsCart(newFullProductsCart as any)
             setLoadingCart(false)
           }
@@ -90,26 +91,36 @@ const Cart = () => {
   useEffect(() => {
     const sendOrder = async () => {
       try {
-        if (order.productos.length !== 0) {
-          await fetchSendData(order)
+        if (order.cliente.usuario) {
+          const res = await fetchSendData(order)
 
-          setTimeout(() => {
-            // clear cart
+          if (res?.message) {
             setProductsCart([])
-          }, 2000)
-
-          setTimeout(() => {
-
-            setLoaders({ ...loaders, loadingConfirmOrder: false }) // loader from alert*
-          }, 3000)
+            setAlertSuccessOrder(true)
+            setOrder({
+              ...order,
+              date: '',
+              hora: '',
+              cliente: {
+                name: '',
+                code: Number(''),
+              },
+              productos: [],
+              subtotal: '',
+              total: '',
+            })
+          } else {
+            // network error
+            setAlertErrorOrder(true)
+          }
         }
       } catch (error) {
-        console.log(error)
+        setAlertErrorOrder(true)
       }
     }
     sendOrder()
   }, [order])
-  
+
   // Process order
   const handleProcess = () => {
     setLoaders({ ...loaders, loadingConfirmOrder: true })
@@ -121,6 +132,7 @@ const Cart = () => {
       hora: getHour(new Date()),
       cliente: (myUser.from === 'scli' ? {
         name: myUser?.nombre,
+        usuario: myUser?.cliente,
         code: myUser?.cliente
       } : {
         name: myUser.us_nombre,
@@ -133,27 +145,20 @@ const Cart = () => {
         base1: Number(product.base1),
         precio1: Number(product.precio1),
         iva: Number(product.iva),
-        cantidad: Number(product.cantidad)
+        cantidad: Number(product.ammount)
       })),
       subtotal: String(subtotal),
       total: String(total),
     })
     
     // close process alert
-    setTimeout(() => {
-      setAlertProcessOrder(false)
-
-      // show success alert
-      setTimeout(() => {
-        setAlertSuccessOrder(true)
-      }, 500)
-    }, 2500)
+    setAlertProcessOrder(false)
   }
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-        <StatusBar barStyle='dark-content' />
+      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+        <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url} />
 
@@ -176,19 +181,21 @@ const Cart = () => {
           </View>
 
           {/* customer */}
-          {productsCart.length !== 0 && myUser?.customer?.nombre ? (
-            <LabelCustomer
-              name={myUser?.customer?.nombre}
-            />
+          {productsCart?.length !== 0 && myUser?.customer?.nombre ? (
+            <View className='pb-1'>
+              <LabelCustomer
+                name={myUser?.customer?.nombre}
+              />
+            </View>
           ):null}
 
           {/* products */}
           {loadingCart ? (
-            <View className='mt-10'>
+            <View className='mt-5'>
               <Loader color={`${primary}`} />
             </View>
           ) : (
-            <View className='mt-3'>
+            <View className='flex flex-col justify-center'>
               {productsCart.length === 0 && !loadingCart ? (
                 <View className='flex flex-col items-center justify-center' style={{ height: hp(65) }}>
                   <Text className='font-extrabold text-center mt-6' style={{ color: typography, fontSize: wp(6) }}>
@@ -198,9 +205,7 @@ const Cart = () => {
                   <Text style={{ color: typography, fontSize: wp(4) }} className='font-medium'>Continúa {''}
                     <Text style={{ color: darkTurquoise, fontSize: wp(4) }} className='font-medium'
                       onPress={() => navigation.navigate('Home')}
-                    >
-                      aquí
-                    </Text>
+                    >aquí</Text>
                   </Text>
                 </View>
               ) : (
@@ -210,7 +215,7 @@ const Cart = () => {
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ 
                     paddingBottom: 300,
-                    marginTop: 15 
+                    marginTop: 5 
                   }}
                   overScrollMode='never'
                   renderItem={({ item }: { item: any }) => {
@@ -230,9 +235,9 @@ const Cart = () => {
       {!loadingCart && (
         <View className='flex flex-col justify-center h-32 w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'>
           <View className='flex flex-col justify-center h-full w-[92%]'
-            style={{ backgroundColor: backgrund, borderTopColor: icon, marginLeft: 16 }}
+            style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
           >
-            {productsCart.length !== 0 && (
+            {productsCart?.length !== 0 && (
               <View className='px-2'>
                 {/* subtotal & total */}
                 <View className='flex flex-row justify-between'>
@@ -256,12 +261,12 @@ const Cart = () => {
             )}
 
             {/* btn process */}
-            <View className='rounded-xl py-3' style={{ backgroundColor: `${productsCart.length === 0 ? processBtn : green}`}}>
+            <View className='rounded-xl py-3' style={{ backgroundColor: `${productsCart?.length === 0 ? processBtn : green}`}}>
               <TouchableOpacity onPress={() => setAlertProcessOrder(true)}
-                disabled={productsCart.length === 0 ? true : false}
+                disabled={productsCart?.length === 0 ? true : false}
               >
                 <Text className='text-center font-bold text-white' style={{ fontSize: wp(5) }}>
-                  Procesar pedido {productsCart.length === 0 ? '' : `(${productsCart.length})`}
+                  Procesar pedido {productsCart?.length === 0 ? '' : `(${productsCart?.length})`}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -275,7 +280,9 @@ const Cart = () => {
           <AlertDialog.CloseButton />
           <AlertDialog.Header>¿Deseas continuar?</AlertDialog.Header>
           <AlertDialog.Body>
-            Se eliminarán todos los productos de tu carrito.
+            <Text className='font-normal' style={{ color: typography }}>
+              Se eliminarán todos los productos de tu carrito.
+            </Text>
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
@@ -297,7 +304,7 @@ const Cart = () => {
           <AlertDialog.Header>Confirmar pedido</AlertDialog.Header>
 
           <AlertDialog.Body>
-            <Text className='font-normal'>
+            <Text className='font-normal' style={{ color: typography }}>
               ¿Estás seguro de procesar el pedido?
             </Text>
           </AlertDialog.Body>
@@ -308,13 +315,7 @@ const Cart = () => {
                 Cancelar
               </Button>
               <Button color={darkTurquoise} onPress={handleProcess}>
-                {loaders.loadingConfirmOrder ? (
-                  <View className='flex flex-row justify-center items-center w-14'>
-                    <Loader color='white' size={wp(4)} />
-                  </View>
-                ) : (
-                  <Text className='font-normal text-white'>Confirmar</Text>
-                )}
+                <Text className='font-normal text-white'>Confirmar</Text>
               </Button>
             </Button.Group>
           </AlertDialog.Footer>
@@ -355,6 +356,35 @@ const Cart = () => {
                 onPress={() => setAlertSuccessOrder(false)} 
               >
                 <Text className='p-3 text-center text-white' style={{ fontSize: wp(6) }}>Ok</Text>
+              </TouchableOpacity>
+            </View>
+            
+          </View>
+        </Modal.Content>
+      </Modal>
+
+      {/* alert error order */}
+      <Modal isOpen={alertErrorOrder} onClose={() => setAlertErrorOrder(false)} animationPreset='fade'>
+        <Modal.Content style={{ width: 360, height: 500, backgroundColor: processBtn, marginBottom: 0 }}>
+          <View className='flex flex-1 flex-col items-center justify-between'>
+            <View />
+            
+            {/* message */}
+            <View className='flex flex-col justify-center items-center'>
+              <Image style={{ width: wp(35), height: wp(25) }} resizeMode='contain'
+                source={require('../assets/cart-error.png')}
+              />
+              <Text className='w-52 pt-4 text-center text-white' style={{ fontSize: wp(6) }}>
+                Su pedido no ha sido procesado
+              </Text>
+            </View>
+
+            {/* btn retry */}
+            <View className='w-64 mb-8 mx-4'>
+              <TouchableOpacity style={{ backgroundColor: green }} className='rounded-xl'
+                onPress={() => setAlertErrorOrder(false)} 
+              >
+                <Text className='p-3 text-center text-white' style={{ fontSize: wp(6) }}>Volver a intentarlo</Text>
               </TouchableOpacity>
             </View>
             

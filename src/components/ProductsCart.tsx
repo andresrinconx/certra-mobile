@@ -14,12 +14,13 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [ammount, setAmmount] = useState(1)
   const [ammountInput, setAmmountInput] = useState('')
   const [touch, setTouch] = useState(false)
+  const [maxAmmount, setMaxAmmount] = useState(0)
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [disableAcept, setDisableAcept] = useState(false)
   
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn } } = useLogin()
+  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useInv()
   const { descrip, precio1, codigo, centro, merida, oriente } = product
   const cancelRef = useRef(null)
@@ -27,6 +28,25 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const navigation = useNavigation()
 
   const onCloseAlertRemoveElement = () => setAlertRemoveElement(false)
+
+  // Get max ammount
+  useEffect(() => {
+    if (maxAmmount === 0) {
+      if (merida || centro || oriente) {
+        if (deposito) {
+          if (deposito === 'MERIDA') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+          } else if (deposito === 'CARACAS') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          } else if (deposito === 'ORIENTE') {
+            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+          }
+        } else {
+          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+        }
+      }
+    }
+  }, [])
 
   // -----------------------------------------------
   // ACTIONS
@@ -51,11 +71,6 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   }, [productsCart])
 
   // Add or remove element from cart
-  // useEffect(() => {
-  //   if (!added) {
-  //     removeElement(codigo)
-  //   }
-  // }, [added])
   useEffect(() => {
     if(!added && touch) {
       if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
@@ -69,23 +84,24 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   useEffect(() => {
     const productInCart = productsCart.find(item => item.codigo === codigo)
 
-    // btns
-    if ( 
-      // igual, mayor o menor (y no es cero)
-      productInCart.ammount === Number(ammountInput) || 
-      productInCart.ammount < Number(ammountInput) || 
-      productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
-    ) {
-      setDisableAcept(false)
-    } else if ( 
-      // cero o NaN
-      Number(ammountInput) === 0 || 
-      Number(ammountInput) < 0
-    ) {
-      setDisableAcept(true)
+    if (productInCart) {
+      if ( 
+        // NaN, 0, or higher than maxAmmount
+        Number(ammountInput) < 1 ||
+        Number(ammountInput) > maxAmmount
+      ) {
+        setDisableAcept(true)
+      } else if ( 
+        // igual, mayor o menor (y no es cero)
+        productInCart.ammount === Number(ammountInput) || 
+        productInCart.ammount < Number(ammountInput) || 
+        productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
+      ) {
+        setDisableAcept(false)
+      }
     }
   }, [ammountInput])
-
+  
   // Btn acept (input)
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
@@ -108,10 +124,12 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     }
   }
   const handleIncrease = () => {
-    setAmmount(ammount + 1)
+    if (ammount < maxAmmount) {
+      setAmmount(ammount + 1)
+    }
   }
   const handleRemoveElement = () => {
-    if (productsCart.length === 1) {
+    if (productsCart?.length === 1) {
       setProductsCart([])
     }
 
@@ -170,19 +188,67 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item: { id, name } }) => {
                       return (
-                        <View key={id} className='flex flex-col items-center'>
-                          <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
-                            {name}
-                          </Text>
+                        <>
+                          {deposito === 'MERIDA' ? (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                {name === 'Oriente' ? '' : name}
+                              </Text>
 
-                          <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
-                            {
-                              name === 'Mérida' ? parseInt(String(merida)) :
-                              name === 'Centro' ? parseInt(String(centro)) :
-                              name === 'Oriente' ? parseInt(String(oriente)) : null
-                            }
-                          </Text>
-                        </View>
+                              <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                {
+                                  name === 'Mérida' ? parseInt(String(merida)) :
+                                  name === 'Centro' ? parseInt(String(centro)) : null
+                                }
+                              </Text>
+                            </View>
+                          ) : 
+                            deposito === 'CARACAS' ? (
+                              <View key={id} className='flex flex-col items-center'>
+                                <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                  {name}
+                                </Text>
+
+                                <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                  {
+                                    name === 'Mérida' ? parseInt(String(merida)) :
+                                    name === 'Centro' ? parseInt(String(centro)) :
+                                    name === 'Oriente' ? parseInt(String(oriente)) : null
+                                  }
+                                </Text>
+                              </View>
+                            ) : (
+                              deposito === 'ORIENTE' ? (
+                                <View key={id} className='flex flex-col items-center'>
+                                  <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                    {name === 'Mérida' ? '' : name}
+                                  </Text>
+
+                                  <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                    {
+                                      name === 'Centro' ? parseInt(String(centro)) :
+                                      name === 'Oriente' ? parseInt(String(oriente)) : null
+                                    }
+                                  </Text>
+                                </View>
+                              ) : (
+                                <View key={id} className='flex flex-col items-center'>
+                                  <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                    {name}
+                                  </Text>
+
+                                  <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                    {
+                                      name === 'Mérida' ? parseInt(String(merida)) :
+                                      name === 'Centro' ? parseInt(String(centro)) :
+                                      name === 'Oriente' ? parseInt(String(oriente)) : null
+                                    }
+                                  </Text>
+                                </View>
+                              )
+                            )
+                          }
+                        </>
                       )
                     }}
                   />
@@ -290,7 +356,9 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
           <AlertDialog.CloseButton />
           <AlertDialog.Header>Eliminar producto</AlertDialog.Header>
           <AlertDialog.Body>
-            ¿Estás seguro que deseas eliminar este producto del carrito?
+            <Text className='font-normal' style={{ color: typography }}>
+              ¿Estás seguro que deseas eliminar este producto del carrito?
+            </Text>
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>

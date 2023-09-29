@@ -11,8 +11,8 @@ import Loader from './Loader'
 const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
-  const { themeColors: { darkTurquoise }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
-  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders, setCurrentPage } = useInv()
+  const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
+  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
@@ -21,19 +21,27 @@ const IconLogOut = () => {
   const logOut = async () => {
     setLoaders({ ...loaders, loadingLogOut: true })
 
-    // reset login and navigate
+    // reset login
     setUser('')
     setPassword('')
     setLogin(false)
 
-    // redirect
-    setTimeout(() => {
-      navigation.navigate('Login')
+    // reset products
+    setProductsCart([])
+    setProducts([])
+    setCurrentPage(1)
 
-      // reset alert
-      setAlertLogOut(false)
-    }, 2000)
+    // reset loaders
+    setLoaders({
+      ...loaders, 
+      loadingLogOut: false,
+      loadingProducts: false,
+      loadingSlectedCustomer: false,
+      loadingConfirmOrder: false,
+    })
+    setLoadingProductsGrid(true)
 
+    // reset storage
     await setDataStorage('login', false)
     await setDataStorage('themeColors', {})
     await setDataStorage('myUser', {})
@@ -50,7 +58,7 @@ const IconLogOut = () => {
     })
     await setDataStorage('themeColors', {
       primary: '',
-      backgrund: '',
+      background: '',
       charge: '',
       list: '',
       turquoise: '',
@@ -62,57 +70,46 @@ const IconLogOut = () => {
       processBtn: '',
     })
 
-    setTimeout(() => {
-      // reset products
-      setProductsCart([])
-      setProducts([])
-      setCurrentPage(1)
-  
-      // reset flow
-      setFlowControl({
-        showProducts: false,
-        showSelectCustomer: false,
-        showSelectSearch: false,
-        showSelectResults: false,
-        showSelectLabel: false,
-        showLogoCertra: false,
-        showItinerary: false,
-        selected: false,
-      })
-      setMyUser({})
-      setThemeColors({
-        primary: '',
-        backgrund: '',
-        charge: '',
-        list: '',
-        lightList: '',
-        turquoise: '',
-        darkTurquoise: '',
-        green: '',
-        blue: '',
-        icon: '',
-        typography: '',
-        processBtn: '',
-      })
-  
-      setLoaders({
-        ...loaders, 
-        loadingLogOut: false,
-        loadingProducts: false,
-        loadingSlectedCustomer: false,
-        loadingConfirmOrder: false,
-      })
-    }, 2000)
+    // go login
+    navigation.navigate('Login')
+    setAlertLogOut(false)
+
+    // reset flow
+    setFlowControl({
+      showProducts: false,
+      showSelectCustomer: false,
+      showSelectSearch: false,
+      showSelectResults: false,
+      showSelectLabel: false,
+      showLogoCertra: false,
+      showItinerary: false,
+      selected: false,
+    })
+    setMyUser({})
+    setThemeColors({
+      primary: '',
+      background: '',
+      charge: '',
+      list: '',
+      lightList: '',
+      turquoise: '',
+      darkTurquoise: '',
+      green: '',
+      blue: '',
+      icon: '',
+      typography: '',
+      processBtn: '',
+    })
   }
 
   return (
     <>
-      <TouchableOpacity onPress={() => setAlertLogOut(true)}>
+      <TouchableOpacity onPress={() => setAlertLogOut(true)} className='w-full flex flex-row justify-center items-center'>
         <View className='flex flex-row items-center gap-2'>
           <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
             source={require('../assets/leave.png')}
           />
-          <Text className='text-sm w-8 text-white font-bold'>Salir</Text>
+          <Text className='text-lg text-white font-bold'>Salir</Text>
         </View>
       </TouchableOpacity>
 
@@ -123,7 +120,7 @@ const IconLogOut = () => {
           <AlertDialog.Header>¿Deseas cerrar sesión?</AlertDialog.Header>
 
           <AlertDialog.Body>
-            <Text className='font-normal'>
+            <Text className='font-normal' style={{ color: typography }}>
               Se eliminarán todos los productos de tu carrito.
             </Text>
           </AlertDialog.Body>

@@ -34,7 +34,7 @@ const SelectCustomer = () => {
 
   // SEARCH
   const handleSearch = async (valueSearchCustomers: string) => {
-    if (valueSearchCustomers.length > 2) {
+    if (valueSearchCustomers?.length > 2) {
       // search
 
       setFlowControl({ 
@@ -93,7 +93,7 @@ const SelectCustomer = () => {
     <>
       {flowControl?.showSelectCustomer ? (
 
-        <View className='mt-3'>
+        <View className='mt-1'>
 
           {/* label */}
           {flowControl?.showSelectLabel && !flowControl?.showSelectResults && flowControl?.selected ? (
@@ -111,8 +111,8 @@ const SelectCustomer = () => {
                 source={require('../assets/drugstore-search.png')}
               />
 
-              <View className='rounded-lg w-5/6 ml-3' style={{ backgroundColor: list }}>
-                <TextInput className='w-full pl-3' style={{ fontSize: wp(4), color: typography }}
+              <View className='rounded-lg w-5/6 ml-3 py-0' style={{ backgroundColor: list }}>
+                <TextInput className='w-full pl-3 py-0' style={{ fontSize: wp(4), color: typography }}
                   placeholder='Buscar un cliente'
                   placeholderTextColor={typography}
                   onChangeText={handleSearch}

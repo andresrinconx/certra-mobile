@@ -3,4 +3,5 @@ export default interface UserFromScliInterface {
   nombre: string
   clave: string
   rifci: string
+  deposito: string
 }

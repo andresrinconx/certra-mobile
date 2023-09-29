@@ -17,9 +17,11 @@ const Logos = ({image}: {image: URL}) => {
         />
       )}
 
-      <Image style={{ width: wp(40), height: wp(16) }} resizeMode='contain'
-        source={{uri: `${image}`}}
-      />
+      {image && (
+        <Image style={{ width: wp(40), height: wp(16) }} resizeMode='contain'
+          source={{uri: `${image}`}}
+        />
+      )}
     </View>
   )
 }

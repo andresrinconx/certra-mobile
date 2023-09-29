@@ -2,11 +2,10 @@ import { View } from 'react-native'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import IconCart from '../components/IconCart'
-import IconLogOut from '../components/IconLogOut'
 import IconSearchProducts from '../components/IconSearchProducts'
 import IconProfile from '../components/IconProfile'
 import IconItinerary from '../components/IconItinerary'
-import IconHistory from './IconHistory'
+import IconOrderRecord from './IconOrderRecord'
 
 const Footer = () => {
   const { flowControl } = useInv()
@@ -25,18 +24,14 @@ const Footer = () => {
           <View><IconItinerary /></View>
         ):null}
         {flowControl?.showProducts ? (
-          <View><IconHistory /></View>
+          <View><IconOrderRecord /></View>
         ):null}
       </View>
 
       {/* right */}
-      <View className='flex flex-row items-center h-full'>
+      <View className='flex flex-row items-center h-full pr-3'>
         {flowControl?.showProducts && (<View><IconSearchProducts /></View>)}
         {flowControl?.showProducts && (<View className='ml-2'><IconCart /></View>)}
-
-        <View className='h-full w-20 flex justify-center items-center ml-5' style={{ backgroundColor: green }}>
-          <IconLogOut />
-        </View>
       </View>
 
     </View>
