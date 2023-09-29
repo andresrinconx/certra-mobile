@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -15,12 +15,32 @@ const Product = () => {
   const [added, setAdded] = useState(false)
   const [ammount, setAmmount] = useState(1)
   const [touch, setTouch] = useState(false)
+  const [maxAmmount, setMaxAmmount] = useState(0)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
-  const { themeColors: { backgrund, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn } } = useLogin()
+  const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito } } = useLogin()
   const { productsCart, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
   const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductoInterface }
+
+  // Get max ammount
+  useEffect(() => {
+    if (maxAmmount === 0) {
+      if (merida || centro || oriente) {
+        if (deposito) {
+          if (deposito === 'MERIDA') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+          } else if (deposito === 'CARACAS') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          } else if (deposito === 'ORIENTE') {
+            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+          }
+        } else {
+          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+        }
+      }
+    }
+  }, [])
 
   // -----------------------------------------------
   // ACTIONS
@@ -38,6 +58,8 @@ const Product = () => {
     } else {
 
       // product not in cart
+      setAdded(false)
+      setAmmount(1)
       setLoadingProduct(false)
     }
   }, [productsCart])
@@ -68,7 +90,9 @@ const Product = () => {
     }
   }
   const handleIncrease = () => {
-    setAmmount(ammount + 1)
+    if (ammount < maxAmmount) {
+      setAmmount(ammount + 1)
+    }
   }
   const handleRemoveElement = () => {
     setAdded(false)
@@ -77,9 +101,9 @@ const Product = () => {
   }
 
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: backgrund }}>
-      <StatusBar barStyle='dark-content' />
-        
+    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <StatusBar backgroundColor={background} barStyle='dark-content' />
+      
       {/* back and cart */}
       <View className='flex flex-row items-center justify-between gap-2 my-3'>
         <TouchableOpacity onPress={() => {navigation.goBack()}}>
@@ -158,21 +182,67 @@ const Product = () => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: { id, name } }) => {
                   return (
-                    <View key={id} className='flex flex-col items-center mt-1'
-                      style={{ width: wp(25) }}
-                    >
-                      <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
-                        {name}
-                      </Text>
+                    <>
+                      {deposito === 'MERIDA' ? (
+                        <View key={id} className='flex flex-col items-center'>
+                          <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                            {name === 'Oriente' ? '' : name}
+                          </Text>
 
-                      <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
-                        {
-                          name === 'Mérida' ? parseInt(String(merida)) :
-                          name === 'Centro' ? parseInt(String(centro)) :
-                          name === 'Oriente' ? parseInt(String(oriente)) : null
-                        }
-                      </Text>
-                    </View>
+                          <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                            {
+                              name === 'Mérida' ? parseInt(String(merida)) :
+                              name === 'Centro' ? parseInt(String(centro)) : null
+                            }
+                          </Text>
+                        </View>
+                      ) : 
+                        deposito === 'CARACAS' ? (
+                          <View key={id} className='flex flex-col items-center'>
+                            <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                              {name}
+                            </Text>
+
+                            <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                              {
+                                name === 'Mérida' ? parseInt(String(merida)) :
+                                name === 'Centro' ? parseInt(String(centro)) :
+                                name === 'Oriente' ? parseInt(String(oriente)) : null
+                              }
+                            </Text>
+                          </View>
+                        ) : (
+                          deposito === 'ORIENTE' ? (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                                {name === 'Mérida' ? '' : name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                                {
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          ) : (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                                {name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                                {
+                                  name === 'Mérida' ? parseInt(String(merida)) :
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          )
+                        )
+                      }
+                    </>
                   )
                 }}
               />
@@ -192,14 +262,14 @@ const Product = () => {
 
           {/* remove */}
           <View>
-            <TouchableOpacity onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+            <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
               style={{ backgroundColor: added ? turquoise : processBtn }}
               disabled={added ? false : true}
             >
               <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
                 source={require('../assets/white-trash-can.png')}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <View className='flex-1 flex-row items-center justify-between mx-6'>
@@ -229,11 +299,12 @@ const Product = () => {
           {/* add & added */}
           <View>
             {!added ? (
-              <TouchableOpacity onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                style={{ backgroundColor: darkTurquoise }}
+              <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                style={{ backgroundColor: maxAmmount === 0 ? processBtn : darkTurquoise }}
+                disabled={maxAmmount === 0}
               >
                 <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
-              </TouchableOpacity>
+              </Pressable>
             ) : (
               <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
                 style={{ backgroundColor: green }}

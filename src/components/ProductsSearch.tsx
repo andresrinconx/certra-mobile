@@ -12,11 +12,31 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(false)
   const [ammount, setAmmount] = useState(1)
   const [touch, setTouch] = useState(false)
+  const [maxAmmount, setMaxAmmount] = useState(0)
   
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise } } = useLogin()
+  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
   const { descrip, precio1, merida, centro, oriente, codigo } = product
   const { productsCart, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
+
+  // Get max ammount
+  useEffect(() => {
+    if (maxAmmount === 0) {
+      if (merida || centro || oriente) {
+        if (deposito) {
+          if (deposito === 'MERIDA') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+          } else if (deposito === 'CARACAS') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          } else if (deposito === 'ORIENTE') {
+            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+          }
+        } else {
+          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+        }
+      }
+    }
+  }, [])
 
   // -----------------------------------------------
   // ACTIONS
@@ -64,12 +84,9 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
     }
   }
   const handleIncrease = () => {
-    setAmmount(ammount + 1)
-  }
-  const handleRemoveElement = () => {
-    setAdded(false)
-    setAmmount(1)
-    setTouch(true)
+    if (ammount < maxAmmount) {
+      setAmmount(ammount + 1)
+    }
   }
 
   return (
@@ -109,19 +126,67 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: { id, name } }) => {
                   return (
-                    <View key={id} className='flex flex-col items-center'>
-                      <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
-                        {name}
-                      </Text>
+                    <>
+                      {deposito === 'MERIDA' ? (
+                        <View key={id} className='flex flex-col items-center'>
+                          <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                            {name === 'Oriente' ? '' : name}
+                          </Text>
 
-                      <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
-                        {
-                          name === 'Mérida' ? parseInt(String(merida)) :
-                          name === 'Centro' ? parseInt(String(centro)) :
-                          name === 'Oriente' ? parseInt(String(oriente)) : null
-                        }
-                      </Text>
-                    </View>
+                          <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                            {
+                              name === 'Mérida' ? parseInt(String(merida)) :
+                              name === 'Centro' ? parseInt(String(centro)) : null
+                            }
+                          </Text>
+                        </View>
+                      ) : 
+                        deposito === 'CARACAS' ? (
+                          <View key={id} className='flex flex-col items-center'>
+                            <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                              {name}
+                            </Text>
+
+                            <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                              {
+                                name === 'Mérida' ? parseInt(String(merida)) :
+                                name === 'Centro' ? parseInt(String(centro)) :
+                                name === 'Oriente' ? parseInt(String(oriente)) : null
+                              }
+                            </Text>
+                          </View>
+                        ) : (
+                          deposito === 'ORIENTE' ? (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                {name === 'Mérida' ? '' : name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                {
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          ) : (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                {name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                {
+                                  name === 'Mérida' ? parseInt(String(merida)) :
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          )
+                        )
+                      }
+                    </>
                   )
                 }}
               />
@@ -173,11 +238,12 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
             {/* add & added */}
             <View className='pl-5'>
               {!added ? (
-                <TouchableOpacity onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
-                  style={{ backgroundColor: darkTurquoise }}
+                <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
+                  style={{ backgroundColor: maxAmmount === 0 ? processBtn : darkTurquoise }}
+                  disabled={maxAmmount === 0}
                 >
                   <PlusIcon size={25} color='white' strokeWidth={2} />
-                </TouchableOpacity>
+                </Pressable>
               ) : (
                 <View className='flex flex-row items-center justify-center rounded-md w-7 h-7'
                   style={{ backgroundColor: green }}

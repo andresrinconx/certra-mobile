@@ -2,7 +2,7 @@
 export const pallete = [
   { // Usuario - Usuario-Clipro
     primary: '#006283', // (Dark Turquoise)
-    backgrund: '#F6FAFB',
+    background: '#F6FAFB',
     charge: '#E4F0F3',
     list: '#D2E6EC',
     lightList: '#EDF5F8',
@@ -16,7 +16,7 @@ export const pallete = [
   },
   { // Scli
     primary: '#1F377E', // (Blue)
-    backgrund: '#F6FAFB',
+    background: '#F6FAFB',
     charge: '#E4F0F3',
     list: '#D2E6EC',
     lightList: '#EDF5F8',

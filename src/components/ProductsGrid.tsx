@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { View, Text, Image, TouchableOpacity, Pressable, FlatList } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
@@ -12,11 +12,31 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(false)
   const [ammount, setAmmount] = useState(1)
   const [touch, setTouch] = useState(false)
+  const [maxAmmount, setMaxAmmount] = useState(0)
 
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise } } = useLogin()
+  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
   const { addToCart, productsCart, removeElement } = useInv()
   const { descrip, precio1, image_url, merida, centro, oriente, codigo } = product
   const navigation = useNavigation()
+
+  // Get max ammount
+  useEffect(() => {
+    if (maxAmmount === 0) {
+      if (merida || centro || oriente) {
+        if (deposito) {
+          if (deposito === 'MERIDA') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+          } else if (deposito === 'CARACAS') {
+            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          } else if (deposito === 'ORIENTE') {
+            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+          }
+        } else {
+          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+        }
+      }
+    }
+  }, [])
 
   // -----------------------------------------------
   // ACTIONS
@@ -64,7 +84,9 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
     }
   }
   const handleIncrease = () => {
-    setAmmount(ammount + 1)
+    if (ammount < maxAmmount) {
+      setAmmount(ammount + 1)
+    }
   }
   const handleRemoveElement = () => {
     setAdded(false)
@@ -77,7 +99,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
 
       {/* remove element icon */}
       {added && (
-        <TouchableOpacity className='absolute top-0 right-0 z-50' 
+        <Pressable className='absolute top-0 right-0 z-50' 
           style={{ width: wp(12), height: wp(12) }}
           onPress={handleRemoveElement}
         >
@@ -88,7 +110,7 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
               source={require('../assets/white-trash-can.png')}
             />
           </View>
-        </TouchableOpacity>
+        </Pressable>
       )}
 
       {/* content */}
@@ -149,19 +171,67 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: { id, name } }) => {
                   return (
-                    <View key={id} className='flex flex-col items-center'>
-                      <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
-                        {name}
-                      </Text>
+                    <>
+                      {deposito === 'MERIDA' ? (
+                        <View key={id} className='flex flex-col items-center'>
+                          <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                            {name === 'Oriente' ? '' : name}
+                          </Text>
 
-                      <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
-                        {
-                          name === 'Mérida' ? parseInt(String(merida)) :
-                          name === 'Centro' ? parseInt(String(centro)) :
-                          name === 'Oriente' ? parseInt(String(oriente)) : null
-                        }
-                      </Text>
-                    </View>
+                          <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                            {
+                              name === 'Mérida' ? parseInt(String(merida)) :
+                              name === 'Centro' ? parseInt(String(centro)) : null
+                            }
+                          </Text>
+                        </View>
+                      ) : 
+                        deposito === 'CARACAS' ? (
+                          <View key={id} className='flex flex-col items-center'>
+                            <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                              {name}
+                            </Text>
+
+                            <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                              {
+                                name === 'Mérida' ? parseInt(String(merida)) :
+                                name === 'Centro' ? parseInt(String(centro)) :
+                                name === 'Oriente' ? parseInt(String(oriente)) : null
+                              }
+                            </Text>
+                          </View>
+                        ) : (
+                          deposito === 'ORIENTE' ? (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                {name === 'Mérida' ? '' : name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                {
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          ) : (
+                            <View key={id} className='flex flex-col items-center'>
+                              <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                {name}
+                              </Text>
+
+                              <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                {
+                                  name === 'Mérida' ? parseInt(String(merida)) :
+                                  name === 'Centro' ? parseInt(String(centro)) :
+                                  name === 'Oriente' ? parseInt(String(oriente)) : null
+                                }
+                              </Text>
+                            </View>
+                          )
+                        )
+                      }
+                    </>
                   )
                 }}
               />
@@ -198,11 +268,12 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
             {/* add & added */}
             <View className='pl-5'>
               {!added ? (
-                <TouchableOpacity onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
-                  style={{ backgroundColor: darkTurquoise }}
+                <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
+                  style={{ backgroundColor: maxAmmount === 0 ? processBtn : darkTurquoise }}
+                  disabled={maxAmmount === 0}
                 >
                   <PlusIcon size={25} color='white' strokeWidth={2} />
-                </TouchableOpacity>
+                </Pressable>
               ) : (
                 <View className='flex flex-row items-center justify-center rounded-md w-7 h-7'
                   style={{ backgroundColor: green }}
@@ -221,4 +292,4 @@ const ProductsGrid = ({ product }: { product: ProductoInterface }) => {
   )
 }
 
-export default ProductsGrid
+export default memo(ProductsGrid)
