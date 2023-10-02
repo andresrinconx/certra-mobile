@@ -14,8 +14,8 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  myUser: any
-  setMyUser: (myUser: any) => void
+  myUser: { from: string, clipro?: string }
+  setMyUser: (myUser: { from: string, clipro?: string }) => void
   loaders: { loadingAuth: boolean, }
   setLoaders: (loaders: { loadingAuth: boolean, }) => void
   usersFromUsuario: UserFromUsuarioInterface[]
@@ -24,18 +24,28 @@ const LoginContext = createContext<{
   setThemeColors: (themeColors: ThemeColorsInterface) => void
   checkLocationPermission: () => void
   locationPermissionGranted: boolean
-  getCurrentLocation: () => any
+  getCurrentLocation: () => unknown
 }>({
   login: false,
-  setLogin: () => { },
+  setLogin: () => { 
+    // do nothing
+  },
   user: '',
-  setUser: () => { },
+  setUser: () => { 
+    // do nothing
+  },
   password: '',
-  setPassword: () => { },
-  myUser: { },
-  setMyUser: () => { },
+  setPassword: () => { 
+    // do nothing
+  },
+  myUser: { from: '' },
+  setMyUser: () => { 
+    // do nothing
+  },
   loaders: { loadingAuth: false, },
-  setLoaders: () => { },
+  setLoaders: () => { 
+    // do nothing
+  },
   usersFromUsuario: [],
   usersFromScli: [],
   themeColors: {
@@ -52,16 +62,22 @@ const LoginContext = createContext<{
     typography: '',
     processBtn: ''
   },
-  setThemeColors: () => { },
-  checkLocationPermission: () => { },
+  setThemeColors: () => { 
+    // do nothing
+  },
+  checkLocationPermission: () => { 
+    // do nothing
+  },
   locationPermissionGranted: false,
-  getCurrentLocation: () => { }
+  getCurrentLocation: () => { 
+    // do nothing
+  }
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // USER
   const [login, setLogin] = useState(false)
-  const [myUser, setMyUser] = useState<any>({
+  const [myUser, setMyUser] = useState<{ from: string }>({
     from: '',
   })
   const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
@@ -118,7 +134,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // -----------------------------------------------
 
   const checkLocationPermission = async () => {
-    let granted = await getLocationPermission()
+    const granted = await getLocationPermission()
     setLocationPermissionGranted(granted)
   }
 

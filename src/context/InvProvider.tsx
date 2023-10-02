@@ -56,9 +56,13 @@ const InvContext = createContext<{
   setReloadItinerary: (reloadItinerary: boolean) => void
 }>({
   productsCart: [],
-  setProductsCart: () => { },
+  setProductsCart: () => { 
+    // do nothing
+  },
   products: [],
-  setProducts: () => { },
+  setProducts: () => { 
+    // do nothing
+  },
   flowControl: {
     showProducts: false,
     showSelectCustomer: false,
@@ -69,18 +73,28 @@ const InvContext = createContext<{
     showItinerary: false,
     selected: false,
   },
-  setFlowControl: () => { },
+  setFlowControl: () => { 
+    // do nothing
+  },
   loaders: {
     loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
   },
-  setLoaders: () => { },
+  setLoaders: () => { 
+    // do nothing
+  },
   loadingProductsGrid: true,
-  setLoadingProductsGrid: () => { },
-  removeElement: () => { },
-  addToCart: () => { },
+  setLoadingProductsGrid: () => { 
+    // do nothing
+  },
+  removeElement: () => { 
+    // do nothing
+  },
+  addToCart: () => { 
+    // do nothing
+  },
   order: {
     date: '',
     hora: '',
@@ -89,12 +103,20 @@ const InvContext = createContext<{
     subtotal: '',
     total: '',
   },
-  setOrder: () => { },
-  getProducts: () => { },
+  setOrder: () => { 
+    // do nothing
+  },
+  getProducts: () => { 
+    // do nothing
+  },
   currentPage: 1,
-  setCurrentPage: () => { },
+  setCurrentPage: () => { 
+    // do nothing
+  },
   reloadItinerary: false,
-  setReloadItinerary: () => { },
+  setReloadItinerary: () => { 
+    // do nothing
+  },
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {

@@ -9,7 +9,7 @@ import IconOrderRecord from './IconOrderRecord'
 
 const Footer = () => {
   const { flowControl } = useInv()
-  const { themeColors: { primary, green }, myUser } = useLogin()
+  const { themeColors: { primary }, myUser } = useLogin()
 
   return (
     <View className='flex flex-row justify-between items-center h-16' style={{ backgroundColor: primary }}>

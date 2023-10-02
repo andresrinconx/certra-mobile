@@ -30,7 +30,7 @@ const lastItemsLabEndpoint = (params: { clipro: string, code: string }) => `${ap
 // API CALL
 // -----------------------------------------------
 
-const apiCall = async (endpoint: string, method: Uppercase<string>, data?: any)=>{
+const apiCall = async (endpoint: string, method: Uppercase<string>, data?: unknown) => {
   try {
     const response = await axios.request({
       method,
