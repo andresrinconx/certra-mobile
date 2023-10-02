@@ -270,8 +270,8 @@ const Login = () => {
             horizontal={true}
             showsVerticalScrollIndicator={false}
             renderItem={({item: {url, image, id}}) => {
-              let isLast = socialMedia.length === id
-              let noMargin = `${isLast ? 'mr-0' : 'mr-3'}`
+              const isLast = socialMedia.length === id
+              const noMargin = `${isLast ? 'mr-0' : 'mr-3'}`
               return (
                 <TouchableOpacity key={id} onPress={() => { Linking.openURL(`${url}`) }} 
                   className={`${noMargin}`}

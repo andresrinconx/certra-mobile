@@ -10,7 +10,7 @@ import useLogin from '../hooks/useLogin'
 import { disponibility } from '../utils/constants'
 import IconCart from '../components/IconCart'
 import Loader from '../components/Loader'
-
+ 
 const Product = () => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
@@ -254,11 +254,11 @@ const Product = () => {
 
       {/* amount and added */}
       {loadingProduct ? (
-        <View className="flex flex-row items-center justify-center absolute bottom-2 h-16" style={{ width: wp("60%"), marginLeft: wp(20) }}>
+        <View className="flex flex-row items-center justify-center absolute bottom-2 h-16" style={{ width: wp('60%'), marginLeft: wp(20) }}>
           <Loader color={`${primary}`} />
         </View>
       ) : (
-        <View className="flex flex-row items-center justify-between absolute bottom-2 h-16" style={{ width: wp("70%"), marginLeft: wp(16) }}>
+        <View className="flex flex-row items-center justify-between absolute bottom-2 h-16" style={{ width: wp('70%'), marginLeft: wp(16) }}>
 
           {/* remove */}
           <View>

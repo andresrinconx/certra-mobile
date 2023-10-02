@@ -1,4 +1,4 @@
-import { ProductoOrderInterface } from "./ProductoOrderInterface"
+import { ProductoOrderInterface } from './ProductoOrderInterface' 
 
 export interface OrderInterface {
   date: string,

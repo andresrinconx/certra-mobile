@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Image, FlatList, TouchableOpacity, Text } from 'react-native'
+import { View, Image, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import useInv from '../hooks/useInv'
@@ -10,9 +10,10 @@ import Logos from '../components/Logos'
 import BackScreen from '../components/BackScreen'
 import ProfileGroup from '../components/ProfileGroup'
 import IconLogOut from '../components/IconLogOut'
+import { DataConfigProfileInterface } from '../interfaces/DataConfigProfileInterface'
 
 const Profile = () => {
-  const [dataConfig, setDataConfig] = useState<any>({})
+  const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
   const { themeColors: { primary, background, darkTurquoise }, myUser } = useLogin()
@@ -139,7 +140,7 @@ const Profile = () => {
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-      <Logos image={myUser?.image_url} />
+      <Logos image={myUser?.image_url as URL} />
       <BackScreen title='Mi perfil' />
       
       {/* info */}
@@ -173,7 +174,7 @@ const Profile = () => {
                 const { name, subname, fields } = item
                 return (
                   <ProfileGroup 
-                    name={name}
+                    name={name as string}
                     subname={String(subname)}
                     fields={fields}
                   />

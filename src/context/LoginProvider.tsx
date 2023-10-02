@@ -6,6 +6,7 @@ import UserFromScliInterface from '../interfaces/UserFromScliInterface'
 import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
+import { MyUserInterface } from '../interfaces/MyUserInterface'
 
 const LoginContext = createContext<{
   login: boolean
@@ -14,8 +15,8 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  myUser: { from: string, clipro?: string }
-  setMyUser: (myUser: { from: string, clipro?: string }) => void
+  myUser: MyUserInterface
+  setMyUser: (myUser: MyUserInterface) => void
   loaders: { loadingAuth: boolean, }
   setLoaders: (loaders: { loadingAuth: boolean, }) => void
   usersFromUsuario: UserFromUsuarioInterface[]

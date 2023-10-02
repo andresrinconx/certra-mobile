@@ -44,7 +44,7 @@ const Cart = () => {
     const getFullProductsCart = async () => {
 
       if (productsCart?.length > 0) {
-        let newFullProductsCart = []
+        const newFullProductsCart = []
     
         for (let i = 0; i < productsCart?.length; i++) {
           const code = productsCart[i].codigo

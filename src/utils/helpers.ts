@@ -8,7 +8,7 @@ export const getDate = (date: Date) => {
   const day = date.getDate()
   return `${year}-${String(month).length === 1 ? `0${month}` : `${month}`}-${String(day).length === 1 ? `0${day}` : `${day}`}`
 }
-
+ 
 export const getHour = (date: Date) => {
   const hours = date.getHours()
   const minutes = date.getMinutes()
@@ -17,9 +17,9 @@ export const getHour = (date: Date) => {
 
 export const getDayOfWeekInText = (date: Date) => {
   const DAYS_OF_WEEK = [
-    "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
-  ];
-  return DAYS_OF_WEEK[date.getDay()];
+    'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+  ]
+  return DAYS_OF_WEEK[date.getDay()]
 }
 
 export function getMonthAndDays(date: Date) {
