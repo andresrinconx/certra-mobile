@@ -13,9 +13,9 @@ import Loader from '../components/Loader'
 
 const Product = () => {
   const [added, setAdded] = useState(false)
-  const [ammount, setAmmount] = useState(1)
+  const [amount, setAmount] = useState(1)
   const [touch, setTouch] = useState(false)
-  const [maxAmmount, setMaxAmmount] = useState(0)
+  const [maxAmount, setMaxAmount] = useState(0)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
   const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito } } = useLogin()
@@ -23,20 +23,20 @@ const Product = () => {
   const navigation = useNavigation()
   const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductoInterface }
 
-  // Get max ammount
+  // Get max amount
   useEffect(() => {
-    if (maxAmmount === 0) {
+    if (maxAmount === 0) {
       if (merida || centro || oriente) {
         if (deposito) {
           if (deposito === 'MERIDA') {
-            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)))
           } else if (deposito === 'CARACAS') {
-            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
           } else if (deposito === 'ORIENTE') {
-            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)))
           }
         } else {
-          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
         }
       }
     }
@@ -53,13 +53,13 @@ const Product = () => {
 
       // product in cart
       setAdded(true)
-      setAmmount(productInCart.ammount)
+      setAmount(productInCart.amount)
       setLoadingProduct(false)
     } else {
 
       // product not in cart
       setAdded(false)
-      setAmmount(1)
+      setAmount(1)
       setLoadingProduct(false)
     }
   }, [productsCart])
@@ -69,7 +69,7 @@ const Product = () => {
     if (added && touch) {
       if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
         setTouch(false)
-        addToCart(codigo, ammount)
+        addToCart(codigo, amount)
       }
     } else if(!added && touch) {
       if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
@@ -85,18 +85,18 @@ const Product = () => {
     setTouch(true)
   }
   const handleDecrease = () => {
-    if (ammount > 1) {
-      setAmmount(ammount - 1)
+    if (amount > 1) {
+      setAmount(amount - 1)
     }
   }
   const handleIncrease = () => {
-    if (ammount < maxAmmount) {
-      setAmmount(ammount + 1)
+    if (amount < maxAmount) {
+      setAmount(amount + 1)
     }
   }
   const handleRemoveElement = () => {
     setAdded(false)
-    setAmmount(1)
+    setAmount(1)
     setTouch(true)
   }
 
@@ -252,7 +252,7 @@ const Product = () => {
 
       </View>
 
-      {/* ammount and added */}
+      {/* amount and added */}
       {loadingProduct ? (
         <View className="flex flex-row items-center justify-center absolute bottom-2 h-16" style={{ width: wp("60%"), marginLeft: wp(20) }}>
           <Loader color={`${primary}`} />
@@ -281,10 +281,10 @@ const Product = () => {
               </TouchableOpacity>
             </View>
 
-            {/* ammount */}
+            {/* amount */}
             <View style={{ width: wp(20) }}>
               <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(6) }}>
-                {ammount}
+                {amount}
               </Text>
             </View>
 
@@ -300,8 +300,8 @@ const Product = () => {
           <View>
             {!added ? (
               <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                style={{ backgroundColor: maxAmmount === 0 ? processBtn : darkTurquoise }}
-                disabled={maxAmmount === 0}
+                style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
+                disabled={maxAmount === 0}
               >
                 <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
               </Pressable>

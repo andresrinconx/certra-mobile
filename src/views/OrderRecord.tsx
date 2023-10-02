@@ -32,7 +32,7 @@ const OrderRecord = () => {
 
   // Start
   useEffect(() => {
-    let currentDate = new Date()
+    const currentDate = new Date()
     currentDate.setMonth(currentDate.getMonth() - 1)
     setDateFrom(currentDate)
   }, [])
@@ -120,8 +120,8 @@ const OrderRecord = () => {
                   showsVerticalScrollIndicator={false}
                   renderItem={({item, index}) => {
                     const { numero, fecha, subTotal, iva, importe, unidades, total } = item
-                    let isPair = index % 2 === 0
-                    let isLast = index === lastItems.length - 1
+                    const isPair = index % 2 === 0
+                    const isLast = index === lastItems.length - 1
                     return (
                       <>
                         {myUser.from === 'scli' ? (

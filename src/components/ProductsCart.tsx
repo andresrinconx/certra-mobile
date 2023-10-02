@@ -11,10 +11,10 @@ import useLogin from '../hooks/useLogin'
 
 const ProductsCart = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(true)
-  const [ammount, setAmmount] = useState(1)
-  const [ammountInput, setAmmountInput] = useState('')
+  const [amount, setAmount] = useState(1)
+  const [amountInput, setAmountInput] = useState('')
   const [touch, setTouch] = useState(false)
-  const [maxAmmount, setMaxAmmount] = useState(0)
+  const [maxAmount, setMaxAmount] = useState(0)
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -29,20 +29,20 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
   const onCloseAlertRemoveElement = () => setAlertRemoveElement(false)
 
-  // Get max ammount
+  // Get max amount
   useEffect(() => {
-    if (maxAmmount === 0) {
+    if (maxAmount === 0) {
       if (merida || centro || oriente) {
         if (deposito) {
           if (deposito === 'MERIDA') {
-            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)))
           } else if (deposito === 'CARACAS') {
-            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
           } else if (deposito === 'ORIENTE') {
-            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)))
           }
         } else {
-          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
         }
       }
     }
@@ -59,14 +59,14 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
       // product in cart
       setAdded(true)
-      setAmmount(productInCart.ammount)
-      setAmmountInput(String(productInCart.ammount))
+      setAmount(productInCart.amount)
+      setAmountInput(String(productInCart.amount))
     } else {
 
       // product not in cart
       setAdded(false)
-      setAmmount(1)
-      setAmmountInput(String(1))
+      setAmount(1)
+      setAmountInput(String(1))
     }
   }, [productsCart])
 
@@ -86,29 +86,29 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
     if (productInCart) {
       if ( 
-        // NaN, 0, or higher than maxAmmount
-        Number(ammountInput) < 1 ||
-        Number(ammountInput) > maxAmmount
+        // NaN, 0, or higher than maxAmount
+        Number(amountInput) < 1 ||
+        Number(amountInput) > maxAmount
       ) {
         setDisableAcept(true)
       } else if ( 
         // igual, mayor o menor (y no es cero)
-        productInCart.ammount === Number(ammountInput) || 
-        productInCart.ammount < Number(ammountInput) || 
-        productInCart.ammount > Number(ammountInput) && Number(ammountInput) !== 0
+        productInCart.amount === Number(amountInput) || 
+        productInCart.amount < Number(amountInput) || 
+        productInCart.amount > Number(amountInput) && Number(amountInput) !== 0
       ) {
         setDisableAcept(false)
       }
     }
-  }, [ammountInput])
+  }, [amountInput])
   
   // Btn acept (input)
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
       if (item.codigo === codigo) {
-        const cleanCantidad = parseInt(String(ammountInput).replace(/-/g, ''))
+        const cleanCantidad = parseInt(String(amountInput).replace(/-/g, ''))
 
-        return { ...item, ammount: cleanCantidad }
+        return { ...item, amount: cleanCantidad }
       } else {
         return { ...item }
       }
@@ -119,13 +119,13 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
 
   // Handle actions
   const handleDecrease = () => {
-    if (ammount > 1) {
-      setAmmount(ammount - 1)
+    if (amount > 1) {
+      setAmount(amount - 1)
     }
   }
   const handleIncrease = () => {
-    if (ammount < maxAmmount) {
-      setAmmount(ammount + 1)
+    if (amount < maxAmount) {
+      setAmount(amount + 1)
     }
   }
   const handleRemoveElement = () => {
@@ -134,7 +134,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     }
 
     setAdded(false)
-    setAmmount(1)
+    setAmount(1)
     setTouch(true)
     setAlertRemoveElement(false)
   }
@@ -270,7 +270,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
                 </Text>
               </View>
 
-              {/* ammount and added */}
+              {/* amount and added */}
               <View className='flex flex-row items-center justify-between w-full'>
 
                 <View className='flex-1 flex-row items-center justify-around'>
@@ -282,11 +282,11 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
                     </TouchableOpacity>
                   </View>
 
-                  {/* ammount */}
+                  {/* amount */}
                   <View style={{ width: wp(12) }}>
                     <TouchableOpacity onPress={() => setOpenModal(true)}>
                       <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
-                        {ammount}
+                        {amount}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -318,8 +318,8 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
           <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
             <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
               keyboardType='numeric'
-              value={String(ammountInput)}
-              onChangeText={text => setAmmountInput(text)}
+              value={String(amountInput)}
+              onChangeText={text => setAmountInput(text)}
               autoFocus
               selectionColor={primary}
             />
@@ -330,7 +330,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
             <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
               <TouchableOpacity onPress={() => {
                 setOpenModal(false)
-                setAmmountInput(String(ammount))
+                setAmountInput(String(amount))
               }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Cancelar

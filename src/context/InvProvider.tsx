@@ -7,8 +7,8 @@ import useLogin from '../hooks/useLogin'
 import { ProductCartInterface } from '../interfaces/ProductCartInterface'
 
 const InvContext = createContext<{
-  productsCart: { codigo: string, ammount: number }[]
-  setProductsCart: (productsCart: { codigo: string, ammount: number }[]) => void
+  productsCart: { codigo: string, amount: number }[]
+  setProductsCart: (productsCart: { codigo: string, amount: number }[]) => void
   products: ProductoInterface[]
   setProducts: (products: ProductoInterface[]) => void
   flowControl: {
@@ -46,7 +46,7 @@ const InvContext = createContext<{
   loadingProductsGrid: boolean
   setLoadingProductsGrid: (loadingProductsGrid: boolean) => void
   removeElement: (codigo: string) => void
-  addToCart: (codigo: string, ammount: number) => void
+  addToCart: (codigo: string, amount: number) => void
   order: OrderInterface
   setOrder: (order: OrderInterface) => void
   getProducts: () => void
@@ -103,7 +103,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   // CART & ORDER 
-  const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]) // code and ammount
+  const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]) // code and amount
   const [order, setOrder] = useState<OrderInterface>({
     date: '',
     hora: '',
@@ -203,8 +203,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // -----------------------------------------------
 
   // Add to cart
-  const addToCart = (codigo: string, ammount: number) => {
-    setProductsCart([ ...productsCart, { codigo, ammount } ])
+  const addToCart = (codigo: string, amount: number) => {
+    setProductsCart([ ...productsCart, { codigo, amount } ])
   }
 
   // Remove element from cart

@@ -10,29 +10,29 @@ import useLogin from '../hooks/useLogin'
 
 const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
   const [added, setAdded] = useState(false)
-  const [ammount, setAmmount] = useState(1)
+  const [amount, setAmount] = useState(1)
   const [touch, setTouch] = useState(false)
-  const [maxAmmount, setMaxAmmount] = useState(0)
+  const [maxAmount, setMaxAmount] = useState(0)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
   const { descrip, precio1, merida, centro, oriente, codigo } = product
   const { productsCart, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
 
-  // Get max ammount
+  // Get max amount
   useEffect(() => {
-    if (maxAmmount === 0) {
+    if (maxAmount === 0) {
       if (merida || centro || oriente) {
         if (deposito) {
           if (deposito === 'MERIDA') {
-            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)))
           } else if (deposito === 'CARACAS') {
-            setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
           } else if (deposito === 'ORIENTE') {
-            setMaxAmmount(parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)))
           }
         } else {
-          setMaxAmmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
         }
       }
     }
@@ -49,12 +49,12 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
 
       // product in cart
       setAdded(true)
-      setAmmount(productInCart.ammount)
+      setAmount(productInCart.amount)
     } else {
 
       // product not in cart
       setAdded(false)
-      setAmmount(1)
+      setAmount(1)
     }
   }, [productsCart])
 
@@ -63,7 +63,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
     if (added && touch) {
       if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
         setTouch(false)
-        addToCart(codigo, ammount)
+        addToCart(codigo, amount)
       }
     } else if(!added && touch) {
       if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
@@ -79,13 +79,13 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
     setTouch(true)
   }
   const handleDecrease = () => {
-    if (ammount > 1) {
-      setAmmount(ammount - 1)
+    if (amount > 1) {
+      setAmount(amount - 1)
     }
   }
   const handleIncrease = () => {
-    if (ammount < maxAmmount) {
-      setAmmount(ammount + 1)
+    if (amount < maxAmount) {
+      setAmount(amount + 1)
     }
   }
 
@@ -208,7 +208,7 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
             </Text>
           </View>
 
-          {/* ammount and added */}
+          {/* amount and added */}
           <View className='flex flex-row items-center justify-between w-full'>
 
             <View className='flex-1 flex-row items-center justify-around'>
@@ -220,10 +220,10 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
                 </TouchableOpacity>
               </View>
 
-              {/* ammount */}
+              {/* amount */}
               <View style={{ width: wp(12) }}>
                 <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(4.5) }}>
-                  {ammount}
+                  {amount}
                 </Text>
               </View>
 
@@ -239,8 +239,8 @@ const ProductsSearch = ({ product }: { product: ProductoInterface }) => {
             <View className='pl-5'>
               {!added ? (
                 <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
-                  style={{ backgroundColor: maxAmmount === 0 ? processBtn : darkTurquoise }}
-                  disabled={maxAmmount === 0}
+                  style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
+                  disabled={maxAmount === 0}
                 >
                   <PlusIcon size={25} color='white' strokeWidth={2} />
                 </Pressable>

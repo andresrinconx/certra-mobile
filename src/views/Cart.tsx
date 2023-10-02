@@ -48,11 +48,11 @@ const Cart = () => {
     
         for (let i = 0; i < productsCart?.length; i++) {
           const code = productsCart[i].codigo
-          const ammount = productsCart[i].ammount
+          const amount = productsCart[i].amount
     
           // get product api
           const res = await fetchOneItem('searchC', code)
-          newFullProductsCart.push({ ...res[0], ammount })
+          newFullProductsCart.push({ ...res[0], amount })
           
           // last item
           if (i === productsCart?.length - 1) {
@@ -62,11 +62,11 @@ const Cart = () => {
         }
 
         // subtotal & total
-        const subtotal = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.ammount, 0)
+        const subtotal = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.amount, 0)
         const subtotalFormated = subtotal.toLocaleString()
         setSubtotal(subtotalFormated)
 
-        const total = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.ammount, 0)
+        const total = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.amount, 0)
         const totalFormated = total.toLocaleString()
         setTotal(totalFormated)
       } else {
@@ -145,7 +145,7 @@ const Cart = () => {
         base1: Number(product.base1),
         precio1: Number(product.precio1),
         iva: Number(product.iva),
-        cantidad: Number(product.ammount)
+        cantidad: Number(product.amount)
       })),
       subtotal: String(subtotal),
       total: String(total),
