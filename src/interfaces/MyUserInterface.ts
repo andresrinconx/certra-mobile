@@ -11,4 +11,5 @@ export interface MyUserInterface {
     cliente: number
     nombre: string
   }
+  deposito?: string
 }

@@ -130,17 +130,17 @@ const Cart = () => {
       ...order,
       date: getDate(new Date()),
       hora: getHour(new Date()),
-      cliente: (myUser.from === 'scli' ? {
-        name: myUser?.nombre,
-        usuario: myUser?.cliente,
-        code: myUser?.cliente
+      cliente: myUser.from === 'scli' ? {
+        name: String(myUser?.nombre),
+        usuario: String(myUser?.cliente),
+        code: Number(myUser?.cliente)
       } : {
-        name: myUser.us_nombre,
-        usuario: myUser.us_codigo,
-        code: myUser?.customer?.cliente
-      }),
+        name: String(myUser.us_nombre),
+        usuario: String(myUser.us_codigo),
+        code: Number(myUser?.customer?.cliente)
+      },
       productos: fullProductsCart.map((product: ProductoInterface) => ({
-        codigo: product.codigo,
+        codigo: String(product.codigo),
         descrip: String(product.descrip),
         base1: Number(product.base1),
         precio1: Number(product.precio1),
@@ -169,14 +169,14 @@ const Cart = () => {
           <View className='gap-2 mb-2'>
             <BackScreen 
               title='Carrito de compras' 
-              condition={productsCart?.length !== 0}
+              condition={productsCart?.length !== 0 && !loadingCart}
               iconImage={require('../assets/trash-can.png')}
               onPressIcon={() => setAlertClearCart(true)}
             />
           </View>
 
           {/* customer */}
-          {productsCart?.length !== 0 && myUser?.customer?.nombre ? (
+          {productsCart?.length !== 0 && myUser?.customer?.nombre && !loadingCart ? (
             <View className='pb-1'>
               <LabelCustomer
                 name={myUser?.customer?.nombre}

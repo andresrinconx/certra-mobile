@@ -117,7 +117,17 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
     setOpenModal(false)
   }
 
-  // Handle actions
+  // -----------------------------------------------
+  // HANDLERS
+  // -----------------------------------------------
+
+  const handleDiscount = () => {
+    // validate percent
+    
+
+    console.log('change discount')
+  }
+
   const handleDecrease = () => {
     if (amount > 1) {
       setAmount(amount - 1)
@@ -149,7 +159,7 @@ const ProductsCart = ({ product }: { product: ProductoInterface }) => {
             
             {/* descrip */}
             <Pressable onPress={() => navigation.navigate('Product', { ...product })}>
-              <Text style={{ fontSize: wp(4), color: typography }} className='font-bold max-w-[85%]' numberOfLines={1}>
+              <Text style={{ fontSize: wp(4), color: typography, width: wp(70) }} className='font-bold' numberOfLines={1}>
                 {descrip}
               </Text>
             </Pressable>

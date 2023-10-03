@@ -96,8 +96,8 @@ const OrderRecord = () => {
 
     // download pdf
     try {
-      // const pdf = await fetchRangeScli({ customer: String(myUser.cliente), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
-      const pdf = 'https://global.sharp/contents/calculator/support/classroom/el-w531/pdf/Random_Numbers.pdf'
+      // const pdfUrl = await fetchRangeScli({ customer: String(myUser.cliente), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+      const pdfUrl = 'https://global.sharp/contents/calculator/support/classroom/el-w531/pdf/Random_Numbers.pdf'
       
       const { config, fs } = RNFetchBlob
       const downloads = fs.dirs?.DownloadDir
@@ -109,7 +109,7 @@ const OrderRecord = () => {
           path: downloads + '/' + `certra${getDate(dateTo)}` + '.pdf',
         }
       })
-      .fetch('GET', pdf)
+      .fetch('GET', pdfUrl)
         .then(() => {
           if (!toast.isActive(id)) {
             toast.show({
@@ -155,7 +155,7 @@ const OrderRecord = () => {
               <Switch 
                 onToggle={() => setDollarCurrency(!dollarCurrency)}
                 value={dollarCurrency}
-                onTrackColor={'green.500'}
+                onTrackColor={'green.600'}
                 offTrackColor={'gray.400'}
                 size='md'
               />
@@ -216,7 +216,7 @@ const OrderRecord = () => {
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{numero}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{fecha}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{iva}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{iva}%</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${importe} Bs` ?? `${total} Bs`}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{unidades}</Text>
                               <TouchableOpacity className='flex flex-col justify-center items-center' 
@@ -344,7 +344,7 @@ const OrderRecord = () => {
                   </Text>
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{cantidad}</Text>
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${preciodolar} $` : `${precio} Bs`}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{iva}</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{iva}%</Text>
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${total} Bs`}</Text>
                 </View>
               )
