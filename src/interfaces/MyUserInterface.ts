@@ -9,5 +9,6 @@ export interface MyUserInterface {
   us_codigo?: string
   customer?: {
     cliente: number
+    nombre: string
   }
 }

@@ -25,7 +25,7 @@ const reasonsEndpoint = () => `${apiBaseUrl}/motivo`
 // ORDER RECORD
 // pharmacy
 const lastItemsScliEndpoint = (customer: string) => `${apiBaseUrl}/historialPediC/${customer}`
-const rangeScliEndpoint = () => `${apiBaseUrl}/historialRang/1638/20230901/20230914`
+const rangeScliEndpoint = (params: { customer: string, dateFrom: string, dateTo: string }) => `${apiBaseUrl}/historialPediC/${params.customer}/${params.dateFrom}/${params.dateTo}`
 
 // lab
 const lastItemsLabEndpoint = (params: { clipro: string, code: string }) => `${apiBaseUrl}/historialPedi/${params.clipro}/${params.code}`
@@ -94,6 +94,9 @@ export const fetchReasons = () => {
 // pharmacy
 export const fetchLastItemsScli = (customer: string) => {
   return apiCall(lastItemsScliEndpoint(customer), 'GET')
+}
+export const fetchRangeScli = (params: { customer: string, dateFrom: string, dateTo: string }) => {
+  return apiCall(rangeScliEndpoint(params), 'GET')
 }
 
 // lab

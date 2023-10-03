@@ -1,3 +1,7 @@
+// -----------------------------------------------
+// DATE HELPERS
+// -----------------------------------------------
+
 export const formatText = (text: string) => {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
@@ -7,6 +11,13 @@ export const getDate = (date: Date) => {
   const month = date.getMonth() + 1
   const day = date.getDate()
   return `${year}-${String(month).length === 1 ? `0${month}` : `${month}`}-${String(day).length === 1 ? `0${day}` : `${day}`}`
+}
+
+export const getDateWithoutHyphen = (date: Date) => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return `${year}${String(month).length === 1 ? `0${month}` : `${month}`}${String(day).length === 1 ? `0${day}` : `${day}`}`
 }
  
 export const getHour = (date: Date) => {

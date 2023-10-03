@@ -160,24 +160,19 @@ const Cart = () => {
       <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-        <Logos image={image_url} />
+        <Logos image={image_url as URL} />
 
         {/* content */}
         <View className='h-full px-3'>
 
           {/* back & trash */}
-          <View className='flex flex-row items-center justify-between gap-2 mb-2'>
-            <BackScreen title='Carrito de compras' />
-
-            {productsCart.length !== 0 && (
-              <View>
-                <TouchableOpacity onPress={() => setAlertClearCart(true)}>
-                  <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
-                    source={require('../assets/trash-can.png')}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
+          <View className='gap-2 mb-2'>
+            <BackScreen 
+              title='Carrito de compras' 
+              condition={productsCart?.length !== 0}
+              iconImage={require('../assets/trash-can.png')}
+              onPressIcon={() => setAlertClearCart(true)}
+            />
           </View>
 
           {/* customer */}

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { View, Image, FlatList } from 'react-native'
+import { View, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { StatusBar } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { DataConfigProfileInterface } from '../interfaces/DataConfigProfileInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { fetchUserData } from '../utils/api'
@@ -10,14 +11,14 @@ import Logos from '../components/Logos'
 import BackScreen from '../components/BackScreen'
 import ProfileGroup from '../components/ProfileGroup'
 import IconLogOut from '../components/IconLogOut'
-import { DataConfigProfileInterface } from '../interfaces/DataConfigProfileInterface'
 
 const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
+  const navigation = useNavigation()
   const { themeColors: { primary, background, darkTurquoise }, myUser } = useLogin()
-  const { flowControl } = useInv()
+  const { flowControl, setLookAtPharmacy } = useInv()
 
   // Get data
   useEffect(() => {
@@ -141,7 +142,15 @@ const Profile = () => {
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />
-      <BackScreen title='Mi perfil' />
+      <BackScreen 
+        title='Mi perfil' 
+        condition={myUser?.from !== 'scli'}
+        iconImage={require('../assets/history-blue.png')}
+        onPressIcon={() => {
+          setLookAtPharmacy(false)
+          navigation.navigate('OrderRecord')
+        }}
+      />
       
       {/* info */}
       <View className='h-full'>
