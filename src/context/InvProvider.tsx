@@ -7,8 +7,8 @@ import useLogin from '../hooks/useLogin'
 import { ProductCartInterface } from '../interfaces/ProductCartInterface'
 
 const InvContext = createContext<{
-  productsCart: { codigo: string, ammount: number }[]
-  setProductsCart: (productsCart: { codigo: string, ammount: number }[]) => void
+  productsCart: { codigo: string, amount: number }[]
+  setProductsCart: (productsCart: { codigo: string, amount: number }[]) => void
   products: ProductoInterface[]
   setProducts: (products: ProductoInterface[]) => void
   flowControl: {
@@ -46,7 +46,7 @@ const InvContext = createContext<{
   loadingProductsGrid: boolean
   setLoadingProductsGrid: (loadingProductsGrid: boolean) => void
   removeElement: (codigo: string) => void
-  addToCart: (codigo: string, ammount: number) => void
+  addToCart: (codigo: string, amount: number) => void
   order: OrderInterface
   setOrder: (order: OrderInterface) => void
   getProducts: () => void
@@ -54,11 +54,17 @@ const InvContext = createContext<{
   setCurrentPage: (currentPage: number) => void
   reloadItinerary: boolean
   setReloadItinerary: (reloadItinerary: boolean) => void
+  lookAtPharmacy: boolean
+  setLookAtPharmacy: (lookAtPharmacy: boolean) => void
 }>({
   productsCart: [],
-  setProductsCart: () => { },
+  setProductsCart: () => { 
+    // do nothing
+  },
   products: [],
-  setProducts: () => { },
+  setProducts: () => { 
+    // do nothing
+  },
   flowControl: {
     showProducts: false,
     showSelectCustomer: false,
@@ -69,18 +75,28 @@ const InvContext = createContext<{
     showItinerary: false,
     selected: false,
   },
-  setFlowControl: () => { },
+  setFlowControl: () => { 
+    // do nothing
+  },
   loaders: {
     loadingProducts: true,
     loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
   },
-  setLoaders: () => { },
+  setLoaders: () => { 
+    // do nothing
+  },
   loadingProductsGrid: true,
-  setLoadingProductsGrid: () => { },
-  removeElement: () => { },
-  addToCart: () => { },
+  setLoadingProductsGrid: () => { 
+    // do nothing
+  },
+  removeElement: () => { 
+    // do nothing
+  },
+  addToCart: () => { 
+    // do nothing
+  },
   order: {
     date: '',
     hora: '',
@@ -89,12 +105,24 @@ const InvContext = createContext<{
     subtotal: '',
     total: '',
   },
-  setOrder: () => { },
-  getProducts: () => { },
+  setOrder: () => { 
+    // do nothing
+  },
+  getProducts: () => { 
+    // do nothing
+  },
   currentPage: 1,
-  setCurrentPage: () => { },
+  setCurrentPage: () => { 
+    // do nothing
+  },
   reloadItinerary: false,
-  setReloadItinerary: () => { },
+  setReloadItinerary: () => { 
+    // do nothing
+  },
+  lookAtPharmacy: false,
+  setLookAtPharmacy: () => { 
+    // do nothing
+  }
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -103,7 +131,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   // CART & ORDER 
-  const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]) // code and ammount
+  const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]) // code and amount
   const [order, setOrder] = useState<OrderInterface>({
     date: '',
     hora: '',
@@ -133,7 +161,10 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     loadingConfirmOrder: false,
     loadingLogOut: false,
   })
+
+  // ITINERARY & ORDER RECORD
   const [reloadItinerary, setReloadItinerary] = useState(false)
+  const [lookAtPharmacy, setLookAtPharmacy] = useState(false)
   
   const { myUser } = useLogin()
 
@@ -203,8 +234,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // -----------------------------------------------
 
   // Add to cart
-  const addToCart = (codigo: string, ammount: number) => {
-    setProductsCart([ ...productsCart, { codigo, ammount } ])
+  const addToCart = (codigo: string, amount: number) => {
+    setProductsCart([ ...productsCart, { codigo, amount } ])
   }
 
   // Remove element from cart
@@ -233,7 +264,9 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       currentPage,
       setCurrentPage,
       reloadItinerary,
-      setReloadItinerary
+      setReloadItinerary,
+      lookAtPharmacy,
+      setLookAtPharmacy
     }}>
       {children}
     </InvContext.Provider>

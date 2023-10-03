@@ -14,7 +14,7 @@ import IconCart from '../components/IconCart'
 const Search = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
 
-  const { themeColors: { background, typography, primary, list, turquoise }, myUser } = useLogin()
+  const { themeColors: { background, typography, primary, list }, myUser } = useLogin()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
 

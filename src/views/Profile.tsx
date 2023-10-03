@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { View, Image, FlatList, TouchableOpacity, Text } from 'react-native'
+import { View, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { StatusBar } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { DataConfigProfileInterface } from '../interfaces/DataConfigProfileInterface'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { fetchUserData } from '../utils/api'
@@ -12,11 +13,12 @@ import ProfileGroup from '../components/ProfileGroup'
 import IconLogOut from '../components/IconLogOut'
 
 const Profile = () => {
-  const [dataConfig, setDataConfig] = useState<any>({})
+  const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
+  const navigation = useNavigation()
   const { themeColors: { primary, background, darkTurquoise }, myUser } = useLogin()
-  const { flowControl } = useInv()
+  const { flowControl, setLookAtPharmacy } = useInv()
 
   // Get data
   useEffect(() => {
@@ -139,8 +141,16 @@ const Profile = () => {
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-      <Logos image={myUser?.image_url} />
-      <BackScreen title='Mi perfil' />
+      <Logos image={myUser?.image_url as URL} />
+      <BackScreen 
+        title='Mi perfil' 
+        condition={myUser?.from !== 'scli'}
+        iconImage={require('../assets/history-blue.png')}
+        onPressIcon={() => {
+          setLookAtPharmacy(false)
+          navigation.navigate('OrderRecord')
+        }}
+      />
       
       {/* info */}
       <View className='h-full'>
@@ -173,7 +183,7 @@ const Profile = () => {
                 const { name, subname, fields } = item
                 return (
                   <ProfileGroup 
-                    name={name}
+                    name={name as string}
                     subname={String(subname)}
                     fields={fields}
                   />

@@ -1,4 +1,4 @@
 export interface ProductCartInterface {
   codigo: string
-  ammount: number
+  amount: number
 }

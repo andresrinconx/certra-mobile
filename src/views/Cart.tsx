@@ -44,15 +44,15 @@ const Cart = () => {
     const getFullProductsCart = async () => {
 
       if (productsCart?.length > 0) {
-        let newFullProductsCart = []
+        const newFullProductsCart = []
     
         for (let i = 0; i < productsCart?.length; i++) {
           const code = productsCart[i].codigo
-          const ammount = productsCart[i].ammount
+          const amount = productsCart[i].amount
     
           // get product api
           const res = await fetchOneItem('searchC', code)
-          newFullProductsCart.push({ ...res[0], ammount })
+          newFullProductsCart.push({ ...res[0], amount })
           
           // last item
           if (i === productsCart?.length - 1) {
@@ -62,11 +62,11 @@ const Cart = () => {
         }
 
         // subtotal & total
-        const subtotal = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.ammount, 0)
+        const subtotal = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.amount, 0)
         const subtotalFormated = subtotal.toLocaleString()
         setSubtotal(subtotalFormated)
 
-        const total = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.ammount, 0)
+        const total = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.amount, 0)
         const totalFormated = total.toLocaleString()
         setTotal(totalFormated)
       } else {
@@ -130,22 +130,22 @@ const Cart = () => {
       ...order,
       date: getDate(new Date()),
       hora: getHour(new Date()),
-      cliente: (myUser.from === 'scli' ? {
-        name: myUser?.nombre,
-        usuario: myUser?.cliente,
-        code: myUser?.cliente
+      cliente: myUser.from === 'scli' ? {
+        name: String(myUser?.nombre),
+        usuario: String(myUser?.cliente),
+        code: Number(myUser?.cliente)
       } : {
-        name: myUser.us_nombre,
-        usuario: myUser.us_codigo,
-        code: myUser?.customer?.cliente
-      }),
+        name: String(myUser.us_nombre),
+        usuario: String(myUser.us_codigo),
+        code: Number(myUser?.customer?.cliente)
+      },
       productos: fullProductsCart.map((product: ProductoInterface) => ({
-        codigo: product.codigo,
+        codigo: String(product.codigo),
         descrip: String(product.descrip),
         base1: Number(product.base1),
         precio1: Number(product.precio1),
         iva: Number(product.iva),
-        cantidad: Number(product.ammount)
+        cantidad: Number(product.amount)
       })),
       subtotal: String(subtotal),
       total: String(total),
@@ -160,28 +160,23 @@ const Cart = () => {
       <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-        <Logos image={image_url} />
+        <Logos image={image_url as URL} />
 
         {/* content */}
         <View className='h-full px-3'>
 
           {/* back & trash */}
-          <View className='flex flex-row items-center justify-between gap-2 mb-2'>
-            <BackScreen title='Carrito de compras' />
-
-            {productsCart.length !== 0 && (
-              <View>
-                <TouchableOpacity onPress={() => setAlertClearCart(true)}>
-                  <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
-                    source={require('../assets/trash-can.png')}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
+          <View className='gap-2 mb-2'>
+            <BackScreen 
+              title='Carrito de compras' 
+              condition={productsCart?.length !== 0 && !loadingCart}
+              iconImage={require('../assets/trash-can.png')}
+              onPressIcon={() => setAlertClearCart(true)}
+            />
           </View>
 
           {/* customer */}
-          {productsCart?.length !== 0 && myUser?.customer?.nombre ? (
+          {productsCart?.length !== 0 && myUser?.customer?.nombre && !loadingCart ? (
             <View className='pb-1'>
               <LabelCustomer
                 name={myUser?.customer?.nombre}

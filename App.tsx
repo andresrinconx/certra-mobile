@@ -1,4 +1,4 @@
-import { NativeBaseProvider } from "native-base"
+import { NativeBaseProvider } from 'native-base'
 import { LoginProvider } from './src/context/LoginProvider'
 import { InvProvider } from './src/context/InvProvider'
 import Navigation from './src/components/Navigation'

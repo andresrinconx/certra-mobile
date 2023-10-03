@@ -191,7 +191,7 @@ const ItineraryDayEvent = ({
                 {!motivo ? (
                   reasons?.map((reason, index) => {
                     const { motivo } = reason
-                    let isLast = index === reasons.length - 1
+                    const isLast = index === reasons.length - 1
                     return (
                       <Menu.Item key={motivo} onPress={() => setSelectedReason(motivo)}
                         style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}

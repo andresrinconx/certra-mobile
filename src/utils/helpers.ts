@@ -1,3 +1,7 @@
+// -----------------------------------------------
+// DATE HELPERS
+// -----------------------------------------------
+
 export const formatText = (text: string) => {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
@@ -9,6 +13,13 @@ export const getDate = (date: Date) => {
   return `${year}-${String(month).length === 1 ? `0${month}` : `${month}`}-${String(day).length === 1 ? `0${day}` : `${day}`}`
 }
 
+export const getDateWithoutHyphen = (date: Date) => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return `${year}${String(month).length === 1 ? `0${month}` : `${month}`}${String(day).length === 1 ? `0${day}` : `${day}`}`
+}
+ 
 export const getHour = (date: Date) => {
   const hours = date.getHours()
   const minutes = date.getMinutes()
@@ -17,9 +28,9 @@ export const getHour = (date: Date) => {
 
 export const getDayOfWeekInText = (date: Date) => {
   const DAYS_OF_WEEK = [
-    "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
-  ];
-  return DAYS_OF_WEEK[date.getDay()];
+    'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+  ]
+  return DAYS_OF_WEEK[date.getDay()]
 }
 
 export function getMonthAndDays(date: Date) {

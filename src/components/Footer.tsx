@@ -9,7 +9,7 @@ import IconOrderRecord from './IconOrderRecord'
 
 const Footer = () => {
   const { flowControl } = useInv()
-  const { themeColors: { primary, green }, myUser } = useLogin()
+  const { themeColors: { primary }, myUser } = useLogin()
 
   return (
     <View className='flex flex-row justify-between items-center h-16' style={{ backgroundColor: primary }}>
@@ -17,15 +17,11 @@ const Footer = () => {
       {/* left */}
       <View className='flex flex-row items-center gap-3 pl-3'>
         <View><IconProfile /></View>
-        {(flowControl?.showItinerary || myUser.from === 'usuario-clipro' || 'scli') && flowControl?.showProducts ? (
-          <View className='h-8 border-l-[0.8px] border-l-white' />
-        ):null}
-        {flowControl?.showItinerary && flowControl?.showProducts ? (
+        <View className='h-8 border-l-[0.8px] border-l-white' />
+        {myUser.from === 'usuario' ? (
           <View><IconItinerary /></View>
         ):null}
-        {flowControl?.showProducts ? (
-          <View><IconOrderRecord /></View>
-        ):null}
+        <View><IconOrderRecord /></View>
       </View>
 
       {/* right */}
