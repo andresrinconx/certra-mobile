@@ -172,7 +172,7 @@ const OrderRecord = () => {
           ) : (
             lastItems?.length === 0 ? (
               <NoDataText
-                text='No hay pedidos recientes'
+                text='No hay pedidos recientes para esta farmacia'
               />
             ) : (
               <View>

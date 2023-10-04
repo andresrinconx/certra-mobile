@@ -18,20 +18,20 @@ const Profile = () => {
   
   const navigation = useNavigation()
   const { themeColors: { primary, background, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
-  const { flowControl, setLookAtPharmacy } = useInv()
+  const { setLookAtPharmacy } = useInv()
 
   // Get data
   useEffect(() => {
     const getData = async () => {
       try {
         const res = await fetchUserData({ 
-          table: `${customerAccess ? 'scliU'    :
-                    salespersonAccess        ? 'usuarioP' :
-                    labAccess ? 'usuarioU' : null}`,
+          table: `${customerAccess    ? 'scliU'    :
+                    salespersonAccess ? 'usuarioP' :
+                    labAccess         ? 'usuarioU' : null}`,
 
-          code: `${customerAccess ? `${cliente}` : 
-                   salespersonAccess ? `${cedula}`  :
-                   labAccess ? `${clipro}`   : null}`,
+          code: `${customerAccess     ? `${cliente}` : 
+                   salespersonAccess  ? `${cedula}`  :
+                   labAccess          ? `${clipro}`  : null}`,
         })
         setDataConfig(res)
 
@@ -50,74 +50,74 @@ const Profile = () => {
     // main info
     {
       name: 
-        customerAccess ? dataConfig?.nombre : 
+        customerAccess    ? dataConfig?.nombre : 
         salespersonAccess ? `${dataConfig?.nombre} ${dataConfig?.apellido}` :
-        labAccess ? dataConfig?.nombre : null,
+        labAccess         ? dataConfig?.nombre : null,
 
       subname: 
-        customerAccess ? `Código: ${dataConfig?.cliente}` : 
+        customerAccess    ? `Código: ${dataConfig?.cliente}` : 
         salespersonAccess ? ''                               :
-        labAccess ? `Código: ${dataConfig?.proveed}` : null,
+        labAccess         ? `Código: ${dataConfig?.proveed}` : null,
 
       fields: [
         { 
           label: 'RIF',
           value: 
-            customerAccess ? dataConfig?.rifci  : 
+            customerAccess    ? dataConfig?.rifci  : 
             salespersonAccess ? dataConfig?.rif    :
-            labAccess ? dataConfig?.rif    : null,
+            labAccess         ? dataConfig?.rif    : null,
         },
         { 
           label: 
-            customerAccess ? ''       :
+            customerAccess    ? ''       :
             salespersonAccess ? 'Cédula' :
-            labAccess ? ''       : null,
+            labAccess          ? ''      : null,
 
           value: 
-            customerAccess ? '' : 
+            customerAccess    ? '' : 
             salespersonAccess ? dataConfig?.cedula :
-            labAccess ? '' : null,
+            labAccess         ? '' : null,
         },
         { 
           label: 'Correo', 
           value: 
-            customerAccess ? dataConfig?.email  : 
+            customerAccess    ? dataConfig?.email  : 
             salespersonAccess ? dataConfig?.email  :
-            labAccess ? dataConfig?.emailc : null,
+            labAccess         ? dataConfig?.emailc : null,
         },
         { 
           label: 'Teléfono', 
           value: 
-            customerAccess ? dataConfig?.telefono : 
+            customerAccess    ? dataConfig?.telefono : 
             salespersonAccess ? dataConfig?.telefono :
-            labAccess ? dataConfig?.telefono : null,
+            labAccess         ? dataConfig?.telefono : null,
         },
         { 
           label: 
-            customerAccess ? 'Aniversario' :
+            customerAccess    ? 'Aniversario' :
             salespersonAccess ? 'Cumpleaños'  :
-            labAccess ? 'Aniversario' : null,
+            labAccess         ? 'Aniversario' : null,
 
           value: 
-            customerAccess ? dataConfig?.aniversario : 
+            customerAccess    ? dataConfig?.aniversario : 
             salespersonAccess ? dataConfig?.nacimi      :
-            labAccess ? dataConfig?.aniversario : null,
+            labAccess         ? dataConfig?.aniversario : null,
         },
         { 
           label: 'Ubicación', 
           value: 
-            customerAccess ? dataConfig?.dire11 : 
+            customerAccess    ? dataConfig?.dire11 : 
             salespersonAccess ? dataConfig?.direc1 :
-            labAccess ? dataConfig?.direc1 : null,
+            labAccess         ? dataConfig?.direc1 : null,
         },
       ],
     },
     // extra info
     {
       name: 
-        customerAccess ? 'Datos del representante' : 
+        customerAccess    ? 'Datos del representante' : 
         salespersonAccess ? ''                        :
-        labAccess ? 'Datos del representante' : null,
+        labAccess         ? 'Datos del representante' : null,
             
       subname: '',
       fields: [
@@ -125,13 +125,13 @@ const Profile = () => {
           label: 'Nombre', 
           value: 
             customerAccess ? dataConfig?.contacto  : 
-            labAccess ? dataConfig?.us_nombre : null,
+            labAccess      ? dataConfig?.us_nombre : null,
         },
         { 
           label: 'Teléfono', 
           value: 
             customerAccess ? dataConfig?.telefon2 : 
-            labAccess ? dataConfig?.telefon2 : null,
+            labAccess      ? dataConfig?.telefon2 : null,
         },
       ]
     }
@@ -144,7 +144,7 @@ const Profile = () => {
       <Logos image={image_url as URL} />
       <BackScreen 
         title='Mi perfil' 
-        condition={customerAccess}
+        condition={!customerAccess}
         iconImage={require('../assets/history-blue.png')}
         onPressIcon={() => {
           setLookAtPharmacy(false)
@@ -164,13 +164,13 @@ const Profile = () => {
               data={groups}
               numColumns={1}
               contentContainerStyle={{
-                paddingBottom: 180,
+                paddingBottom: 200,
               }}
               overScrollMode='never'
               showsVerticalScrollIndicator={false}
               ListHeaderComponent={() => (
                 <View className='flex flex-col items-center'>
-                  {!flowControl?.showLogoCertra && (
+                  {customerAccess && (
                     <View>
                       <Image style={{ width: wp(32), height: wp(32) }} resizeMode='cover'
                         source={require('../assets/drugstore.png')}

@@ -13,7 +13,7 @@ import ProductsSearch from '../components/inventory/ProductsSearch'
 const Inventory = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
 
-  const { themeColors: { background, typography, primary, list }, myUser } = useLogin()
+  const { themeColors: { background, typography, primary, list }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -42,11 +42,11 @@ const Inventory = () => {
       let data: ProductInterface[] = []
 
       // fetch data
-      if (myUser.from === 'scli' || myUser.from === 'usuario') { // all products (scli & usuario)
+      if (customerAccess || salespersonAccess) { // all products (scli & usuario)
         data = await fetchSearchedItems({ searchTerm: formatText(value), table: 'search' })
 
-      } else if(myUser.from === 'usuario-clipro') { // products by lab (usuario-clipro)
-        data = await fetchSearchedItems({ searchTerm: formatText(value), table: `searchPp/${myUser?.clipro}` })
+      } else if(labAccess) { // products by lab (usuario-clipro)
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: `searchPp/${clipro}` })
 
       }
 

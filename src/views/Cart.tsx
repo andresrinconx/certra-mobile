@@ -26,11 +26,10 @@ const Cart = () => {
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
   const [alertErrorOrder, setAlertErrorOrder] = useState(false)
 
-  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser } = useLogin()
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser: { access: { customerAccess }, nombre, cliente, us_codigo, us_nombre, customer, image_url } } = useLogin()
   const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
-  const { image_url } = myUser
 
   const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
   const onCloseAlertClearCart = () => setAlertClearCart(false)
@@ -130,14 +129,14 @@ const Cart = () => {
       ...order,
       date: getDate(new Date()),
       hora: getHour(new Date()),
-      cliente: myUser.from === 'scli' ? {
-        name: String(myUser?.nombre),
-        usuario: String(myUser?.cliente),
-        code: Number(myUser?.cliente)
+      cliente: customerAccess ? {
+        name: String(nombre),
+        usuario: String(cliente),
+        code: Number(cliente)
       } : {
-        name: String(myUser.us_nombre),
-        usuario: String(myUser.us_codigo),
-        code: Number(myUser?.customer?.cliente)
+        name: String(us_nombre),
+        usuario: String(us_codigo),
+        code: Number(customer?.cliente)
       },
       productos: fullProductsCart.map((product: ProductInterface) => ({
         codigo: String(product.codigo),
@@ -176,10 +175,10 @@ const Cart = () => {
           </View>
 
           {/* customer */}
-          {productsCart?.length !== 0 && myUser?.customer?.nombre && !loadingCart ? (
+          {productsCart?.length !== 0 && customer?.nombre && !loadingCart ? (
             <View className='pb-1'>
               <LabelCustomer
-                name={myUser?.customer?.nombre}
+                name={customer?.nombre}
               />
             </View>
           ):null}
@@ -324,7 +323,7 @@ const Cart = () => {
             
             {/* logo */}
             <View className='mt-4'>
-              {!myUser?.customer?.cliente ? (
+              {!customer?.cliente ? (
                 <Image style={{ width: wp(40), height: wp(20) }} resizeMode='contain'
                   source={require('../assets/logo-drocerca.png')}
                 />

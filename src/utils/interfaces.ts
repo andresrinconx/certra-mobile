@@ -15,6 +15,7 @@ export interface MyUserInterface {
   nombre?: string
   us_nombre?: string
   us_codigo?: string
+  vendedor?: string
   customer?: {
     cliente: string
     nombre: string
