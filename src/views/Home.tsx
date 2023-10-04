@@ -3,16 +3,20 @@ import { View, BackHandler } from 'react-native'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
 import useInv from '../hooks/useInv'
-import SelectCustomer from '../components/SelectCustomer'
-import Loader from '../components/Loader'
-import Logos from '../components/Logos'
-import Products from '../components/Products'
-import Footer from '../components/Footer'
+import SelectCustomer from '../components/customer/SelectCustomer'
+import Loader from '../components/elements/Loader'
+import Logos from '../components/elements/Logos'
+import Products from '../components/inventory/Products'
+import Footer from '../components/footer/Footer'
 
 const Home = () => {
   const { themeColors: { background }, myUser: { image_url } } = useLogin()
-  const { loaders } = useInv()
+  const { loaders, getProducts } = useInv()
   
+  useEffect(() => {
+    getProducts()
+  }, [])
+
   // Back handler
   useEffect(() => {
     const backAction = () => {

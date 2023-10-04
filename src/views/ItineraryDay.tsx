@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { View, FlatList, StatusBar } from 'react-native'
 import { useRoute } from '@react-navigation/native'
-import { ItineraryEventInterface } from '../interfaces/ItineraryEventInterface'
+import { ItineraryEventInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
-import Logos from '../components/Logos'
-import BackScreen from '../components/BackScreen'
-import ItineraryDayEvent from '../components/ItineraryDayEvent'
+import Logos from '../components/elements/Logos'
+import BackScreen from '../components/elements/BackScreen'
+import ItineraryDayEvent from '../components/itinerary/ItineraryDayEvent'
 import useInv from '../hooks/useInv'
-import NoDataText from '../components/NoDataText'
+import NoDataText from '../components/elements/NoDataText'
 
 const ItineraryDay = () => {
   const { params: { 

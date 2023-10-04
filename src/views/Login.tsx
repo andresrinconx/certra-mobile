@@ -4,13 +4,12 @@ import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
-import UserFromScliInterface from '../interfaces/UserFromScliInterface'
-import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
+import { UserFromScliInterface, UserFromUsuarioInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
 import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
 import { socialMedia } from '../utils/constants'
-import Loader from '../components/Loader'
+import Loader from '../components/elements/Loader'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -106,13 +105,21 @@ const Login = () => {
         setIncorrectCredentials(false)
         setMyUser({
           ...userFromScli,
-          from: 'scli',
+          access: {
+            customerAccess: true,
+            labAccess: false,
+            salespersonAccess: false
+          }
         })
         await setDataStorage('themeColors', { ...pallete[1] }) // 1 = Scli
         await setDataStorage('login', true)
         await setDataStorage('myUser', {
           ...userFromScli,
-          from: 'scli',
+          access: {
+            customerAccess: true,
+            labAccess: false,
+            salespersonAccess: false
+          }
         })
         setThemeColors({ ...pallete[1] }) // 1 = Scli
         
@@ -127,12 +134,20 @@ const Login = () => {
       if (userFromUsuario.clipro !== '') { // Success with clipro
         setMyUser({
           ...userFromUsuario,
-          from: 'usuario-clipro',
+          access: {
+            customerAccess: false,
+            labAccess: true,
+            salespersonAccess: false
+          }
         })
       } else {
         setMyUser({
           ...userFromUsuario,
-          from: 'usuario',
+          access: {
+            customerAccess: false,
+            labAccess: false,
+            salespersonAccess: true
+          }
         })
       }
       await setDataStorage('themeColors', { ...pallete[0] }) // 0 = Usuario
@@ -141,12 +156,20 @@ const Login = () => {
       if (userFromUsuario.clipro !== '') { // Success with clipro
         await setDataStorage('myUser', {
           ...userFromUsuario,
-          from: 'usuario-clipro',
+          access: {
+            customerAccess: false,
+            labAccess: true,
+            salespersonAccess: false
+          }
         })
       } else {
         await setDataStorage('myUser', {
           ...userFromUsuario,
-          from: 'usuario',
+          access: {
+            customerAccess: false,
+            labAccess: false,
+            salespersonAccess: true
+          }
         })
       }
 

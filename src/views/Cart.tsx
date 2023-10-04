@@ -4,16 +4,16 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useNavigation } from '@react-navigation/native'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { StatusBar } from 'react-native'
-import ProductoInterface from '../interfaces/ProductoInterface'
+import { ProductInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { fetchOneItem, fetchSendData } from '../utils/api'
 import { getDate, getHour } from '../utils/helpers'
-import ProductsCart from '../components/ProductsCart'
-import Loader from '../components/Loader'
-import Logos from '../components/Logos'
-import LabelCustomer from '../components/LabelCustomer'
-import BackScreen from '../components/BackScreen'
+import ProductsCart from '../components/inventory/ProductsCart'
+import Loader from '../components/elements/Loader'
+import Logos from '../components/elements/Logos'
+import LabelCustomer from '../components/customer/LabelCustomer'
+import BackScreen from '../components/elements/BackScreen'
 
 const Cart = () => {
   const [fullProductsCart, setFullProductsCart] = useState([])
@@ -139,7 +139,7 @@ const Cart = () => {
         usuario: String(myUser.us_codigo),
         code: Number(myUser?.customer?.cliente)
       },
-      productos: fullProductsCart.map((product: ProductoInterface) => ({
+      productos: fullProductsCart.map((product: ProductInterface) => ({
         codigo: String(product.codigo),
         descrip: String(product.descrip),
         base1: Number(product.base1),

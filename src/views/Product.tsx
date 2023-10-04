@@ -4,12 +4,13 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
-import ProductoInterface from '../interfaces/ProductoInterface'
+import { ProductInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { disponibility } from '../utils/constants'
-import IconCart from '../components/IconCart'
-import Loader from '../components/Loader'
+import IconCart from '../components/footer/IconCart'
+import Loader from '../components/elements/Loader'
+import ModalSelectCustomer from '../components/elements/ModalSelectCustomer'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
@@ -18,10 +19,12 @@ const Product = () => {
   const [maxAmount, setMaxAmount] = useState(0)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
-  const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito } } = useLogin()
+  const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
+
+  const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { productsCart, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
-  const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductoInterface }
+  const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductInterface }
 
   // Get max amount
   useEffect(() => {
@@ -81,6 +84,11 @@ const Product = () => {
 
   // Handle actions
   const handleAddToCart = () => {
+    if ((labAccess || salespersonAccess) && !customer) {
+      setModalSelectCustomer(true)
+      return
+    }
+
     setAdded(true)
     setTouch(true)
   }
@@ -101,131 +109,104 @@ const Product = () => {
   }
 
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
-      <StatusBar backgroundColor={background} barStyle='dark-content' />
-      
-      {/* back and cart */}
-      <View className='flex flex-row items-center justify-between gap-2 my-3'>
-        <TouchableOpacity onPress={() => {navigation.goBack()}}>
-          <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
-            source={require('../assets/back.png')}
-          />
-        </TouchableOpacity>
+    <>
+      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+        <StatusBar backgroundColor={background} barStyle='dark-content' />
         
-        <Text className='max-w-[70%] font-bold' style={{ color: typography, fontSize: wp(4.5) }}
-          numberOfLines={1}
-        >
-          {descrip}
-        </Text>
-
-        <View className='mr-4 p-3 rounded-2xl' style={{ backgroundColor: turquoise }}>
-          <IconCart />
-        </View>
-      </View>
-      
-      <View>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 100,}}
-          overScrollMode='never'
-        >
-          {/* img */}
-          <View className='justify-center items-center rounded-3xl'
-            style={{ backgroundColor: lightList, height: hp(30) }}
+        {/* back and cart */}
+        <View className='flex flex-row items-center justify-between gap-2 my-3'>
+          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+            <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
+              source={require('../assets/back.png')}
+            />
+          </TouchableOpacity>
+          
+          <Text className='max-w-[70%] font-bold' style={{ color: typography, fontSize: wp(4.5) }}
+            numberOfLines={1}
           >
-            {image_url === '' || image_url === null ? (
-              <Image style={{ width: wp(55), height: wp(55) }} resizeMode='contain'
-                source={require('../assets/no-image.png')}
-              />
-            ) : (
-              <Image style={{ width: wp(55), height: wp(55) }} resizeMode='contain'
-                source={{ uri: `${image_url}` }}
-              />
-            )}
+            {descrip}
+          </Text>
+
+          <View className='w-12 h-12 mr-4 rounded-2xl' style={{ backgroundColor: turquoise }}>
+            <IconCart />
           </View>
+        </View>
+        
+        <View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingBottom: 100,}}
+            overScrollMode='never'
+          >
+            {/* img */}
+            <View className='justify-center items-center rounded-3xl'
+              style={{ backgroundColor: lightList, height: hp(30) }}
+            >
+              {image_url === '' || image_url === null ? (
+                <Image style={{ width: wp(55), height: wp(55) }} resizeMode='contain'
+                  source={require('../assets/no-image.png')}
+                />
+              ) : (
+                <Image style={{ width: wp(55), height: wp(55) }} resizeMode='contain'
+                  source={{ uri: `${image_url}` }}
+                />
+              )}
+            </View>
 
-          {/* descrip */}
-          <View className='pt-3'>
-            <Text className='font-bold' style={{ fontSize: wp(5.5), color: typography }}>
-              {descrip}
-            </Text>
-          </View>
+            {/* descrip */}
+            <View className='pt-3'>
+              <Text className='font-bold' style={{ fontSize: wp(5.5), color: typography }}>
+                {descrip}
+              </Text>
+            </View>
 
-          {/* price */}
-          <View className='mt-3 mb-5'>
-            <Text style={{ fontSize: hp(2.5), color: typography }} className='font-medium'>
-              Precio:
-            </Text>
-            <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
-              Bs. {precio1}
-            </Text>
-          </View>
+            {/* price */}
+            <View className='mt-3 mb-5'>
+              <Text style={{ fontSize: hp(2.5), color: typography }} className='font-medium'>
+                Precio:
+              </Text>
+              <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
+                Bs. {precio1}
+              </Text>
+            </View>
 
-          {/* disponibility */}
-          <View className='mb-2'>
-            <Text style={{ fontSize: hp(2.5), color: typography }} className='pb-2 font-medium'>
-              Disponibilidad:
-            </Text>
+            {/* disponibility */}
+            <View className='mb-2'>
+              <Text style={{ fontSize: hp(2.5), color: typography }} className='pb-2 font-medium'>
+                Disponibilidad:
+              </Text>
 
-            {/* sedes */}
-            <View>
-              <FlatList
-                data={disponibility}
-                horizontal={true}
-                contentContainerStyle={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item: { id, name } }) => {
-                  return (
-                    <>
-                      {deposito === 'MERIDA' ? (
-                        <View key={id} className='flex flex-col items-center'>
-                          <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
-                            {name === 'Oriente' ? '' : name}
-                          </Text>
-
-                          <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
-                            {
-                              name === 'Mérida' ? parseInt(String(merida)) :
-                              name === 'Centro' ? parseInt(String(centro)) : null
-                            }
-                          </Text>
-                        </View>
-                      ) : 
-                        deposito === 'CARACAS' ? (
+              {/* sedes */}
+              <View>
+                <FlatList
+                  data={disponibility}
+                  horizontal={true}
+                  contentContainerStyle={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({ item: { id, name } }) => {
+                    return (
+                      <>
+                        {deposito === 'MERIDA' ? (
                           <View key={id} className='flex flex-col items-center'>
                             <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
-                              {name}
+                              {name === 'Oriente' ? '' : name}
                             </Text>
 
                             <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
                               {
                                 name === 'Mérida' ? parseInt(String(merida)) :
-                                name === 'Centro' ? parseInt(String(centro)) :
-                                name === 'Oriente' ? parseInt(String(oriente)) : null
+                                name === 'Centro' ? parseInt(String(centro)) : null
                               }
                             </Text>
                           </View>
-                        ) : (
-                          deposito === 'ORIENTE' ? (
-                            <View key={id} className='flex flex-col items-center'>
-                              <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
-                                {name === 'Mérida' ? '' : name}
-                              </Text>
-
-                              <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
-                                {
-                                  name === 'Centro' ? parseInt(String(centro)) :
-                                  name === 'Oriente' ? parseInt(String(oriente)) : null
-                                }
-                              </Text>
-                            </View>
-                          ) : (
+                        ) : 
+                          deposito === 'CARACAS' ? (
                             <View key={id} className='flex flex-col items-center'>
                               <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
                                 {name}
@@ -239,84 +220,117 @@ const Product = () => {
                                 }
                               </Text>
                             </View>
-                          )
-                        )
-                      }
-                    </>
-                  )
-                }}
-              />
-            </View>
-          </View>
-        </ScrollView>
+                          ) : (
+                            deposito === 'ORIENTE' ? (
+                              <View key={id} className='flex flex-col items-center'>
+                                <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                                  {name === 'Mérida' ? '' : name}
+                                </Text>
 
+                                <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                                  {
+                                    name === 'Centro' ? parseInt(String(centro)) :
+                                    name === 'Oriente' ? parseInt(String(oriente)) : null
+                                  }
+                                </Text>
+                              </View>
+                            ) : (
+                              <View key={id} className='flex flex-col items-center'>
+                                <Text style={{ fontSize: hp(2.5), color: darkTurquoise }} className='w-24 text-center font-medium'>
+                                  {name}
+                                </Text>
+
+                                <Text style={{ fontSize: hp(2.6), color: typography }} className='text-center font-medium'>
+                                  {
+                                    name === 'Mérida' ? parseInt(String(merida)) :
+                                    name === 'Centro' ? parseInt(String(centro)) :
+                                    name === 'Oriente' ? parseInt(String(oriente)) : null
+                                  }
+                                </Text>
+                              </View>
+                            )
+                          )
+                        }
+                      </>
+                    )
+                  }}
+                />
+              </View>
+            </View>
+          </ScrollView>
+
+        </View>
+
+        {/* amount and added */}
+        {loadingProduct ? (
+          <View className="flex flex-row items-center justify-center absolute bottom-2 h-16" style={{ width: wp('60%'), marginLeft: wp(20) }}>
+            <Loader color={`${primary}`} />
+          </View>
+        ) : (
+          <View className="flex flex-row items-center justify-between absolute bottom-2 h-16" style={{ width: wp('70%'), marginLeft: wp(16) }}>
+
+            {/* remove */}
+            <View>
+              <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                style={{ backgroundColor: added ? turquoise : processBtn }}
+                disabled={added ? false : true}
+              >
+                <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
+                  source={require('../assets/white-trash-can.png')}
+                />
+              </Pressable>
+            </View>
+
+            <View className='flex-1 flex-row items-center justify-between mx-6'>
+
+              {/* decrease */}
+              <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+                <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
+                  <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
+                </TouchableOpacity>
+              </View>
+
+              {/* amount */}
+              <View style={{ width: wp(20) }}>
+                <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(6) }}>
+                  {amount}
+                </Text>
+              </View>
+
+              {/* increase */}
+              <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+                <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
+                  <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* add & added */}
+            <View>
+              {!added ? (
+                <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                  style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
+                  disabled={maxAmount === 0}
+                >
+                  <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
+                </Pressable>
+              ) : (
+                <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                  style={{ backgroundColor: green }}
+                >
+                  <CheckIcon size={wp(8)} color='white' strokeWidth={4} />
+                </View>
+              )}
+            </View>
+
+          </View>
+        )}
       </View>
 
-      {/* amount and added */}
-      {loadingProduct ? (
-        <View className="flex flex-row items-center justify-center absolute bottom-2 h-16" style={{ width: wp('60%'), marginLeft: wp(20) }}>
-          <Loader color={`${primary}`} />
-        </View>
-      ) : (
-        <View className="flex flex-row items-center justify-between absolute bottom-2 h-16" style={{ width: wp('70%'), marginLeft: wp(16) }}>
-
-          {/* remove */}
-          <View>
-            <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-              style={{ backgroundColor: added ? turquoise : processBtn }}
-              disabled={added ? false : true}
-            >
-              <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
-                source={require('../assets/white-trash-can.png')}
-              />
-            </Pressable>
-          </View>
-
-          <View className='flex-1 flex-row items-center justify-between mx-6'>
-
-            {/* decrease */}
-            <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-              <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
-                <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
-              </TouchableOpacity>
-            </View>
-
-            {/* amount */}
-            <View style={{ width: wp(20) }}>
-              <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(6) }}>
-                {amount}
-              </Text>
-            </View>
-
-            {/* increase */}
-            <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-              <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
-                <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* add & added */}
-          <View>
-            {!added ? (
-              <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
-                disabled={maxAmount === 0}
-              >
-                <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
-              </Pressable>
-            ) : (
-              <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                style={{ backgroundColor: green }}
-              >
-                <CheckIcon size={wp(8)} color='white' strokeWidth={4} />
-              </View>
-            )}
-          </View>
-
-        </View>
-      )}
-    </View>
+      <ModalSelectCustomer
+        stateModal={modalSelectCustomer} setStateModal={setModalSelectCustomer}
+      />
+    </>
   )
 }
 

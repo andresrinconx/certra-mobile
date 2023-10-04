@@ -1,36 +1,14 @@
 import { createContext, useState, useEffect } from 'react'
-import ProductoInterface from '../interfaces/ProductoInterface'
+import { ProductInterface, ProductCartInterface, OrderInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchSearchedItems } from '../utils/api'
-import { OrderInterface } from '../interfaces/OrderInterface'
 import useLogin from '../hooks/useLogin'
-import { ProductCartInterface } from '../interfaces/ProductCartInterface'
 
 const InvContext = createContext<{
   productsCart: { codigo: string, amount: number }[]
   setProductsCart: (productsCart: { codigo: string, amount: number }[]) => void
-  products: ProductoInterface[]
-  setProducts: (products: ProductoInterface[]) => void
-  flowControl: {
-    showProducts: boolean
-    showSelectCustomer: boolean
-    showSelectSearch: boolean
-    showSelectResults: boolean
-    showSelectLabel: boolean
-    showLogoCertra: boolean
-    showItinerary: boolean
-    selected: boolean
-  }
-  setFlowControl: (flowControl: {
-    showProducts: boolean
-    showSelectCustomer: boolean
-    showSelectSearch: boolean
-    showSelectResults: boolean
-    showSelectLabel: boolean
-    showLogoCertra: boolean
-    showItinerary: boolean
-    selected: boolean
-  }) => void
+  products: ProductInterface[]
+  setProducts: (products: ProductInterface[]) => void
   loaders: {
     loadingProducts: boolean,
     loadingSlectedCustomer: boolean,
@@ -63,19 +41,6 @@ const InvContext = createContext<{
   },
   products: [],
   setProducts: () => { 
-    // do nothing
-  },
-  flowControl: {
-    showProducts: false,
-    showSelectCustomer: false,
-    showSelectSearch: false,
-    showSelectResults: false,
-    showSelectLabel: false,
-    showLogoCertra: false,
-    showItinerary: false,
-    selected: false,
-  },
-  setFlowControl: () => { 
     // do nothing
   },
   loaders: {
@@ -127,7 +92,7 @@ const InvContext = createContext<{
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // PRODUCTS
-  const [products, setProducts] = useState<ProductoInterface[]>([])
+  const [products, setProducts] = useState<ProductInterface[]>([])
   const [currentPage, setCurrentPage] = useState(1)
 
   // CART & ORDER 
@@ -139,18 +104,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     productos: [],
     subtotal: '',
     total: '',
-  })
-
-  // LAYOUT
-  const [flowControl, setFlowControl] = useState({
-    showProducts: false,
-    showSelectCustomer: false,
-    showSelectSearch: false,
-    showSelectResults: false,
-    showSelectLabel: false,
-    showLogoCertra: false,
-    showItinerary: false,
-    selected: false,
   })
 
   // LOADERS
@@ -166,7 +119,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [reloadItinerary, setReloadItinerary] = useState(false)
   const [lookAtPharmacy, setLookAtPharmacy] = useState(false)
   
-  const { myUser } = useLogin()
+  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin()
 
   // -----------------------------------------------
   // STORAGE
@@ -184,21 +137,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setProductsStorage()
   }, [productsCart])
 
-  // Set flow control
-  useEffect(() => {
-    // set storage when a customer is selected
-    if (flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
-      const flowControlStorage = async () => {
-        try {
-          await setDataStorage('flowControl', flowControl)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-      flowControlStorage()
-    }
-  }, [flowControl])
-
   // -----------------------------------------------
   // API
   // -----------------------------------------------
@@ -206,17 +144,17 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // Get products api
   const getProducts = async () => {
     try {
-      let data: ProductoInterface[] = []
+      let data: ProductInterface[] = []
 
       // fetch data
-      if (myUser.from === 'scli' || myUser.from === 'usuario') {
+      if (customerAccess || salespersonAccess) {
 
         // inv farmacia
         data = await fetchSearchedItems({ table: 'sinv', searchTerm: `${currentPage}` })
-      } else if(myUser.from === 'usuario-clipro') {
+      } else if(labAccess) {
 
         // inv lab
-        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
+        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${clipro}/${currentPage}` })
       }
 
       if (data?.length > 0) {
@@ -250,8 +188,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setProductsCart,
       products,
       setProducts,
-      flowControl,
-      setFlowControl,
       loaders,
       setLoaders,
       loadingProductsGrid,
