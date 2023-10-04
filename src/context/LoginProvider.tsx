@@ -119,24 +119,22 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     loadingAuth: false,
   })
 
-  useEffect(() => {
-    console.log(myUser)
-  }, [myUser])
-
   // -----------------------------------------------
   // STORAGE
   // -----------------------------------------------
 
   // Add myUser storage
   useEffect(() => {
-    const setMyUserStorage = async () => {
-      try {
-        await setDataStorage('myUser', myUser)
-      } catch (error) {
-        console.log(error)
+    if (myUser.customer) {
+      const setMyUserStorage = async () => {
+        try {
+          await setDataStorage('myUser', myUser)
+        } catch (error) {
+          console.log(error)
+        }
       }
+      setMyUserStorage()
     }
-    setMyUserStorage()
   }, [myUser])
 
   // -----------------------------------------------

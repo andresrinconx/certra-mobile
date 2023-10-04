@@ -119,7 +119,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [reloadItinerary, setReloadItinerary] = useState(false)
   const [lookAtPharmacy, setLookAtPharmacy] = useState(false)
   
-  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin()
+  const { myUser } = useLogin()
 
   // -----------------------------------------------
   // STORAGE
@@ -147,14 +147,14 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       let data: ProductInterface[] = []
 
       // fetch data
-      if (customerAccess || salespersonAccess) {
+      if (myUser?.access.customerAccess || myUser?.access.salespersonAccess) {
 
         // inv farmacia
         data = await fetchSearchedItems({ table: 'sinv', searchTerm: `${currentPage}` })
-      } else if(labAccess) {
+      } else if(myUser?.access.labAccess) {
 
         // inv lab
-        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${clipro}/${currentPage}` })
+        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
       }
 
       if (data?.length > 0) {

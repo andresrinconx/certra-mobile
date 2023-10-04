@@ -27,6 +27,7 @@ const Navigation = () => {
   // get storage (global)
   useEffect(() => {
     const getStorage = async () => {
+      console.log('getting')
       // get storage
       const productsCartStorage = await getDataStorage('productsCart')
       const themeColorsStorage = await getDataStorage('themeColors')

@@ -30,7 +30,7 @@ const OrderRecord = () => {
   const [openDatePickerTo, setOpenDatePickerTo] = useState(false)
   const [dateTo, setDateTo] = useState(new Date())
 
-  const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser } = useLogin()
+  const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin()
   const { lookAtPharmacy } = useInv()
   const toast = useToast()
   const id = 'toast'
@@ -48,19 +48,19 @@ const OrderRecord = () => {
       try {
         let data
 
-        if (myUser.from === 'scli') {
-          data = await fetchLastItemsScli(myUser.cliente as string)
-        } else if (myUser.from === 'usuario-clipro') {
+        if (customerAccess) {
+          data = await fetchLastItemsScli(cliente as string)
+        } else if (labAccess) {
           if (lookAtPharmacy) {
-            data = await fetchLastItemsLabScli({ code: myUser?.us_codigo as string, customer: String(myUser?.customer?.cliente) })
+            data = await fetchLastItemsLabScli({ code: us_codigo as string, customer: String(customer?.cliente) })
           } else {
-            data = await fetchLastItemsLab({ clipro: myUser?.clipro as string, code: myUser?.us_codigo as string })
+            data = await fetchLastItemsLab({ clipro: clipro as string, code: us_codigo as string })
           }
-        } else if (myUser.from === 'usuario') {
+        } else if (salespersonAccess) {
           if (lookAtPharmacy) {
-            data = await fetchLastItemsSalespersonScli({ code: myUser?.us_codigo as string, customer: String(myUser?.customer?.cliente) })
+            data = await fetchLastItemsSalespersonScli({ code: us_codigo as string, customer: String(customer?.cliente) })
           } else {
-            data = await fetchLastItemsSalesperson(String(myUser?.us_codigo))
+            data = await fetchLastItemsSalesperson(String(us_codigo))
           }
         }
         
@@ -144,7 +144,7 @@ const OrderRecord = () => {
       <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-        <Logos image={myUser?.image_url as URL} />
+        <Logos image={image_url as URL} />
 
         <View className='flex flex-row items-center justify-between'>
           <BackScreen title='Historial' />
@@ -179,7 +179,7 @@ const OrderRecord = () => {
                 
                 {/* table header */}
                 <View className='flex flex-row justify-center items-center mt-4'>
-                  {orderRecordCols[myUser.from === 'scli' ? 0 : 1].map((item) => {
+                  {orderRecordCols[customerAccess ? 0 : 1].map((item) => {
                     const { id, size, name } = item
                     return (
                       <Text key={id} className='text-center' 
@@ -202,7 +202,7 @@ const OrderRecord = () => {
                       const isLast = index === lastItems.length - 1
                       return (
                         <>
-                          {myUser.from === 'scli' ? (
+                          {customerAccess ? (
                             <View key={numero} className='flex flex-row justify-center items-center mb-[1px]' 
                               style={{ 
                                 backgroundColor: !isPair ? background : list, 

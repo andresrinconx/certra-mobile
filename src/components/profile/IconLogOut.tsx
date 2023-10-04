@@ -12,7 +12,7 @@ const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
   const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
-  const { setProductsCart, setFlowControl, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid } = useInv()
+  const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
@@ -46,16 +46,6 @@ const IconLogOut = () => {
     await setDataStorage('themeColors', {})
     await setDataStorage('myUser', {})
     await setDataStorage('productsCart', [])
-    await setDataStorage('flowControl', {
-      showProducts: false,
-      showSelectCustomer: false,
-      showSelectSearch: false,
-      showSelectResults: false,
-      showSelectLabel: false,
-      showLogoCertra: false,
-      showItinerary: false,
-      selected: false,
-    })
     await setDataStorage('themeColors', {
       primary: '',
       background: '',
@@ -74,17 +64,6 @@ const IconLogOut = () => {
     navigation.navigate('Login')
     setAlertLogOut(false)
 
-    // reset flow
-    setFlowControl({
-      showProducts: false,
-      showSelectCustomer: false,
-      showSelectSearch: false,
-      showSelectResults: false,
-      showSelectLabel: false,
-      showLogoCertra: false,
-      showItinerary: false,
-      selected: false,
-    })
     setMyUser({
       access: {
         customerAccess: false,

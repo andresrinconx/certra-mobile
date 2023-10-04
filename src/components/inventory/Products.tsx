@@ -9,22 +9,18 @@ import Loader from '../elements/Loader'
 import ProductsGrid from './ProductsGrid'
 
 const Products = () => {
-  const { themeColors: { typography, primary } } = useLogin()
-  const { flowControl, loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useInv()
+  const { themeColors: { typography, primary }, myUser: { customer } } = useLogin()
+  const { loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useInv()
   
   useEffect(() => {
     if (products?.length !== 0) {
-      if (flowControl?.showProducts) {
-        getProducts()
-      }
+      getProducts()
     } else {
       setCurrentPage(1)
       setProducts([])
-      if (flowControl?.showProducts) {
-        getProducts()
-      }
+      getProducts()
     }
-  }, [currentPage, flowControl?.showProducts])
+  }, [currentPage])
 
   // hide keyboard
   const handleScroll = () => {
@@ -47,7 +43,7 @@ const Products = () => {
               data={items}
               numColumns={2}
               contentContainerStyle={{
-                paddingBottom: flowControl?.showSelectCustomer ? 130 : 30,
+                paddingBottom: customer ? 130 : 30,
                 marginTop: 15
               }}
               showsVerticalScrollIndicator={false}
@@ -69,7 +65,7 @@ const Products = () => {
               onScroll={handleScroll}
               numColumns={2}
               contentContainerStyle={{
-                paddingBottom: flowControl?.showSelectCustomer ? 130 : 30,
+                paddingBottom: customer ? 130 : 30,
                 marginTop: 15
               }}
               showsVerticalScrollIndicator={false}
