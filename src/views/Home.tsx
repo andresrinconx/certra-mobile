@@ -29,7 +29,7 @@ const Home = () => {
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <View className='flex-1 px-3 pt-6'>
-          <Logos image={image_url} />
+          <Logos image={image_url as URL} />
 
           <View className='flex-1'>
             {loaders.loadingSlectedCustomer ? (

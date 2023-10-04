@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, Pressable, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useInv from '../hooks/useInv'
@@ -10,11 +10,14 @@ const IconCart = ({ cartBlue }: { cartBlue?: boolean }) => {
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+    <Pressable onPress={() => navigation.navigate('Cart')}  className='w-full h-full flex flex-col items-center justify-center'>
       {!cartBlue ? (
-        <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-          source={require('../assets/cart.png')}
-        />
+        <>
+          <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+            source={require('../assets/cart.png')}
+          />
+          <Text className='w-8 text-[8px] text-center text-white font-bold'>Carrito</Text>
+        </>
       ) : (
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
           source={require('../assets/cart-blue.png')}
@@ -32,7 +35,7 @@ const IconCart = ({ cartBlue }: { cartBlue?: boolean }) => {
           </View>
         )
       }
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 
