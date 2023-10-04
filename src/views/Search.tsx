@@ -86,8 +86,8 @@ const Search = () => {
             />
           </View>
 
-          <IconCart 
-            cartBlue={true}
+          <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+            source={require('../assets/cart-blue.png')}
           />
         </View>
 

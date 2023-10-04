@@ -4,25 +4,17 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 
-const IconCart = ({ cartBlue }: { cartBlue?: boolean }) => {
+const IconCart = () => {
   const { themeColors: { green } } = useLogin()
   const { productsCart } = useInv()
   const navigation = useNavigation()
 
   return (
-    <Pressable onPress={() => navigation.navigate('Cart')}  className='w-full h-full flex flex-col items-center justify-center'>
-      {!cartBlue ? (
-        <>
-          <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-            source={require('../assets/cart.png')}
-          />
-          <Text className='w-8 text-[8px] text-center text-white font-bold'>Carrito</Text>
-        </>
-      ) : (
-        <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-          source={require('../assets/cart-blue.png')}
-        />
-      )}
+    <Pressable onPress={() => navigation.navigate('Cart')} className='w-full h-full flex flex-1 flex-col items-center justify-center'>
+      <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+        source={require('../assets/cart.png')}
+      />
+      <Text className='w-8 text-[8px] text-center text-white font-bold'>Carrito</Text>
 
       {productsCart?.length > 0
         && (
