@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
@@ -9,6 +9,7 @@ import useLogin from '../hooks/useLogin'
 import { fetchSearchedItems } from '../utils/api'
 import { formatText } from '../utils/helpers'
 import ProductsSearch from '../components/inventory/ProductsSearch'
+import IconCart from '../components/footer/IconCart'
 
 const Inventory = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
@@ -21,11 +22,6 @@ const Inventory = () => {
   // SCREEN
   // -----------------------------------------------
 
-  // focus input
-  useEffect(() => {
-    textInputRef.current?.focus()
-  }, [])
-  
   // hide keyboard
   const handleScroll = () => {
     // Cerrar el teclado
@@ -82,12 +78,11 @@ const Inventory = () => {
               ref={textInputRef}
               onChangeText={handleTextDebounce}
               selectionColor={primary}
+              autoFocus
             />
           </View>
 
-          <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-            source={require('../assets/cart-blue.png')}
-          />
+          <IconCart showText={false} blueCart={true} />
         </View>
 
         {/* results */}

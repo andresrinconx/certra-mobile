@@ -127,7 +127,7 @@ const Product = () => {
             {descrip}
           </Text>
 
-          <View className='w-12 h-12 mr-4 rounded-2xl' style={{ backgroundColor: turquoise }}>
+          <View className='w-12 h-12 flex flex-row items-center justify-center mr-4 rounded-2xl' style={{ backgroundColor: turquoise }}>
             <IconCart />
           </View>
         </View>

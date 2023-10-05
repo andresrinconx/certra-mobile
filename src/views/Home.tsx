@@ -50,8 +50,10 @@ const Home = () => {
         </View>
 
       </View>
-
-      <Footer />
+      
+      <View className='bottom-0'>
+        <Footer />
+      </View>
     </>
   )
 }

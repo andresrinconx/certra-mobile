@@ -26,7 +26,9 @@ const Cart = () => {
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
   const [alertErrorOrder, setAlertErrorOrder] = useState(false)
 
-  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser: { access: { customerAccess }, nombre, cliente, us_codigo, us_nombre, customer, image_url } } = useLogin()
+  const [send, setSend] = useState(false)
+
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser: { access: { customerAccess }, nombre, cliente, us_codigo, customer, image_url } } = useLogin()
   const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -90,7 +92,7 @@ const Cart = () => {
   useEffect(() => {
     const sendOrder = async () => {
       try {
-        if (order.cliente.usuario) {
+        if (send) {
           const res = await fetchSendData(order)
 
           if (res?.message) {
@@ -102,12 +104,14 @@ const Cart = () => {
               hora: '',
               cliente: {
                 name: '',
-                code: Number(''),
+                code: '',
+                usuario: ''
               },
               productos: [],
               subtotal: '',
               total: '',
             })
+            setSend(false)
           } else {
             // network error
             setAlertErrorOrder(true)
@@ -132,11 +136,11 @@ const Cart = () => {
       cliente: customerAccess ? {
         name: String(nombre),
         usuario: String(cliente),
-        code: Number(cliente)
+        code: String(cliente)
       } : {
-        name: String(us_nombre),
+        name: String(customer?.nombre),
         usuario: String(us_codigo),
-        code: Number(customer?.cliente)
+        code: String(customer?.cliente)
       },
       productos: fullProductsCart.map((product: ProductInterface) => ({
         codigo: String(product.codigo),
@@ -152,6 +156,7 @@ const Cart = () => {
     
     // close process alert
     setAlertProcessOrder(false)
+    setSend(true)
   }
 
   return (

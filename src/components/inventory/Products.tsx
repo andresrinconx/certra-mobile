@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { View, Text, FlatList, Keyboard } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { items } from '../../utils/constants'
 import useInv from '../../hooks/useInv'
@@ -9,7 +9,7 @@ import Loader from '../elements/Loader'
 import ProductsGrid from './ProductsGrid'
 
 const Products = () => {
-  const { themeColors: { typography, primary }, myUser: { customer } } = useLogin()
+  const { themeColors: { typography, primary }, myUser: { customer, access: { customerAccess } } } = useLogin()
   const { loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useInv()
   
   useEffect(() => {
@@ -21,12 +21,6 @@ const Products = () => {
       getProducts()
     }
   }, [currentPage])
-
-  // hide keyboard
-  const handleScroll = () => {
-    // Cerrar el teclado
-    Keyboard.dismiss()
-  }
 
   const loadMoreItems = () => {
     if (products?.length !== 0) {
@@ -43,7 +37,7 @@ const Products = () => {
               data={items}
               numColumns={2}
               contentContainerStyle={{
-                paddingBottom: customer ? 130 : 30,
+                paddingBottom: customer ? 130 : customerAccess ? 30 : 60,
                 marginTop: 15
               }}
               showsVerticalScrollIndicator={false}
@@ -62,10 +56,9 @@ const Products = () => {
             <FlatList
               data={products}
               initialNumToRender={10}
-              onScroll={handleScroll}
               numColumns={2}
               contentContainerStyle={{
-                paddingBottom: customer ? 130 : 30,
+                paddingBottom: customer ? 130 : customerAccess ? 30 : 60,
                 marginTop: 15
               }}
               showsVerticalScrollIndicator={false}

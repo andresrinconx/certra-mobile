@@ -4,12 +4,12 @@ import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
-import { UserFromScliInterface, UserFromUsuarioInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
 import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
 import { socialMedia } from '../utils/constants'
 import Loader from '../components/elements/Loader'
+import { fetchLogin } from '../utils/api'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -19,7 +19,7 @@ const Login = () => {
     password: false,
   })
 
-  const { user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
+  const { user, setUser, password, setPassword, login, loaders, setLoaders, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
   const textInputRefPassword = useRef<TextInput | null>(null)
@@ -81,104 +81,110 @@ const Login = () => {
     setLoaders({ ...loaders, loadingAuth: true })
     setIncorrectCredentials(false)
 
-    // find in the table 'Usuario'
-    const userFromUsuario = usersFromUsuario?.find((userDb: UserFromUsuarioInterface) =>
-      (userDb.us_codigo === user.toUpperCase().trim() || userDb.us_codigo === user.trim()) && userDb.us_clave === password)
+    // api call
+    const res = await fetchLogin({ usuario: user, password })
+    console.log(res[0])
 
-    if (userFromUsuario === undefined) {
-
-      // find in the table 'Scli'
-      const userFromScli = usersFromScli?.find((userDb: UserFromScliInterface) =>
-        ('W' + userDb.cliente === user.toUpperCase().trim() || 'W' + userDb.clave === user.trim()) && userDb.clave === password)
-
-      if (userFromScli === undefined) {
-
-        // Incorrect Credentials
-        setTimeout(() => {
-          setLoaders({ ...loaders, loadingAuth: false })
-          setIncorrectCredentials(true)
-        }, 1000)
-        return
-      } else {
-
-        // Success from Scli
-        setIncorrectCredentials(false)
-        setMyUser({
-          ...userFromScli,
-          access: {
-            customerAccess: true,
-            labAccess: false,
-            salespersonAccess: false
-          }
-        })
-        await setDataStorage('themeColors', { ...pallete[1] }) // 1 = Scli
-        await setDataStorage('login', true)
-        await setDataStorage('myUser', {
-          ...userFromScli,
-          access: {
-            customerAccess: true,
-            labAccess: false,
-            salespersonAccess: false
-          }
-        })
-        setThemeColors({ ...pallete[1] }) // 1 = Scli
-        
-        setLogin(true)
-        setLoaders({ ...loaders, loadingAuth: false })
-        setShowPassword(false)
-      }
+    if (res[0]) {
+      console.log('si')
     } else {
-
-      // Success from Usuario
-      setIncorrectCredentials(false)
-      if (userFromUsuario.clipro !== '') { // Success with clipro
-        setMyUser({
-          ...userFromUsuario,
-          access: {
-            customerAccess: false,
-            labAccess: true,
-            salespersonAccess: false
-          }
-        })
-      } else {
-        setMyUser({
-          ...userFromUsuario,
-          access: {
-            customerAccess: false,
-            labAccess: false,
-            salespersonAccess: true
-          }
-        })
-      }
-      await setDataStorage('themeColors', { ...pallete[0] }) // 0 = Usuario
-      await setDataStorage('login', true)
-
-      if (userFromUsuario.clipro !== '') { // Success with clipro
-        await setDataStorage('myUser', {
-          ...userFromUsuario,
-          access: {
-            customerAccess: false,
-            labAccess: true,
-            salespersonAccess: false
-          }
-        })
-      } else {
-        await setDataStorage('myUser', {
-          ...userFromUsuario,
-          access: {
-            customerAccess: false,
-            labAccess: false,
-            salespersonAccess: true
-          }
-        })
-      }
-
-      setThemeColors({ ...pallete[0] }) // 0 = Usuario
-
-      setLogin(true)
-      setLoaders({ ...loaders, loadingAuth: false })
-      setShowPassword(false)
+      console.log('no')
     }
+
+    // if (res === undefined) {
+
+    //   // find in the table 'Scli'
+    //   const userFromScli = usersFromScli?.find((userDb: UserFromScliInterface) =>
+    //     ('W' + userDb.cliente === user.toUpperCase().trim() || 'W' + userDb.clave === user.trim()) && userDb.clave === password)
+
+    //   if (userFromScli === undefined) {
+
+    //     // Incorrect Credentials
+    //     setTimeout(() => {
+    //       setLoaders({ ...loaders, loadingAuth: false })
+    //       setIncorrectCredentials(true)
+    //     }, 1000)
+    //     return
+    //   } else {
+
+    //     // Success from Scli
+    //     setIncorrectCredentials(false)
+    //     setMyUser({
+    //       ...userFromScli,
+    //       access: {
+    //         customerAccess: true,
+    //         labAccess: false,
+    //         salespersonAccess: false
+    //       }
+    //     })
+    //     await setDataStorage('themeColors', { ...pallete[1] }) // 1 = Scli
+    //     await setDataStorage('login', true)
+    //     await setDataStorage('myUser', {
+    //       ...userFromScli,
+    //       access: {
+    //         customerAccess: true,
+    //         labAccess: false,
+    //         salespersonAccess: false
+    //       }
+    //     })
+    //     setThemeColors({ ...pallete[1] }) // 1 = Scli
+        
+    //     setLogin(true)
+    //     setLoaders({ ...loaders, loadingAuth: false })
+    //     setShowPassword(false)
+    //   }
+    // } else {
+
+    //   // Success from Usuario
+    //   setIncorrectCredentials(false)
+    //   if (userFromUsuario.clipro !== '') { // Success with clipro
+    //     setMyUser({
+    //       ...userFromUsuario,
+    //       access: {
+    //         customerAccess: false,
+    //         labAccess: true,
+    //         salespersonAccess: false
+    //       }
+    //     })
+    //   } else {
+    //     setMyUser({
+    //       ...userFromUsuario,
+    //       access: {
+    //         customerAccess: false,
+    //         labAccess: false,
+    //         salespersonAccess: true
+    //       }
+    //     })
+    //   }
+    //   await setDataStorage('themeColors', { ...pallete[0] }) // 0 = Usuario
+    //   await setDataStorage('login', true)
+
+    //   if (userFromUsuario.clipro !== '') { // Success with clipro
+    //     await setDataStorage('myUser', {
+    //       ...userFromUsuario,
+    //       access: {
+    //         customerAccess: false,
+    //         labAccess: true,
+    //         salespersonAccess: false
+    //       }
+    //     })
+    //   } else {
+    //     await setDataStorage('myUser', {
+    //       ...userFromUsuario,
+    //       access: {
+    //         customerAccess: false,
+    //         labAccess: false,
+    //         salespersonAccess: true
+    //       }
+    //     })
+    //   }
+
+    //   setThemeColors({ ...pallete[0] }) // 0 = Usuario
+
+    //   setLogin(true)
+    //   setLoaders({ ...loaders, loadingAuth: false })
+    //   setShowPassword(false)
+    // }
   }
 
   return (

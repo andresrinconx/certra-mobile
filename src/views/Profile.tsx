@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { DataConfigProfileInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import { fetchUserData } from '../utils/api'
+import { fetchProfileData } from '../utils/api'
 import Loader from '../components/elements/Loader'
 import Logos from '../components/elements/Logos'
 import BackScreen from '../components/elements/BackScreen'
@@ -24,7 +24,7 @@ const Profile = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await fetchUserData({ 
+        const res = await fetchProfileData({ 
           table: `${customerAccess    ? 'scliU'    :
                     salespersonAccess ? 'usuarioP' :
                     labAccess         ? 'usuarioU' : null}`,

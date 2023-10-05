@@ -4,10 +4,10 @@
 
 export interface MyUserInterface {
   access: {
-    customerAccess: boolean,
-    labAccess: boolean,
+    customerAccess: boolean
+    labAccess: boolean
     salespersonAccess: boolean
-  },
+  }
   clipro?: string
   cliente?: string
   cedula?: string
@@ -51,38 +51,30 @@ export interface UserFromScliInterface {
   deposito: string
 }
 
-export interface UserFromUsuarioInterface {
-  us_codigo: string
-  us_clave: string
-  us_nombre: string
-  clipro: string
-  image_url: string | URL
-}
-
 // -----------------------------------------------
 // PRODUCTS
 // -----------------------------------------------
 
 export interface ProductOrderInterface {
-  codigo: string,
-  descrip: string,
-  base1: number,
-  precio1: number,
-  iva: number,
+  codigo: string
+  descrip: string
+  base1: number
+  precio1: number
+  iva: number
   cantidad: number
 }
 
 export interface OrderInterface {
-  date: string,
-  hora: string,
+  date: string
+  hora: string
   cliente: {
-    name: string, 
-    code: number
+    name: string 
+    code: string
     usuario?: string
-  },
-  productos: ProductOrderInterface[],
-  subtotal: string,
-  total: string,
+  }
+  productos: ProductOrderInterface[]
+  subtotal: string
+  total: string
 }
 
 export interface OrderRecordItemInterface {
@@ -108,13 +100,13 @@ export interface ProductInterface {
   id: number
   amount: number
   image_url: URL | string
-  codigo: string,
-  merida?: number,
-  centro?: number,
-  oriente?: number,
-  base1: number,
-  iva?: number,
-  origenn?: string,
+  codigo: string
+  merida?: number
+  centro?: number
+  oriente?: number
+  base1: number
+  iva?: number
+  origenn?: string
 }
 
 // -----------------------------------------------
@@ -136,7 +128,7 @@ export interface ThemeColorsInterface {
   background: string
   charge: string
   list: string
-  lightList: string,
+  lightList: string
   turquoise: string
   darkTurquoise: string
   green: string

@@ -23,7 +23,7 @@ export const getDateWithoutHyphen = (date: Date) => {
 export const getHour = (date: Date) => {
   const hours = date.getHours()
   const minutes = date.getMinutes()
-  return `${hours}:${minutes}`
+  return `${String(hours).length === 1 ? `0${hours}` : `${hours}`}:${String(minutes).length === 1 ? `0${minutes}` : `${minutes}`}`
 }
 
 export const getDayOfWeekInText = (date: Date) => {

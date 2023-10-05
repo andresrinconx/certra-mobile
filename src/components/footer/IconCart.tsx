@@ -6,7 +6,7 @@ import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import ModalSelectCustomer from '../elements/ModalSelectCustomer'
 
-const IconCart = ({ showText }: { showText?: boolean }) => {
+const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boolean }) => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
   const { themeColors: { green }, myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
@@ -15,7 +15,7 @@ const IconCart = ({ showText }: { showText?: boolean }) => {
 
   return (
     <>
-      <Pressable className='w-full h-full flex flex-1 flex-col items-center justify-center'
+      <Pressable className={`${showText ? 'w-full h-full flex flex-1 flex-col items-center justify-center' : ''}`}
         onPress={() => {
           if ((labAccess || salespersonAccess) && !customer) {
             setModalSelectCustomer(true)
@@ -27,7 +27,7 @@ const IconCart = ({ showText }: { showText?: boolean }) => {
       >
         <View>
           <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-            source={require('../../assets/cart.png')}
+            source={blueCart ? require('../../assets/cart-blue.png') : require('../../assets/cart.png')}
           />
           {productsCart?.length > 0
             && (

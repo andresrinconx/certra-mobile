@@ -60,7 +60,7 @@ const ItineraryDayEvent = ({
       try {
         // get location
         const currentLocation = await getCurrentLocation()
-        const { latitude, longitude } = currentLocation
+        const { latitude, longitude } = currentLocation as { latitude: number, longitude: number }
   
         if (currentLocation) {
           const requestData = {
