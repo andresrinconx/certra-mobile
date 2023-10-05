@@ -92,6 +92,7 @@ export interface OrderRecordItemInterface {
 export interface ProductCartInterface {
   codigo: string
   amount: number
+  discount:string
 }
 
 export interface ProductInterface {

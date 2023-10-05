@@ -5,8 +5,8 @@ import { fetchSearchedItems } from '../utils/api'
 import useLogin from '../hooks/useLogin'
 
 const InvContext = createContext<{
-  productsCart: { codigo: string, amount: number }[]
-  setProductsCart: (productsCart: { codigo: string, amount: number }[]) => void
+  productsCart: { codigo: string, amount: number, discount: string }[]
+  setProductsCart: (productsCart: { codigo: string, amount: number, discount: string }[]) => void
   products: ProductInterface[]
   setProducts: (products: ProductInterface[]) => void
   loaders: {
@@ -34,6 +34,12 @@ const InvContext = createContext<{
   setReloadItinerary: (reloadItinerary: boolean) => void
   lookAtPharmacy: boolean
   setLookAtPharmacy: (lookAtPharmacy: boolean) => void
+  subtotal: string
+  setSubtotal: (subtotal: string) => void
+  discount: string
+  setDiscount: (discount: string) => void
+  total: string
+  setTotal: (total: string) => void
 }>({
   productsCart: [],
   setProductsCart: () => { 
@@ -87,6 +93,18 @@ const InvContext = createContext<{
   lookAtPharmacy: false,
   setLookAtPharmacy: () => { 
     // do nothing
+  },
+  subtotal: '',
+  setSubtotal: () => { 
+    // do nothing
+  },
+  discount: '',
+  setDiscount: () => { 
+    // do nothing
+  },
+  total: '',
+  setTotal: () => { 
+    // do nothing
   }
 })
 
@@ -105,6 +123,9 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     subtotal: '',
     total: '',
   })
+  const [subtotal, setSubtotal] = useState('')
+  const [discount, setDiscount] = useState('')
+  const [total, setTotal] = useState('')
 
   // LOADERS
   const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
@@ -119,7 +140,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [reloadItinerary, setReloadItinerary] = useState(false)
   const [lookAtPharmacy, setLookAtPharmacy] = useState(false)
   
-  const { myUser, login } = useLogin()
+  const { myUser } = useLogin()
 
   // -----------------------------------------------
   // STORAGE
@@ -173,7 +194,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add to cart
   const addToCart = (codigo: string, amount: number) => {
-    setProductsCart([ ...productsCart, { codigo, amount } ])
+    setProductsCart([ ...productsCart, { codigo, amount, discount: '0' } ])
   }
 
   // Remove element from cart
@@ -202,7 +223,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       reloadItinerary,
       setReloadItinerary,
       lookAtPharmacy,
-      setLookAtPharmacy
+      setLookAtPharmacy,
+      subtotal,
+      setSubtotal,
+      discount,
+      setDiscount,
+      total,
+      setTotal
     }}>
       {children}
     </InvContext.Provider>

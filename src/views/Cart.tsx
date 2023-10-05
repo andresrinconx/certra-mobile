@@ -17,10 +17,8 @@ import BackScreen from '../components/elements/BackScreen'
 
 const Cart = () => {
   const [fullProductsCart, setFullProductsCart] = useState([])
-  const [subtotal, setSubtotal] = useState(0)
-  const [total, setTotal] = useState(0)
-  
   const [loadingCart, setLoadingCart] = useState(true)
+  
   const [alertClearCart, setAlertClearCart] = useState(false)
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
@@ -28,8 +26,8 @@ const Cart = () => {
 
   const [send, setSend] = useState(false)
 
-  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary }, myUser: { access: { customerAccess }, nombre, cliente, us_codigo, customer, image_url } } = useLogin()
-  const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder } = useInv()
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary, turquoise }, myUser: { access: { customerAccess }, nombre, cliente, us_codigo, customer, image_url } } = useLogin()
+  const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder, subtotal, setSubtotal, total, setTotal, discount, setDiscount } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
@@ -50,10 +48,11 @@ const Cart = () => {
         for (let i = 0; i < productsCart?.length; i++) {
           const code = productsCart[i].codigo
           const amount = productsCart[i].amount
+          const discount = productsCart[i].discount
     
           // get product api
-          const res = await fetchOneItem('searchC', code)
-          newFullProductsCart.push({ ...res[0], amount })
+          const res: ProductInterface[] = await fetchOneItem('searchC', code)
+          newFullProductsCart.push({ ...res[0], amount, discount })
           
           // last item
           if (i === productsCart?.length - 1) {
@@ -62,13 +61,20 @@ const Cart = () => {
           }
         }
 
-        // subtotal & total
+        // subtotal
         const subtotal = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.amount, 0)
         const subtotalFormated = subtotal.toLocaleString()
         setSubtotal(subtotalFormated)
 
+        // discount
+        const discountBs = newFullProductsCart.reduce((accumulator, product) => accumulator + ((Number(product.discount) * (product.base1 * product.amount)) / 100), 0)
+        const discountBsFormated = discountBs.toLocaleString()
+        setDiscount(discountBsFormated)
+
+        // total
         const total = newFullProductsCart.reduce((accumulator, product) => accumulator + product.precio1 * product.amount, 0)
-        const totalFormated = total.toLocaleString()
+        const totalDiscount = total - discountBs
+        const totalFormated = totalDiscount.toLocaleString()
         setTotal(totalFormated)
       } else {
         setLoadingCart(false)
@@ -232,27 +238,42 @@ const Cart = () => {
 
       {/* process order */}
       {!loadingCart && (
-        <View className='flex flex-col justify-center h-32 w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'>
+        <View className='flex flex-col justify-center w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'
+          style={{ height: wp(discount !== '0' ? 38 : 32) }}
+        >
           <View className='flex flex-col justify-center h-full w-[92%]'
             style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
           >
             {productsCart?.length !== 0 && (
               <View className='px-2'>
-                {/* subtotal & total */}
+                {/* subtotal */}
                 <View className='flex flex-row justify-between'>
-                  <Text style={{ fontSize: wp(4.5), color: typography }} className='font-semibold'>
+                  <Text style={{ fontSize: wp(4.2), color: typography }} className='font-semibold'>
                     Subtotal:
                   </Text>
-                  <Text style={{ fontSize: wp(4.5), color: typography, }} className='font-semibold'>
+                  <Text style={{ fontSize: wp(4.2), color: typography, }} className='font-semibold'>
                     Bs. {subtotal}
                   </Text>
                 </View>
 
+                {/* discount */}
+                {discount !== '0' && (
+                  <View className='flex flex-row justify-between'>
+                    <Text style={{ fontSize: wp(4.2), color: turquoise }} className='font-semibold'>
+                      Descuento:
+                    </Text>
+                    <Text style={{ fontSize: wp(4.2), color: turquoise }} className='font-semibold'>
+                      Bs. {discount}
+                    </Text>
+                  </View>
+                )}
+
+                {/* total */}
                 <View className='flex flex-row justify-between'>
                   <Text style={{ fontSize: wp(5), color: typography }} className='mb-2 font-extrabold'>
                     Total:
                   </Text>
-                  <Text style={{ fontSize: wp(5), color: darkTurquoise, }} className='font-extrabold mb-2'>
+                  <Text style={{ fontSize: wp(5), color: typography, }} className='font-extrabold mb-2'>
                     Bs. {total}
                   </Text>
                 </View>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from 'react-native'
-import { MinusSmallIcon, PlusSmallIcon, XMarkIcon } from 'react-native-heroicons/outline'
+import { XMarkIcon } from 'react-native-heroicons/outline'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
@@ -13,14 +13,18 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)
   const [amount, setAmount] = useState(1)
   const [amountInput, setAmountInput] = useState('')
-  const [touch, setTouch] = useState(false)
   const [maxAmount, setMaxAmount] = useState(0)
+  const [touch, setTouch] = useState(false)
+
+  const [discount, setDiscount] = useState(0)
+  const [discountInput, setDiscountInput] = useState('')
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
+  const [openAmountModal, setOpenAmountModal] = useState(false)
+  const [openDiscountModal, setOpenDiscountModal] = useState(false)
   const [disableAcept, setDisableAcept] = useState(false)
   
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito } } = useLogin()
+  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess } } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useInv()
   const { descrip, precio1, codigo, centro, merida, oriente } = product
   const cancelRef = useRef(null)
@@ -28,6 +32,10 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const navigation = useNavigation()
 
   const onCloseAlertRemoveElement = () => setAlertRemoveElement(false)
+
+  // -----------------------------------------------
+  // ACTIONS
+  // -----------------------------------------------
 
   // Get max amount
   useEffect(() => {
@@ -48,10 +56,6 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
     }
   }, [])
 
-  // -----------------------------------------------
-  // ACTIONS
-  // -----------------------------------------------
-
   // Refresh data when cart change
   useEffect(() => {
     const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
@@ -61,12 +65,16 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
       setAdded(true)
       setAmount(productInCart.amount)
       setAmountInput(String(productInCart.amount))
+      setDiscount(Number(productInCart.discount))
+      setDiscountInput(String(productInCart.discount))
     } else {
 
       // product not in cart
       setAdded(false)
       setAmount(1)
       setAmountInput(String(1))
+      setDiscount(0)
+      setDiscountInput(String(0))
     }
   }, [productsCart])
 
@@ -80,7 +88,11 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
     }
   }, [added])
 
-  // Change 'cantidad' (input)
+  // -----------------------------------------------
+  // AMOUNT
+  // -----------------------------------------------
+
+  // Change amount
   useEffect(() => {
     const productInCart = productsCart.find(item => item.codigo === codigo)
 
@@ -102,7 +114,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
     }
   }, [amountInput])
   
-  // Btn acept (input)
+  // Btn acept
   const acept = () => {
     const updatedProductsCart = productsCart.map(item => {
       if (item.codigo === codigo) {
@@ -114,30 +126,43 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
       }
     })
     setProductsCart(updatedProductsCart)
-    setOpenModal(false)
+    setOpenAmountModal(false)
+  }
+
+  // -----------------------------------------------
+  // DISCOUNT
+  // -----------------------------------------------
+
+  useEffect(() => {
+    const productInCart = productsCart.find(item => item.codigo === codigo)
+
+    if (productInCart) {
+      if (Number(discountInput) < 0 || Number(discountInput) > 99) {
+        setDisableAcept(true)
+      } else {
+        setDisableAcept(false)
+      }
+    }
+  }, [discountInput])
+
+  const aceptDiscount = () => {
+    const updatedProductsCart = productsCart.map(item => {
+      if (item.codigo === codigo) {
+        const cleanDiscount = parseInt(String(discountInput).replace(/-/g, ''))
+
+        return { ...item, discount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
+      } else {
+        return { ...item }
+      }
+    })
+    setProductsCart(updatedProductsCart)
+    setOpenDiscountModal(false)
   }
 
   // -----------------------------------------------
   // HANDLERS
   // -----------------------------------------------
 
-  const handleDiscount = () => {
-    // validate percent
-    
-
-    console.log('change discount')
-  }
-
-  const handleDecrease = () => {
-    if (amount > 1) {
-      setAmount(amount - 1)
-    }
-  }
-  const handleIncrease = () => {
-    if (amount < maxAmount) {
-      setAmount(amount + 1)
-    }
-  }
   const handleRemoveElement = () => {
     if (productsCart?.length === 1) {
       setProductsCart([])
@@ -280,34 +305,38 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                 </Text>
               </View>
 
-              {/* amount and added */}
-              <View className='flex flex-row items-center justify-between w-full'>
+              {/* amount and discount */}
+              <View className='flex flex-row items-center w-full'
+                style={{ justifyContent: !labAccess ? 'center' : 'space-between' }}
+              >
 
-                <View className='flex-1 flex-row items-center justify-around'>
+                {/* amount */}
+                <View>
+                  <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Cantidad</Text>
 
-                  {/* decrease */}
-                  <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                    <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
-                      <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
-                    </TouchableOpacity>
-                  </View>
-
-                  {/* amount */}
-                  <View style={{ width: wp(12) }}>
-                    <TouchableOpacity onPress={() => setOpenModal(true)}>
+                  <View style={{ width: wp(!labAccess ? 28 : 18), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+                    <TouchableOpacity onPress={() => setOpenAmountModal(true)}>
                       <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
                         {amount}
                       </Text>
                     </TouchableOpacity>
                   </View>
-
-                  {/* increase */}
-                  <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                    <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
-                      <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-                    </TouchableOpacity>
-                  </View>
                 </View>
+                
+                {/* dcto labs */}
+                {labAccess && (
+                  <View>
+                    <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Dcto. Labs.</Text>
+                    
+                    <View style={{ width: wp(18), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+                      <TouchableOpacity onPress={() => setOpenDiscountModal(true)}>
+                        <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                          {discount}%
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
 
               </View>
             </View>
@@ -318,8 +347,8 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
         </View>
       )}
 
-      {/* modal input */}
-      <Modal isOpen={openModal} initialFocusRef={initialRef}>
+      {/* modal amount */}
+      <Modal isOpen={openAmountModal} initialFocusRef={initialRef}>
         <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
           <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Cantidad</Text>
@@ -330,8 +359,8 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
               keyboardType='numeric'
               value={String(amountInput)}
               onChangeText={text => setAmountInput(text)}
-              autoFocus
               selectionColor={primary}
+              autoFocus
             />
           </View>
           
@@ -339,7 +368,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
           <View className='flex flex-row items-center justify-between'>
             <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
               <TouchableOpacity onPress={() => {
-                setOpenModal(false)
+                setOpenAmountModal(false)
                 setAmountInput(String(amount))
               }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
@@ -350,6 +379,45 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
 
             <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
               <TouchableOpacity onPress={() => acept()} disabled={disableAcept}>
+                <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
+                  Aceptar
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+        </Modal.Content>
+      </Modal>
+
+      {/* modal discount */}
+      <Modal isOpen={openDiscountModal} initialFocusRef={initialRef}>
+        <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
+
+          <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Descuento</Text>
+
+          {/* input */}
+          <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
+            <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
+              keyboardType='numeric'
+              value={String(discountInput)}
+              onChangeText={text => setDiscountInput(text)}
+              selectionColor={primary}
+              autoFocus
+            />
+          </View>
+          
+          {/* btns */}
+          <View className='flex flex-row items-center justify-between'>
+            <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
+              <TouchableOpacity onPress={() => setOpenDiscountModal(false)}>
+                <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
+                  Cancelar
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
+              <TouchableOpacity onPress={() => aceptDiscount()} disabled={disableAcept}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Aceptar
                 </Text>
