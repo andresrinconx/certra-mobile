@@ -24,12 +24,9 @@ const IconLogOut = () => {
     // reset login
     setUser('')
     setPassword('')
-    setLogin(false)
 
     // reset products
     setProductsCart([])
-    setProducts([])
-    setCurrentPage(1)
 
     // reset loaders
     setLoaders({
@@ -85,6 +82,9 @@ const IconLogOut = () => {
       typography: '',
       processBtn: '',
     })
+
+    setProducts([])
+    setCurrentPage(1)
   }
 
   return (

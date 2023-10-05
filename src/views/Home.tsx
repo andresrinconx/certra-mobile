@@ -11,11 +11,7 @@ import Footer from '../components/footer/Footer'
 
 const Home = () => {
   const { themeColors: { background }, myUser: { image_url } } = useLogin()
-  const { loaders, getProducts } = useInv()
-  
-  useEffect(() => {
-    getProducts()
-  }, [])
+  const { loaders } = useInv()
 
   // Back handler
   useEffect(() => {

@@ -65,7 +65,7 @@ const InvContext = createContext<{
   order: {
     date: '',
     hora: '',
-    cliente: { name: '', code: 0 },
+    cliente: { name: '', code: '' },
     productos: [],
     subtotal: '',
     total: '',
@@ -100,7 +100,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [order, setOrder] = useState<OrderInterface>({
     date: '',
     hora: '',
-    cliente: { name: '', code: 0 },
+    cliente: { name: '', code: '' },
     productos: [],
     subtotal: '',
     total: '',
@@ -119,7 +119,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [reloadItinerary, setReloadItinerary] = useState(false)
   const [lookAtPharmacy, setLookAtPharmacy] = useState(false)
   
-  const { myUser } = useLogin()
+  const { myUser, login } = useLogin()
 
   // -----------------------------------------------
   // STORAGE

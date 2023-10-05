@@ -21,8 +21,6 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
     setProductsCart([])
     navigation.navigate('Home')
 
-    setCurrentPage(1)
-    
     setTimeout(() => {
       setLoaders({ ...loaders, loadingSlectedCustomer: false })
     }, 300)
