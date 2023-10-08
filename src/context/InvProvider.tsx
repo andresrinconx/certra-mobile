@@ -1,36 +1,14 @@
 import { createContext, useState, useEffect } from 'react'
-import ProductoInterface from '../interfaces/ProductoInterface'
+import { ProductInterface, ProductCartInterface, OrderInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchSearchedItems } from '../utils/api'
-import { OrderInterface } from '../interfaces/OrderInterface'
 import useLogin from '../hooks/useLogin'
-import { ProductCartInterface } from '../interfaces/ProductCartInterface'
 
 const InvContext = createContext<{
-  productsCart: { codigo: string, amount: number }[]
-  setProductsCart: (productsCart: { codigo: string, amount: number }[]) => void
-  products: ProductoInterface[]
-  setProducts: (products: ProductoInterface[]) => void
-  flowControl: {
-    showProducts: boolean
-    showSelectCustomer: boolean
-    showSelectSearch: boolean
-    showSelectResults: boolean
-    showSelectLabel: boolean
-    showLogoCertra: boolean
-    showItinerary: boolean
-    selected: boolean
-  }
-  setFlowControl: (flowControl: {
-    showProducts: boolean
-    showSelectCustomer: boolean
-    showSelectSearch: boolean
-    showSelectResults: boolean
-    showSelectLabel: boolean
-    showLogoCertra: boolean
-    showItinerary: boolean
-    selected: boolean
-  }) => void
+  productsCart: { codigo: string, amount: number, discount: string }[]
+  setProductsCart: (productsCart: { codigo: string, amount: number, discount: string }[]) => void
+  products: ProductInterface[]
+  setProducts: (products: ProductInterface[]) => void
   loaders: {
     loadingProducts: boolean,
     loadingSlectedCustomer: boolean,
@@ -56,6 +34,12 @@ const InvContext = createContext<{
   setReloadItinerary: (reloadItinerary: boolean) => void
   lookAtPharmacy: boolean
   setLookAtPharmacy: (lookAtPharmacy: boolean) => void
+  subtotal: string
+  setSubtotal: (subtotal: string) => void
+  discount: string
+  setDiscount: (discount: string) => void
+  total: string
+  setTotal: (total: string) => void
 }>({
   productsCart: [],
   setProductsCart: () => { 
@@ -63,19 +47,6 @@ const InvContext = createContext<{
   },
   products: [],
   setProducts: () => { 
-    // do nothing
-  },
-  flowControl: {
-    showProducts: false,
-    showSelectCustomer: false,
-    showSelectSearch: false,
-    showSelectResults: false,
-    showSelectLabel: false,
-    showLogoCertra: false,
-    showItinerary: false,
-    selected: false,
-  },
-  setFlowControl: () => { 
     // do nothing
   },
   loaders: {
@@ -100,7 +71,7 @@ const InvContext = createContext<{
   order: {
     date: '',
     hora: '',
-    cliente: { name: '', code: 0 },
+    cliente: { name: '', code: '' },
     productos: [],
     subtotal: '',
     total: '',
@@ -122,12 +93,24 @@ const InvContext = createContext<{
   lookAtPharmacy: false,
   setLookAtPharmacy: () => { 
     // do nothing
+  },
+  subtotal: '',
+  setSubtotal: () => { 
+    // do nothing
+  },
+  discount: '',
+  setDiscount: () => { 
+    // do nothing
+  },
+  total: '',
+  setTotal: () => { 
+    // do nothing
   }
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // PRODUCTS
-  const [products, setProducts] = useState<ProductoInterface[]>([])
+  const [products, setProducts] = useState<ProductInterface[]>([])
   const [currentPage, setCurrentPage] = useState(1)
 
   // CART & ORDER 
@@ -135,23 +118,14 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   const [order, setOrder] = useState<OrderInterface>({
     date: '',
     hora: '',
-    cliente: { name: '', code: 0 },
+    cliente: { name: '', code: '' },
     productos: [],
     subtotal: '',
     total: '',
   })
-
-  // LAYOUT
-  const [flowControl, setFlowControl] = useState({
-    showProducts: false,
-    showSelectCustomer: false,
-    showSelectSearch: false,
-    showSelectResults: false,
-    showSelectLabel: false,
-    showLogoCertra: false,
-    showItinerary: false,
-    selected: false,
-  })
+  const [subtotal, setSubtotal] = useState('')
+  const [discount, setDiscount] = useState('')
+  const [total, setTotal] = useState('')
 
   // LOADERS
   const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
@@ -184,21 +158,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     setProductsStorage()
   }, [productsCart])
 
-  // Set flow control
-  useEffect(() => {
-    // set storage when a customer is selected
-    if (flowControl?.selected || (flowControl?.showProducts && !flowControl?.showSelectCustomer)) {
-      const flowControlStorage = async () => {
-        try {
-          await setDataStorage('flowControl', flowControl)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-      flowControlStorage()
-    }
-  }, [flowControl])
-
   // -----------------------------------------------
   // API
   // -----------------------------------------------
@@ -206,14 +165,14 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   // Get products api
   const getProducts = async () => {
     try {
-      let data: ProductoInterface[] = []
+      let data: ProductInterface[] = []
 
       // fetch data
-      if (myUser.from === 'scli' || myUser.from === 'usuario') {
+      if (myUser?.access.customerAccess || myUser?.access.salespersonAccess) {
 
         // inv farmacia
         data = await fetchSearchedItems({ table: 'sinv', searchTerm: `${currentPage}` })
-      } else if(myUser.from === 'usuario-clipro') {
+      } else if(myUser?.access.labAccess) {
 
         // inv lab
         data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
@@ -235,7 +194,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add to cart
   const addToCart = (codigo: string, amount: number) => {
-    setProductsCart([ ...productsCart, { codigo, amount } ])
+    setProductsCart([ ...productsCart, { codigo, amount, discount: '0' } ])
   }
 
   // Remove element from cart
@@ -250,8 +209,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setProductsCart,
       products,
       setProducts,
-      flowControl,
-      setFlowControl,
       loaders,
       setLoaders,
       loadingProductsGrid,
@@ -266,7 +223,13 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       reloadItinerary,
       setReloadItinerary,
       lookAtPharmacy,
-      setLookAtPharmacy
+      setLookAtPharmacy,
+      subtotal,
+      setSubtotal,
+      discount,
+      setDiscount,
+      total,
+      setTotal
     }}>
       {children}
     </InvContext.Provider>

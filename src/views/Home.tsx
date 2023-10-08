@@ -3,16 +3,16 @@ import { View, BackHandler } from 'react-native'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
 import useInv from '../hooks/useInv'
-import SelectCustomer from '../components/SelectCustomer'
-import Loader from '../components/Loader'
-import Logos from '../components/Logos'
-import Products from '../components/Products'
-import Footer from '../components/Footer'
+import SelectCustomer from '../components/customer/SelectCustomer'
+import Loader from '../components/elements/Loader'
+import Logos from '../components/elements/Logos'
+import Products from '../components/inventory/Products'
+import Footer from '../components/footer/Footer'
 
 const Home = () => {
   const { themeColors: { background }, myUser: { image_url } } = useLogin()
   const { loaders } = useInv()
-  
+
   // Back handler
   useEffect(() => {
     const backAction = () => {
@@ -29,7 +29,7 @@ const Home = () => {
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <View className='flex-1 px-3 pt-6'>
-          <Logos image={image_url} />
+          <Logos image={image_url as URL} />
 
           <View className='flex-1'>
             {loaders.loadingSlectedCustomer ? (
@@ -46,8 +46,10 @@ const Home = () => {
         </View>
 
       </View>
-
-      <Footer />
+      
+      <View className='bottom-0'>
+        <Footer />
+      </View>
     </>
   )
 }

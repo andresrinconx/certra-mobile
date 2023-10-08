@@ -1,12 +1,9 @@
 import { createContext, useState, useEffect } from 'react'
 import { PermissionsAndroid } from 'react-native'
 import GetLocation from 'react-native-get-location'
-import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
-import UserFromScliInterface from '../interfaces/UserFromScliInterface'
-import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
+import { UserFromScliInterface, ThemeColorsInterface, MyUserInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
-import { MyUserInterface } from '../interfaces/MyUserInterface'
 
 const LoginContext = createContext<{
   login: boolean
@@ -19,7 +16,6 @@ const LoginContext = createContext<{
   setMyUser: (myUser: MyUserInterface) => void
   loaders: { loadingAuth: boolean, }
   setLoaders: (loaders: { loadingAuth: boolean, }) => void
-  usersFromUsuario: UserFromUsuarioInterface[]
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
@@ -39,7 +35,13 @@ const LoginContext = createContext<{
   setPassword: () => { 
     // do nothing
   },
-  myUser: { from: '' },
+  myUser: {
+    access: {
+      customerAccess: false,
+      labAccess: false,
+      salespersonAccess: false
+    }
+  },
   setMyUser: () => { 
     // do nothing
   },
@@ -47,7 +49,6 @@ const LoginContext = createContext<{
   setLoaders: () => { 
     // do nothing
   },
-  usersFromUsuario: [],
   usersFromScli: [],
   themeColors: {
     primary: '',
@@ -78,8 +79,12 @@ const LoginContext = createContext<{
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // USER
   const [login, setLogin] = useState(false)
-  const [myUser, setMyUser] = useState<{ from: string }>({
-    from: '',
+  const [myUser, setMyUser] = useState<MyUserInterface>({
+    access: {
+      customerAccess: false,
+      labAccess: false,
+      salespersonAccess: false
+    }
   })
   const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
     primary: '',
@@ -100,7 +105,6 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
 
   // API
-  const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) 
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
 
   // INPUTS
@@ -118,7 +122,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add myUser storage
   useEffect(() => {
-    if (myUser.from) {
+    if (myUser.customer) {
       const setMyUserStorage = async () => {
         try {
           await setDataStorage('myUser', myUser)
@@ -167,19 +171,18 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   
   // Get usersFromUsuario & usersFromScli
   useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const resUser = await fetchTableData('usuario')
-        setUsersFromUsuario(resUser)
-
-        const resScli = await fetchTableData('scli')
-        setUsersFromScli(resScli)
-      } catch (error) {
-        console.log(error)
+    if (login) {
+      const getUsers = async () => {
+        try {
+          const resScli = await fetchTableData('scli')
+          setUsersFromScli(resScli)
+        } catch (error) {
+          console.log(error)
+        }
       }
+      getUsers()
     }
-    getUsers()
-  }, []) 
+  }, [login]) 
 
   return (
     <LoginContext.Provider value={{
@@ -194,7 +197,6 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       loaders,
       setLoaders,
       usersFromScli,
-      usersFromUsuario,
       themeColors,
       setThemeColors,
       checkLocationPermission,

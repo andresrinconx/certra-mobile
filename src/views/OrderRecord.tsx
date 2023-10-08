@@ -5,16 +5,17 @@ import { Modal, useToast, Switch } from 'native-base'
 import { XMarkIcon } from 'react-native-heroicons/outline'
 import DatePicker from 'react-native-date-picker'
 import RNFetchBlob from 'rn-fetch-blob'
-import { OrderRecordItemInterface } from '../interfaces/OrderRecordItemInterface'
+import { OrderRecordItemInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
 import useInv from '../hooks/useInv'
-import { fetchLastItemsLab, fetchLastItemsLabScli, fetchLastItemsSalesperson, fetchLastItemsSalespersonScli, fetchLastItemsScli, fetchRangeScli } from '../utils/api'
+import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api'
 import { getDate, getDateWithoutHyphen } from '../utils/helpers'
 import { orderRecordCols } from '../utils/constants'
-import Loader from '../components/Loader'
-import BackScreen from '../components/BackScreen'
-import Logos from '../components/Logos'
-import NoDataText from '../components/NoDataText'
+import Loader from '../components/elements/Loader'
+import BackScreen from '../components/elements/BackScreen'
+import Logos from '../components/elements/Logos'
+import NoDataText from '../components/elements/NoDataText'
+import LabelCustomer from '../components/customer/LabelCustomer'
 
 const OrderRecord = () => {
   const [loadingOrderRecord, setLoadingOrderRecord] = useState(true)
@@ -30,7 +31,7 @@ const OrderRecord = () => {
   const [openDatePickerTo, setOpenDatePickerTo] = useState(false)
   const [dateTo, setDateTo] = useState(new Date())
 
-  const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser } = useLogin()
+  const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin()
   const { lookAtPharmacy } = useInv()
   const toast = useToast()
   const id = 'toast'
@@ -48,19 +49,19 @@ const OrderRecord = () => {
       try {
         let data
 
-        if (myUser.from === 'scli') {
-          data = await fetchLastItemsScli(myUser.cliente as string)
-        } else if (myUser.from === 'usuario-clipro') {
+        if (customerAccess) {
+          data = await fetchLastItemsCustomer(cliente as string)
+        } else if (labAccess) {
           if (lookAtPharmacy) {
-            data = await fetchLastItemsLabScli({ code: myUser?.us_codigo as string, customer: String(myUser?.customer?.cliente) })
+            data = await fetchLastItemsLabCustomer({ code: us_codigo as string, customer: String(customer?.cliente) })
           } else {
-            data = await fetchLastItemsLab({ clipro: myUser?.clipro as string, code: myUser?.us_codigo as string })
+            data = await fetchLastItemsLab({ clipro: clipro as string, code: us_codigo as string })
           }
-        } else if (myUser.from === 'usuario') {
+        } else if (salespersonAccess) {
           if (lookAtPharmacy) {
-            data = await fetchLastItemsSalespersonScli({ code: myUser?.us_codigo as string, customer: String(myUser?.customer?.cliente) })
+            data = await fetchLastItemsSalespersonCustomer({ code: us_codigo as string, customer: String(customer?.cliente) })
           } else {
-            data = await fetchLastItemsSalesperson(String(myUser?.us_codigo))
+            data = await fetchLastItemsSalesperson(String(us_codigo))
           }
         }
         
@@ -96,38 +97,54 @@ const OrderRecord = () => {
 
     // download pdf
     try {
-      // const pdfUrl = await fetchRangeScli({ customer: String(myUser.cliente), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
-      const pdfUrl = 'https://global.sharp/contents/calculator/support/classroom/el-w531/pdf/Random_Numbers.pdf'
-      
-      const { config, fs } = RNFetchBlob
-      const downloads = fs.dirs?.DownloadDir
-      return config({
-        fileCache: true,
-        addAndroidDownloads: {
-          useDownloadManager: true,
-          notification: true,
-          path: downloads + '/' + `certra${getDate(dateTo)}` + '.pdf',
+      let pdfUrl
+      if (customerAccess) {
+        pdfUrl = await fetchRangeCustomer({ customer: String(cliente), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+      } else if (labAccess) {
+        if (lookAtPharmacy) {
+          pdfUrl = await fetchRangeLabCustomer({ customer: String(customer?.cliente), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+        } else {
+          pdfUrl = await fetchRangeLab({ clipro: String(clipro), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
         }
-      })
-      .fetch('GET', pdfUrl)
-        .then(() => {
-          if (!toast.isActive(id)) {
-            toast.show({
-              id,
-              title: 'PDF descargado correctamente',
-              duration: 2500
-            })
-          } 
+      } else if (salespersonAccess) {
+        if (lookAtPharmacy) {
+          pdfUrl = await fetchRangeSalespersonCustomer({ customer: String(customer?.cliente), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+        } else {
+          pdfUrl = await fetchRangeSalesperson({ code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+        }
+      }
+
+      if (pdfUrl) {
+        const { config, fs } = RNFetchBlob
+        const downloads = fs.dirs?.DownloadDir
+        return config({
+          fileCache: true,
+          addAndroidDownloads: {
+            useDownloadManager: true,
+            notification: true,
+            path: downloads + '/' + `certra${getDate(dateTo)}` + '.pdf',
+          }
         })
-        .catch(() => {
-          if (!toast.isActive(id)) {
-            toast.show({
-              id,
-              title: 'No se encontraron datos',
-              duration: 1500
-            })
-          } 
-        })
+        .fetch('GET', pdfUrl)
+          .then(() => {
+            if (!toast.isActive(id)) {
+              toast.show({
+                id,
+                title: 'PDF descargado correctamente',
+                duration: 2500
+              })
+            } 
+          })
+          .catch(() => {
+            if (!toast.isActive(id)) {
+              toast.show({
+                id,
+                title: 'No se encontraron datos',
+                duration: 1500
+              })
+            } 
+          })
+      }
     } catch (error) {
       if (!toast.isActive(id)) {
         toast.show({
@@ -144,8 +161,9 @@ const OrderRecord = () => {
       <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-        <Logos image={myUser?.image_url as URL} />
+        <Logos image={image_url as URL} />
 
+        {/* back & switch */}
         <View className='flex flex-row items-center justify-between'>
           <BackScreen title='Historial' />
 
@@ -164,6 +182,14 @@ const OrderRecord = () => {
           )}
         </View>
 
+        {/* customer */}
+        {customer && !loadingOrderRecord ? (
+          <View className='pb-1'>
+            <LabelCustomer name={customer?.nombre as string} />
+          </View>
+        ):null}
+
+        {/* content */}
         <View>
           {loadingOrderRecord ? (
             <View className='mt-5'>
@@ -172,14 +198,14 @@ const OrderRecord = () => {
           ) : (
             lastItems?.length === 0 ? (
               <NoDataText
-                text='No hay pedidos recientes'
+                text='No hay pedidos recientes para esta farmacia'
               />
             ) : (
               <View>
                 
                 {/* table header */}
                 <View className='flex flex-row justify-center items-center mt-4'>
-                  {orderRecordCols[myUser.from === 'scli' ? 0 : 1].map((item) => {
+                  {orderRecordCols[customerAccess ? 0 : 1].map((item) => {
                     const { id, size, name } = item
                     return (
                       <Text key={id} className='text-center' 
@@ -202,7 +228,7 @@ const OrderRecord = () => {
                       const isLast = index === lastItems.length - 1
                       return (
                         <>
-                          {myUser.from === 'scli' ? (
+                          {customerAccess ? (
                             <View key={numero} className='flex flex-row justify-center items-center mb-[1px]' 
                               style={{ 
                                 backgroundColor: !isPair ? background : list, 

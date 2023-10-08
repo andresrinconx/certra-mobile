@@ -4,13 +4,13 @@ import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
-import UserFromScliInterface from '../interfaces/UserFromScliInterface'
-import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
 import useLogin from '../hooks/useLogin'
+import useInv from '../hooks/useInv'
 import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
+import { fetchLogin } from '../utils/api'
 import { socialMedia } from '../utils/constants'
-import Loader from '../components/Loader'
+import Loader from '../components/elements/Loader'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -20,7 +20,8 @@ const Login = () => {
     password: false,
   })
 
-  const { user, setUser, password, setPassword, login, loaders, setLoaders, usersFromUsuario, usersFromScli, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
+  const { user, setUser, password, setPassword, loaders, setLoaders, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
+  const { getProducts } = useInv()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
   const textInputRefPassword = useRef<TextInput | null>(null)
@@ -33,13 +34,6 @@ const Login = () => {
   // -----------------------------------------------
   // SCREEN
   // -----------------------------------------------
-
-  // Go home
-  useEffect(() => {
-    if (login) {
-      navigation.navigate('Home')
-    }
-  }, [login])
   
   // Input
   useEffect(() => {
@@ -82,79 +76,43 @@ const Login = () => {
     setLoaders({ ...loaders, loadingAuth: true })
     setIncorrectCredentials(false)
 
-    // find in the table 'Usuario'
-    const userFromUsuario = usersFromUsuario?.find((userDb: UserFromUsuarioInterface) =>
-      (userDb.us_codigo === user.toUpperCase().trim() || userDb.us_codigo === user.trim()) && userDb.us_clave === password)
+    // api call
+    const res = await fetchLogin({ usuario: user, password })
+    const dataUser = res[0]
 
-    if (userFromUsuario === undefined) {
-
-      // find in the table 'Scli'
-      const userFromScli = usersFromScli?.find((userDb: UserFromScliInterface) =>
-        ('W' + userDb.cliente === user.toUpperCase().trim() || 'W' + userDb.clave === user.trim()) && userDb.clave === password)
-
-      if (userFromScli === undefined) {
-
-        // Incorrect Credentials
-        setTimeout(() => {
-          setLoaders({ ...loaders, loadingAuth: false })
-          setIncorrectCredentials(true)
-        }, 1000)
-        return
-      } else {
-
-        // Success from Scli
-        setIncorrectCredentials(false)
-        setMyUser({
-          ...userFromScli,
-          from: 'scli',
-        })
-        await setDataStorage('themeColors', { ...pallete[1] }) // 1 = Scli
-        await setDataStorage('login', true)
-        await setDataStorage('myUser', {
-          ...userFromScli,
-          from: 'scli',
-        })
-        setThemeColors({ ...pallete[1] }) // 1 = Scli
-        
-        setLogin(true)
-        setLoaders({ ...loaders, loadingAuth: false })
-        setShowPassword(false)
-      }
-    } else {
-
-      // Success from Usuario
+    if (res?.message) { // incorrect credentials
+      setLoaders({ ...loaders, loadingAuth: false })
+      setIncorrectCredentials(true)
+      return
+    } else { 
       setIncorrectCredentials(false)
-      if (userFromUsuario.clipro !== '') { // Success with clipro
-        setMyUser({
-          ...userFromUsuario,
-          from: 'usuario-clipro',
-        })
-      } else {
-        setMyUser({
-          ...userFromUsuario,
-          from: 'usuario',
-        })
-      }
-      await setDataStorage('themeColors', { ...pallete[0] }) // 0 = Usuario
+
+      setMyUser({
+        ...dataUser,
+        access: {
+          customerAccess: dataUser?.cliente ? true : false,
+          labAccess: dataUser?.clipro ? true : false,
+          salespersonAccess: !dataUser?.clipro ? true : false
+        }
+      })
+      setThemeColors({ ...pallete[dataUser?.cliente ? 1 : 0] })
+
+      await setDataStorage('themeColors', { ...pallete[dataUser?.cliente ? 1 : 0] })
       await setDataStorage('login', true)
-
-      if (userFromUsuario.clipro !== '') { // Success with clipro
-        await setDataStorage('myUser', {
-          ...userFromUsuario,
-          from: 'usuario-clipro',
-        })
-      } else {
-        await setDataStorage('myUser', {
-          ...userFromUsuario,
-          from: 'usuario',
-        })
-      }
-
-      setThemeColors({ ...pallete[0] }) // 0 = Usuario
+      await setDataStorage('myUser', {
+        ...dataUser,
+        access: {
+          customerAccess: dataUser?.cliente ? true : false,
+          labAccess: dataUser?.clipro ? true : false,
+          salespersonAccess: !dataUser?.clipro ? true : false
+        }
+      })
 
       setLogin(true)
+      navigation.navigate('Home')
       setLoaders({ ...loaders, loadingAuth: false })
       setShowPassword(false)
+      getProducts()
     }
   }
 

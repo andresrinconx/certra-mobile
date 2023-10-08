@@ -1,37 +1,37 @@
 import { useEffect, useState } from 'react'
-import { View, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native'
+import { View, Image, FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
-import { DataConfigProfileInterface } from '../interfaces/DataConfigProfileInterface'
+import { DataConfigProfileInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
-import { fetchUserData } from '../utils/api'
-import Loader from '../components/Loader'
-import Logos from '../components/Logos'
-import BackScreen from '../components/BackScreen'
-import ProfileGroup from '../components/ProfileGroup'
-import IconLogOut from '../components/IconLogOut'
+import { fetchProfileData } from '../utils/api'
+import Loader from '../components/elements/Loader'
+import Logos from '../components/elements/Logos'
+import BackScreen from '../components/elements/BackScreen'
+import ProfileGroup from '../components/profile/ProfileGroup'
+import IconLogOut from '../components/profile/IconLogOut'
 
 const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
   const navigation = useNavigation()
-  const { themeColors: { primary, background, darkTurquoise }, myUser } = useLogin()
-  const { flowControl, setLookAtPharmacy } = useInv()
+  const { themeColors: { primary, background, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
+  const { setLookAtPharmacy } = useInv()
 
   // Get data
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await fetchUserData({ 
-          table: `${myUser?.from === 'scli'           ? 'scliU'    :
-                    myUser?.from === 'usuario'        ? 'usuarioP' :
-                    myUser?.from === 'usuario-clipro' ? 'usuarioU' : null}`,
+        const res = await fetchProfileData({ 
+          table: `${customerAccess    ? 'scliU'    :
+                    salespersonAccess ? 'usuarioP' :
+                    labAccess         ? 'usuarioU' : null}`,
 
-          code: `${myUser?.from === 'scli'           ? `${myUser?.cliente}` : 
-                   myUser?.from === 'usuario'        ? `${myUser?.cedula}`  :
-                   myUser?.from === 'usuario-clipro' ? `${myUser.clipro}`   : null}`,
+          code: `${customerAccess     ? `${cliente}` : 
+                   salespersonAccess  ? `${cedula}`  :
+                   labAccess          ? `${clipro}`  : null}`,
         })
         setDataConfig(res)
 
@@ -50,88 +50,88 @@ const Profile = () => {
     // main info
     {
       name: 
-        myUser.from === 'scli'           ? dataConfig?.nombre : 
-        myUser.from === 'usuario'        ? `${dataConfig?.nombre} ${dataConfig?.apellido}` :
-        myUser.from === 'usuario-clipro' ? dataConfig?.nombre : null,
+        customerAccess    ? dataConfig?.nombre : 
+        salespersonAccess ? `${dataConfig?.nombre} ${dataConfig?.apellido}` :
+        labAccess         ? dataConfig?.nombre : null,
 
       subname: 
-        myUser.from === 'scli'           ? `Código: ${dataConfig?.cliente}` : 
-        myUser.from === 'usuario'        ? ''                               :
-        myUser.from === 'usuario-clipro' ? `Código: ${dataConfig?.proveed}` : null,
+        customerAccess    ? `Código: ${dataConfig?.cliente}` : 
+        salespersonAccess ? ''                               :
+        labAccess         ? `Código: ${dataConfig?.proveed}` : null,
 
       fields: [
         { 
           label: 'RIF',
           value: 
-            myUser.from === 'scli'           ? dataConfig?.rifci  : 
-            myUser.from === 'usuario'        ? dataConfig?.rif    :
-            myUser.from === 'usuario-clipro' ? dataConfig?.rif    : null,
+            customerAccess    ? dataConfig?.rifci  : 
+            salespersonAccess ? dataConfig?.rif    :
+            labAccess         ? dataConfig?.rif    : null,
         },
         { 
           label: 
-            myUser.from === 'scli'           ? ''       :
-            myUser.from === 'usuario'        ? 'Cédula' :
-            myUser.from === 'usuario-clipro' ? ''       : null,
+            customerAccess    ? ''       :
+            salespersonAccess ? 'Cédula' :
+            labAccess          ? ''      : null,
 
           value: 
-            myUser.from === 'scli'           ? '' : 
-            myUser.from === 'usuario'        ? dataConfig?.cedula :
-            myUser.from === 'usuario-clipro' ? '' : null,
+            customerAccess    ? '' : 
+            salespersonAccess ? dataConfig?.cedula :
+            labAccess         ? '' : null,
         },
         { 
           label: 'Correo', 
           value: 
-            myUser.from === 'scli'           ? dataConfig?.email  : 
-            myUser.from === 'usuario'        ? dataConfig?.email  :
-            myUser.from === 'usuario-clipro' ? dataConfig?.emailc : null,
+            customerAccess    ? dataConfig?.email  : 
+            salespersonAccess ? dataConfig?.email  :
+            labAccess         ? dataConfig?.emailc : null,
         },
         { 
           label: 'Teléfono', 
           value: 
-            myUser.from === 'scli'           ? dataConfig?.telefono : 
-            myUser.from === 'usuario'        ? dataConfig?.telefono :
-            myUser.from === 'usuario-clipro' ? dataConfig?.telefono : null,
+            customerAccess    ? dataConfig?.telefono : 
+            salespersonAccess ? dataConfig?.telefono :
+            labAccess         ? dataConfig?.telefono : null,
         },
         { 
           label: 
-            myUser.from === 'scli'           ? 'Aniversario' :
-            myUser.from === 'usuario'        ? 'Cumpleaños'  :
-            myUser.from === 'usuario-clipro' ? 'Aniversario' : null,
+            customerAccess    ? 'Aniversario' :
+            salespersonAccess ? 'Cumpleaños'  :
+            labAccess         ? 'Aniversario' : null,
 
           value: 
-            myUser.from === 'scli'           ? dataConfig?.aniversario : 
-            myUser.from === 'usuario'        ? dataConfig?.nacimi      :
-            myUser.from === 'usuario-clipro' ? dataConfig?.aniversario : null,
+            customerAccess    ? dataConfig?.aniversario : 
+            salespersonAccess ? dataConfig?.nacimi      :
+            labAccess         ? dataConfig?.aniversario : null,
         },
         { 
           label: 'Ubicación', 
           value: 
-            myUser.from === 'scli'           ? dataConfig?.dire11 : 
-            myUser.from === 'usuario'        ? dataConfig?.direc1 :
-            myUser.from === 'usuario-clipro' ? dataConfig?.direc1 : null,
+            customerAccess    ? dataConfig?.dire11 : 
+            salespersonAccess ? dataConfig?.direc1 :
+            labAccess         ? dataConfig?.direc1 : null,
         },
       ],
     },
     // extra info
     {
       name: 
-        myUser.from === 'scli'           ? 'Datos del representante' : 
-        myUser.from === 'usuario'        ? ''                        :
-        myUser.from === 'usuario-clipro' ? 'Datos del representante' : null,
+        customerAccess    ? 'Datos del representante' : 
+        salespersonAccess ? ''                        :
+        labAccess         ? 'Datos del representante' : null,
             
       subname: '',
       fields: [
         { 
           label: 'Nombre', 
           value: 
-            myUser.from === 'scli'           ? dataConfig?.contacto  : 
-            myUser.from === 'usuario-clipro' ? dataConfig?.us_nombre : null,
+            customerAccess ? dataConfig?.contacto  : 
+            labAccess      ? dataConfig?.us_nombre : null,
         },
         { 
           label: 'Teléfono', 
           value: 
-            myUser.from === 'scli'           ? dataConfig?.telefon2 : 
-            myUser.from === 'usuario-clipro' ? dataConfig?.telefon2 : null,
+            customerAccess ? dataConfig?.telefon2 : 
+            labAccess      ? dataConfig?.telefon2 : null,
         },
       ]
     }
@@ -141,10 +141,10 @@ const Profile = () => {
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-      <Logos image={myUser?.image_url as URL} />
+      <Logos image={image_url as URL} />
       <BackScreen 
         title='Mi perfil' 
-        condition={myUser?.from !== 'scli'}
+        condition={!customerAccess}
         iconImage={require('../assets/history-blue.png')}
         onPressIcon={() => {
           setLookAtPharmacy(false)
@@ -164,13 +164,13 @@ const Profile = () => {
               data={groups}
               numColumns={1}
               contentContainerStyle={{
-                paddingBottom: 180,
+                paddingBottom: 200,
               }}
               overScrollMode='never'
               showsVerticalScrollIndicator={false}
               ListHeaderComponent={() => (
                 <View className='flex flex-col items-center'>
-                  {!flowControl?.showLogoCertra && (
+                  {customerAccess && (
                     <View>
                       <Image style={{ width: wp(32), height: wp(32) }} resizeMode='cover'
                         source={require('../assets/drugstore.png')}
