@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
-import { View, Text, FlatList, StatusBar } from 'react-native'
+import { View, FlatList, StatusBar } from 'react-native'
 import { useRoute } from '@react-navigation/native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { ItineraryEventInterface } from '../interfaces/ItineraryEventInterface'
+import { ItineraryEventInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
-import Logos from '../components/Logos'
-import BackScreen from '../components/BackScreen'
-import ItineraryDayEvent from '../components/ItineraryDayEvent'
+import Logos from '../components/elements/Logos'
+import BackScreen from '../components/elements/BackScreen'
+import ItineraryDayEvent from '../components/itinerary/ItineraryDayEvent'
 import useInv from '../hooks/useInv'
+import NoDataText from '../components/elements/NoDataText'
 
 const ItineraryDay = () => {
   const { params: { 
@@ -23,7 +23,7 @@ const ItineraryDay = () => {
     events: ItineraryEventInterface[]
     reasons: []
   } }
-  const { themeColors: { background, typography }, myUser } = useLogin()
+  const { themeColors: { background }, myUser } = useLogin()
   const { setReloadItinerary } = useInv()
 
   useEffect(() => {
@@ -34,15 +34,13 @@ const ItineraryDay = () => {
     <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-      <Logos image={myUser?.image_url} />
+      <Logos image={myUser?.image_url as URL} />
       <BackScreen title={month} />
 
       {events?.length === 0 || !events ? (
-        <View className='flex flex-col items-center justify-center'>
-          <Text className='font-extrabold text-center mt-6' style={{ color: typography, fontSize: wp(6) }}>
-            No hay eventos
-          </Text>
-        </View>
+        <NoDataText 
+          text='No hay eventos para este día' 
+        />
       ) : (
         <View className='pt-2'>
           <FlatList

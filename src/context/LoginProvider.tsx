@@ -1,9 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import { PermissionsAndroid } from 'react-native'
 import GetLocation from 'react-native-get-location'
-import UserFromUsuarioInterface from '../interfaces/UserFromUsuarioInterface'
-import UserFromScliInterface from '../interfaces/UserFromScliInterface'
-import { ThemeColorsInterface } from '../interfaces/ThemeColorsInterface'
+import { UserFromScliInterface, ThemeColorsInterface, MyUserInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
 
@@ -14,29 +12,43 @@ const LoginContext = createContext<{
   setUser: (user: string) => void
   password: string
   setPassword: (password: string) => void
-  myUser: any
-  setMyUser: (myUser: any) => void
+  myUser: MyUserInterface
+  setMyUser: (myUser: MyUserInterface) => void
   loaders: { loadingAuth: boolean, }
   setLoaders: (loaders: { loadingAuth: boolean, }) => void
-  usersFromUsuario: UserFromUsuarioInterface[]
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
   checkLocationPermission: () => void
   locationPermissionGranted: boolean
-  getCurrentLocation: () => any
+  getCurrentLocation: () => unknown
 }>({
   login: false,
-  setLogin: () => { },
+  setLogin: () => { 
+    // do nothing
+  },
   user: '',
-  setUser: () => { },
+  setUser: () => { 
+    // do nothing
+  },
   password: '',
-  setPassword: () => { },
-  myUser: { },
-  setMyUser: () => { },
+  setPassword: () => { 
+    // do nothing
+  },
+  myUser: {
+    access: {
+      customerAccess: false,
+      labAccess: false,
+      salespersonAccess: false
+    }
+  },
+  setMyUser: () => { 
+    // do nothing
+  },
   loaders: { loadingAuth: false, },
-  setLoaders: () => { },
-  usersFromUsuario: [],
+  setLoaders: () => { 
+    // do nothing
+  },
   usersFromScli: [],
   themeColors: {
     primary: '',
@@ -52,17 +64,27 @@ const LoginContext = createContext<{
     typography: '',
     processBtn: ''
   },
-  setThemeColors: () => { },
-  checkLocationPermission: () => { },
+  setThemeColors: () => { 
+    // do nothing
+  },
+  checkLocationPermission: () => { 
+    // do nothing
+  },
   locationPermissionGranted: false,
-  getCurrentLocation: () => { }
+  getCurrentLocation: () => { 
+    // do nothing
+  }
 })
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // USER
   const [login, setLogin] = useState(false)
-  const [myUser, setMyUser] = useState<any>({
-    from: '',
+  const [myUser, setMyUser] = useState<MyUserInterface>({
+    access: {
+      customerAccess: false,
+      labAccess: false,
+      salespersonAccess: false
+    }
   })
   const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
     primary: '',
@@ -83,7 +105,6 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
 
   // API
-  const [usersFromUsuario, setUsersFromUsuario] = useState<UserFromUsuarioInterface[]>([]) 
   const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
 
   // INPUTS
@@ -101,7 +122,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add myUser storage
   useEffect(() => {
-    if (myUser.from) {
+    if (myUser.customer) {
       const setMyUserStorage = async () => {
         try {
           await setDataStorage('myUser', myUser)
@@ -118,7 +139,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // -----------------------------------------------
 
   const checkLocationPermission = async () => {
-    let granted = await getLocationPermission()
+    const granted = await getLocationPermission()
     setLocationPermissionGranted(granted)
   }
 
@@ -150,19 +171,18 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   
   // Get usersFromUsuario & usersFromScli
   useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const resUser = await fetchTableData('usuario')
-        setUsersFromUsuario(resUser)
-
-        const resScli = await fetchTableData('scli')
-        setUsersFromScli(resScli)
-      } catch (error) {
-        console.log(error)
+    if (login) {
+      const getUsers = async () => {
+        try {
+          const resScli = await fetchTableData('scli')
+          setUsersFromScli(resScli)
+        } catch (error) {
+          console.log(error)
+        }
       }
+      getUsers()
     }
-    getUsers()
-  }, []) 
+  }, [login]) 
 
   return (
     <LoginContext.Provider value={{
@@ -177,7 +197,6 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       loaders,
       setLoaders,
       usersFromScli,
-      usersFromUsuario,
       themeColors,
       setThemeColors,
       checkLocationPermission,

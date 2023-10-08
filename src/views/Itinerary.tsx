@@ -4,15 +4,15 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
-import { ItineraryEventInterface } from '../interfaces/ItineraryEventInterface'
+import { ItineraryEventInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
 import useInv from '../hooks/useInv'
 import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
 import { fetchItinerary, fetchReasons } from '../utils/api'
 import { days } from '../utils/constants'
-import Loader from '../components/Loader'
-import Logos from '../components/Logos'
-import BackScreen from '../components/BackScreen'
+import Loader from '../components/elements/Loader'
+import Logos from '../components/elements/Logos'
+import BackScreen from '../components/elements/BackScreen'
 
 interface daysItineraryInterface {
   current: boolean,
@@ -137,7 +137,7 @@ const Itinerary = () => {
 
       // days with info
       const dataItinerary = await fetchItinerary({
-        salesperson: myUser?.vendedor, 
+        salesperson: String(myUser?.vendedor), 
         year: String(currentYear), 
         month: String(currentMonth + 1)
       })
@@ -190,7 +190,7 @@ const Itinerary = () => {
     <View className='flex-1 px-2.5 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-      <Logos image={myUser?.image_url} />
+      <Logos image={myUser?.image_url as URL} />
       <BackScreen title='Itinerario' />
 
       <View>
@@ -232,8 +232,8 @@ const Itinerary = () => {
                   numColumns={7}
                   showsVerticalScrollIndicator={false}
                   renderItem={({item: {current, day, events}, index}) => {
-                    let date = new Date(`${currentYear}-${currentMonth}-${Number(day) + 1}`)
-                    let dayInText = getDayOfWeekInText(date)
+                    const date = new Date(`${currentYear}-${currentMonth}-${Number(day) + 1}`)
+                    const dayInText = getDayOfWeekInText(date)
 
                     return (
                       <TouchableOpacity key={index} className='border-[0.5px] p-0.5'
