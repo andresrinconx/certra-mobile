@@ -8,6 +8,7 @@ import { disponibility } from '../../utils/constants'
 import { ProductInterface } from '../../utils/interfaces'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
+import { twoDecimalsPrice } from '../../utils/helpers'
 
 const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)
@@ -26,7 +27,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess } } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useInv()
-  const { descrip, precio1, codigo, centro, merida, oriente } = product
+  const { descrip, precio1, codigo, centro, merida, oriente, base1 } = product
   const cancelRef = useRef(null)
   const initialRef = useRef(null)
   const navigation = useNavigation()
@@ -295,14 +296,29 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
             <View className='w-1/2 pl-2'>
 
               {/* price */}
-              <View className='my-2'>
-                <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
-                  Precio:
-                </Text>
+              <View className='flex flex-row justify-between items-center my-2'>
 
-                <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-                  Bs. {precio1}
-                </Text>
+                {/* normal price */}
+                <View className=''>
+                  <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                    Precio:
+                  </Text>
+
+                  <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                    Bs. {twoDecimalsPrice(Number(precio1))}
+                  </Text>
+                </View>
+
+                {/* discount price */}
+                <View className=''>
+                  <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                    Con desc.:
+                  </Text>
+
+                  <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                    Bs. {twoDecimalsPrice(precio1 - ((base1 * discount) / 100))}
+                  </Text>
+                </View>
               </View>
 
               {/* amount and discount */}

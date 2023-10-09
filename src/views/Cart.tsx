@@ -14,6 +14,7 @@ import Logos from '../components/elements/Logos'
 import LabelCustomer from '../components/customer/LabelCustomer'
 import BackScreen from '../components/elements/BackScreen'
 import ProcessOrder from '../components/cart/ProcessOrder'
+import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
 
 const Cart = () => {
   const [fullProductsCart, setFullProductsCart] = useState([])
@@ -40,6 +41,13 @@ const Cart = () => {
   // Get full products cart
   useEffect(() => {
     const getFullProductsCart = async () => {
+
+      // lineal discount storage
+      if (!linealDiscount) {
+        const linealDiscountStorage = await getDataStorage('linealDiscount')
+        setLinealDiscount(linealDiscountStorage ? JSON.parse(linealDiscountStorage) : 0)
+        setLinealDiscountInput(linealDiscountStorage ? JSON.parse(linealDiscountStorage) : '')
+      }
 
       if (productsCart?.length > 0) {
         const newFullProductsCart = []
@@ -86,13 +94,22 @@ const Cart = () => {
     }
   }, [linealDiscountInput])
 
-  const aceptDiscount = () => {
+  const aceptDiscount = async () => {
     const updatedProductsCart = productsCart.map(item => {
       const cleanDiscount = parseInt(String(linealDiscountInput).replace(/-/g, ''))
       return { ...item, discount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
     })
     setProductsCart(updatedProductsCart)
-    setLinealDiscount(Number(linealDiscountInput))
+    
+    // set discounts
+    const cleanDiscount = parseInt(String(linealDiscountInput).replace(/-/g, ''))
+    setLinealDiscount(isNaN(cleanDiscount) ? 0 : cleanDiscount)
+    try {
+      await setDataStorage('linealDiscount', isNaN(cleanDiscount) ? '0' : String(cleanDiscount))
+    } catch (error) {
+      console.log(error)
+    }
+
     setOpenLinealDiscountModal(false)
   }
 
@@ -211,7 +228,7 @@ const Cart = () => {
         </AlertDialog.Content>
       </AlertDialog>
 
-      {/* modal discount */}
+      {/* modal lineal discount */}
       <Modal isOpen={openLinealDiscountModal} initialFocusRef={initialRef}>
         <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 

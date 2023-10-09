@@ -55,3 +55,11 @@ export function getMonthAndDays(date: Date) {
   
   return data[date.getMonth()] // object {month: string, days: number}
 }
+
+// -----------------------------------------------
+// PRICES HELPERS
+// -----------------------------------------------
+
+export const twoDecimalsPrice = (price: number) => {
+  return price.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}

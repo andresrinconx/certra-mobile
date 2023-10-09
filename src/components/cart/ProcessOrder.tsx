@@ -5,7 +5,7 @@ import { AlertDialog, Button, Modal } from 'native-base'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import { ProductInterface } from '../../utils/interfaces'
-import { getDate, getHour } from '../../utils/helpers'
+import { getDate, getHour, twoDecimalsPrice } from '../../utils/helpers'
 import { fetchSendData } from '../../utils/api'
 
 const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
@@ -24,22 +24,22 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   // ACTIONS
   // -----------------------------------------------
 
-  // Total, discount...
+  // Subtotal, discount, total...
   useEffect(() => {
     // subtotal
     const subtotal = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + product.precio1 * product.amount, 0)
-    const subtotalFormated = subtotal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    const subtotalFormated = twoDecimalsPrice(subtotal)
     setSubtotal(subtotalFormated)
 
     // discount
     const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.discount) * (product.base1 * product.amount)) / 100), 0)
-    const discountFormated = discount.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    const discountFormated = twoDecimalsPrice(discount)
     setDiscount(discountFormated)
 
     // total
     const total = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + product.precio1 * product.amount, 0)
     const totalDiscount = total - discount
-    const totalFormated = totalDiscount.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    const totalFormated = twoDecimalsPrice(totalDiscount)
     setTotal(totalFormated)
   }, [fullProductsCart])
 
@@ -123,7 +123,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   return (
     <>
       <View className='flex flex-col justify-center w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'
-        style={{ height: wp(Number(discount) > 0 ? 38 : 32) }}
+        style={{ height: wp(parseFloat(discount) > 0 ? 38 : 32) }}
       >
         <View className='flex flex-col justify-center h-full w-[92%]'
           style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
@@ -142,7 +142,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
               </View>
 
               {/* discount */}
-              {Number(discount) > 0 && (
+              {parseFloat(discount) > 0 && (
                 <View className='flex flex-row justify-between'>
                   <Text style={{ fontSize: wp(4.2), color: turquoise }} className='font-semibold'>
                     Descuento:

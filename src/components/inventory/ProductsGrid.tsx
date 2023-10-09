@@ -8,6 +8,7 @@ import { disponibility } from '../../utils/constants'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import ModalSelectCustomer from '../elements/ModalSelectCustomer'
+import { twoDecimalsPrice } from '../../utils/helpers'
 
 const ProductsGrid = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
@@ -155,7 +156,7 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
               </Text>
 
               <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-                Bs. {precio1}
+                Bs. {twoDecimalsPrice(Number(precio1))}
               </Text>
             </View>
 

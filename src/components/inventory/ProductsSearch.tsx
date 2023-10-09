@@ -7,6 +7,7 @@ import { disponibility } from '../../utils/constants'
 import { ProductInterface } from '../../utils/interfaces'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
+import { twoDecimalsPrice } from '../../utils/helpers'
 
 const ProductsSearch = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
@@ -204,7 +205,7 @@ const ProductsSearch = ({ product }: { product: ProductInterface }) => {
             </Text>
 
             <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-              Bs. {precio1}
+              Bs. {twoDecimalsPrice(Number(precio1))}
             </Text>
           </View>
 

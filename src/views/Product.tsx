@@ -11,6 +11,7 @@ import { disponibility } from '../utils/constants'
 import IconCart from '../components/footer/IconCart'
 import Loader from '../components/elements/Loader'
 import ModalSelectCustomer from '../components/elements/ModalSelectCustomer'
+import { twoDecimalsPrice } from '../utils/helpers'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
@@ -166,7 +167,7 @@ const Product = () => {
                 Precio:
               </Text>
               <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
-                Bs. {precio1}
+                Bs. {twoDecimalsPrice(Number(precio1))}
               </Text>
             </View>
 
