@@ -73,7 +73,7 @@ const Inventory = () => {
 
           <View className='rounded-lg mx-3' style={{ backgroundColor: list, width: wp(70) }}>
             <TextInput className='mx-3 text-base py-0' style={{ color: typography }}
-              placeholder='Buscar Inventario'
+              placeholder='Buscar Productos'
               placeholderTextColor={typography}
               ref={textInputRef}
               onChangeText={handleTextDebounce}

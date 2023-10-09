@@ -26,7 +26,7 @@ const IconInventory = () => {
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
           source={require('../../assets/inventory.png')}
         />
-        <Text className='w-9 text-[8px] text-center text-white font-bold'>Inventario</Text>
+        <Text className='w-9 text-[8px] text-center text-white font-bold'>Productos</Text>
       </Pressable>
 
       <ModalSelectCustomer 
