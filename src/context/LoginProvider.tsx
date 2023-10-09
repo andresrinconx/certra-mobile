@@ -174,7 +174,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     if (login) {
       const getUsers = async () => {
         try {
-          const resScli = await fetchTableData('scli')
+          const resScli = await fetchTableData('appClientes/scli')
           setUsersFromScli(resScli)
         } catch (error) {
           console.log(error)

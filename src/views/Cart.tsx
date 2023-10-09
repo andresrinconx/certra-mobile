@@ -26,7 +26,7 @@ const Cart = () => {
 
   const [send, setSend] = useState(false)
 
-  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary, turquoise }, myUser: { access: { customerAccess }, nombre, cliente, us_codigo, customer, image_url } } = useLogin()
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, icon, primary, turquoise }, myUser: { access: { customerAccess, labAccess }, nombre, cliente, us_codigo, customer, image_url } } = useLogin()
   const { productsCart, setProductsCart, setLoaders, loaders, order, setOrder, subtotal, setSubtotal, total, setTotal, discount, setDiscount } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -51,7 +51,7 @@ const Cart = () => {
           const discount = productsCart[i].discount
     
           // get product api
-          const res: ProductInterface[] = await fetchOneItem('searchC', code)
+          const res: ProductInterface[] = await fetchOneItem('appSinv/searchC', code)
           newFullProductsCart.push({ ...res[0], amount, discount })
           
           // last item
@@ -154,7 +154,8 @@ const Cart = () => {
         base1: Number(product.base1),
         precio1: Number(product.precio1),
         iva: Number(product.iva),
-        cantidad: Number(product.amount)
+        cantidad: Number(product.amount),
+        descuento: labAccess ? String(product.discount) : String(0),
       })),
       subtotal: String(subtotal),
       total: String(total),

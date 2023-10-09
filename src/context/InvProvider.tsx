@@ -171,11 +171,11 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       if (myUser?.access.customerAccess || myUser?.access.salespersonAccess) {
 
         // inv farmacia
-        data = await fetchSearchedItems({ table: 'sinv', searchTerm: `${currentPage}` })
+        data = await fetchSearchedItems({ table: 'appSinv/sinv', searchTerm: `${currentPage}` })
       } else if(myUser?.access.labAccess) {
 
         // inv lab
-        data = await fetchSearchedItems({ table: 'searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
+        data = await fetchSearchedItems({ table: 'appSinv/searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
       }
 
       if (data?.length > 0) {

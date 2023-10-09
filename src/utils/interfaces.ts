@@ -108,6 +108,7 @@ export interface ProductInterface {
   base1: number
   iva?: number
   origenn?: string
+  discount?: string
 }
 
 // -----------------------------------------------

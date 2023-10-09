@@ -25,9 +25,9 @@ const Profile = () => {
     const getData = async () => {
       try {
         const res = await fetchProfileData({ 
-          table: `${customerAccess    ? 'scliU'    :
-                    salespersonAccess ? 'usuarioP' :
-                    labAccess         ? 'usuarioU' : null}`,
+          table: `${customerAccess    ? 'appClientes/scliU'    :
+                    salespersonAccess ? 'appUsuarios/usuarioP' :
+                    labAccess         ? 'appUsuarios/usuarioU' : null}`,
 
           code: `${customerAccess     ? `${cliente}` : 
                    salespersonAccess  ? `${cedula}`  :

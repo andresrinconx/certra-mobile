@@ -39,10 +39,10 @@ const Inventory = () => {
 
       // fetch data
       if (customerAccess || salespersonAccess) { // all products (scli & usuario)
-        data = await fetchSearchedItems({ searchTerm: formatText(value), table: 'search' })
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: 'appSinv/search' })
 
       } else if(labAccess) { // products by lab (usuario-clipro)
-        data = await fetchSearchedItems({ searchTerm: formatText(value), table: `searchPp/${clipro}` })
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: `appSinv/searchPp/${clipro}` })
 
       }
 
