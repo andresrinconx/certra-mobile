@@ -82,7 +82,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
     }
   }, [productsCart])
 
-  // Add or remove element from cart
+  // Remove element from cart
   useEffect(() => {
     if(!added && touch) {
       if (productsCart.find(productInCart => productInCart.codigo === codigo)) {

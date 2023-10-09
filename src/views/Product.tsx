@@ -7,17 +7,22 @@ import { StatusBar } from 'react-native'
 import { ProductInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
+import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
+import { twoDecimalsPrice } from '../utils/helpers'
 import IconCart from '../components/footer/IconCart'
 import Loader from '../components/elements/Loader'
 import ModalInfo from '../components/elements/ModalInfo'
-import { twoDecimalsPrice } from '../utils/helpers'
+import ProfileField from '../components/profile/ProfileField'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
   const [touch, setTouch] = useState(false)
   const [maxAmount, setMaxAmount] = useState(0)
+  const [datasheet, setDatasheet] = useState([])
+  
+  const [loadingDatasheet, setLoadingDatasheet] = useState(true)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
@@ -26,6 +31,17 @@ const Product = () => {
   const { productsCart, addToCart, removeElement } = useInv()
   const navigation = useNavigation()
   const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductInterface }
+
+  // Get datahseet
+  useEffect(() => {
+    const getDatasheet = async () => {
+      const data = await fetchDatasheet(codigo)
+      const datasheet = Object.entries(data[0])
+      setDatasheet(datasheet as [])
+      setLoadingDatasheet(false)
+    }
+    getDatasheet()
+  }, [])
 
   // Get max amount
   useEffect(() => {
@@ -136,8 +152,7 @@ const Product = () => {
         <View>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100,}}
-            overScrollMode='never'
+            contentContainerStyle={{paddingBottom: 180,}}
           >
             {/* img */}
             <View className='justify-center items-center rounded-3xl'
@@ -258,75 +273,105 @@ const Product = () => {
                 />
               </View>
             </View>
-          </ScrollView>
 
-        </View>
-
-        {/* amount and added */}
-        {loadingProduct ? (
-          <View className="flex flex-row items-center justify-center absolute bottom-2 h-16" style={{ width: wp('60%'), marginLeft: wp(20) }}>
-            <Loader color={`${primary}`} />
-          </View>
-        ) : (
-          <View className="flex flex-row items-center justify-between absolute bottom-2 h-16" style={{ width: wp('70%'), marginLeft: wp(16) }}>
-
-            {/* remove */}
-            <View>
-              <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                style={{ backgroundColor: added ? turquoise : processBtn }}
-                disabled={added ? false : true}
-              >
-                <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
-                  source={require('../assets/white-trash-can.png')}
+            {/* datasheet */}
+            <View className='mt-5 pt-5 border-t-[0.5px] border-t-[#999999]'>
+              <View className='flex flex-row items-center gap-x-2 mb-5'>
+                <Image style={{ width: wp(7), height: wp(7) }} resizeMode='contain'
+                  source={require('../assets/ficha.png')}
                 />
-              </Pressable>
-            </View>
-
-            <View className='flex-1 flex-row items-center justify-between mx-6'>
-
-              {/* decrease */}
-              <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
-                  <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
-                </TouchableOpacity>
-              </View>
-
-              {/* amount */}
-              <View style={{ width: wp(20) }}>
-                <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(6) }}>
-                  {amount}
+                <Text style={{ fontSize: hp(2.5), color: typography }} className='font-medium'>
+                  Ficha Técnica:
                 </Text>
               </View>
 
-              {/* increase */}
-              <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
-                  <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* add & added */}
-            <View>
-              {!added ? (
-                <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                  style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
-                  disabled={maxAmount === 0}
-                >
-                  <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
-                </Pressable>
+              {loadingDatasheet ? (
+                <View className='mt-5'>
+                  <Loader color={`${primary}`} />
+                </View>
               ) : (
-                <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                  style={{ backgroundColor: green }}
-                >
-                  <CheckIcon size={wp(8)} color='white' strokeWidth={4} />
+                <View className='px-5'>
+                  {datasheet.map((item) => {
+                    return (
+                      <ProfileField
+                        key={item[0]}
+                        label={String(item[0]).split('_').join(' ')}
+                        value={item[1]}
+                      />
+                    )
+                  })}
                 </View>
               )}
             </View>
+          </ScrollView>
 
-          </View>
-        )}
+        </View>
       </View>
+
+      {/* amount and added */}
+      {loadingProduct ? (
+        <View className='flex flex-row items-center justify-center w-full absolute bottom-0 h-20'>
+          <Loader color={`${primary}`} />
+        </View>
+      ) : (
+        <View className='flex flex-row items-center justify-center w-full px-14 absolute bottom-0 h-20' style={{ backgroundColor: background }}>
+
+          {/* remove */}
+          <View>
+            <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+              style={{ backgroundColor: added ? turquoise : processBtn }}
+              disabled={added ? false : true}
+            >
+              <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
+                source={require('../assets/white-trash-can.png')}
+              />
+            </Pressable>
+          </View>
+
+          <View className='flex-1 flex-row items-center justify-between mx-6'>
+
+            {/* decrease */}
+            <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+              <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
+                <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
+              </TouchableOpacity>
+            </View>
+
+            {/* amount */}
+            <View style={{ width: wp(20) }}>
+              <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(6) }}>
+                {amount}
+              </Text>
+            </View>
+
+            {/* increase */}
+            <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
+              <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
+                <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* add & added */}
+          <View>
+            {!added ? (
+              <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
+                disabled={maxAmount === 0}
+              >
+                <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
+              </Pressable>
+            ) : (
+              <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                style={{ backgroundColor: green }}
+              >
+                <CheckIcon size={wp(8)} color='white' strokeWidth={4} />
+              </View>
+            )}
+          </View>
+
+        </View>
+      )}
 
       <ModalInfo 
         stateModal={modalSelectCustomer} 

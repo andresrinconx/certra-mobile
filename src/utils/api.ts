@@ -3,7 +3,6 @@ import { LOCAL_API_URL, API_URL } from '@env'
 import { OrderInterface } from '../utils/interfaces'
 
 const apiBaseUrl = LOCAL_API_URL
-console.log(apiBaseUrl)
 
 // -----------------------------------------------
 // ENDPOINTS
@@ -14,6 +13,7 @@ const loginEndpoint = () => `${apiBaseUrl}/appUsuarios/login`
 const tableDataEndpoint = (table: string) => `${apiBaseUrl}/${table}`
 const searchOneItemEndpoint = (table: string, code: string) => `${apiBaseUrl}/${table}/${code}`
 const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.searchTerm}`
+const datasheetEndpoint = (code: string) => `${apiBaseUrl}/appSinv/ficha/${code}`
 const sendDataEndpoint = () => `${apiBaseUrl}/appUsuarios/pedidoguardar`
 
 // PROFILE
@@ -75,6 +75,9 @@ export const fetchOneItem = (table: string, code: string) => {
 }
 export const fetchSearchedItems = async (params: { searchTerm: string, table: string }) => {
   return apiCall(searchedItemsEndpoint(params), 'GET')
+}
+export const fetchDatasheet = (code: string) => {
+  return apiCall(datasheetEndpoint(code), 'GET')
 }
 export const fetchSendData = async (order: OrderInterface) => {
   return apiCall(sendDataEndpoint(), 'POST', order)
