@@ -30,19 +30,22 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
     const subtotal = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + product.precio1 * product.amount, 0)
     const subtotalFormated = twoDecimalsPrice(subtotal)
     setSubtotal(subtotalFormated)
+    
+    // subtotal base 1 (no iva)
+    const subtotalBase1 = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + product.base1 * product.amount, 0)
 
     // discount
-    const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.discount) * (product.base1 * product.amount)) / 100), 0)
+    const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + (((Number(product.discount) * subtotalBase1)) / 100), 0)
     const discountFormated = twoDecimalsPrice(discount)
     setDiscount(discountFormated)
 
     // iva
-    const iva = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.iva) * (product.base1 * product.amount)) / 100), 0)
+    const iva = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + (((Number(product.iva) * subtotalBase1) / 100)), 0)
     const ivaFormated = twoDecimalsPrice(iva)
     setIva(ivaFormated)
 
     // total
-    const total = (subtotal - discount) + iva
+    const total = (subtotalBase1 - discount) + iva
     const totalFormated = twoDecimalsPrice(total)
     setTotal(totalFormated)
   }, [fullProductsCart])
@@ -127,7 +130,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   return (
     <>
       <View className='flex flex-col justify-center w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'
-        style={{ height: wp(parseFloat(discount) > 0 ? 38 : 32) }}
+        style={{ height: wp(parseFloat(discount) > 0 || parseFloat(iva) > 0 ? 40 : 32) }}
       >
         <View className='flex flex-col justify-center h-full w-[92%]'
           style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
@@ -164,7 +167,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                     IVA:
                   </Text>
                   <Text style={{ fontSize: wp(3.7), color: green }} className='font-semibold'>
-                    Bs. {iva}
+                    +Bs. {iva}
                   </Text>
                 </View>
               )}

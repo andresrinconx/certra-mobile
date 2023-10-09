@@ -7,7 +7,7 @@ import { ProductInterface } from '../../utils/interfaces'
 import { disponibility } from '../../utils/constants'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import ModalSelectCustomer from '../elements/ModalSelectCustomer'
+import ModalInfo from '../elements/ModalInfo'
 import { twoDecimalsPrice } from '../../utils/helpers'
 
 const ProductsGrid = ({ product }: { product: ProductInterface }) => {
@@ -300,8 +300,13 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
 
       </View>
 
-      <ModalSelectCustomer 
-        stateModal={modalSelectCustomer} setStateModal={setModalSelectCustomer}
+      <ModalInfo 
+        stateModal={modalSelectCustomer} 
+        setStateModal={setModalSelectCustomer}
+        message='Debes seleccionar un cliente para continuar.'
+        cancelButtonText='Cancelar'
+        aceptButtonText='Aceptar'
+        onPressAcept={() => navigation.navigate('Customer')}
       />
     </>
   )

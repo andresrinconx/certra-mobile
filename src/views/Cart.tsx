@@ -15,6 +15,7 @@ import LabelCustomer from '../components/customer/LabelCustomer'
 import BackScreen from '../components/elements/BackScreen'
 import ProcessOrder from '../components/cart/ProcessOrder'
 import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
+import ModalInfo from '../components/elements/ModalInfo'
 
 const Cart = () => {
   const [fullProductsCart, setFullProductsCart] = useState([])
@@ -25,6 +26,7 @@ const Cart = () => {
   const [alertClearCart, setAlertClearCart] = useState(false)
   const [openLinealDiscountModal, setOpenLinealDiscountModal] = useState(false)
   const [disableAcept, setDisableAcept] = useState(false)
+  const [modalInfo, setModalInfo] = useState(false)
 
   const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { customer, image_url } } = useLogin()
   const { productsCart, setProductsCart, discount } = useInv()
@@ -112,6 +114,9 @@ const Cart = () => {
     }
 
     setOpenLinealDiscountModal(false)
+    if (Number(linealDiscountInput) >= 20) {
+      setModalInfo(true)
+    }
   }
 
   return (
@@ -267,6 +272,14 @@ const Cart = () => {
 
         </Modal.Content>
       </Modal>
+
+      {/* modal info */}
+      <ModalInfo
+        stateModal={modalInfo} 
+        setStateModal={setModalInfo}
+        message='¡Alerta! Estás aplicando un descuento mayor al 20%'
+        aceptButtonText='Aceptar'
+      />
     </>
   )
 }

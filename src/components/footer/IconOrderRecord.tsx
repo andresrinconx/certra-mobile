@@ -4,7 +4,7 @@ import { Pressable, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import ModalSelectCustomer from '../elements/ModalSelectCustomer'
+import ModalInfo from '../elements/ModalInfo'
 
 const IconOrderRecord = () => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
@@ -31,8 +31,13 @@ const IconOrderRecord = () => {
         <Text className='w-9 text-[8px] text-center text-white font-bold'>Historial</Text>
       </Pressable>
       
-      <ModalSelectCustomer 
-        stateModal={modalSelectCustomer} setStateModal={setModalSelectCustomer}
+      <ModalInfo 
+        stateModal={modalSelectCustomer} 
+        setStateModal={setModalSelectCustomer}
+        message='Debes seleccionar un cliente para continuar.'
+        cancelButtonText='Cancelar'
+        aceptButtonText='Aceptar'
+        onPressAcept={() => navigation.navigate('Customer')}
       />
     </>
   )

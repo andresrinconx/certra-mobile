@@ -10,6 +10,7 @@ import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import { twoDecimalsPrice } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
+import ModalInfo from '../elements/ModalInfo'
 
 const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)
@@ -25,6 +26,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [openAmountModal, setOpenAmountModal] = useState(false)
   const [openDiscountModal, setOpenDiscountModal] = useState(false)
   const [disableAcept, setDisableAcept] = useState(false)
+  const [modalInfo, setModalInfo] = useState(false)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess } } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useInv()
@@ -68,7 +70,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
       setAmount(productInCart.amount)
       setAmountInput(String(productInCart.amount))
       setDiscount(Number(productInCart.discount))
-      setDiscountInput(String(productInCart.discount))
+      setDiscountInput('')
     } else {
 
       // product not in cart
@@ -159,6 +161,9 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
     })
     setProductsCart(updatedProductsCart)
     setOpenDiscountModal(false)
+    if (Number(discountInput) >= 20) {
+      setModalInfo(true)
+    }
   }
 
   // -----------------------------------------------
@@ -468,6 +473,14 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog>
+
+      {/* modal info */}
+      <ModalInfo 
+        stateModal={modalInfo} 
+        setStateModal={setModalInfo}
+        message='¡Alerta! Estás aplicando un descuento mayor al 20%'
+        aceptButtonText='Aceptar'
+      />
     </>
   )
 }

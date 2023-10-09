@@ -92,7 +92,7 @@ const Login = () => {
         access: {
           customerAccess: dataUser?.cliente ? true : false,
           labAccess: dataUser?.clipro ? true : false,
-          salespersonAccess: !dataUser?.clipro ? true : false
+          salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       })
       setThemeColors({ ...pallete[dataUser?.cliente ? 1 : 0] })
@@ -104,7 +104,7 @@ const Login = () => {
         access: {
           customerAccess: dataUser?.cliente ? true : false,
           labAccess: dataUser?.clipro ? true : false,
-          salespersonAccess: !dataUser?.clipro ? true : false
+          salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       })
 

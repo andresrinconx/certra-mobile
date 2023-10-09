@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import ModalSelectCustomer from '../elements/ModalSelectCustomer'
+import ModalInfo from '../elements/ModalInfo'
 
 const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boolean }) => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
@@ -46,8 +46,13 @@ const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boole
         )}
       </Pressable>
 
-      <ModalSelectCustomer 
-        stateModal={modalSelectCustomer} setStateModal={setModalSelectCustomer}
+      <ModalInfo 
+        stateModal={modalSelectCustomer} 
+        setStateModal={setModalSelectCustomer}
+        message='Debes seleccionar un cliente para continuar.'
+        cancelButtonText='Cancelar'
+        aceptButtonText='Aceptar'
+        onPressAcept={() => navigation.navigate('Customer')}
       />
     </>
   )

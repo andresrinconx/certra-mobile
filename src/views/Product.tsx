@@ -10,7 +10,7 @@ import useLogin from '../hooks/useLogin'
 import { disponibility } from '../utils/constants'
 import IconCart from '../components/footer/IconCart'
 import Loader from '../components/elements/Loader'
-import ModalSelectCustomer from '../components/elements/ModalSelectCustomer'
+import ModalInfo from '../components/elements/ModalInfo'
 import { twoDecimalsPrice } from '../utils/helpers'
  
 const Product = () => {
@@ -328,8 +328,13 @@ const Product = () => {
         )}
       </View>
 
-      <ModalSelectCustomer
-        stateModal={modalSelectCustomer} setStateModal={setModalSelectCustomer}
+      <ModalInfo 
+        stateModal={modalSelectCustomer} 
+        setStateModal={setModalSelectCustomer}
+        message='Debes seleccionar un cliente para continuar.'
+        cancelButtonText='Cancelar'
+        aceptButtonText='Aceptar'
+        onPressAcept={() => navigation.navigate('Customer')}
       />
     </>
   )
