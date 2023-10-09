@@ -223,13 +223,13 @@ const OrderRecord = () => {
                     contentContainerStyle={{ paddingBottom: wp(3) }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item, index}) => {
-                      const { numero, fecha, subTotal, iva, importe, unidades, total, nombre, totaldolar } = item
+                      const { pedido, fecha, subTotal, iva, importe, unidades, total, nombre, totaldolar } = item
                       const isPair = index % 2 === 0
                       const isLast = index === lastItems.length - 1
                       return (
                         <>
                           {customerAccess ? (
-                            <View key={numero} className='flex flex-row justify-center items-center mb-[1px]' 
+                            <View key={pedido} className='flex flex-row justify-center items-center mb-[1px]' 
                               style={{ 
                                 backgroundColor: !isPair ? background : list, 
                                 height: wp(14),
@@ -239,7 +239,7 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{numero}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{pedido}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{fecha}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{iva}%</Text>
@@ -261,7 +261,7 @@ const OrderRecord = () => {
                               </TouchableOpacity>
                             </View>
                           ) : (
-                            <View key={numero} className='flex flex-row justify-center items-center mb-[1px]' 
+                            <View key={pedido} className='flex flex-row justify-center items-center mb-[1px]' 
                               style={{ 
                                 backgroundColor: !isPair ? background : list, 
                                 height: wp(14),
@@ -271,7 +271,7 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{numero}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{pedido}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(32), fontSize: wp(2.6) }}
                                 numberOfLines={1}
                               >
