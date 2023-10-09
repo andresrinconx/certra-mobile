@@ -77,7 +77,8 @@ const Cart = () => {
   }, [productsCart])
 
   // Clear cart
-  const clearCart = () => {
+  const clearCart = async () => {
+    await setDataStorage('linealDiscount', '0')
     setAlertClearCart(false)
     setProductsCart([])
   }

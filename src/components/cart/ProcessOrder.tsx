@@ -15,7 +15,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   const [send, setSend] = useState(false)
 
   const { themeColors: { background, icon, typography, turquoise, green, processBtn, darkTurquoise, primary }, myUser: { access: { customerAccess, labAccess }, nombre, cliente, us_codigo, customer } } = useLogin()
-  const { discount, setSubtotal, setProductsCart, setDiscount, setTotal, subtotal, total, productsCart, order, setOrder, loaders, setLoaders } = useInv()
+  const { iva, setIva, discount, setSubtotal, setProductsCart, setDiscount, setTotal, subtotal, total, productsCart, order, setOrder, loaders, setLoaders } = useInv()
 
   const cancelRef = useRef(null)
   const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
@@ -36,10 +36,14 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
     const discountFormated = twoDecimalsPrice(discount)
     setDiscount(discountFormated)
 
+    // iva
+    const iva = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.iva) * (product.base1 * product.amount)) / 100), 0)
+    const ivaFormated = twoDecimalsPrice(iva)
+    setIva(ivaFormated)
+
     // total
-    const total = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + product.precio1 * product.amount, 0)
-    const totalDiscount = total - discount
-    const totalFormated = twoDecimalsPrice(totalDiscount)
+    const total = (subtotal - discount) + iva
+    const totalFormated = twoDecimalsPrice(total)
     setTotal(totalFormated)
   }, [fullProductsCart])
 
@@ -148,7 +152,19 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                     Descuento:
                   </Text>
                   <Text style={{ fontSize: wp(4.2), color: turquoise }} className='font-semibold'>
-                    Bs. {discount}
+                    -Bs. {discount}
+                  </Text>
+                </View>
+              )}
+
+              {/* iva */}
+              {parseFloat(iva) > 0 && (
+                <View className='flex flex-row justify-between'>
+                  <Text style={{ fontSize: wp(3.7), color: green }} className='font-semibold'>
+                    IVA:
+                  </Text>
+                  <Text style={{ fontSize: wp(3.7), color: green }} className='font-semibold'>
+                    Bs. {iva}
                   </Text>
                 </View>
               )}

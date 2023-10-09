@@ -11,7 +11,7 @@ import Loader from '../elements/Loader'
 const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
-  const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
+  const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setThemeColors } = useLogin()
   const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -43,6 +43,7 @@ const IconLogOut = () => {
     await setDataStorage('themeColors', {})
     await setDataStorage('myUser', {})
     await setDataStorage('productsCart', [])
+    await setDataStorage('linealDiscount', '0')
     await setDataStorage('themeColors', {
       primary: '',
       background: '',

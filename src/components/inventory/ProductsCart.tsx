@@ -9,6 +9,7 @@ import { ProductInterface } from '../../utils/interfaces'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import { twoDecimalsPrice } from '../../utils/helpers'
+import { setDataStorage } from '../../utils/asyncStorage'
 
 const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)
@@ -164,8 +165,9 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   // HANDLERS
   // -----------------------------------------------
 
-  const handleRemoveElement = () => {
+  const handleRemoveElement = async () => {
     if (productsCart?.length === 1) {
+      await setDataStorage('linealDiscount', '0')
       setProductsCart([])
     }
 
@@ -299,23 +301,23 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
               <View className='flex flex-row justify-between items-center my-2'>
 
                 {/* normal price */}
-                <View className=''>
+                <View>
                   <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
                     Precio:
                   </Text>
 
-                  <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                  <Text style={{ fontSize: hp(1.8), color: darkTurquoise }} className='font-bold'>
                     Bs. {twoDecimalsPrice(Number(precio1))}
                   </Text>
                 </View>
 
                 {/* discount price */}
-                <View className=''>
+                <View>
                   <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
                     Con desc.:
                   </Text>
 
-                  <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                  <Text style={{ fontSize: hp(1.8), color: darkTurquoise }} className='font-bold'>
                     Bs. {twoDecimalsPrice(precio1 - ((base1 * discount) / 100))}
                   </Text>
                 </View>

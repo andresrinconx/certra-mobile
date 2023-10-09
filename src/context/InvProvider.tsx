@@ -38,6 +38,8 @@ const InvContext = createContext<{
   setSubtotal: (subtotal: string) => void
   discount: string
   setDiscount: (discount: string) => void
+  iva: string
+  setIva: (iva: string) => void
   total: string
   setTotal: (total: string) => void
 }>({
@@ -102,6 +104,10 @@ const InvContext = createContext<{
   setDiscount: () => { 
     // do nothing
   },
+  iva: '',
+  setIva: () => { 
+    // do nothing
+  },
   total: '',
   setTotal: () => { 
     // do nothing
@@ -125,6 +131,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   })
   const [subtotal, setSubtotal] = useState('')
   const [discount, setDiscount] = useState('')
+  const [iva, setIva] = useState('')
   const [total, setTotal] = useState('')
 
   // LOADERS
@@ -228,6 +235,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setSubtotal,
       discount,
       setDiscount,
+      iva,
+      setIva,
       total,
       setTotal
     }}>
