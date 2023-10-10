@@ -6,11 +6,7 @@ import { DataConfigProfileInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { fetchProfileData } from '../utils/api'
-import Loader from '../components/elements/Loader'
-import Logos from '../components/elements/Logos'
-import BackScreen from '../components/elements/BackScreen'
-import ProfileGroup from '../components/profile/ProfileGroup'
-import IconLogOut from '../components/profile/IconLogOut'
+import { Loader, Logos, BackScreen, ProfileGroup, IconLogOut } from '../components'
 
 const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})

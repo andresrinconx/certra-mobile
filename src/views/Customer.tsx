@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { UserFromScliInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
 import { formatText } from '../utils/helpers'
-import CustomersSearch from '../components/customer/CustomersSearch'
+import { CustomersSearch } from '../components'
 
 const Customer = () => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])

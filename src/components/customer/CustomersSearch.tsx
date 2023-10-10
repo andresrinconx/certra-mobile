@@ -7,7 +7,7 @@ import useInv from '../../hooks/useInv'
 
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin()
-  const { setProductsCart, loaders, setLoaders, setCurrentPage } = useInv()
+  const { setProductsCart, loaders, setLoaders } = useInv()
   const navigation = useNavigation()
   const { cliente, nombre } = customer
 

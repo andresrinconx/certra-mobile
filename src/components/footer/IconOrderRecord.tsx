@@ -4,7 +4,7 @@ import { Pressable, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import ModalInfo from '../elements/ModalInfo'
+import { ModalInfo } from '..'
 
 const IconOrderRecord = () => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)

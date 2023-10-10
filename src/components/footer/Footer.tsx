@@ -1,10 +1,6 @@
 import { View } from 'react-native'
 import useLogin from '../../hooks/useLogin'
-import IconCart from './IconCart'
-import IconInventory from './IconInventory'
-import IconProfile from './IconProfile'
-import IconItinerary from './IconItinerary'
-import IconOrderRecord from './IconOrderRecord'
+import { IconCart, IconInventory, IconProfile, IconItinerary, IconOrderRecord } from '..'
 
 const Footer = () => {
   const { themeColors: { primary }, myUser: { access: { salespersonAccess } } } = useLogin()

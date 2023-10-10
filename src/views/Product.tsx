@@ -10,10 +10,7 @@ import useLogin from '../hooks/useLogin'
 import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
 import { twoDecimalsPrice } from '../utils/helpers'
-import IconCart from '../components/footer/IconCart'
-import Loader from '../components/elements/Loader'
-import ModalInfo from '../components/elements/ModalInfo'
-import ProfileField from '../components/profile/ProfileField'
+import { IconCart, Loader, ModalInfo, ProfileField } from '../components'
  
 const Product = () => {
   const [added, setAdded] = useState(false)

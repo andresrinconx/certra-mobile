@@ -5,10 +5,10 @@ import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native
 import { useNavigation } from '@react-navigation/native'
 import { ProductInterface } from '../../utils/interfaces'
 import { disponibility } from '../../utils/constants'
+import { twoDecimalsPrice } from '../../utils/helpers'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import ModalInfo from '../elements/ModalInfo'
-import { twoDecimalsPrice } from '../../utils/helpers'
+import { ModalInfo } from '..'
 
 const ProductsGrid = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)

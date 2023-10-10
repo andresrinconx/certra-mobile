@@ -10,7 +10,7 @@ import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchLogin } from '../utils/api'
 import { socialMedia } from '../utils/constants'
-import Loader from '../components/elements/Loader'
+import { Loader } from '../components'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)

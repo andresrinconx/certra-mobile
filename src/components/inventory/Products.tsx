@@ -3,10 +3,8 @@ import { View, Text, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { items } from '../../utils/constants'
 import useInv from '../../hooks/useInv'
-import LoaderProductsGrid from '../elements/LoaderProductsGrid'
 import useLogin from '../../hooks/useLogin'
-import Loader from '../elements/Loader'
-import ProductsGrid from './ProductsGrid'
+import { LoaderProductsGrid, Loader, ProductsGrid } from '..'
 
 const Products = () => {
   const { themeColors: { typography, primary }, myUser: { customer, access: { customerAccess } } } = useLogin()

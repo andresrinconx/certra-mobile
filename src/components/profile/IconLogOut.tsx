@@ -6,7 +6,7 @@ import { AlertDialog, Button } from 'native-base'
 import { setDataStorage } from '../../utils/asyncStorage'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import Loader from '../elements/Loader'
+import { Loader } from '..'
 
 const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)

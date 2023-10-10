@@ -4,18 +4,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useNavigation } from '@react-navigation/native'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { StatusBar } from 'react-native'
-import { ProductInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
 import { fetchOneItem } from '../utils/api'
-import ProductsCart from '../components/inventory/ProductsCart'
-import Loader from '../components/elements/Loader'
-import Logos from '../components/elements/Logos'
-import LabelCustomer from '../components/customer/LabelCustomer'
-import BackScreen from '../components/elements/BackScreen'
-import ProcessOrder from '../components/cart/ProcessOrder'
+import { ProductInterface } from '../utils/interfaces'
 import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
-import ModalInfo from '../components/elements/ModalInfo'
+import { ProductsCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components'
 
 const Cart = () => {
   const [fullProductsCart, setFullProductsCart] = useState([])
@@ -29,7 +23,7 @@ const Cart = () => {
   const [modalInfo, setModalInfo] = useState(false)
 
   const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { customer, image_url } } = useLogin()
-  const { productsCart, setProductsCart, discount } = useInv()
+  const { productsCart, setProductsCart } = useInv()
   const initialRef = useRef(null)
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -187,7 +181,7 @@ const Cart = () => {
                   numColumns={1}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ 
-                    paddingBottom: discount !== '0' ? 320 : 300,
+                    paddingBottom: 320,
                     marginTop: 5 
                   }}
                   overScrollMode='never'

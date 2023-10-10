@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, FlatList, Pressable } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
-import { disponibility } from '../../utils/constants'
-import { ProductInterface } from '../../utils/interfaces'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
+import { disponibility } from '../../utils/constants'
+import { ProductInterface } from '../../utils/interfaces'
 import { twoDecimalsPrice } from '../../utils/helpers'
 
 const ProductsSearch = ({ product }: { product: ProductInterface }) => {

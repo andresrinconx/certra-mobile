@@ -10,7 +10,7 @@ import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import { twoDecimalsPrice } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
-import ModalInfo from '../elements/ModalInfo'
+import { ModalInfo } from '..'
 
 const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)

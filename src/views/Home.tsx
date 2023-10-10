@@ -3,11 +3,7 @@ import { View, BackHandler } from 'react-native'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
 import useInv from '../hooks/useInv'
-import SelectCustomer from '../components/customer/SelectCustomer'
-import Loader from '../components/elements/Loader'
-import Logos from '../components/elements/Logos'
-import Products from '../components/inventory/Products'
-import Footer from '../components/footer/Footer'
+import { SelectCustomer, Loader, Logos, Products, Footer } from '../components'
 
 const Home = () => {
   const { themeColors: { background }, myUser: { image_url } } = useLogin()
