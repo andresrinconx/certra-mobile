@@ -7,6 +7,7 @@ import useLogin from '../../hooks/useLogin'
 import { ProductInterface } from '../../utils/interfaces'
 import { getDate, getHour, twoDecimalsPrice } from '../../utils/helpers'
 import { fetchSendData } from '../../utils/api'
+import { setDataStorage } from '../../utils/asyncStorage'
 
 const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   const [subtotal, setSubtotal] = useState('')
@@ -31,26 +32,24 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
 
   // Subtotal, discount, total...
   useEffect(() => {
+
     // subtotal
-    const subtotal = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + product.precio1 * product.amount, 0)
+    const subtotal = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + (product.base1 * product.amount), 0)
     const subtotalFormated = twoDecimalsPrice(subtotal)
     setSubtotal(subtotalFormated)
     
-    // subtotal base 1 (no iva)
-    const subtotalBase1 = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + product.base1 * product.amount, 0)
-
     // discount
-    const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + (((Number(product.discount) * subtotalBase1)) / 100), 0)
+    const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.discount) * (product.base1 * product.amount)) / 100), 0)
     const discountFormated = twoDecimalsPrice(discount)
     setDiscount(discountFormated)
 
     // iva
-    const iva = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + (((Number(product.iva) * subtotalBase1) / 100)), 0)
+    const iva = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.iva) * (product.base1 * product.amount)) / 100), 0)
     const ivaFormated = twoDecimalsPrice(iva)
     setIva(ivaFormated)
 
     // total
-    const total = (subtotalBase1 - discount) + iva
+    const total = (subtotal - discount) + iva
     const totalFormated = twoDecimalsPrice(total)
     setTotal(totalFormated)
   }, [fullProductsCart])
@@ -84,6 +83,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
               total: '',
             })
             setSend(false)
+            await setDataStorage('linealDiscount', '0')
           } else {
             // network error
             setAlertErrorOrder(true)

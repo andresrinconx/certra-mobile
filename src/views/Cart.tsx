@@ -27,7 +27,7 @@ const Cart = () => {
   const initialRef = useRef(null)
   const cancelRef = useRef(null)
   const navigation = useNavigation()
-  
+
   const onCloseAlertClearCart = () => setAlertClearCart(false)
 
   // -----------------------------------------------
@@ -181,7 +181,7 @@ const Cart = () => {
                   numColumns={1}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ 
-                    paddingBottom: 320,
+                    paddingBottom: 330,
                     marginTop: 5 
                   }}
                   overScrollMode='never'
