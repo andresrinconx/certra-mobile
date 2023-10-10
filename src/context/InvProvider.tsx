@@ -34,14 +34,6 @@ const InvContext = createContext<{
   setReloadItinerary: (reloadItinerary: boolean) => void
   lookAtPharmacy: boolean
   setLookAtPharmacy: (lookAtPharmacy: boolean) => void
-  subtotal: string
-  setSubtotal: (subtotal: string) => void
-  discount: string
-  setDiscount: (discount: string) => void
-  iva: string
-  setIva: (iva: string) => void
-  total: string
-  setTotal: (total: string) => void
 }>({
   productsCart: [],
   setProductsCart: () => { 
@@ -96,22 +88,6 @@ const InvContext = createContext<{
   setLookAtPharmacy: () => { 
     // do nothing
   },
-  subtotal: '',
-  setSubtotal: () => { 
-    // do nothing
-  },
-  discount: '',
-  setDiscount: () => { 
-    // do nothing
-  },
-  iva: '',
-  setIva: () => { 
-    // do nothing
-  },
-  total: '',
-  setTotal: () => { 
-    // do nothing
-  }
 })
 
 export const InvProvider = ({ children }: { children: React.ReactNode }) => {
@@ -129,10 +105,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
     subtotal: '',
     total: '',
   })
-  const [subtotal, setSubtotal] = useState('')
-  const [discount, setDiscount] = useState('')
-  const [iva, setIva] = useState('')
-  const [total, setTotal] = useState('')
 
   // LOADERS
   const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
@@ -231,14 +203,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setReloadItinerary,
       lookAtPharmacy,
       setLookAtPharmacy,
-      subtotal,
-      setSubtotal,
-      discount,
-      setDiscount,
-      iva,
-      setIva,
-      total,
-      setTotal
     }}>
       {children}
     </InvContext.Provider>

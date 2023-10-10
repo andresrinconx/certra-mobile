@@ -9,13 +9,18 @@ import { getDate, getHour, twoDecimalsPrice } from '../../utils/helpers'
 import { fetchSendData } from '../../utils/api'
 
 const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
+  const [subtotal, setSubtotal] = useState('')
+  const [discount, setDiscount] = useState('')
+  const [iva, setIva] = useState('')
+  const [total, setTotal] = useState('')
+
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
   const [alertErrorOrder, setAlertErrorOrder] = useState(false)
   const [send, setSend] = useState(false)
 
   const { themeColors: { background, icon, typography, turquoise, green, processBtn, darkTurquoise, primary }, myUser: { access: { customerAccess, labAccess }, nombre, cliente, us_codigo, customer } } = useLogin()
-  const { iva, setIva, discount, setSubtotal, setProductsCart, setDiscount, setTotal, subtotal, total, productsCart, order, setOrder, loaders, setLoaders } = useInv()
+  const { setProductsCart, productsCart, order, setOrder, loaders, setLoaders } = useInv()
 
   const cancelRef = useRef(null)
   const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
