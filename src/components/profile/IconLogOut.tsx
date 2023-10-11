@@ -12,7 +12,7 @@ const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
   const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setThemeColors } = useLogin()
-  const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid } = useInv()
+  const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid, setloadingSelectCustomer } = useInv()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
@@ -33,10 +33,10 @@ const IconLogOut = () => {
       ...loaders, 
       loadingLogOut: false,
       loadingProducts: false,
-      loadingSlectedCustomer: false,
       loadingConfirmOrder: false,
     })
     setLoadingProductsGrid(true)
+    setloadingSelectCustomer(false)
 
     // reset storage
     await setDataStorage('login', false)

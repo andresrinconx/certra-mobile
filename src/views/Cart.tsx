@@ -12,14 +12,14 @@ import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
 import { ProductsCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components'
 
 const Cart = () => {
+  const [loadingCart, setLoadingCart] = useState(true)
   const [fullProductsCart, setFullProductsCart] = useState([])
   const [linealDiscount, setLinealDiscount] = useState(0)
   const [linealDiscountInput, setLinealDiscountInput] = useState('')
-  const [loadingCart, setLoadingCart] = useState(true)
   
   const [alertClearCart, setAlertClearCart] = useState(false)
   const [openLinealDiscountModal, setOpenLinealDiscountModal] = useState(false)
-  const [disableAcept, setDisableAcept] = useState(false)
+  const [disableAcept, setDisableAcept] = useState(true)
   const [modalInfo, setModalInfo] = useState(false)
 
   const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { customer, image_url } } = useLogin()
@@ -29,11 +29,7 @@ const Cart = () => {
   const navigation = useNavigation()
 
   const onCloseAlertClearCart = () => setAlertClearCart(false)
-
-  // -----------------------------------------------
-  // ACTIONS
-  // -----------------------------------------------
-
+  
   // Get full products cart
   useEffect(() => {
     const getFullProductsCart = async () => {
@@ -51,11 +47,11 @@ const Cart = () => {
         for (let i = 0; i < productsCart?.length; i++) {
           const code = productsCart[i].codigo
           const amount = productsCart[i].amount
-          const discount = productsCart[i].discount
+          const labDiscount = productsCart[i].labDiscount
     
           // get product api
           const res: ProductInterface[] = await fetchOneItem('appSinv/searchC', code)
-          newFullProductsCart.push({ ...res[0], amount, discount })
+          newFullProductsCart.push({ ...res[0], amount, labDiscount })
           
           // last item
           if (i === productsCart?.length - 1) {
@@ -72,6 +68,10 @@ const Cart = () => {
     getFullProductsCart()
   }, [productsCart])
 
+  // -----------------------------------------------
+  // ACTIONS
+  // -----------------------------------------------
+
   // Clear cart
   const clearCart = async () => {
     await setDataStorage('linealDiscount', '0')
@@ -79,22 +79,10 @@ const Cart = () => {
     setProductsCart([])
   }
 
-  // -----------------------------------------------
-  // LINEAL DISCOUNT
-  // -----------------------------------------------
-
-  useEffect(() => {
-    if (Number(linealDiscountInput) < 0 || Number(linealDiscountInput) > 99) {
-      setDisableAcept(true)
-    } else {
-      setDisableAcept(false)
-    }
-  }, [linealDiscountInput])
-
   const aceptDiscount = async () => {
     const updatedProductsCart = productsCart.map(item => {
       const cleanDiscount = parseInt(String(linealDiscountInput).replace(/-/g, ''))
-      return { ...item, discount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
+      return { ...item, labDiscount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
     })
     setProductsCart(updatedProductsCart)
     
@@ -108,6 +96,7 @@ const Cart = () => {
     }
 
     setOpenLinealDiscountModal(false)
+    setDisableAcept(true)
     if (Number(linealDiscountInput) >= 20) {
       setModalInfo(true)
     }
@@ -185,7 +174,7 @@ const Cart = () => {
                     marginTop: 5 
                   }}
                   overScrollMode='never'
-                  renderItem={({ item }: { item: any }) => {
+                  renderItem={({ item }: { item: ProductInterface }) => {
                     return (
                       <ProductsCart key={item.id} product={item} />
                     )
@@ -238,8 +227,14 @@ const Cart = () => {
           <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
             <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
               keyboardType='numeric'
-              value={String(linealDiscountInput)}
-              onChangeText={text => setLinealDiscountInput(text)}
+              onChangeText={text => {
+                if (Number(text) < 0 || Number(text) > 99) {
+                  setDisableAcept(true)
+                } else {
+                  setDisableAcept(false)
+                  setLinealDiscountInput(text)
+                }
+              }}
               selectionColor={primary}
               autoFocus
             />
@@ -248,7 +243,11 @@ const Cart = () => {
           {/* btns */}
           <View className='flex flex-row items-center justify-between'>
             <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
-              <TouchableOpacity onPress={() => setOpenLinealDiscountModal(false)}>
+              <TouchableOpacity onPress={() => {
+                setOpenLinealDiscountModal(false)
+                setDisableAcept(true)
+                setLinealDiscountInput('')
+              }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Cancelar
                 </Text>
@@ -271,7 +270,7 @@ const Cart = () => {
       <ModalInfo
         stateModal={modalInfo} 
         setStateModal={setModalInfo}
-        message='¡Alerta! Estás aplicando un descuento mayor al 20%'
+        message={`¡Alerta! Estás aplicando un descuento ${Number(linealDiscount) === 20 ? 'del' : 'mayor al'} 20%`}
         aceptButtonText='Aceptar'
       />
     </>

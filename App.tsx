@@ -8,7 +8,7 @@ export default function App() {
     <NativeBaseProvider>
       <LoginProvider>
          <InvProvider>
-           <Navigation />
+            <Navigation />
          </InvProvider>
        </LoginProvider>
     </NativeBaseProvider>

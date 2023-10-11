@@ -1,32 +1,30 @@
 import { createContext, useState, useEffect } from 'react'
-import { ProductInterface, ProductCartInterface, OrderInterface } from '../utils/interfaces'
+import { ProductInterface, ProductCartInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchSearchedItems } from '../utils/api'
 import useLogin from '../hooks/useLogin'
 
 const InvContext = createContext<{
-  productsCart: { codigo: string, amount: number, discount: string }[]
-  setProductsCart: (productsCart: { codigo: string, amount: number, discount: string }[]) => void
+  productsCart: ProductCartInterface[]
+  setProductsCart: (productsCart: ProductCartInterface[]) => void
   products: ProductInterface[]
   setProducts: (products: ProductInterface[]) => void
   loaders: {
     loadingProducts: boolean,
-    loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }
   setLoaders: (loaders: {
     loadingProducts: boolean,
-    loadingSlectedCustomer: boolean,
     loadingConfirmOrder: boolean,
     loadingLogOut: boolean,
   }) => void
   loadingProductsGrid: boolean
   setLoadingProductsGrid: (loadingProductsGrid: boolean) => void
+  loadingSelectCustomer: boolean
+  setloadingSelectCustomer: (loadingSelectCustomer: boolean) => void
   removeElement: (codigo: string) => void
   addToCart: (codigo: string, amount: number) => void
-  order: OrderInterface
-  setOrder: (order: OrderInterface) => void
   getProducts: () => void
   currentPage: number
   setCurrentPage: (currentPage: number) => void
@@ -45,7 +43,6 @@ const InvContext = createContext<{
   },
   loaders: {
     loadingProducts: true,
-    loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
   },
@@ -56,21 +53,14 @@ const InvContext = createContext<{
   setLoadingProductsGrid: () => { 
     // do nothing
   },
+  loadingSelectCustomer: false,
+  setloadingSelectCustomer: () => { 
+    // do nothing
+  },
   removeElement: () => { 
     // do nothing
   },
   addToCart: () => { 
-    // do nothing
-  },
-  order: {
-    date: '',
-    hora: '',
-    cliente: { name: '', code: '' },
-    productos: [],
-    subtotal: '',
-    total: '',
-  },
-  setOrder: () => { 
     // do nothing
   },
   getProducts: () => { 
@@ -97,20 +87,12 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // CART & ORDER 
   const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]) // code and amount
-  const [order, setOrder] = useState<OrderInterface>({
-    date: '',
-    hora: '',
-    cliente: { name: '', code: '' },
-    productos: [],
-    subtotal: '',
-    total: '',
-  })
 
   // LOADERS
   const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
+  const [loadingSelectCustomer, setloadingSelectCustomer] = useState(false)
   const [loaders, setLoaders] = useState({
     loadingProducts: true,
-    loadingSlectedCustomer: false,
     loadingConfirmOrder: false,
     loadingLogOut: false,
   })
@@ -147,11 +129,11 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       let data: ProductInterface[] = []
 
       // fetch data
-      if (myUser?.access.customerAccess || myUser?.access.salespersonAccess) {
+      if (myUser?.access?.customerAccess || myUser?.access?.salespersonAccess) {
 
         // inv farmacia
         data = await fetchSearchedItems({ table: 'appSinv/sinv', searchTerm: `${currentPage}` })
-      } else if(myUser?.access.labAccess) {
+      } else if(myUser?.access?.labAccess) {
 
         // inv lab
         data = await fetchSearchedItems({ table: 'appSinv/searchclipr', searchTerm: `${myUser?.clipro}/${currentPage}` })
@@ -173,7 +155,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add to cart
   const addToCart = (codigo: string, amount: number) => {
-    setProductsCart([ ...productsCart, { codigo, amount, discount: '0' } ])
+    setProductsCart([ ...productsCart, { codigo, amount, labDiscount: '0', productDiscount: '0', customerDiscount: '0' } ])
   }
 
   // Remove element from cart
@@ -194,8 +176,6 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setLoadingProductsGrid,
       removeElement,
       addToCart,
-      order,
-      setOrder,
       getProducts,
       currentPage,
       setCurrentPage,
@@ -203,6 +183,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setReloadItinerary,
       lookAtPharmacy,
       setLookAtPharmacy,
+      loadingSelectCustomer,
+      setloadingSelectCustomer
     }}>
       {children}
     </InvContext.Provider>

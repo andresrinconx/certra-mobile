@@ -18,28 +18,23 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
   const [alertErrorOrder, setAlertErrorOrder] = useState(false)
-  const [send, setSend] = useState(false)
 
   const { themeColors: { background, icon, typography, turquoise, green, processBtn, darkTurquoise, primary }, myUser: { access: { customerAccess, labAccess }, nombre, cliente, us_codigo, customer } } = useLogin()
-  const { setProductsCart, productsCart, order, setOrder, loaders, setLoaders } = useInv()
+  const { setProductsCart, productsCart } = useInv()
 
   const cancelRef = useRef(null)
   const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
 
-  // -----------------------------------------------
-  // ACTIONS
-  // -----------------------------------------------
-
   // Subtotal, discount, total...
   useEffect(() => {
 
-    // subtotal
+    // subtotal (no iva)
     const subtotal = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + (product.base1 * product.amount), 0)
     const subtotalFormated = twoDecimalsPrice(subtotal)
     setSubtotal(subtotalFormated)
     
     // discount
-    const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.discount) * (product.base1 * product.amount)) / 100), 0)
+    const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.labDiscount) * (product.base1 * product.amount)) / 100), 0)
     const discountFormated = twoDecimalsPrice(discount)
     setDiscount(discountFormated)
 
@@ -54,82 +49,47 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
     setTotal(totalFormated)
   }, [fullProductsCart])
 
-  
-  // -----------------------------------------------
-  // ORDER
-  // -----------------------------------------------
-
-  // Send order
-  useEffect(() => {
-    const sendOrder = async () => {
-      try {
-        if (send) {
-          const res = await fetchSendData(order)
-
-          if (res?.message) {
-            setProductsCart([])
-            setAlertSuccessOrder(true)
-            setOrder({
-              ...order,
-              date: '',
-              hora: '',
-              cliente: {
-                name: '',
-                code: '',
-                usuario: ''
-              },
-              productos: [],
-              subtotal: '',
-              total: '',
-            })
-            setSend(false)
-            await setDataStorage('linealDiscount', '0')
-          } else {
-            // network error
-            setAlertErrorOrder(true)
-          }
-        }
-      } catch (error) {
-        setAlertErrorOrder(true)
-      }
-    }
-    sendOrder()
-  }, [order])
-
   // Process order
-  const handleProcess = () => {
-    setLoaders({ ...loaders, loadingConfirmOrder: true })
+  const handleProcess = async () => {
+    try {
+      const res = await fetchSendData({
+        date: getDate(new Date()),
+        hora: getHour(new Date()),
+        cliente: customerAccess ? {
+          name: String(nombre),
+          usuario: String(cliente),
+          code: String(cliente)
+        } : {
+          name: String(customer?.nombre),
+          usuario: String(us_codigo),
+          code: String(customer?.cliente)
+        },
+        productos: fullProductsCart.map((product: ProductInterface) => ({
+          codigo: String(product.codigo),
+          descrip: String(product.descrip),
+          base1: Number(product.base1),
+          precio1: Number(product.precio1),
+          iva: Number(product.iva),
+          cantidad: Number(product.amount),
+          descuento: labAccess ? String(product.labDiscount) : String(0),
+        })),
+        subtotal: String(subtotal),
+        total: String(total),
+      })
 
-    // order
-    setOrder({
-      ...order,
-      date: getDate(new Date()),
-      hora: getHour(new Date()),
-      cliente: customerAccess ? {
-        name: String(nombre),
-        usuario: String(cliente),
-        code: String(cliente)
-      } : {
-        name: String(customer?.nombre),
-        usuario: String(us_codigo),
-        code: String(customer?.cliente)
-      },
-      productos: fullProductsCart.map((product: ProductInterface) => ({
-        codigo: String(product.codigo),
-        descrip: String(product.descrip),
-        base1: Number(product.base1),
-        precio1: Number(product.precio1),
-        iva: Number(product.iva),
-        cantidad: Number(product.amount),
-        descuento: labAccess ? String(product.discount) : String(0),
-      })),
-      subtotal: String(subtotal),
-      total: String(total),
-    })
-    
+      if (res?.message) {
+        setProductsCart([])
+        setAlertSuccessOrder(true)
+        await setDataStorage('linealDiscount', '0')
+      } else {
+        setAlertErrorOrder(true)
+      } 
+    } catch (error) {
+      setAlertErrorOrder(true)
+    }
+
     // close process alert
     setAlertProcessOrder(false)
-    setSend(true)
   }
 
   return (

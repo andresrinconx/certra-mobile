@@ -147,7 +147,6 @@ const Login = () => {
                   placeholderTextColor='#999999'
                   value={user}
                   onChangeText={setUser}
-                  selectionColor='#006283'
                 />
               </View>
 
@@ -168,7 +167,6 @@ const Login = () => {
                   placeholderTextColor='#999999'
                   value={password}
                   onChangeText={setPassword}
-                  selectionColor='#006283'
                 />
                 {!showPassword && (
                   <TouchableOpacity onPress={() => setShowPassword(true)} className='absolute right-4'>
@@ -203,7 +201,7 @@ const Login = () => {
               >
                 {!loaders.loadingAuth && (
                   <View className='flex flex-col items-center justify-center h-6'>
-                    <Text className='font-medium text-center' style={{ fontSize: wp(4.5), color: 'black' }}>
+                    <Text className='font-medium text-center text-black' style={{ fontSize: wp(4.5) }}>
                       Iniciar Sesión
                     </Text>
                   </View>

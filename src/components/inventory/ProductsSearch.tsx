@@ -12,12 +12,11 @@ import { twoDecimalsPrice } from '../../utils/helpers'
 const ProductsSearch = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
-  const [touch, setTouch] = useState(false)
   const [maxAmount, setMaxAmount] = useState(0)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
   const { descrip, precio1, merida, centro, oriente, codigo } = product
-  const { productsCart, addToCart, removeElement } = useInv()
+  const { productsCart, addToCart } = useInv()
   const navigation = useNavigation()
 
   // Get max amount
@@ -59,25 +58,10 @@ const ProductsSearch = ({ product }: { product: ProductInterface }) => {
     }
   }, [productsCart])
 
-  // Add or remove element from cart
-  useEffect(() => {
-    if (added && touch) {
-      if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        addToCart(codigo, amount)
-      }
-    } else if(!added && touch) {
-      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        removeElement(codigo)
-      }
-    }
-  }, [added])
-
   // Handle actions
   const handleAddToCart = () => {
     setAdded(true)
-    setTouch(true)
+    addToCart(codigo, amount)
   }
   const handleDecrease = () => {
     if (amount > 1) {

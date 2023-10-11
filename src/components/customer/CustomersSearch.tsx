@@ -7,23 +7,26 @@ import useInv from '../../hooks/useInv'
 
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin()
-  const { setProductsCart, loaders, setLoaders } = useInv()
+  const { setProductsCart, setloadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useInv()
   const navigation = useNavigation()
   const { cliente, nombre } = customer
 
   // select customer
   const selectCustomer = () => {
-    setLoaders({ ...loaders, loadingSlectedCustomer: true })
+    setloadingSelectCustomer(true)
     // user
     setMyUser({ ...myUser, customer })
 
     // products & cart
     setProductsCart([])
+    setProducts([])
+    setCurrentPage(1)
     navigation.navigate('Home')
+    setLoadingProductsGrid(true)
 
     setTimeout(() => {
-      setLoaders({ ...loaders, loadingSlectedCustomer: false })
-    }, 300)
+      setloadingSelectCustomer(false)
+    }, 500)
   }
 
   return (

@@ -122,7 +122,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add myUser storage
   useEffect(() => {
-    if (myUser.customer) {
+    if (myUser?.customer) {
       const setMyUserStorage = async () => {
         try {
           await setDataStorage('myUser', myUser)

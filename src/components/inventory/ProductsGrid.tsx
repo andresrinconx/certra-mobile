@@ -13,7 +13,6 @@ import { ModalInfo } from '..'
 const ProductsGrid = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
-  const [touch, setTouch] = useState(false)
   const [maxAmount, setMaxAmount] = useState(0)
 
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
@@ -62,30 +61,15 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
     }
   }, [productsCart])
 
-  // Add or remove element from cart
-  useEffect(() => {
-    if (added && touch) {
-      if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        addToCart(codigo, amount)
-      }
-    } else if(!added && touch) {
-      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        removeElement(codigo)
-      }
-    }
-  }, [added])
-
   // Handle actions
   const handleAddToCart = () => {
     if ((labAccess || salespersonAccess) && !customer) {
       setModalSelectCustomer(true)
       return
     }
+    addToCart(codigo, amount)
 
     setAdded(true)
-    setTouch(true)
   }
   const handleDecrease = () => {
     if (amount > 1) {
@@ -100,7 +84,7 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
   const handleRemoveElement = () => {
     setAdded(false)
     setAmount(1)
-    setTouch(true)
+    removeElement(codigo)
   }
 
   return (

@@ -92,7 +92,9 @@ export interface OrderRecordItemInterface {
 export interface ProductCartInterface {
   codigo: string
   amount: number
-  discount:string
+  labDiscount:string
+  productDiscount: string
+  customerDiscount: string
 }
 
 export interface ProductInterface {
@@ -108,7 +110,15 @@ export interface ProductInterface {
   base1: number
   iva?: number
   origenn?: string
-  discount?: string
+  labDiscount?: string
+  productDiscount?: string
+  customerDiscount?: string
+  escala1?: string
+  pescala1?: string
+  escala2?: string
+  pescala2?: string
+  escala3?: string
+  pescala3?: string
 }
 
 // -----------------------------------------------

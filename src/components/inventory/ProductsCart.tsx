@@ -5,7 +5,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { AlertDialog, Button, Modal } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 import { disponibility } from '../../utils/constants'
-import { ProductInterface } from '../../utils/interfaces'
+import { ProductCartInterface, ProductInterface } from '../../utils/interfaces'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import { twoDecimalsPrice } from '../../utils/helpers'
@@ -17,20 +17,20 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [amount, setAmount] = useState(1)
   const [amountInput, setAmountInput] = useState('')
   const [maxAmount, setMaxAmount] = useState(0)
-  const [touch, setTouch] = useState(false)
 
-  const [discount, setDiscount] = useState(0)
-  const [discountInput, setDiscountInput] = useState('')
+  const [labDiscount, setLabDiscount] = useState(0)
+  const [labDiscountInput, setLabDiscountInput] = useState('')
+  const [productDiscount, setProductDiscount] = useState(0)
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openAmountModal, setOpenAmountModal] = useState(false)
   const [openDiscountModal, setOpenDiscountModal] = useState(false)
-  const [disableAcept, setDisableAcept] = useState(false)
+  const [disableAcept, setDisableAcept] = useState(true)
   const [modalInfo, setModalInfo] = useState(false)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess } } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useInv()
-  const { descrip, precio1, codigo, centro, merida, oriente, base1 } = product
+  const { descrip, precio1, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3 } = product
   const cancelRef = useRef(null)
   const initialRef = useRef(null)
   const navigation = useNavigation()
@@ -69,102 +69,30 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
       setAdded(true)
       setAmount(productInCart.amount)
       setAmountInput(String(productInCart.amount))
-      setDiscount(Number(productInCart.discount))
-      setDiscountInput('')
-    } else {
 
-      // product not in cart
-      setAdded(false)
-      setAmount(1)
-      setAmountInput(String(1))
-      setDiscount(0)
-      setDiscountInput(String(0))
+      setLabDiscount(Number(productInCart.labDiscount))
+      setLabDiscountInput('')
+      setProductDiscount(Number(productInCart.productDiscount))
     }
   }, [productsCart])
 
-  // Remove element from cart
+  // Calculate and recalculate product discount (escala - pescala)
   useEffect(() => {
-    if(!added && touch) {
-      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        removeElement(codigo)
-      }
+    let productDiscount = 0
+
+    if (amount >= Number(escala1) && amount < Number(escala2)) {
+      productDiscount = Number(pescala1)
+
+    } else if (amount >= Number(escala2) && amount < Number(escala3)) {
+      productDiscount = Number(pescala2)
+
+    } else if (amount >= Number(escala3)) {
+      productDiscount = Number(pescala3)
     }
-  }, [added])
 
-  // -----------------------------------------------
-  // AMOUNT
-  // -----------------------------------------------
-
-  // Change amount
-  useEffect(() => {
-    const productInCart = productsCart.find(item => item.codigo === codigo)
-
-    if (productInCart) {
-      if ( 
-        // NaN, 0, or higher than maxAmount
-        Number(amountInput) < 1 ||
-        Number(amountInput) > maxAmount
-      ) {
-        setDisableAcept(true)
-      } else if ( 
-        // igual, mayor o menor (y no es cero)
-        productInCart.amount === Number(amountInput) || 
-        productInCart.amount < Number(amountInput) || 
-        productInCart.amount > Number(amountInput) && Number(amountInput) !== 0
-      ) {
-        setDisableAcept(false)
-      }
-    }
-  }, [amountInput])
-  
-  // Btn acept
-  const acept = () => {
-    const updatedProductsCart = productsCart.map(item => {
-      if (item.codigo === codigo) {
-        const cleanCantidad = parseInt(String(amountInput).replace(/-/g, ''))
-
-        return { ...item, amount: cleanCantidad }
-      } else {
-        return { ...item }
-      }
-    })
-    setProductsCart(updatedProductsCart)
-    setOpenAmountModal(false)
-  }
-
-  // -----------------------------------------------
-  // DISCOUNT
-  // -----------------------------------------------
-
-  useEffect(() => {
-    const productInCart = productsCart.find(item => item.codigo === codigo)
-
-    if (productInCart) {
-      if (Number(discountInput) < 0 || Number(discountInput) > 99) {
-        setDisableAcept(true)
-      } else {
-        setDisableAcept(false)
-      }
-    }
-  }, [discountInput])
-
-  const aceptDiscount = () => {
-    const updatedProductsCart = productsCart.map(item => {
-      if (item.codigo === codigo) {
-        const cleanDiscount = parseInt(String(discountInput).replace(/-/g, ''))
-
-        return { ...item, discount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
-      } else {
-        return { ...item }
-      }
-    })
-    setProductsCart(updatedProductsCart)
-    setOpenDiscountModal(false)
-    if (Number(discountInput) >= 20) {
-      setModalInfo(true)
-    }
-  }
+    const updatedProductsCart = productsCart.map((item) => (item.codigo === codigo ? { ...item, productDiscount } : { ...item }))
+    setProductsCart(updatedProductsCart as ProductCartInterface[])
+  }, [amount])
 
   // -----------------------------------------------
   // HANDLERS
@@ -175,10 +103,10 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
       await setDataStorage('linealDiscount', '0')
       setProductsCart([])
     }
+    removeElement(codigo)
 
     setAdded(false)
     setAmount(1)
-    setTouch(true)
     setAlertRemoveElement(false)
   }
 
@@ -204,17 +132,46 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
             </View>
           </View>
 
-          {/* info */}
+          {/* main info */}
           <View className='flex flex-row justify-center'>
 
             {/* left info */}
-            <View className='w-1/2 pr-2 my-2'>
+            <View className='w-1/2 pr-2 mt-1'>
+
+              {/* bonus */}
+              <View className='flex flex-row justify-between rounded-sm px-1 py-0.5 mb-1' style={{ backgroundColor: turquoise }}>
+                <Text className='font-medium text-white' style={{ fontSize: wp(2.5) }}>Bonificación: 1x1.</Text>
+                <Text className='font-medium text-white' style={{ fontSize: wp(2.5) }}>Crédito: 14 días</Text>
+              </View>
+
+              {/* price */}
+              <View className='flex flex-row justify-between items-center mb-2'>
+
+                {/* normal price */}
+                <View>
+                  <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                    Precio:
+                  </Text>
+
+                  <Text style={{ fontSize: hp(1.7), color: darkTurquoise }} className='font-bold'>
+                    Bs. {twoDecimalsPrice(Number(precio1))}
+                  </Text>
+                </View>
+
+                {/* discount price */}
+                <View>
+                  <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                    Con desc.:
+                  </Text>
+
+                  <Text style={{ fontSize: hp(1.7), color: darkTurquoise }} className='font-bold'>
+                    Bs. {twoDecimalsPrice(base1 - (((base1 * labDiscount) / 100) + ((base1 * productDiscount) / 100)))}
+                  </Text>
+                </View>
+              </View>
 
               {/* disponibility */}
-              <View className='mb-2'>
-                <Text style={{ fontSize: hp(1.6), color: typography }} className='pb-0.5 font-bold'>
-                  Disponibilidad:
-                </Text>
+              <View>
 
                 {/* sedes */}
                 <View className='px-3'>
@@ -297,42 +254,16 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                   />
                 </View>
               </View>
+
             </View>
 
             {/* right info */}
-            <View className='w-1/2 pl-2'>
+            <View className='w-1/2 pl-2 mt-1'>
 
-              {/* price */}
-              <View className='flex flex-row justify-between items-center my-2'>
-
-                {/* normal price */}
-                <View>
-                  <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
-                    Precio:
-                  </Text>
-
-                  <Text style={{ fontSize: hp(1.8), color: darkTurquoise }} className='font-bold'>
-                    Bs. {twoDecimalsPrice(Number(precio1))}
-                  </Text>
-                </View>
-
-                {/* discount price */}
-                <View>
-                  <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
-                    Con desc.:
-                  </Text>
-
-                  <Text style={{ fontSize: hp(1.8), color: darkTurquoise }} className='font-bold'>
-                    Bs. {twoDecimalsPrice(precio1 - ((base1 * discount) / 100))}
-                  </Text>
-                </View>
-              </View>
-
-              {/* amount and discount */}
-              <View className='flex flex-row items-center w-full'
+              {/* amount and lab discount */}
+              <View className='flex flex-row items-center w-full mb-2'
                 style={{ justifyContent: !labAccess ? 'center' : 'space-between' }}
               >
-
                 {/* amount */}
                 <View>
                   <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Cantidad</Text>
@@ -354,7 +285,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                     <View style={{ width: wp(18), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
                       <TouchableOpacity onPress={() => setOpenDiscountModal(true)}>
                         <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
-                          {discount}%
+                          {labDiscount}%
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -362,11 +293,38 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                 )}
 
               </View>
+
+              {/* discounts info */}
+              <View className='flex flex-row justify-center items-center gap-x-2'>
+
+                {/* product discount */}
+                <View>
+                  <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Dcto. Producto</Text>
+
+                  <View style={{ width: wp(18) }} className='rounded-md'>
+                    <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                      {productDiscount}%
+                    </Text>
+                  </View>
+                </View>
+
+                {/* customer discount */}
+                <View>
+                  <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Dcto. Cliente</Text>
+
+                  <View style={{ width: wp(18) }} className='rounded-md'>
+                    <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                      2%
+                    </Text>
+                  </View>
+                </View>
+
+              </View>
+
             </View>
 
-          {/* info */}
           </View>
-
+          
         </View>
       )}
 
@@ -380,8 +338,23 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
           <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
             <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
               keyboardType='numeric'
-              value={String(amountInput)}
-              onChangeText={text => setAmountInput(text)}
+              onChangeText={text => {
+                const productInCart = productsCart.find(item => item.codigo === codigo)
+
+                if (productInCart) {
+                  if (Number(text) < 1 || Number(text) > maxAmount) { // no acept
+                    setDisableAcept(true)
+                  } else if ( 
+                    // igual, mayor o menor (y no es cero)
+                    productInCart.amount === Number(text) || 
+                    productInCart.amount < Number(text) || 
+                    productInCart.amount > Number(text) && Number(text) !== 0
+                  ) {
+                    setDisableAcept(false)
+                    setAmountInput(text)
+                  }
+                }
+              }}
               selectionColor={primary}
               autoFocus
             />
@@ -392,6 +365,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
             <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
               <TouchableOpacity onPress={() => {
                 setOpenAmountModal(false)
+                setDisableAcept(true)
                 setAmountInput(String(amount))
               }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
@@ -401,7 +375,21 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
             </View>
 
             <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
-              <TouchableOpacity onPress={() => acept()} disabled={disableAcept}>
+              <TouchableOpacity disabled={disableAcept} onPress={() => {
+                // changes to the cart
+                const updatedProductsCart = productsCart.map(item => {
+                  if (item.codigo === codigo) {
+                    const cleanCantidad = parseInt(String(amountInput).replace(/-/g, ''))
+
+                    return { ...item, amount: cleanCantidad }
+                  } else {
+                    return { ...item }
+                  }
+                })
+                setProductsCart(updatedProductsCart)
+                setOpenAmountModal(false)
+                setDisableAcept(true)
+              }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Aceptar
                 </Text>
@@ -412,7 +400,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
         </Modal.Content>
       </Modal>
 
-      {/* modal discount */}
+      {/* modal lab discount */}
       <Modal isOpen={openDiscountModal} initialFocusRef={initialRef}>
         <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
@@ -422,8 +410,18 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
           <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
             <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
               keyboardType='numeric'
-              value={String(discountInput)}
-              onChangeText={text => setDiscountInput(text)}
+              onChangeText={text => {
+                const productInCart = productsCart.find(item => item.codigo === codigo)
+
+                if (productInCart) {
+                  if (Number(text) < 0 || Number(text) > 99) {
+                    setDisableAcept(true)
+                  } else {
+                    setDisableAcept(false)
+                    setLabDiscountInput(text)
+                  }
+                }
+              }}
               selectionColor={primary}
               autoFocus
             />
@@ -432,7 +430,11 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
           {/* btns */}
           <View className='flex flex-row items-center justify-between'>
             <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
-              <TouchableOpacity onPress={() => setOpenDiscountModal(false)}>
+              <TouchableOpacity onPress={() => {
+                setOpenDiscountModal(false)
+                setDisableAcept(true)
+                setLabDiscountInput('')
+              }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Cancelar
                 </Text>
@@ -440,7 +442,24 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
             </View>
 
             <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
-              <TouchableOpacity onPress={() => aceptDiscount()} disabled={disableAcept}>
+              <TouchableOpacity disabled={disableAcept} onPress={() => {
+                // changes to the cart
+                const updatedProductsCart = productsCart.map(item => {
+                  if (item.codigo === codigo) {
+                    const cleanDiscount = parseInt(String(labDiscountInput).replace(/-/g, ''))
+            
+                    return { ...item, labDiscount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
+                  } else {
+                    return { ...item }
+                  }
+                })
+                setProductsCart(updatedProductsCart)
+                setOpenDiscountModal(false)
+                setDisableAcept(true)
+                if (Number(labDiscountInput) >= 20) {
+                  setModalInfo(true)
+                }
+              }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Aceptar
                 </Text>
@@ -478,7 +497,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
       <ModalInfo 
         stateModal={modalInfo} 
         setStateModal={setModalInfo}
-        message='¡Alerta! Estás aplicando un descuento mayor al 20%'
+        message={`¡Alerta! Estás aplicando un descuento ${Number(labDiscount) === 20 ? 'del' : 'mayor al'} 20%`}
         aceptButtonText='Aceptar'
       />
     </>

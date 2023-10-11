@@ -15,7 +15,6 @@ import { IconCart, Loader, ModalInfo, ProfileField } from '../components'
 const Product = () => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
-  const [touch, setTouch] = useState(false)
   const [maxAmount, setMaxAmount] = useState(0)
   const [datasheet, setDatasheet] = useState([])
   
@@ -81,30 +80,15 @@ const Product = () => {
     }
   }, [productsCart])
 
-  // Add or remove element from cart
-  useEffect(() => {
-    if (added && touch) {
-      if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        addToCart(codigo, amount)
-      }
-    } else if(!added && touch) {
-      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        removeElement(codigo)
-      }
-    }
-  }, [added])
-
   // Handle actions
   const handleAddToCart = () => {
     if ((labAccess || salespersonAccess) && !customer) {
       setModalSelectCustomer(true)
       return
     }
+    addToCart(codigo, amount)
 
     setAdded(true)
-    setTouch(true)
   }
   const handleDecrease = () => {
     if (amount > 1) {
@@ -119,7 +103,7 @@ const Product = () => {
   const handleRemoveElement = () => {
     setAdded(false)
     setAmount(1)
-    setTouch(true)
+    removeElement(codigo)
   }
 
   return (
