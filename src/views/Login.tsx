@@ -109,10 +109,10 @@ const Login = () => {
       })
 
       setLogin(true)
-      navigation.navigate('Home')
       setLoaders({ ...loaders, loadingAuth: false })
       setShowPassword(false)
       getProducts()
+      navigation.navigate('Home')
     }
   }
 
