@@ -5,10 +5,10 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { AlertDialog, Button, Modal } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 import { disponibility } from '../../utils/constants'
-import { ProductCartInterface, ProductInterface } from '../../utils/interfaces'
+import { ProductCartInterface, ProductInterface, ScalesInterface } from '../../utils/interfaces'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
-import { twoDecimalsPrice } from '../../utils/helpers'
+import { calculateDiscountsPrice, calculatePercentProductDiscount, twoDecimalsPrice } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
 import { ModalInfo } from '..'
 
@@ -20,7 +20,6 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
 
   const [labDiscount, setLabDiscount] = useState(0)
   const [labDiscountInput, setLabDiscountInput] = useState('')
-  const [productDiscount, setProductDiscount] = useState(0)
   
   const [alertRemoveElement, setAlertRemoveElement] = useState(false)
   const [openAmountModal, setOpenAmountModal] = useState(false)
@@ -28,7 +27,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [disableAcept, setDisableAcept] = useState(true)
   const [modalInfo, setModalInfo] = useState(false)
   
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess } } } = useLogin()
+  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess, customerAccess }, customer, dscCliente } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useInv()
   const { descrip, precio1, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3 } = product
   const cancelRef = useRef(null)
@@ -72,27 +71,8 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
 
       setLabDiscount(Number(productInCart.labDiscount))
       setLabDiscountInput('')
-      setProductDiscount(Number(productInCart.productDiscount))
     }
   }, [productsCart])
-
-  // Calculate and recalculate product discount (escala - pescala)
-  useEffect(() => {
-    let productDiscount = 0
-
-    if (amount >= Number(escala1) && amount < Number(escala2)) {
-      productDiscount = Number(pescala1)
-
-    } else if (amount >= Number(escala2) && amount < Number(escala3)) {
-      productDiscount = Number(pescala2)
-
-    } else if (amount >= Number(escala3)) {
-      productDiscount = Number(pescala3)
-    }
-
-    const updatedProductsCart = productsCart.map((item) => (item.codigo === codigo ? { ...item, productDiscount } : { ...item }))
-    setProductsCart(updatedProductsCart as ProductCartInterface[])
-  }, [amount])
 
   // -----------------------------------------------
   // HANDLERS
@@ -165,7 +145,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                   </Text>
 
                   <Text style={{ fontSize: hp(1.7), color: darkTurquoise }} className='font-bold'>
-                    Bs. {twoDecimalsPrice(base1 - (((base1 * labDiscount) / 100) + ((base1 * productDiscount) / 100)))}
+                    Bs. {twoDecimalsPrice(base1 - calculateDiscountsPrice(product))}
                   </Text>
                 </View>
               </View>
@@ -303,7 +283,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
 
                   <View style={{ width: wp(18) }} className='rounded-md'>
                     <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
-                      {productDiscount}%
+                      {calculatePercentProductDiscount(amount, { escala1, escala2, escala3, pescala1, pescala2, pescala3 } as ScalesInterface)}%
                     </Text>
                   </View>
                 </View>
@@ -314,7 +294,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
 
                   <View style={{ width: wp(18) }} className='rounded-md'>
                     <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
-                      2%
+                      {customerAccess ? Number(dscCliente) : Number(customer?.dscCliente)}%
                     </Text>
                   </View>
                 </View>
@@ -386,7 +366,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                     return { ...item }
                   }
                 })
-                setProductsCart(updatedProductsCart)
+                setProductsCart(updatedProductsCart as ProductCartInterface[])
                 setOpenAmountModal(false)
                 setDisableAcept(true)
               }}>

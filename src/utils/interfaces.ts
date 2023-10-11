@@ -10,6 +10,7 @@ export interface MyUserInterface {
   }
   clipro?: string
   cliente?: string
+  dscCliente?: string
   cedula?: string
   image_url?: URL | string
   nombre?: string
@@ -18,6 +19,7 @@ export interface MyUserInterface {
   vendedor?: string
   customer?: {
     cliente: string
+    dscCliente: string
     nombre: string
   }
   deposito?: string
@@ -119,6 +121,15 @@ export interface ProductInterface {
   pescala2?: string
   escala3?: string
   pescala3?: string
+}
+
+export interface ScalesInterface { 
+  escala1: string, 
+  escala2: string, 
+  escala3: string, 
+  pescala1: string, 
+  pescala2: string, 
+  pescala3: string 
 }
 
 // -----------------------------------------------

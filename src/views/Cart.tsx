@@ -22,7 +22,7 @@ const Cart = () => {
   const [disableAcept, setDisableAcept] = useState(true)
   const [modalInfo, setModalInfo] = useState(false)
 
-  const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { customer, image_url } } = useLogin()
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { access: { customerAccess }, customer, image_url, dscCliente } } = useLogin()
   const { productsCart, setProductsCart } = useInv()
   const initialRef = useRef(null)
   const cancelRef = useRef(null)
@@ -48,10 +48,11 @@ const Cart = () => {
           const code = productsCart[i].codigo
           const amount = productsCart[i].amount
           const labDiscount = productsCart[i].labDiscount
+          const customerDiscount = customerAccess ? dscCliente : customer?.dscCliente
     
           // get product api
           const res: ProductInterface[] = await fetchOneItem('appSinv/searchC', code)
-          newFullProductsCart.push({ ...res[0], amount, labDiscount })
+          newFullProductsCart.push({ ...res[0], amount, labDiscount, customerDiscount })
           
           // last item
           if (i === productsCart?.length - 1) {

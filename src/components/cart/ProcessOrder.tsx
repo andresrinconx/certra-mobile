@@ -5,15 +5,15 @@ import { AlertDialog, Button, Modal } from 'native-base'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
 import { ProductInterface } from '../../utils/interfaces'
-import { getDate, getHour, twoDecimalsPrice } from '../../utils/helpers'
+import { calculateProccessOrderData, getDate, getHour, twoDecimalsPrice } from '../../utils/helpers'
 import { fetchSendData } from '../../utils/api'
 import { setDataStorage } from '../../utils/asyncStorage'
 
 const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
-  const [subtotal, setSubtotal] = useState('')
-  const [discount, setDiscount] = useState('')
-  const [iva, setIva] = useState('')
-  const [total, setTotal] = useState('')
+  const [subtotal, setSubtotal] = useState(0)
+  const [discount, setDiscount] = useState(0)
+  const [iva, setIva] = useState(0)
+  const [total, setTotal] = useState(0)
 
   const [alertProcessOrder, setAlertProcessOrder] = useState(false)
   const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
@@ -27,26 +27,12 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
 
   // Subtotal, discount, total...
   useEffect(() => {
+    const { subtotal, discount, iva, total } = calculateProccessOrderData(fullProductsCart)
 
-    // subtotal (no iva)
-    const subtotal = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + (product.base1 * product.amount), 0)
-    const subtotalFormated = twoDecimalsPrice(subtotal)
-    setSubtotal(subtotalFormated)
-    
-    // discount
-    const discount = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.labDiscount) * (product.base1 * product.amount)) / 100), 0)
-    const discountFormated = twoDecimalsPrice(discount)
-    setDiscount(discountFormated)
-
-    // iva
-    const iva = fullProductsCart.reduce((accumulator: number, product: ProductInterface) => accumulator + ((Number(product.iva) * (product.base1 * product.amount)) / 100), 0)
-    const ivaFormated = twoDecimalsPrice(iva)
-    setIva(ivaFormated)
-
-    // total
-    const total = (subtotal - discount) + iva
-    const totalFormated = twoDecimalsPrice(total)
-    setTotal(totalFormated)
+    setSubtotal(subtotal)
+    setDiscount(discount)
+    setIva(iva)
+    setTotal(total)
   }, [fullProductsCart])
 
   // Process order
@@ -95,7 +81,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   return (
     <>
       <View className='flex flex-col justify-center w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'
-        style={{ height: wp(parseFloat(discount) > 0 || parseFloat(iva) > 0 ? 40 : 32) }}
+        style={{ height: wp(discount > 0 || iva > 0 ? 40 : 32) }}
       >
         <View className='flex flex-col justify-center h-full w-[92%]'
           style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
@@ -109,30 +95,30 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                   Subtotal:
                 </Text>
                 <Text style={{ fontSize: wp(4.2), color: typography, }} className='font-semibold'>
-                  Bs. {subtotal}
+                  Bs. {twoDecimalsPrice(subtotal)}
                 </Text>
               </View>
 
               {/* discount */}
-              {parseFloat(discount) > 0 && (
+              {discount > 0 && (
                 <View className='flex flex-row justify-between'>
                   <Text style={{ fontSize: wp(4.2), color: turquoise }} className='font-semibold'>
                     Descuento:
                   </Text>
                   <Text style={{ fontSize: wp(4.2), color: turquoise }} className='font-semibold'>
-                    -Bs. {discount}
+                    -Bs. {twoDecimalsPrice(discount)}
                   </Text>
                 </View>
               )}
 
               {/* iva */}
-              {parseFloat(iva) > 0 && (
+              {iva > 0 && (
                 <View className='flex flex-row justify-between'>
                   <Text style={{ fontSize: wp(3.7), color: green }} className='font-semibold'>
                     IVA:
                   </Text>
                   <Text style={{ fontSize: wp(3.7), color: green }} className='font-semibold'>
-                    +Bs. {iva}
+                    +Bs. {twoDecimalsPrice(iva)}
                   </Text>
                 </View>
               )}
@@ -143,7 +129,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                   Total:
                 </Text>
                 <Text style={{ fontSize: wp(5), color: typography, }} className='font-extrabold mb-2'>
-                  Bs. {total}
+                  Bs. {twoDecimalsPrice(total)}
                 </Text>
               </View>
             </View>
