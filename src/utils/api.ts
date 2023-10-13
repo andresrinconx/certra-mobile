@@ -2,7 +2,7 @@ import axios from 'axios'
 import { LOCAL_API_URL, API_URL } from '@env'
 import { OrderInterface } from '../utils/interfaces'
 
-const apiBaseUrl = LOCAL_API_URL
+const apiBaseUrl = 'http://192.168.230.98/prueba/sincro'
 
 // -----------------------------------------------
 // ENDPOINTS

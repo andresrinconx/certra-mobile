@@ -106,9 +106,9 @@ export const calculateDiscountsPrice = (product: ProductInterface) => {
 export const calculateIvaPrice = (product: ProductInterface) => {
   const { iva, base1 } = product
 
-  const discountsPrice = (base1 - calculateDiscountsPrice(product))
+  const priceWithDiscounts = (base1 - calculateDiscountsPrice(product))
 
-  return (Number(iva) * (discountsPrice)) / 100
+  return (Number(iva) * (priceWithDiscounts)) / 100
 }
 
 /**

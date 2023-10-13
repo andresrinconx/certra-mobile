@@ -25,7 +25,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   const cancelRef = useRef(null)
   const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
 
-  // Subtotal, discount, total...
+  // Calc subtotal, discount, IVA & total
   useEffect(() => {
     const { subtotal, discount, iva, total } = calculateProccessOrderData(fullProductsCart)
 
