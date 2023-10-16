@@ -22,7 +22,7 @@ const Cart = () => {
   const [disableAcept, setDisableAcept] = useState(true)
   const [modalInfo, setModalInfo] = useState(false)
 
-  const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { access: { customerAccess }, customer, image_url, dscCliente } } = useLogin()
+  const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { access: { customerAccess, labAccess }, customer, image_url, dscCliente } } = useLogin()
   const { productsCart, setProductsCart } = useCertra()
   const initialRef = useRef(null)
   const cancelRef = useRef(null)
@@ -132,17 +132,19 @@ const Cart = () => {
                 />
               </View>
 
-              <View>
-                <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Dcto. Lineal</Text>
-                
-                <View style={{ width: wp(18), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
-                  <TouchableOpacity onPress={() => setOpenLinealDiscountModal(true)}>
-                    <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
-                      {linealDiscount}%
-                    </Text>
-                  </TouchableOpacity>
+              {labAccess && (
+                <View>
+                  <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Dcto. Lineal</Text>
+                  
+                  <View style={{ width: wp(18), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+                    <TouchableOpacity onPress={() => setOpenLinealDiscountModal(true)}>
+                      <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                        {linealDiscount}%
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              )}
             </View>
           ):null}
 
@@ -159,10 +161,9 @@ const Cart = () => {
                     No hay productos
                   </Text>
 
-                  <Text style={{ color: typography, fontSize: wp(4) }} className='font-medium'>Continúa {''}
-                    <Text style={{ color: darkTurquoise, fontSize: wp(4) }} className='font-medium'
-                      onPress={() => navigation.navigate('Home')}
-                    >aquí</Text>
+                  <Text style={{ color: typography, fontSize: wp(4) }} className='font-medium h-8'
+                    onPress={() => navigation.navigate('Home')}>Continúa {''}
+                    <Text style={{ color: darkTurquoise, fontSize: wp(4) }} className='font-medium'>aquí</Text>
                   </Text>
                 </View>
               ) : (
@@ -220,7 +221,7 @@ const Cart = () => {
 
       {/* modal lineal discount */}
       <Modal isOpen={openLinealDiscountModal} initialFocusRef={initialRef}>
-        <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
+        <Modal.Content style={{ width: wp(89), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
           <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Descuento Lineal</Text>
 

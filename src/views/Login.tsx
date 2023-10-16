@@ -152,7 +152,7 @@ const Login = () => {
 
               {requiredFields.user && (
                 <View className='pl-4 pt-1'>
-                  <Text className='text-white font-bold' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
+                  <Text className='font-bold text-white' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
@@ -182,7 +182,7 @@ const Login = () => {
 
               {requiredFields.password && (
                 <View className='pl-4 pt-1'>
-                  <Text className='text-white font-bold' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
+                  <Text className='font-bold text-white' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
@@ -190,7 +190,7 @@ const Login = () => {
             {/* Incorrect Credentials */}
             {incorrectCredentials && (
               <View className='pr-4'>
-                <Text className='text-white font-bold text-right' style={{ fontSize: wp(4.5) }}>* Datos incorrectos</Text>
+                <Text className='font-bold text-right text-white' style={{ fontSize: wp(4.5) }}>* Datos incorrectos</Text>
               </View>
             )}
 
@@ -230,6 +230,7 @@ const Login = () => {
               const noMargin = `${isLast ? 'mr-0' : 'mr-3'}`
               return (
                 <TouchableOpacity key={id} onPress={() => { Linking.openURL(`${url}`) }} 
+                  style={{ width: wp(8), height: wp(10) }}
                   className={`${noMargin}`}
                 >
                   <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'

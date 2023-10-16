@@ -1,8 +1,8 @@
+import { ProductInterface, ScalesInterface } from './interfaces'
+
 // -----------------------------------------------
 // DATE HELPERS
 // -----------------------------------------------
-
-import { ProductInterface, ScalesInterface } from './interfaces'
 
 export const formatText = (text: string) => {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -62,8 +62,8 @@ export const getMonthAndDays = (date: Date) => {
 // CALCS HELPERS
 // -----------------------------------------------
 
-export const twoDecimalsPrice = (price: number) => {
-  return price.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+export const currency = (price: number | string, currency?: '$' | '€') => {
+  return `${currency ?? 'Bs.'} ${Number(price).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
 /**

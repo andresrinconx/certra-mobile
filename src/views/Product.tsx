@@ -10,7 +10,7 @@ import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
 import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
-import { twoDecimalsPrice } from '../utils/helpers'
+import { currency } from '../utils/helpers'
 import { IconCart, Loader, ModalInfo, ProfileField } from '../components'
  
 const Product = () => {
@@ -164,7 +164,7 @@ const Product = () => {
                 Precio:
               </Text>
               <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
-                Bs. {twoDecimalsPrice(Number(precio1))}
+                {currency(Number(precio1))}
               </Text>
             </View>
 

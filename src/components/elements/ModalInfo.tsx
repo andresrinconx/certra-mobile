@@ -22,7 +22,7 @@ const ModalInfo = ({
 
   return (
     <Modal isOpen={stateModal} onClose={() => setStateModal(false)}>
-      <Modal.Content style={{ width: 320, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 5 }}>
+      <Modal.Content style={{ width: wp(80), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 5 }}>
         <View className='flex flex-col'>
           <Text className='pb-8' style={{ fontSize: wp(4), color: typography }}>{message}</Text>
           

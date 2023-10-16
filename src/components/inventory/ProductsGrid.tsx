@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { ProductInterface } from '../../utils/interfaces'
 import { disponibility } from '../../utils/constants'
-import { twoDecimalsPrice } from '../../utils/helpers'
+import { currency } from '../../utils/helpers'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
@@ -19,7 +19,7 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
 
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { addToCart, productsCart, removeElement } = useCertra()
-  const { descrip, precio1, image_url, merida, centro, oriente, codigo } = product
+  const { descrip, image_url, merida, centro, oriente, codigo, base1, iva } = product
   const navigation = useNavigation()
 
   // Get max amount
@@ -140,7 +140,7 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
               </Text>
 
               <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-                Bs. {twoDecimalsPrice(Number(precio1))}
+                {currency(base1)}
               </Text>
             </View>
 

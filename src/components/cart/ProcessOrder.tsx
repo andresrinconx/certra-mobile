@@ -5,7 +5,7 @@ import { AlertDialog, Button, Modal } from 'native-base'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import { ProductInterface } from '../../utils/interfaces'
-import { calculateProccessOrderData, getDate, getHour, twoDecimalsPrice } from '../../utils/helpers'
+import { calculateProccessOrderData, getDate, getHour, currency } from '../../utils/helpers'
 import { fetchSendData } from '../../utils/api'
 import { setDataStorage } from '../../utils/asyncStorage'
 
@@ -95,7 +95,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                   Subtotal:
                 </Text>
                 <Text style={{ fontSize: wp(4.2), color: typography, }} className='font-semibold'>
-                  Bs. {twoDecimalsPrice(subtotal)}
+                  {currency(subtotal)}
                 </Text>
               </View>
 
@@ -106,7 +106,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                     Descuento:
                   </Text>
                   <Text style={{ fontSize: wp(4.2), color: turquoise }} className='font-semibold'>
-                    -Bs. {twoDecimalsPrice(discount)}
+                    -{currency(discount)}
                   </Text>
                 </View>
               )}
@@ -118,7 +118,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                     IVA:
                   </Text>
                   <Text style={{ fontSize: wp(3.7), color: green }} className='font-semibold'>
-                    +Bs. {twoDecimalsPrice(iva)}
+                    +{currency(iva)}
                   </Text>
                 </View>
               )}
@@ -129,7 +129,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                   Total:
                 </Text>
                 <Text style={{ fontSize: wp(5), color: typography, }} className='font-extrabold mb-2'>
-                  Bs. {twoDecimalsPrice(total)}
+                  {currency(total)}
                 </Text>
               </View>
             </View>
@@ -175,7 +175,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
 
       {/* alert success order */}
       <Modal isOpen={alertSuccessOrder} onClose={() => setAlertSuccessOrder(false)} animationPreset='fade'>
-        <Modal.Content style={{ width: 360, height: 500, backgroundColor: primary, marginBottom: 0 }}>
+        <Modal.Content style={{ width: wp(95), height: wp(127), backgroundColor: primary, marginBottom: 0 }}>
           <View className='flex flex-1 flex-col items-center justify-between'>
             
             {/* logo */}
@@ -216,7 +216,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
 
       {/* alert error order */}
       <Modal isOpen={alertErrorOrder} onClose={() => setAlertErrorOrder(false)} animationPreset='fade'>
-        <Modal.Content style={{ width: 360, height: 500, backgroundColor: processBtn, marginBottom: 0 }}>
+        <Modal.Content style={{ width: wp(95), height: wp(127), backgroundColor: processBtn, marginBottom: 0 }}>
           <View className='flex flex-1 flex-col items-center justify-between'>
             <View />
             

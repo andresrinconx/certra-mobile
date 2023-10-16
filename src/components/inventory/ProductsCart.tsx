@@ -5,7 +5,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { AlertDialog, Button, Modal } from 'native-base'
 import { disponibility } from '../../utils/constants'
 import { ProductCartInterface, ProductInterface, ScalesInterface } from '../../utils/interfaces'
-import { calculateDiscountsPrice, calculatePercentProductDiscount, twoDecimalsPrice } from '../../utils/helpers'
+import { calculateDiscountsPrice, calculatePercentProductDiscount, currency } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
@@ -134,7 +134,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                   </Text>
 
                   <Text style={{ fontSize: hp(1.7), color: darkTurquoise }} className='font-bold'>
-                    Bs. {twoDecimalsPrice(Number(precio1))}
+                    {currency(Number(precio1))}
                   </Text>
                 </View>
 
@@ -145,7 +145,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                   </Text>
 
                   <Text style={{ fontSize: hp(1.7), color: darkTurquoise }} className='font-bold'>
-                    Bs. {twoDecimalsPrice(base1 - calculateDiscountsPrice(product))}
+                    {currency(base1 - calculateDiscountsPrice(product))}
                   </Text>
                 </View>
               </View>
@@ -298,19 +298,16 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                     </Text>
                   </View>
                 </View>
-
               </View>
-
             </View>
 
           </View>
-          
         </View>
       )}
 
       {/* modal amount */}
       <Modal isOpen={openAmountModal} initialFocusRef={initialRef}>
-        <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
+        <Modal.Content style={{ width: wp(89), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
           <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Cantidad</Text>
 
@@ -382,7 +379,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
 
       {/* modal lab discount */}
       <Modal isOpen={openDiscountModal} initialFocusRef={initialRef}>
-        <Modal.Content style={{ width: 350, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
+        <Modal.Content style={{ width: wp(89), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
           <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Descuento</Text>
 

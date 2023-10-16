@@ -8,7 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import useLogin from '../hooks/useLogin'
 import useCertra from '../hooks/useCertra'
 import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api'
-import { getDate, getDateWithoutHyphen } from '../utils/helpers'
+import { currency, getDate, getDateWithoutHyphen } from '../utils/helpers'
 import { OrderRecordItemInterface } from '../utils/interfaces'
 import { orderRecordCols } from '../utils/constants'
 import { Loader, BackScreen, Logos, NoDataText, LabelCustomer } from '../components'
@@ -179,7 +179,7 @@ const OrderRecord = () => {
         </View>
 
         {/* customer */}
-        {customer && !loadingOrderRecord ? (
+        {lookAtPharmacy && !loadingOrderRecord ? (
           <View className='pb-1'>
             <LabelCustomer name={customer?.nombre as string} />
           </View>
@@ -238,8 +238,8 @@ const OrderRecord = () => {
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{pedido}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{fecha}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{iva}%</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${importe} Bs` ?? `${total} Bs`}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{unidades}</Text>
                               <TouchableOpacity className='flex flex-col justify-center items-center' 
                                 onPress={() => handleDetails(item)}
@@ -267,14 +267,14 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(32), fontSize: wp(2.6) }}
+                              <Text className='text-center' style={{ color: typography, width: wp(12), fontSize: wp(2.6) }}>{pedido}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(28), fontSize: wp(2.6) }}
                                 numberOfLines={1}
                               >
                                 {nombre}
                               </Text>
                               <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{fecha}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${importe} Bs` ?? `${total} Bs`}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{unidades}</Text>
                               <TouchableOpacity className='flex flex-col justify-center items-center' 
                                 onPress={() => handleDetails(item)}
@@ -365,9 +365,9 @@ const OrderRecord = () => {
                     {nombreP}
                   </Text>
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{cantidad}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${preciodolar} $` : `${precio} Bs`}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{iva}%</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${total} Bs`}</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(preciodolar, '$')}` : `${currency(precio)}`}</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(total)}`}</Text>
                 </View>
               )
             }} 

@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { disponibility } from '../../utils/constants'
 import { ProductInterface } from '../../utils/interfaces'
-import { twoDecimalsPrice } from '../../utils/helpers'
+import { currency } from '../../utils/helpers'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
@@ -189,7 +189,7 @@ const ProductsSearch = ({ product }: { product: ProductInterface }) => {
             </Text>
 
             <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-              Bs. {twoDecimalsPrice(Number(precio1))}
+              {currency(Number(precio1))}
             </Text>
           </View>
 
