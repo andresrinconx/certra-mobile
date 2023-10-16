@@ -12,6 +12,7 @@ import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
 import { currency } from '../utils/helpers'
 import { IconCart, Loader, ModalInfo, ProfileField } from '../components'
+import ModalAmount from '../components/inventory/ModalAmount'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
@@ -19,6 +20,7 @@ const Product = () => {
   const [maxAmount, setMaxAmount] = useState(0)
   const [datasheet, setDatasheet] = useState([])
   
+  const [openAmountModal, setOpenAmountModal] = useState(false)
   const [loadingDatasheet, setLoadingDatasheet] = useState(true)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
@@ -26,7 +28,7 @@ const Product = () => {
 
   const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { productsCart, addToCart, removeElement } = useCertra()
-  const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductInterface }
+  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva } } = useRoute() as { params: ProductInterface }
   const navigation = useNavigation()
 
   // Get datahseet
@@ -91,16 +93,6 @@ const Product = () => {
 
     setAdded(true)
   }
-  const handleDecrease = () => {
-    if (amount > 1) {
-      setAmount(amount - 1)
-    }
-  }
-  const handleIncrease = () => {
-    if (amount < maxAmount) {
-      setAmount(amount + 1)
-    }
-  }
   const handleRemoveElement = () => {
     setAdded(false)
     setAmount(1)
@@ -109,7 +101,7 @@ const Product = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <View className='flex-1 px-3' style={{ backgroundColor: background, paddingTop: 0 }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
         
         {/* back and cart */}
@@ -163,9 +155,18 @@ const Product = () => {
               <Text style={{ fontSize: hp(2.5), color: typography }} className='font-medium'>
                 Precio:
               </Text>
-              <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
-                {currency(Number(precio1))}
-              </Text>
+
+              <View className='flex flex-row items-center gap-x-4'>
+                <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
+                  {currency(base1)}
+                </Text>
+
+                {Number(iva) > 0 && (
+                  <Text className='font-normal' style={{ fontSize: hp(2.5), color: turquoise }}>
+                    IVA {currency((base1 * (iva as number)) / 100)}
+                  </Text>
+                )}
+              </View>
             </View>
 
             {/* disponibility */}
@@ -310,28 +311,16 @@ const Product = () => {
             </Pressable>
           </View>
 
-          <View className='flex-1 flex-row items-center justify-between mx-6'>
+          <View className='flex-1 flex-row items-center justify-center mx-6'>
 
-            {/* decrease */}
-            <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-              <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
-                <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
+            <View style={{ width: wp(35), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+              <TouchableOpacity onPress={() => setOpenAmountModal(true)}>
+                <Text style={{ color: darkTurquoise, fontSize: wp(6) }} className='text-center'>
+                  {amount}
+                </Text>
               </TouchableOpacity>
             </View>
-
-            {/* amount */}
-            <View style={{ width: wp(20) }}>
-              <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(6) }}>
-                {amount}
-              </Text>
-            </View>
-
-            {/* increase */}
-            <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-              <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
-                <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-              </TouchableOpacity>
-            </View>
+            
           </View>
 
           {/* add & added */}
@@ -354,6 +343,14 @@ const Product = () => {
 
         </View>
       )}
+
+      <ModalAmount
+        stateModal={openAmountModal}
+        setStateModal={setOpenAmountModal}
+        codigo={codigo}
+        amount={amount}
+        maxAmount={maxAmount}
+      />
 
       <ModalInfo 
         stateModal={modalSelectCustomer} 

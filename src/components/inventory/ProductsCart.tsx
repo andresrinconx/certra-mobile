@@ -4,18 +4,18 @@ import { XMarkIcon } from 'react-native-heroicons/outline'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { disponibility } from '../../utils/constants'
-import { ProductCartInterface, ProductInterface, ScalesInterface } from '../../utils/interfaces'
+import { ProductInterface, ScalesInterface } from '../../utils/interfaces'
 import { calculateDiscountsPrice, calculatePercentProductDiscount, currency } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
 import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
+import ModalAmount from './ModalAmount'
 
 const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)
   const [amount, setAmount] = useState(1)
-  const [amountInput, setAmountInput] = useState('')
   const [maxAmount, setMaxAmount] = useState(0)
 
   const [labDiscount, setLabDiscount] = useState(0)
@@ -29,7 +29,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess, customerAccess }, customer, dscCliente } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useCertra()
-  const { descrip, precio1, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3 } = product
+  const { descrip, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3 } = product
   const cancelRef = useRef(null)
   const initialRef = useRef(null)
   const navigation = useNavigation()
@@ -67,7 +67,6 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
       // product in cart
       setAdded(true)
       setAmount(productInCart.amount)
-      setAmountInput(String(productInCart.amount))
 
       setLabDiscount(Number(productInCart.labDiscount))
       setLabDiscountInput('')
@@ -116,7 +115,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
           <View className='flex flex-row justify-center'>
 
             {/* left info */}
-            <View className='w-1/2 pr-2 mt-1'>
+            <View className='w-[53%] pr-2 mt-1'>
 
               {/* bonus */}
               <View className='flex flex-row justify-between rounded-sm px-1 py-0.5 mb-1' style={{ backgroundColor: turquoise }}>
@@ -134,7 +133,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                   </Text>
 
                   <Text style={{ fontSize: hp(1.7), color: darkTurquoise }} className='font-bold'>
-                    {currency(Number(precio1))}
+                    {currency(base1)}
                   </Text>
                 </View>
 
@@ -238,7 +237,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
             </View>
 
             {/* right info */}
-            <View className='w-1/2 pl-2 mt-1'>
+            <View className='w-[47%] pl-2 mt-1'>
 
               {/* amount and lab discount */}
               <View className='flex flex-row items-center w-full mb-2'
@@ -305,77 +304,13 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
         </View>
       )}
 
-      {/* modal amount */}
-      <Modal isOpen={openAmountModal} initialFocusRef={initialRef}>
-        <Modal.Content style={{ width: wp(89), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
-
-          <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Cantidad</Text>
-
-          {/* input */}
-          <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
-            <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
-              keyboardType='numeric'
-              onChangeText={text => {
-                const productInCart = productsCart.find(item => item.codigo === codigo)
-
-                if (productInCart) {
-                  if (Number(text) < 1 || Number(text) > maxAmount) { // no acept
-                    setDisableAcept(true)
-                  } else if ( 
-                    // igual, mayor o menor (y no es cero)
-                    productInCart.amount === Number(text) || 
-                    productInCart.amount < Number(text) || 
-                    productInCart.amount > Number(text) && Number(text) !== 0
-                  ) {
-                    setDisableAcept(false)
-                    setAmountInput(text)
-                  }
-                }
-              }}
-              selectionColor={primary}
-              autoFocus
-            />
-          </View>
-          
-          {/* btns */}
-          <View className='flex flex-row items-center justify-between'>
-            <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
-              <TouchableOpacity onPress={() => {
-                setOpenAmountModal(false)
-                setDisableAcept(true)
-                setAmountInput(String(amount))
-              }}>
-                <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
-                  Cancelar
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
-              <TouchableOpacity disabled={disableAcept} onPress={() => {
-                // changes to the cart
-                const updatedProductsCart = productsCart.map(item => {
-                  if (item.codigo === codigo) {
-                    const cleanCantidad = parseInt(String(amountInput).replace(/-/g, ''))
-
-                    return { ...item, amount: cleanCantidad }
-                  } else {
-                    return { ...item }
-                  }
-                })
-                setProductsCart(updatedProductsCart as ProductCartInterface[])
-                setOpenAmountModal(false)
-                setDisableAcept(true)
-              }}>
-                <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
-                  Aceptar
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-        </Modal.Content>
-      </Modal>
+      <ModalAmount
+        stateModal={openAmountModal}
+        setStateModal={setOpenAmountModal}
+        codigo={codigo}
+        amount={amount}
+        maxAmount={maxAmount}
+      />
 
       {/* modal lab discount */}
       <Modal isOpen={openDiscountModal} initialFocusRef={initialRef}>
@@ -400,7 +335,6 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
                 }
               }}
               selectionColor={primary}
-              autoFocus
             />
           </View>
           

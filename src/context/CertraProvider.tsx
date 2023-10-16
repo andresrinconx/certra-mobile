@@ -155,7 +155,7 @@ export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Add to cart
   const addToCart = (codigo: string, amount: number) => {
-    setProductsCart([ ...productsCart, { codigo, amount, labDiscount: '0', productDiscount: '0', customerDiscount: '0' } ])
+    setProductsCart([ ...productsCart, { codigo, amount, labDiscount: '0' } ])
   }
 
   // Remove element from cart

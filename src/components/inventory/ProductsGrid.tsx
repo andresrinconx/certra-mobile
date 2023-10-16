@@ -9,12 +9,14 @@ import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
+import ModalAmount from './ModalAmount'
 
 const ProductsGrid = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
   const [maxAmount, setMaxAmount] = useState(0)
 
+  const [openAmountModal, setOpenAmountModal] = useState(false)
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
@@ -71,16 +73,6 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
 
     setAdded(true)
   }
-  const handleDecrease = () => {
-    if (amount > 1) {
-      setAmount(amount - 1)
-    }
-  }
-  const handleIncrease = () => {
-    if (amount < maxAmount) {
-      setAmount(amount + 1)
-    }
-  }
   const handleRemoveElement = () => {
     setAdded(false)
     setAmount(1)
@@ -134,14 +126,22 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
             </Pressable>
 
             {/* price */}
-            <View className='my-2 '>
-              <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
-                Precio:
-              </Text>
+            <View className='relative'>
+              <View className='my-2'>
+                <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                  Precio:
+                </Text>
 
-              <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-                {currency(base1)}
-              </Text>
+                <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                  {currency(base1)}
+                </Text>
+              </View>
+
+              {Number(iva) > 0 && (
+                <Text className='absolute right-5 top-2.5' style={{ fontSize: hp(1.5), color: turquoise }}>
+                  IVA {currency((base1 * (iva as number)) / 100)}
+                </Text>
+              )}
             </View>
 
             {/* disponibility */}
@@ -233,30 +233,14 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
             </View>
 
             {/* amount and added */}
-            <View className='flex flex-row items-center justify-between w-full'>
+            <View className='flex flex-row items-center justify-center w-full'>
 
-              <View className='flex-1 flex-row items-center justify-around'>
-
-                {/* decrease */}
-                <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                  <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
-                    <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
-                  </TouchableOpacity>
-                </View>
-
-                {/* amount */}
-                <View style={{ width: wp(12) }}>
-                  <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(4.5) }}>
+              <View style={{ width: wp(20), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+                <TouchableOpacity onPress={() => setOpenAmountModal(true)}>
+                  <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
                     {amount}
                   </Text>
-                </View>
-
-                {/* increase */}
-                <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                  <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
-                    <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-                  </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
 
               {/* add & added */}
@@ -283,6 +267,14 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
         </View>
 
       </View>
+
+      <ModalAmount
+        stateModal={openAmountModal}
+        setStateModal={setOpenAmountModal}
+        codigo={codigo}
+        amount={amount}
+        maxAmount={maxAmount}
+      />
 
       <ModalInfo 
         stateModal={modalSelectCustomer} 

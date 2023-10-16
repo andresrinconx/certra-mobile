@@ -54,7 +54,7 @@ const Inventory = () => {
   const handleTextDebounce = debounce(handleSearch, 400)
 
   return (
-    <View className='flex-1 h-full pt-10' style={{ backgroundColor: background }}>
+    <View className='flex-1 h-full' style={{ backgroundColor: background, paddingTop: 16 }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* content */}

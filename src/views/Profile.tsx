@@ -134,7 +134,7 @@ const Profile = () => {
   ]
   
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+    <View className='flex-1 px-3' style={{ backgroundColor: background, paddingTop: 0 }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={image_url as URL} />

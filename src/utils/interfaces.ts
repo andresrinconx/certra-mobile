@@ -96,8 +96,6 @@ export interface ProductCartInterface {
   codigo: string
   amount: number
   labDiscount:string
-  productDiscount: string
-  customerDiscount: string
 }
 
 export interface ProductInterface {
