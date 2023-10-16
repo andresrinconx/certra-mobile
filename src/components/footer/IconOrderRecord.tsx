@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
 import { Pressable, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
+import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
 
 const IconOrderRecord = () => {

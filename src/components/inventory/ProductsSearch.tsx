@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, FlatList, Pressable } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
-import { useNavigation } from '@react-navigation/native'
-import useInv from '../../hooks/useInv'
-import useLogin from '../../hooks/useLogin'
 import { disponibility } from '../../utils/constants'
 import { ProductInterface } from '../../utils/interfaces'
 import { twoDecimalsPrice } from '../../utils/helpers'
+import useInv from '../../hooks/useInv'
+import useLogin from '../../hooks/useLogin'
+import useNavigation from '../../hooks/useNavigation'
 
 const ProductsSearch = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)

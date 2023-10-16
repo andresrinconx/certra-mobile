@@ -1,15 +1,15 @@
 import { Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
 import { UserFromScliInterface } from '../../utils/interfaces'
+import useNavigation from '../../hooks/useNavigation'
 import useLogin from '../../hooks/useLogin'
 import useInv from '../../hooks/useInv'
 
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin()
   const { setProductsCart, setloadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useInv()
-  const navigation = useNavigation()
   const { cliente, nombre } = customer
+  const navigation = useNavigation()
 
   // select customer
   const selectCustomer = () => {

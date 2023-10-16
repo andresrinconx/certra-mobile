@@ -48,6 +48,7 @@ export interface DataConfigProfileInterface {
 export interface UserFromScliInterface {
   cliente: string
   nombre: string
+  dscCliente: string
   clave: string
   rifci: string
   deposito: string

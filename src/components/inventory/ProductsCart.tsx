@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from 're
 import { XMarkIcon } from 'react-native-heroicons/outline'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button, Modal } from 'native-base'
-import { useNavigation } from '@react-navigation/native'
 import { disponibility } from '../../utils/constants'
 import { ProductCartInterface, ProductInterface, ScalesInterface } from '../../utils/interfaces'
-import useInv from '../../hooks/useInv'
-import useLogin from '../../hooks/useLogin'
 import { calculateDiscountsPrice, calculatePercentProductDiscount, twoDecimalsPrice } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
+import useLogin from '../../hooks/useLogin'
+import useInv from '../../hooks/useInv'
+import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
 
 const ProductsCart = ({ product }: { product: ProductInterface }) => {

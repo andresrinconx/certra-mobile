@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
 import useLogin from '../hooks/useLogin'
 import useInv from '../hooks/useInv'
+import useNavigation from '../hooks/useNavigation'
 import { ItineraryEventInterface } from '../utils/interfaces'
 import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
 import { fetchItinerary, fetchReasons } from '../utils/api'
@@ -185,7 +185,7 @@ const Itinerary = () => {
   }
 
   return (
-    <View className='flex-1 px-2.5 pt-6' style={{ backgroundColor: background }}>
+    <View className='flex-1 px-2.5' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />

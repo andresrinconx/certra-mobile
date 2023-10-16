@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import { ProductInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
+import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
 import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
@@ -25,8 +26,8 @@ const Product = () => {
 
   const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { productsCart, addToCart, removeElement } = useInv()
-  const navigation = useNavigation()
   const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductInterface }
+  const navigation = useNavigation()
 
   // Get datahseet
   useEffect(() => {
@@ -108,7 +109,7 @@ const Product = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <View className='flex-1 px-3' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
         
         {/* back and cart */}

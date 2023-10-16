@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { Pressable, Image, Text } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../../hooks/useLogin'
+import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
 
 const IconInventory = () => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
-
-  const navigation = useNavigation()
+  
   const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
+  const navigation = useNavigation()
 
   return (
     <>

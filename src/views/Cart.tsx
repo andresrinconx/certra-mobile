@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
 import { View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { StatusBar } from 'react-native'
 import useInv from '../hooks/useInv'
 import useLogin from '../hooks/useLogin'
+import useNavigation from '../hooks/useNavigation'
 import { fetchOneItem } from '../utils/api'
 import { ProductInterface } from '../utils/interfaces'
 import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
@@ -105,7 +105,7 @@ const Cart = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <View className='flex-1 px-3' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url as URL} />

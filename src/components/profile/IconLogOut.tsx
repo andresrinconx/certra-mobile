@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react'
 import { View, TouchableOpacity, Text, Image } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button } from 'native-base'
 import { setDataStorage } from '../../utils/asyncStorage'
 import useInv from '../../hooks/useInv'
 import useLogin from '../../hooks/useLogin'
+import useNavigation from '../../hooks/useNavigation'
 import { Loader } from '..'
 
 const IconLogOut = () => {

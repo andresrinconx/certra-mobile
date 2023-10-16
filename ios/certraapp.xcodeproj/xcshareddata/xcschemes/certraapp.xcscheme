@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "inv.app"
-               BlueprintName = "inv"
-               ReferencedContainer = "container:inv.xcodeproj">
+               BuildableName = "certraapp.app"
+               BlueprintName = "certraapp"
+               ReferencedContainer = "container:certraapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "invTests.xctest"
-               BlueprintName = "invTests"
-               ReferencedContainer = "container:inv.xcodeproj">
+               BuildableName = "certraappTests.xctest"
+               BlueprintName = "certraappTests"
+               ReferencedContainer = "container:certraapp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "inv.app"
-            BlueprintName = "inv"
-            ReferencedContainer = "container:inv.xcodeproj">
+            BuildableName = "certraapp.app"
+            BlueprintName = "certraapp"
+            ReferencedContainer = "container:certraapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "inv.app"
-            BlueprintName = "inv"
-            ReferencedContainer = "container:inv.xcodeproj">
+            BuildableName = "certraapp.app"
+            BlueprintName = "certraapp"
+            ReferencedContainer = "container:certraapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { View, Image, FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
 import { DataConfigProfileInterface } from '../utils/interfaces'
 import useInv from '../hooks/useInv'
+import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
 import { fetchProfileData } from '../utils/api'
 import { Loader, Logos, BackScreen, ProfileGroup, IconLogOut } from '../components'
@@ -12,9 +12,9 @@ const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
-  const navigation = useNavigation()
   const { themeColors: { primary, background, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
   const { setLookAtPharmacy } = useInv()
+  const navigation = useNavigation()
 
   // Get data
   useEffect(() => {
@@ -134,7 +134,7 @@ const Profile = () => {
   ]
   
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+    <View className='flex-1 px-3' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={image_url as URL} />
