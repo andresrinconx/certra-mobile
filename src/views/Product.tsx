@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native'
 import { useRoute } from '@react-navigation/native'
-import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native-heroicons/outline'
+import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import { ProductInterface } from '../utils/interfaces'

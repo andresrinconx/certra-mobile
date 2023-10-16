@@ -58,6 +58,16 @@ export const getMonthAndDays = (date: Date) => {
   return data[date.getMonth()] // object {month: string, days: number}
 }
 
+export const getDateInRange = (initialDate: Date, finalDate: Date) => {
+  const date = new Date()
+
+  if (initialDate < date && finalDate > date) {
+    return true
+  } else {
+    return false
+  }
+}
+
 // -----------------------------------------------
 // CALCS HELPERS
 // -----------------------------------------------
@@ -89,11 +99,19 @@ export const calculatePercentProductDiscount = (amount: number, scales: { escala
  * la suma de todos da el total de descuentos que es lo que se muestra antes del IVA
  */
 export const calculateDiscountsPrice = (product: ProductInterface) => {
-  const { labDiscount, amount, base1, escala1, escala2, escala3, pescala1, pescala2, pescala3, customerDiscount } = product
+  const { fdesde, fhasta, labDiscount, amount, base1, escala1, escala2, escala3, pescala1, pescala2, pescala3, customerDiscount } = product
 
+  // Lab
   const labDiscountPriceBs = (Number(labDiscount) * base1) / 100
-  const productDiscountPriceBs = (calculatePercentProductDiscount(amount, { escala1, escala2, escala3, pescala1, pescala2, pescala3 } as ScalesInterface) 
-    * (base1 - labDiscountPriceBs)) / 100
+
+  // Product
+  let productDiscountPriceBs = 0
+  if (getDateInRange(new Date(`${fdesde}`), new Date(`${fhasta}`))) {
+    productDiscountPriceBs = (calculatePercentProductDiscount(amount, { escala1, escala2, escala3, pescala1, pescala2, pescala3 } as ScalesInterface) 
+      * (base1 - labDiscountPriceBs)) / 100
+  }
+  
+  // Customer
   const customerDiscountPriceBs = (Number(customerDiscount) * ((base1 - labDiscountPriceBs) - productDiscountPriceBs)) / 100
 
   return labDiscountPriceBs + productDiscountPriceBs + customerDiscountPriceBs

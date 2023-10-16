@@ -1,7 +1,7 @@
 import { useState, useEffect, memo } from 'react'
 import { View, Text, Image, TouchableOpacity, Pressable, FlatList } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
+import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { ProductInterface } from '../../utils/interfaces'
 import { disponibility } from '../../utils/constants'
 import { currency } from '../../utils/helpers'

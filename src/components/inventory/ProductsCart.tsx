@@ -323,15 +323,11 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
             <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
               keyboardType='numeric'
               onChangeText={text => {
-                const productInCart = productsCart.find(item => item.codigo === codigo)
-
-                if (productInCart) {
-                  if (Number(text) < 0 || Number(text) > 99) {
-                    setDisableAcept(true)
-                  } else {
-                    setDisableAcept(false)
-                    setLabDiscountInput(text)
-                  }
+                if (Number(text) < 0 || Number(text) > 99) {
+                  setDisableAcept(true)
+                } else {
+                  setDisableAcept(false)
+                  setLabDiscountInput(text)
                 }
               }}
               selectionColor={primary}

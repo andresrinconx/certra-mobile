@@ -120,6 +120,11 @@ export interface ProductInterface {
   pescala2?: string
   escala3?: string
   pescala3?: string
+  bonicant?: string 
+  bonifica?: string 
+  dcredito?: string 
+  fdesde?: string 
+  fhasta?: string
 }
 
 export interface ScalesInterface { 
