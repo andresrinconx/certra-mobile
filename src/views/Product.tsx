@@ -5,7 +5,7 @@ import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import { ProductInterface } from '../utils/interfaces'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
 import { fetchDatasheet } from '../utils/api'
@@ -25,7 +25,7 @@ const Product = () => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
   const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { productsCart, addToCart, removeElement } = useInv()
+  const { productsCart, addToCart, removeElement } = useCertra()
   const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductInterface }
   const navigation = useNavigation()
 

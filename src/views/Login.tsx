@@ -4,7 +4,7 @@ import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import useNavigation from '../hooks/useNavigation'
 import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
@@ -21,7 +21,7 @@ const Login = () => {
   })
 
   const { user, setUser, password, setPassword, loaders, setLoaders, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
-  const { getProducts } = useInv()
+  const { getProducts } = useCertra()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
   const textInputRefPassword = useRef<TextInput | null>(null)

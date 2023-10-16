@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { StatusBar } from 'react-native'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import useLogin from '../hooks/useLogin'
 import useNavigation from '../hooks/useNavigation'
 import { fetchOneItem } from '../utils/api'
@@ -23,7 +23,7 @@ const Cart = () => {
   const [modalInfo, setModalInfo] = useState(false)
 
   const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { access: { customerAccess }, customer, image_url, dscCliente } } = useLogin()
-  const { productsCart, setProductsCart } = useInv()
+  const { productsCart, setProductsCart } = useCertra()
   const initialRef = useRef(null)
   const cancelRef = useRef(null)
   const navigation = useNavigation()

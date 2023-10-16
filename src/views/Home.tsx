@@ -1,12 +1,12 @@
 import { View } from 'react-native'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import { SelectCustomer, Loader, Logos, Products, Footer } from '../components'
 
 const Home = () => {
   const { themeColors: { background }, myUser: { image_url } } = useLogin()
-  const { loadingSelectCustomer } = useInv()
+  const { loadingSelectCustomer } = useCertra()
 
   return (
     <>

@@ -3,7 +3,7 @@ import { View, FlatList, StatusBar } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { ItineraryEventInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import { Logos, BackScreen, ItineraryDayEvent, NoDataText } from '../components'
 
 const ItineraryDay = () => {
@@ -21,7 +21,7 @@ const ItineraryDay = () => {
     reasons: []
   } }
   const { themeColors: { background }, myUser } = useLogin()
-  const { setReloadItinerary } = useInv()
+  const { setReloadItinerary } = useCertra()
 
   useEffect(() => {
     setReloadItinerary(false)

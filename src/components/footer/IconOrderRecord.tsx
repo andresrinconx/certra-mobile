@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Pressable, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
@@ -11,7 +11,7 @@ const IconOrderRecord = () => {
 
   const navigation = useNavigation()
   const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { setLookAtPharmacy } = useInv()
+  const { setLookAtPharmacy } = useCertra()
 
   return (
     <>

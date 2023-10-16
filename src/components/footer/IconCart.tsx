@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { View, Text, Pressable, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
@@ -10,7 +10,7 @@ const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boole
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
   const { themeColors: { green }, myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { productsCart } = useInv()
+  const { productsCart } = useCertra()
   const navigation = useNavigation()
 
   return (

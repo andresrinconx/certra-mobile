@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button } from 'native-base'
 import { setDataStorage } from '../../utils/asyncStorage'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import { Loader } from '..'
@@ -12,7 +12,7 @@ const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
   const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setThemeColors } = useLogin()
-  const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid, setloadingSelectCustomer } = useInv()
+  const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid, setloadingSelectCustomer } = useCertra()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 

@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 import { View, Text, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { items } from '../../utils/constants'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import { LoaderProductsGrid, Loader, ProductsGrid } from '..'
 
 const Products = () => {
   const { themeColors: { typography, primary }, myUser: { customer, access: { customerAccess } } } = useLogin()
-  const { loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useInv()
+  const { loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra()
   
   useEffect(() => {
     if (products?.length !== 0) {

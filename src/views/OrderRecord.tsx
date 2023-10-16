@@ -6,7 +6,7 @@ import { XMarkIcon } from 'react-native-heroicons/outline'
 import DatePicker from 'react-native-date-picker'
 import RNFetchBlob from 'rn-fetch-blob'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api'
 import { getDate, getDateWithoutHyphen } from '../utils/helpers'
 import { OrderRecordItemInterface } from '../utils/interfaces'
@@ -28,7 +28,7 @@ const OrderRecord = () => {
   const [dateTo, setDateTo] = useState(new Date())
 
   const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin()
-  const { lookAtPharmacy } = useInv()
+  const { lookAtPharmacy } = useCertra()
   const toast = useToast()
   const id = 'toast'
 

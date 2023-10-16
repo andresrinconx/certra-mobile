@@ -3,11 +3,11 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { UserFromScliInterface } from '../../utils/interfaces'
 import useNavigation from '../../hooks/useNavigation'
 import useLogin from '../../hooks/useLogin'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin()
-  const { setProductsCart, setloadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useInv()
+  const { setProductsCart, setloadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useCertra()
   const { cliente, nombre } = customer
   const navigation = useNavigation()
 

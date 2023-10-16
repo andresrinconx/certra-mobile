@@ -4,7 +4,7 @@ import { setDataStorage } from '../utils/asyncStorage'
 import { fetchSearchedItems } from '../utils/api'
 import useLogin from '../hooks/useLogin'
 
-const InvContext = createContext<{
+const CertraContext = createContext<{
   productsCart: ProductCartInterface[]
   setProductsCart: (productsCart: ProductCartInterface[]) => void
   products: ProductInterface[]
@@ -80,7 +80,7 @@ const InvContext = createContext<{
   },
 })
 
-export const InvProvider = ({ children }: { children: React.ReactNode }) => {
+export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
   // PRODUCTS
   const [products, setProducts] = useState<ProductInterface[]>([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -165,7 +165,7 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <InvContext.Provider value={{
+    <CertraContext.Provider value={{
       productsCart,
       setProductsCart,
       products,
@@ -187,8 +187,8 @@ export const InvProvider = ({ children }: { children: React.ReactNode }) => {
       setloadingSelectCustomer
     }}>
       {children}
-    </InvContext.Provider>
+    </CertraContext.Provider>
   )
 }
 
-export default InvContext
+export default CertraContext

@@ -1,15 +1,15 @@
 import { NativeBaseProvider } from 'native-base'
 import { LoginProvider } from './src/context/LoginProvider'
-import { InvProvider } from './src/context/InvProvider'
+import { CertraProvider } from './src/context/CertraProvider'
 import Navigation from './src/components/Navigation'
 
 const App = () => {
   return (
     <NativeBaseProvider>
       <LoginProvider>
-        <InvProvider>
+        <CertraProvider>
           <Navigation />
-        </InvProvider>
+        </CertraProvider>
       </LoginProvider>
     </NativeBaseProvider>
   )

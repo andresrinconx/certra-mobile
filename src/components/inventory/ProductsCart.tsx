@@ -8,7 +8,7 @@ import { ProductCartInterface, ProductInterface, ScalesInterface } from '../../u
 import { calculateDiscountsPrice, calculatePercentProductDiscount, twoDecimalsPrice } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
 import useLogin from '../../hooks/useLogin'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
 
@@ -28,7 +28,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   const [modalInfo, setModalInfo] = useState(false)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess, customerAccess }, customer, dscCliente } } = useLogin()
-  const { removeElement, productsCart, setProductsCart } = useInv()
+  const { removeElement, productsCart, setProductsCart } = useCertra()
   const { descrip, precio1, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3 } = product
   const cancelRef = useRef(null)
   const initialRef = useRef(null)

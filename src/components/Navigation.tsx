@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import useLogin from '../hooks/useLogin'
 import { getDataStorage } from '../utils/asyncStorage'
 import { LoaderLogoScreen } from '.'
@@ -13,7 +13,7 @@ const Navigation = () => {
   const [loadingStorage, setLoadingStorage] = useState(true)
 
   const { login, setLogin, setThemeColors, setMyUser } = useLogin()
-  const { setProductsCart } = useInv()
+  const { setProductsCart } = useCertra()
 
   // get storage (global)
   useEffect(() => {

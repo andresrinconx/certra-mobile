@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { View, Image, FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DataConfigProfileInterface } from '../utils/interfaces'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
 import { fetchProfileData } from '../utils/api'
@@ -13,7 +13,7 @@ const Profile = () => {
   const [loadingProfile, setLoadingProfile] = useState(true)
   
   const { themeColors: { primary, background, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
-  const { setLookAtPharmacy } = useInv()
+  const { setLookAtPharmacy } = useCertra()
   const navigation = useNavigation()
 
   // Get data

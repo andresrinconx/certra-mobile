@@ -5,7 +5,7 @@ import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native
 import { ProductInterface } from '../../utils/interfaces'
 import { disponibility } from '../../utils/constants'
 import { twoDecimalsPrice } from '../../utils/helpers'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
@@ -18,7 +18,7 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { addToCart, productsCart, removeElement } = useInv()
+  const { addToCart, productsCart, removeElement } = useCertra()
   const { descrip, precio1, image_url, merida, centro, oriente, codigo } = product
   const navigation = useNavigation()
 

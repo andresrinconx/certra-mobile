@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import useNavigation from '../hooks/useNavigation'
 import { ItineraryEventInterface } from '../utils/interfaces'
 import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
@@ -31,7 +31,7 @@ const Itinerary = () => {
   const [reasons, setReasons] = useState([])
 
   const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
-  const { reloadItinerary } = useInv()
+  const { reloadItinerary } = useCertra()
   const navigation = useNavigation()
 
   // Load

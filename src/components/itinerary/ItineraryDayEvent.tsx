@@ -6,7 +6,7 @@ import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini'
 import { getDate } from '../../utils/helpers'
 import { fetchItineraryItem } from '../../utils/api'
 import useLogin from '../../hooks/useLogin'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useNavigation from '../../hooks/useNavigation'
 
 const ItineraryDayEvent = ({ 
@@ -28,7 +28,7 @@ const ItineraryDayEvent = ({
   const navigation = useNavigation()
   const { cliente, direccion, telefono, numero, motivo, descrip } = item
   const { themeColors: { typography, turquoise, lightList, charge, primary, green }, getCurrentLocation } = useLogin()
-  const { setReloadItinerary } = useInv()
+  const { setReloadItinerary } = useCertra()
 
   // toast
   const toast = useToast()

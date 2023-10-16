@@ -5,7 +5,7 @@ import { MinusSmallIcon, PlusSmallIcon, CheckIcon, PlusIcon } from 'react-native
 import { disponibility } from '../../utils/constants'
 import { ProductInterface } from '../../utils/interfaces'
 import { twoDecimalsPrice } from '../../utils/helpers'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 
@@ -16,7 +16,7 @@ const ProductsSearch = ({ product }: { product: ProductInterface }) => {
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
   const { descrip, precio1, merida, centro, oriente, codigo } = product
-  const { productsCart, addToCart } = useInv()
+  const { productsCart, addToCart } = useCertra()
   const navigation = useNavigation()
 
   // Get max amount

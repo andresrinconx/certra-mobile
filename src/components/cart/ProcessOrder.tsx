@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button, Modal } from 'native-base'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import { ProductInterface } from '../../utils/interfaces'
 import { calculateProccessOrderData, getDate, getHour, twoDecimalsPrice } from '../../utils/helpers'
@@ -20,7 +20,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   const [alertErrorOrder, setAlertErrorOrder] = useState(false)
 
   const { themeColors: { background, icon, typography, turquoise, green, processBtn, darkTurquoise, primary }, myUser: { access: { customerAccess, labAccess }, nombre, cliente, us_codigo, customer } } = useLogin()
-  const { setProductsCart, productsCart } = useInv()
+  const { setProductsCart, productsCart } = useCertra()
 
   const cancelRef = useRef(null)
   const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
