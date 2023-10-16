@@ -109,7 +109,7 @@ const Product = () => {
 
   return (
     <>
-      <View className='flex-1 px-3' style={{ backgroundColor: background }}>
+      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
         
         {/* back and cart */}

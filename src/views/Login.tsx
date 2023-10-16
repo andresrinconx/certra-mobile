@@ -240,13 +240,6 @@ const Login = () => {
             }} 
           />
         </View>
-
-        {/* proteo logo */}
-        <View className='flex flex-row justify-center bottom-5'>
-          <Image style={{ width: wp(30), height: wp(30) }} resizeMode='contain'
-            source={require('../assets/logo-proteo.png')}
-          />
-        </View>
         
       </View>
     </View>

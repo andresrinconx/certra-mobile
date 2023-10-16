@@ -36,7 +36,7 @@ const Customer = () => {
   }
 
   return (
-    <View className='flex-1 px-2.5 pt-4' style={{ backgroundColor: background }}>
+    <View className='flex-1 px-2.5 pt-10' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* search */}
