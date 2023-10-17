@@ -10,6 +10,7 @@ export interface MyUserInterface {
   }
   clipro?: string
   cliente?: string
+  dscCliente?: string
   cedula?: string
   image_url?: URL | string
   nombre?: string
@@ -18,6 +19,7 @@ export interface MyUserInterface {
   vendedor?: string
   customer?: {
     cliente: string
+    dscCliente: string
     nombre: string
   }
   deposito?: string
@@ -46,6 +48,7 @@ export interface DataConfigProfileInterface {
 export interface UserFromScliInterface {
   cliente: string
   nombre: string
+  dscCliente: string
   clave: string
   rifci: string
   deposito: string
@@ -92,7 +95,7 @@ export interface OrderRecordItemInterface {
 export interface ProductCartInterface {
   codigo: string
   amount: number
-  discount:string
+  labDiscount:string
 }
 
 export interface ProductInterface {
@@ -108,7 +111,29 @@ export interface ProductInterface {
   base1: number
   iva?: number
   origenn?: string
-  discount?: string
+  labDiscount?: string
+  productDiscount?: string
+  customerDiscount?: string
+  escala1?: string
+  pescala1?: string
+  escala2?: string
+  pescala2?: string
+  escala3?: string
+  pescala3?: string
+  bonicant?: string 
+  bonifica?: string 
+  dcredito?: string 
+  fdesde?: string 
+  fhasta?: string
+}
+
+export interface ScalesInterface { 
+  escala1: string, 
+  escala2: string, 
+  escala3: string, 
+  pescala1: string, 
+  pescala2: string, 
+  pescala3: string 
 }
 
 // -----------------------------------------------

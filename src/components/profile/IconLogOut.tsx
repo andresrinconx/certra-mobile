@@ -1,25 +1,26 @@
 import { useState, useRef } from 'react'
 import { View, TouchableOpacity, Text, Image } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button } from 'native-base'
 import { setDataStorage } from '../../utils/asyncStorage'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
-import Loader from '../elements/Loader'
+import useNavigation from '../../hooks/useNavigation'
+import { Loader } from '..'
 
 const IconLogOut = () => {
+  const [loadingLogOut, setLoadingLogOut] = useState(false)
   const [alertLogOut, setAlertLogOut] = useState(false)
 
-  const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setLogin, setThemeColors } = useLogin()
-  const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid } = useInv()
+  const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setThemeColors } = useLogin()
+  const { setProductsCart, setProducts, setCurrentPage, setLoadingProductsGrid, setLoadingSelectCustomer, setLoadingProducts } = useCertra()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
   const onCloseAlertClearCart = () => setAlertLogOut(false)
 
   const logOut = async () => {
-    setLoaders({ ...loaders, loadingLogOut: true })
+    setLoadingLogOut(true)
 
     // reset login
     setUser('')
@@ -29,20 +30,16 @@ const IconLogOut = () => {
     setProductsCart([])
 
     // reset loaders
-    setLoaders({
-      ...loaders, 
-      loadingLogOut: false,
-      loadingProducts: false,
-      loadingSlectedCustomer: false,
-      loadingConfirmOrder: false,
-    })
     setLoadingProductsGrid(true)
+    setLoadingSelectCustomer(false)
+    setLoadingProducts(true)
 
     // reset storage
     await setDataStorage('login', false)
     await setDataStorage('themeColors', {})
     await setDataStorage('myUser', {})
     await setDataStorage('productsCart', [])
+    await setDataStorage('linealDiscount', '0')
     await setDataStorage('themeColors', {
       primary: '',
       background: '',
@@ -116,7 +113,7 @@ const IconLogOut = () => {
                 Cancelar
               </Button>
               <Button color={darkTurquoise} onPress={() => logOut()}>
-                {loaders.loadingLogOut ? (
+                {loadingLogOut ? (
                   <View className='flex flex-row justify-center items-center w-20'>
                     <Loader color='white' size={wp(4)} />
                   </View>

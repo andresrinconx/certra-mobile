@@ -1,7 +1,7 @@
 import { View, Text, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../../hooks/useLogin'
-import ProfileField from './ProfileField'
+import { ProfileField } from '..'
 
 const ProfileGroup = ({ name, subname, fields }: { name: string, subname: string, fields: any[] }) => {
   const { themeColors: { typography } } = useLogin()

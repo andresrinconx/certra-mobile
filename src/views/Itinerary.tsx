@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
-import { ItineraryEventInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
+import useNavigation from '../hooks/useNavigation'
+import { ItineraryEventInterface } from '../utils/interfaces'
 import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
 import { fetchItinerary, fetchReasons } from '../utils/api'
 import { days } from '../utils/constants'
-import Loader from '../components/elements/Loader'
-import Logos from '../components/elements/Logos'
-import BackScreen from '../components/elements/BackScreen'
+import { Loader, Logos, BackScreen } from '../components'
 
 interface daysItineraryInterface {
   current: boolean,
@@ -33,7 +31,7 @@ const Itinerary = () => {
   const [reasons, setReasons] = useState([])
 
   const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
-  const { reloadItinerary } = useInv()
+  const { reloadItinerary } = useCertra()
   const navigation = useNavigation()
 
   // Load

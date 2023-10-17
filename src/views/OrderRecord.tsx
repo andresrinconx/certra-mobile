@@ -5,17 +5,13 @@ import { Modal, useToast, Switch } from 'native-base'
 import { XMarkIcon } from 'react-native-heroicons/outline'
 import DatePicker from 'react-native-date-picker'
 import RNFetchBlob from 'rn-fetch-blob'
-import { OrderRecordItemInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
 import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api'
-import { getDate, getDateWithoutHyphen } from '../utils/helpers'
+import { currency, getDate, getDateWithoutHyphen } from '../utils/helpers'
+import { OrderRecordItemInterface } from '../utils/interfaces'
 import { orderRecordCols } from '../utils/constants'
-import Loader from '../components/elements/Loader'
-import BackScreen from '../components/elements/BackScreen'
-import Logos from '../components/elements/Logos'
-import NoDataText from '../components/elements/NoDataText'
-import LabelCustomer from '../components/customer/LabelCustomer'
+import { Loader, BackScreen, Logos, NoDataText, LabelCustomer } from '../components'
 
 const OrderRecord = () => {
   const [loadingOrderRecord, setLoadingOrderRecord] = useState(true)
@@ -32,7 +28,7 @@ const OrderRecord = () => {
   const [dateTo, setDateTo] = useState(new Date())
 
   const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin()
-  const { lookAtPharmacy } = useInv()
+  const { lookAtPharmacy } = useCertra()
   const toast = useToast()
   const id = 'toast'
 
@@ -183,7 +179,7 @@ const OrderRecord = () => {
         </View>
 
         {/* customer */}
-        {customer && !loadingOrderRecord ? (
+        {lookAtPharmacy && !loadingOrderRecord ? (
           <View className='pb-1'>
             <LabelCustomer name={customer?.nombre as string} />
           </View>
@@ -198,7 +194,7 @@ const OrderRecord = () => {
           ) : (
             lastItems?.length === 0 ? (
               <NoDataText
-                text='No hay pedidos recientes para esta farmacia'
+                text={`No hay pedidos recientes ${lookAtPharmacy ? 'para esta farmacia': ''}`}
               />
             ) : (
               <View>
@@ -223,13 +219,13 @@ const OrderRecord = () => {
                     contentContainerStyle={{ paddingBottom: wp(3) }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item, index}) => {
-                      const { numero, fecha, subTotal, iva, importe, unidades, total, nombre, totaldolar } = item
+                      const { pedido, fecha, subTotal, iva, importe, unidades, total, nombre, totaldolar } = item
                       const isPair = index % 2 === 0
                       const isLast = index === lastItems.length - 1
                       return (
                         <>
                           {customerAccess ? (
-                            <View key={numero} className='flex flex-row justify-center items-center mb-[1px]' 
+                            <View key={pedido} className='flex flex-row justify-center items-center mb-[1px]' 
                               style={{ 
                                 backgroundColor: !isPair ? background : list, 
                                 height: wp(14),
@@ -239,11 +235,11 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{numero}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{pedido}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{fecha}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{iva}%</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${importe} Bs` ?? `${total} Bs`}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{unidades}</Text>
                               <TouchableOpacity className='flex flex-col justify-center items-center' 
                                 onPress={() => handleDetails(item)}
@@ -261,7 +257,7 @@ const OrderRecord = () => {
                               </TouchableOpacity>
                             </View>
                           ) : (
-                            <View key={numero} className='flex flex-row justify-center items-center mb-[1px]' 
+                            <View key={pedido} className='flex flex-row justify-center items-center mb-[1px]' 
                               style={{ 
                                 backgroundColor: !isPair ? background : list, 
                                 height: wp(14),
@@ -271,14 +267,14 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{numero}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(32), fontSize: wp(2.6) }}
+                              <Text className='text-center' style={{ color: typography, width: wp(12), fontSize: wp(2.6) }}>{pedido}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(28), fontSize: wp(2.6) }}
                                 numberOfLines={1}
                               >
                                 {nombre}
                               </Text>
                               <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{fecha}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${importe} Bs` ?? `${total} Bs`}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{unidades}</Text>
                               <TouchableOpacity className='flex flex-col justify-center items-center' 
                                 onPress={() => handleDetails(item)}
@@ -369,9 +365,9 @@ const OrderRecord = () => {
                     {nombreP}
                   </Text>
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{cantidad}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${preciodolar} $` : `${precio} Bs`}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{iva}%</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${totaldolar} $` : `${total} Bs`}</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(preciodolar, '$')}` : `${currency(precio)}`}</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(total)}`}</Text>
                 </View>
               )
             }} 

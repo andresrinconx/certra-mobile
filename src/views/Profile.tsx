@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react'
 import { View, Image, FlatList, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
 import { DataConfigProfileInterface } from '../utils/interfaces'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
+import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
 import { fetchProfileData } from '../utils/api'
-import Loader from '../components/elements/Loader'
-import Logos from '../components/elements/Logos'
-import BackScreen from '../components/elements/BackScreen'
-import ProfileGroup from '../components/profile/ProfileGroup'
-import IconLogOut from '../components/profile/IconLogOut'
+import { Loader, Logos, BackScreen, ProfileGroup, IconLogOut } from '../components'
 
 const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
-  const navigation = useNavigation()
   const { themeColors: { primary, background, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
-  const { setLookAtPharmacy } = useInv()
+  const { setLookAtPharmacy } = useCertra()
+  const navigation = useNavigation()
 
   // Get data
   useEffect(() => {

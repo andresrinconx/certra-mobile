@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking } from 'react-native'
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
+import useNavigation from '../hooks/useNavigation'
 import { pallete } from '../utils/pallete'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchLogin } from '../utils/api'
 import { socialMedia } from '../utils/constants'
-import Loader from '../components/elements/Loader'
+import { Loader } from '../components'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -20,8 +20,8 @@ const Login = () => {
     password: false,
   })
 
-  const { user, setUser, password, setPassword, loaders, setLoaders, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
-  const { getProducts } = useInv()
+  const { user, setUser, password, setPassword, loadingAuth, setLoadingAuth, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
+  const { getProducts } = useCertra()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
   const textInputRefPassword = useRef<TextInput | null>(null)
@@ -73,7 +73,7 @@ const Login = () => {
       setRequiredFields({ ...requiredFields, user: false, password: false })
     }
 
-    setLoaders({ ...loaders, loadingAuth: true })
+    setLoadingAuth(true)
     setIncorrectCredentials(false)
 
     // api call
@@ -81,7 +81,7 @@ const Login = () => {
     const dataUser = res[0]
 
     if (res?.message) { // incorrect credentials
-      setLoaders({ ...loaders, loadingAuth: false })
+      setLoadingAuth(false)
       setIncorrectCredentials(true)
       return
     } else { 
@@ -92,7 +92,7 @@ const Login = () => {
         access: {
           customerAccess: dataUser?.cliente ? true : false,
           labAccess: dataUser?.clipro ? true : false,
-          salespersonAccess: !dataUser?.clipro ? true : false
+          salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       })
       setThemeColors({ ...pallete[dataUser?.cliente ? 1 : 0] })
@@ -104,15 +104,15 @@ const Login = () => {
         access: {
           customerAccess: dataUser?.cliente ? true : false,
           labAccess: dataUser?.clipro ? true : false,
-          salespersonAccess: !dataUser?.clipro ? true : false
+          salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       })
 
       setLogin(true)
-      navigation.navigate('Home')
-      setLoaders({ ...loaders, loadingAuth: false })
+      setLoadingAuth(false)
       setShowPassword(false)
       getProducts()
+      navigation.navigate('Home')
     }
   }
 
@@ -147,13 +147,12 @@ const Login = () => {
                   placeholderTextColor='#999999'
                   value={user}
                   onChangeText={setUser}
-                  selectionColor='#006283'
                 />
               </View>
 
               {requiredFields.user && (
                 <View className='pl-4 pt-1'>
-                  <Text className='text-white font-bold' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
+                  <Text className='font-bold text-white' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
@@ -168,7 +167,6 @@ const Login = () => {
                   placeholderTextColor='#999999'
                   value={password}
                   onChangeText={setPassword}
-                  selectionColor='#006283'
                 />
                 {!showPassword && (
                   <TouchableOpacity onPress={() => setShowPassword(true)} className='absolute right-4'>
@@ -184,7 +182,7 @@ const Login = () => {
 
               {requiredFields.password && (
                 <View className='pl-4 pt-1'>
-                  <Text className='text-white font-bold' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
+                  <Text className='font-bold text-white' style={{ fontSize: wp(4) }}>* Campo obligatorio</Text>
                 </View>
               )}
             </View>
@@ -192,7 +190,7 @@ const Login = () => {
             {/* Incorrect Credentials */}
             {incorrectCredentials && (
               <View className='pr-4'>
-                <Text className='text-white font-bold text-right' style={{ fontSize: wp(4.5) }}>* Datos incorrectos</Text>
+                <Text className='font-bold text-right text-white' style={{ fontSize: wp(4.5) }}>* Datos incorrectos</Text>
               </View>
             )}
 
@@ -201,15 +199,15 @@ const Login = () => {
               <TouchableOpacity onPress={() => auth()} className='flex flex-col justify-center items-center rounded-xl p-1.5 w-36'
                 style={{ backgroundColor: '#92BF1E' }}
               >
-                {!loaders.loadingAuth && (
+                {!loadingAuth && (
                   <View className='flex flex-col items-center justify-center h-6'>
-                    <Text className='font-medium text-center' style={{ fontSize: wp(4.5), color: 'black' }}>
+                    <Text className='font-medium text-center text-black' style={{ fontSize: wp(4.5) }}>
                       Iniciar Sesión
                     </Text>
                   </View>
                 )}
 
-                {loaders.loadingAuth && (
+                {loadingAuth && (
                   <View className='flex flex-col items-center justify-center h-6'>
                     <Loader color='white' size={24} />
                   </View>
@@ -232,6 +230,7 @@ const Login = () => {
               const noMargin = `${isLast ? 'mr-0' : 'mr-3'}`
               return (
                 <TouchableOpacity key={id} onPress={() => { Linking.openURL(`${url}`) }} 
+                  style={{ width: wp(8), height: wp(10) }}
                   className={`${noMargin}`}
                 >
                   <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
@@ -240,13 +239,6 @@ const Login = () => {
                 </TouchableOpacity>
               )
             }} 
-          />
-        </View>
-
-        {/* proteo logo */}
-        <View className='flex flex-row justify-center bottom-5'>
-          <Image style={{ width: wp(30), height: wp(30) }} resizeMode='contain'
-            source={require('../assets/logo-proteo.png')}
           />
         </View>
         

@@ -4,12 +4,11 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
 import { debounce } from 'lodash'
-import { ProductInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
+import { ProductInterface } from '../utils/interfaces'
 import { fetchSearchedItems } from '../utils/api'
 import { formatText } from '../utils/helpers'
-import ProductsSearch from '../components/inventory/ProductsSearch'
-import IconCart from '../components/footer/IconCart'
+import { ProductSearch, IconCart } from '../components'
 
 const Inventory = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
@@ -101,7 +100,7 @@ const Inventory = () => {
               renderItem={({ item }) => {
                 const { id } = item
                 return (
-                  <ProductsSearch key={id} product={item} />
+                  <ProductSearch key={id} product={item} />
                 )
               }}
             />

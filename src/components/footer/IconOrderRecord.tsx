@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
 import { Pressable, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useInv from '../../hooks/useInv'
+import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
-import ModalSelectCustomer from '../elements/ModalSelectCustomer'
+import useNavigation from '../../hooks/useNavigation'
+import { ModalInfo } from '..'
 
 const IconOrderRecord = () => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
   const navigation = useNavigation()
   const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { setLookAtPharmacy } = useInv()
+  const { setLookAtPharmacy } = useCertra()
 
   return (
     <>
@@ -31,8 +31,13 @@ const IconOrderRecord = () => {
         <Text className='w-9 text-[8px] text-center text-white font-bold'>Historial</Text>
       </Pressable>
       
-      <ModalSelectCustomer 
-        stateModal={modalSelectCustomer} setStateModal={setModalSelectCustomer}
+      <ModalInfo 
+        stateModal={modalSelectCustomer} 
+        setStateModal={setModalSelectCustomer}
+        message='Debes seleccionar un cliente para continuar.'
+        cancelButtonText='Cancelar'
+        aceptButtonText='Aceptar'
+        onPressAcept={() => navigation.navigate('Customer')}
       />
     </>
   )

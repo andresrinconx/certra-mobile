@@ -1,30 +1,46 @@
 import { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import { CheckIcon, MinusSmallIcon, PlusSmallIcon, PlusIcon } from 'react-native-heroicons/outline'
+import { useRoute } from '@react-navigation/native'
+import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import { ProductInterface } from '../utils/interfaces'
-import useInv from '../hooks/useInv'
+import useCertra from '../hooks/useCertra'
+import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
+import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
-import IconCart from '../components/footer/IconCart'
-import Loader from '../components/elements/Loader'
-import ModalSelectCustomer from '../components/elements/ModalSelectCustomer'
+import { currency } from '../utils/helpers'
+import { IconCart, Loader, ModalInfo, ProfileField } from '../components'
+import ModalAmount from '../components/inventory/ModalAmount'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
-  const [touch, setTouch] = useState(false)
   const [maxAmount, setMaxAmount] = useState(0)
+  const [datasheet, setDatasheet] = useState([])
+  
+  const [openAmountModal, setOpenAmountModal] = useState(false)
+  const [loadingDatasheet, setLoadingDatasheet] = useState(true)
   const [loadingProduct, setLoadingProduct] = useState(true)
 
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
   const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { productsCart, addToCart, removeElement } = useInv()
+  const { productsCart, addToCart, removeElement } = useCertra()
+  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva } } = useRoute() as { params: ProductInterface }
   const navigation = useNavigation()
-  const { params: { descrip, precio1, codigo, image_url, merida, centro, oriente } } = useRoute() as { params: ProductInterface }
+
+  // Get datahseet
+  useEffect(() => {
+    const getDatasheet = async () => {
+      const data = await fetchDatasheet(codigo)
+      const datasheet = Object.entries(data[0])
+      setDatasheet(datasheet as [])
+      setLoadingDatasheet(false)
+    }
+    getDatasheet()
+  }, [])
 
   // Get max amount
   useEffect(() => {
@@ -67,45 +83,20 @@ const Product = () => {
     }
   }, [productsCart])
 
-  // Add or remove element from cart
-  useEffect(() => {
-    if (added && touch) {
-      if (!productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        addToCart(codigo, amount)
-      }
-    } else if(!added && touch) {
-      if (productsCart.find(productInCart => productInCart.codigo === codigo)) {
-        setTouch(false)
-        removeElement(codigo)
-      }
-    }
-  }, [added])
-
   // Handle actions
   const handleAddToCart = () => {
     if ((labAccess || salespersonAccess) && !customer) {
       setModalSelectCustomer(true)
       return
     }
+    addToCart(codigo, amount)
 
     setAdded(true)
-    setTouch(true)
-  }
-  const handleDecrease = () => {
-    if (amount > 1) {
-      setAmount(amount - 1)
-    }
-  }
-  const handleIncrease = () => {
-    if (amount < maxAmount) {
-      setAmount(amount + 1)
-    }
   }
   const handleRemoveElement = () => {
     setAdded(false)
     setAmount(1)
-    setTouch(true)
+    removeElement(codigo)
   }
 
   return (
@@ -135,8 +126,7 @@ const Product = () => {
         <View>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100,}}
-            overScrollMode='never'
+            contentContainerStyle={{paddingBottom: 180,}}
           >
             {/* img */}
             <View className='justify-center items-center rounded-3xl'
@@ -165,9 +155,18 @@ const Product = () => {
               <Text style={{ fontSize: hp(2.5), color: typography }} className='font-medium'>
                 Precio:
               </Text>
-              <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
-                Bs. {precio1}
-              </Text>
+
+              <View className='flex flex-row items-center gap-x-4'>
+                <Text className='font-bold' style={{ fontSize: hp(3), color: darkTurquoise }}>
+                  {currency(base1)}
+                </Text>
+
+                {Number(iva) > 0 && (
+                  <Text className='font-normal' style={{ fontSize: hp(2.5), color: turquoise }}>
+                    IVA {currency((base1 * (iva as number)) / 100)}
+                  </Text>
+                )}
+              </View>
             </View>
 
             {/* disponibility */}
@@ -257,78 +256,109 @@ const Product = () => {
                 />
               </View>
             </View>
-          </ScrollView>
 
-        </View>
-
-        {/* amount and added */}
-        {loadingProduct ? (
-          <View className="flex flex-row items-center justify-center absolute bottom-2 h-16" style={{ width: wp('60%'), marginLeft: wp(20) }}>
-            <Loader color={`${primary}`} />
-          </View>
-        ) : (
-          <View className="flex flex-row items-center justify-between absolute bottom-2 h-16" style={{ width: wp('70%'), marginLeft: wp(16) }}>
-
-            {/* remove */}
-            <View>
-              <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                style={{ backgroundColor: added ? turquoise : processBtn }}
-                disabled={added ? false : true}
-              >
-                <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
-                  source={require('../assets/white-trash-can.png')}
+            {/* datasheet */}
+            <View className='mt-5 pt-5 border-t-[0.5px] border-t-[#999999]'>
+              <View className='flex flex-row items-center gap-x-2 mb-5'>
+                <Image style={{ width: wp(7), height: wp(7) }} resizeMode='contain'
+                  source={require('../assets/ficha.png')}
                 />
-              </Pressable>
-            </View>
-
-            <View className='flex-1 flex-row items-center justify-between mx-6'>
-
-              {/* decrease */}
-              <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                <TouchableOpacity onPress={handleDecrease} className='p-0.5'>
-                  <MinusSmallIcon size={wp(4.5)} color={darkTurquoise} strokeWidth={3} />
-                </TouchableOpacity>
-              </View>
-
-              {/* amount */}
-              <View style={{ width: wp(20) }}>
-                <Text className='text-center font-bold' style={{ color: darkTurquoise, fontSize: wp(6) }}>
-                  {amount}
+                <Text style={{ fontSize: hp(2.5), color: typography }} className='font-medium'>
+                  Ficha Técnica:
                 </Text>
               </View>
 
-              {/* increase */}
-              <View className='rounded-md' style={{ borderColor: turquoise, borderWidth: .5 }}>
-                <TouchableOpacity onPress={handleIncrease} className='p-0.5'>
-                  <PlusSmallIcon size={17} color={darkTurquoise} strokeWidth={3} />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* add & added */}
-            <View>
-              {!added ? (
-                <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                  style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
-                  disabled={maxAmount === 0}
-                >
-                  <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
-                </Pressable>
+              {loadingDatasheet ? (
+                <View className='mt-5'>
+                  <Loader color={`${primary}`} />
+                </View>
               ) : (
-                <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
-                  style={{ backgroundColor: green }}
-                >
-                  <CheckIcon size={wp(8)} color='white' strokeWidth={4} />
+                <View className='px-5'>
+                  {datasheet.map((item) => {
+                    return (
+                      <ProfileField
+                        key={item[0]}
+                        label={String(item[0]).split('_').join(' ')}
+                        value={item[1]}
+                      />
+                    )
+                  })}
                 </View>
               )}
             </View>
+          </ScrollView>
 
-          </View>
-        )}
+        </View>
       </View>
 
-      <ModalSelectCustomer
-        stateModal={modalSelectCustomer} setStateModal={setModalSelectCustomer}
+      {/* amount and added */}
+      {loadingProduct ? (
+        <View className='flex flex-row items-center justify-center w-full absolute bottom-0 h-20'>
+          <Loader color={`${primary}`} />
+        </View>
+      ) : (
+        <View className='flex flex-row items-center justify-center w-full px-14 absolute bottom-0 h-20' style={{ backgroundColor: background }}>
+
+          {/* remove */}
+          <View>
+            <Pressable onPress={handleRemoveElement} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+              style={{ backgroundColor: added ? turquoise : processBtn }}
+              disabled={added ? false : true}
+            >
+              <Image style={{ width: wp(4), height: hp(4) }} resizeMode='cover'
+                source={require('../assets/white-trash-can.png')}
+              />
+            </Pressable>
+          </View>
+
+          <View className='flex-1 flex-row items-center justify-center mx-6'>
+
+            <View style={{ width: wp(35), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+              <TouchableOpacity onPress={() => setOpenAmountModal(true)}>
+                <Text style={{ color: darkTurquoise, fontSize: wp(6) }} className='text-center'>
+                  {amount}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            
+          </View>
+
+          {/* add & added */}
+          <View>
+            {!added ? (
+              <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
+                disabled={maxAmount === 0}
+              >
+                <PlusIcon size={wp(8)} color='white' strokeWidth={4} />
+              </Pressable>
+            ) : (
+              <View className='flex flex-row items-center justify-center rounded-md w-10 h-10'
+                style={{ backgroundColor: green }}
+              >
+                <CheckIcon size={wp(8)} color='white' strokeWidth={4} />
+              </View>
+            )}
+          </View>
+
+        </View>
+      )}
+
+      <ModalAmount
+        stateModal={openAmountModal}
+        setStateModal={setOpenAmountModal}
+        codigo={codigo}
+        amount={amount}
+        maxAmount={maxAmount}
+      />
+
+      <ModalInfo 
+        stateModal={modalSelectCustomer} 
+        setStateModal={setModalSelectCustomer}
+        message='Debes seleccionar un cliente para continuar.'
+        cancelButtonText='Cancelar'
+        aceptButtonText='Aceptar'
+        onPressAcept={() => navigation.navigate('Customer')}
       />
     </>
   )

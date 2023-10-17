@@ -1,45 +1,30 @@
-import { useEffect } from 'react'
-import { View, BackHandler } from 'react-native'
+import { View } from 'react-native'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
-import useInv from '../hooks/useInv'
-import SelectCustomer from '../components/customer/SelectCustomer'
-import Loader from '../components/elements/Loader'
-import Logos from '../components/elements/Logos'
-import Products from '../components/inventory/Products'
-import Footer from '../components/footer/Footer'
+import useCertra from '../hooks/useCertra'
+import { SelectCustomer, Loader, Logos, ProductsHome, Footer } from '../components'
 
 const Home = () => {
   const { themeColors: { background }, myUser: { image_url } } = useLogin()
-  const { loaders } = useInv()
-
-  // Back handler
-  useEffect(() => {
-    const backAction = () => {
-      BackHandler.exitApp()
-      return true
-    }
-
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
-  }, [])
+  const { loadingSelectCustomer } = useCertra()
 
   return (
     <>
-      <View className='flex-1' style={{ backgroundColor: background }}>
+      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
-        <View className='flex-1 px-3 pt-6'>
+        <View className='flex-1'>
           <Logos image={image_url as URL} />
 
           <View className='flex-1'>
-            {loaders.loadingSlectedCustomer ? (
-              <View className='flex-1 flex-row items-center justify-center'>
+            {loadingSelectCustomer ? (
+              <View className='h-full flex-row items-center justify-center'>
                 <Loader />
               </View>
             ) : (
               <>
                 <SelectCustomer />
-                <Products />
+                <ProductsHome />
               </>
             )}
           </View>

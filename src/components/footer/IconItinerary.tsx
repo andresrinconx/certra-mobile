@@ -1,6 +1,6 @@
 import { Text, Pressable, Image } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import useNavigation from '../../hooks/useNavigation'
 
 const IconItinerary = () => {
   const navigation = useNavigation()

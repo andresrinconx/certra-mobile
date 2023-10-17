@@ -1,8 +1,8 @@
 import { View, Text, Image, Pressable } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../../hooks/useLogin'
-import LabelCustomer from './LabelCustomer'
+import useNavigation from '../../hooks/useNavigation'
+import { LabelCustomer } from '..'
 
 const SelectCustomer = () => {
   const { themeColors: { list, typography }, myUser: { access: { customerAccess }, customer } } = useLogin()
