@@ -8,6 +8,7 @@ import Login from './Login'
 import OrderRecord from './OrderRecord'
 import Product from './Product'
 import Profile from './Profile'
+import CustomerProfile from './CustomerProfile'
 
 export {
   Cart,
@@ -20,4 +21,5 @@ export {
   OrderRecord,
   Product,
   Profile,
+  CustomerProfile,
 }
