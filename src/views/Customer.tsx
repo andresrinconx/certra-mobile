@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, StatusBar, TouchableOpacity, Image, TextInput, FlatList, Keyboard } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, Image, TextInput, FlatList, Keyboard, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { UserFromScliInterface } from '../utils/interfaces'
@@ -36,7 +36,7 @@ const Customer = () => {
   }
 
   return (
-    <View className='flex-1 px-2.5 pt-10' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-2.5 pt-4' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* search */}
@@ -87,7 +87,7 @@ const Customer = () => {
           )}
         </View>
       )}
-    </View>
+    </SafeAreaView>
   )
 }
 

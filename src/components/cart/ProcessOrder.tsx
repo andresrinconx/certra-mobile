@@ -58,6 +58,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
           iva: Number(product.iva),
           cantidad: Number(product.amount),
           descuento: labAccess ? String(product.labDiscount) : String(0),
+          bonifica: Number(product.bonifica) * Number(product.amount)
         })),
         subtotal: String(subtotal),
         total: String(total),
@@ -81,7 +82,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   return (
     <>
       <View className='flex flex-col justify-center w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'
-        style={{ height: wp(discount > 0 || iva > 0 ? 40 : 32) }}
+        style={{ height: wp(discount > 0 && iva > 0 ? 43 : discount > 0 || iva > 0 ? 40 : 32) }}
       >
         <View className='flex flex-col justify-center h-full w-[92%]'
           style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}

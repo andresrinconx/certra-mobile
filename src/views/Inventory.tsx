@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image } from 'react-native'
+import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { StatusBar } from 'react-native'
@@ -54,7 +54,7 @@ const Inventory = () => {
   const handleTextDebounce = debounce(handleSearch, 400)
 
   return (
-    <View className='flex-1 h-full pt-10' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 h-full pt-4' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* content */}
@@ -107,7 +107,7 @@ const Inventory = () => {
           )}
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

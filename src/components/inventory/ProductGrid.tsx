@@ -8,8 +8,7 @@ import { currency } from '../../utils/helpers'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
-import { ModalInfo } from '..'
-import ModalAmount from './ModalAmount'
+import { ModalInfo, ModalAmount, Bonus } from '..'
 
 const ProductGrid = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
@@ -21,7 +20,7 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
 
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { addToCart, productsCart, removeElement } = useCertra()
-  const { descrip, image_url, merida, centro, oriente, codigo, base1, iva } = product
+  const { descrip, image_url, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica } = product
   const navigation = useNavigation()
 
   // Get max amount
@@ -125,6 +124,12 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
               </Text>
             </Pressable>
 
+            {/* bonus */}
+            <Bonus
+              bonifica={bonifica as string}
+              bonicant={bonicant as string}
+            />
+
             {/* price */}
             <View className='relative'>
               <View className='my-2'>
@@ -138,7 +143,7 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
               </View>
 
               {Number(iva) > 0 && (
-                <Text className='absolute right-5 top-2.5' style={{ fontSize: hp(1.5), color: turquoise }}>
+                <Text className='absolute right-5 top-2.5 w-20' style={{ fontSize: hp(1.5), color: turquoise }}>
                   IVA {currency((base1 * (iva as number)) / 100)}
                 </Text>
               )}

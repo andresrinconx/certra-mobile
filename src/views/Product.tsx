@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable, SafeAreaView } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -11,8 +11,7 @@ import useLogin from '../hooks/useLogin'
 import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
 import { currency } from '../utils/helpers'
-import { IconCart, Loader, ModalInfo, ProfileField } from '../components'
-import ModalAmount from '../components/inventory/ModalAmount'
+import { IconCart, Loader, ModalInfo, ProfileField, ModalAmount } from '../components'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
@@ -28,7 +27,7 @@ const Product = () => {
 
   const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { productsCart, addToCart, removeElement } = useCertra()
-  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva } } = useRoute() as { params: ProductInterface }
+  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva, bonicant, bonifica } } = useRoute() as { params: ProductInterface }
   const navigation = useNavigation()
 
   // Get datahseet
@@ -101,7 +100,7 @@ const Product = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <SafeAreaView className='flex-1 px-3' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
         
         {/* back and cart */}
@@ -149,6 +148,12 @@ const Product = () => {
                 {descrip}
               </Text>
             </View>
+
+            {Number(bonicant) > 0 && (
+              <View className='flex flex-row justify-between rounded-md px-1 py-1 mt-1.5' style={{ backgroundColor: turquoise, width: wp(75) }}>
+                <Text className='font-medium text-white' style={{ fontSize: wp(4) }}>Bonificación: {Number(bonicant)}x{Number(bonifica)}.</Text>
+              </View>
+            )}
 
             {/* price */}
             <View className='mt-3 mb-5'>
@@ -289,7 +294,7 @@ const Product = () => {
           </ScrollView>
 
         </View>
-      </View>
+      </SafeAreaView>
 
       {/* amount and added */}
       {loadingProduct ? (

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { View, FlatList, StatusBar } from 'react-native'
+import { View, FlatList, StatusBar, SafeAreaView } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { ItineraryEventInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
@@ -28,7 +28,7 @@ const ItineraryDay = () => {
   }, [])
 
   return (
-    <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-3' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />
@@ -60,7 +60,7 @@ const ItineraryDay = () => {
           />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   )
 }
 

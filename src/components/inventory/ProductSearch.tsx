@@ -8,7 +8,7 @@ import { currency } from '../../utils/helpers'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
-import ModalAmount from './ModalAmount'
+import { Bonus, ModalAmount } from '..'
 
 const ProductSearch = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
@@ -18,7 +18,7 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
   const [openAmountModal, setOpenAmountModal] = useState(false)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
-  const { descrip, precio1, merida, centro, oriente, codigo, base1, iva } = product
+  const { descrip, precio1, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica } = product
   const { productsCart, addToCart } = useCertra()
   const navigation = useNavigation()
 
@@ -83,6 +83,14 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
 
           {/* left info */}
           <View className='w-1/2 pr-2 -mt-4'>
+
+            {/* bonus */}
+            <View className='pt-5'>
+              <Bonus
+                bonifica={bonifica as string}
+                bonicant={bonicant as string}
+              />
+            </View>
 
             {/* disponibility */}
             <View className='mb-2'>
