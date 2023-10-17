@@ -8,7 +8,7 @@ import useLogin from '../hooks/useLogin'
 import { ProductInterface } from '../utils/interfaces'
 import { fetchSearchedItems } from '../utils/api'
 import { formatText } from '../utils/helpers'
-import { ProductsSearch, IconCart } from '../components'
+import { ProductSearch, IconCart } from '../components'
 
 const Inventory = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
@@ -100,7 +100,7 @@ const Inventory = () => {
               renderItem={({ item }) => {
                 const { id } = item
                 return (
-                  <ProductsSearch key={id} product={item} />
+                  <ProductSearch key={id} product={item} />
                 )
               }}
             />

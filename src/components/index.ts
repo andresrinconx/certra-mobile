@@ -1,5 +1,5 @@
 import ProcessOrder from './cart/ProcessOrder'
-import CustomersSearch from './customer/CustomersSearch'
+import CustomerSearch from './customer/CustomerSearch'
 import LabelCustomer from './customer/LabelCustomer'
 import SelectCustomer from './customer/SelectCustomer'
 import BackScreen from './elements/BackScreen'
@@ -15,10 +15,10 @@ import IconInventory from './footer/IconInventory'
 import IconItinerary from './footer/IconItinerary'
 import IconOrderRecord from './footer/IconOrderRecord'
 import IconProfile from './footer/IconProfile'
-import Products from './inventory/Products'
-import ProductsCart from './inventory/ProductsCart'
-import ProductsGrid from './inventory/ProductsGrid'
-import ProductsSearch from './inventory/ProductsSearch'
+import ProductsHome from './inventory/ProductsHome'
+import ProductCart from './inventory/ProductCart'
+import ProductGrid from './inventory/ProductGrid'
+import ProductSearch from './inventory/ProductSearch'
 import ItineraryDayEvent from './itinerary/ItineraryDayEvent'
 import IconLogOut from './profile/IconLogOut'
 import ProfileField from './profile/ProfileField'
@@ -27,7 +27,7 @@ import Navigation from './Navigation'
 
 export {
   ProcessOrder,
-  CustomersSearch,
+  CustomerSearch,
   LabelCustomer,
   SelectCustomer,
   BackScreen,
@@ -43,10 +43,10 @@ export {
   IconItinerary,
   IconOrderRecord,
   IconProfile,
-  Products,
-  ProductsCart,
-  ProductsGrid,
-  ProductsSearch,
+  ProductsHome,
+  ProductCart,
+  ProductGrid,
+  ProductSearch,
   ItineraryDayEvent,
   IconLogOut,
   ProfileField,

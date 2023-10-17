@@ -5,7 +5,7 @@ import useNavigation from '../../hooks/useNavigation'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
 
-const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
+const CustomerSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin()
   const { setProductsCart, setLoadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useCertra()
   const { cliente, nombre } = customer
@@ -45,4 +45,4 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   )
 }
 
-export default CustomersSearch
+export default CustomerSearch

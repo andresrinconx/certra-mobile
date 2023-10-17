@@ -10,7 +10,7 @@ import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import ModalAmount from './ModalAmount'
 
-const ProductsSearch = ({ product }: { product: ProductInterface }) => {
+const ProductSearch = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
   const [maxAmount, setMaxAmount] = useState(0)
@@ -242,4 +242,4 @@ const ProductsSearch = ({ product }: { product: ProductInterface }) => {
   )
 }
 
-export default ProductsSearch
+export default ProductSearch

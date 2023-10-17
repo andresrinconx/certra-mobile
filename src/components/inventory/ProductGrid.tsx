@@ -11,7 +11,7 @@ import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
 import ModalAmount from './ModalAmount'
 
-const ProductsGrid = ({ product }: { product: ProductInterface }) => {
+const ProductGrid = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(false)
   const [amount, setAmount] = useState(1)
   const [maxAmount, setMaxAmount] = useState(0)
@@ -288,4 +288,4 @@ const ProductsGrid = ({ product }: { product: ProductInterface }) => {
   )
 }
 
-export default memo(ProductsGrid)
+export default memo(ProductGrid)

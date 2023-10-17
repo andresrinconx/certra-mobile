@@ -9,7 +9,7 @@ import useNavigation from '../hooks/useNavigation'
 import { fetchOneItem } from '../utils/api'
 import { ProductInterface } from '../utils/interfaces'
 import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
-import { ProductsCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components'
+import { ProductCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components'
 
 const Cart = () => {
   const [loadingCart, setLoadingCart] = useState(true)
@@ -178,7 +178,7 @@ const Cart = () => {
                   overScrollMode='never'
                   renderItem={({ item }: { item: ProductInterface }) => {
                     return (
-                      <ProductsCart key={item.id} product={item} />
+                      <ProductCart key={item.id} product={item} />
                     )
                   }}
                 />

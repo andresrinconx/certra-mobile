@@ -2,7 +2,7 @@ import { View } from 'react-native'
 import { StatusBar } from 'react-native'
 import useLogin from '../hooks/useLogin'
 import useCertra from '../hooks/useCertra'
-import { SelectCustomer, Loader, Logos, Products, Footer } from '../components'
+import { SelectCustomer, Loader, Logos, ProductsHome, Footer } from '../components'
 
 const Home = () => {
   const { themeColors: { background }, myUser: { image_url } } = useLogin()
@@ -24,7 +24,7 @@ const Home = () => {
             ) : (
               <>
                 <SelectCustomer />
-                <Products />
+                <ProductsHome />
               </>
             )}
           </View>

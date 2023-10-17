@@ -13,7 +13,7 @@ import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
 import ModalAmount from './ModalAmount'
 
-const ProductsCart = ({ product }: { product: ProductInterface }) => {
+const ProductCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)
   const [amount, setAmount] = useState(1)
   const [maxAmount, setMaxAmount] = useState(0)
@@ -411,4 +411,4 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   )
 }
 
-export default ProductsCart
+export default ProductCart

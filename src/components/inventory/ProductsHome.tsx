@@ -4,9 +4,9 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { items } from '../../utils/constants'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
-import { LoaderProductsGrid, Loader, ProductsGrid } from '..'
+import { LoaderProductsGrid, Loader, ProductGrid } from '..'
 
-const Products = () => {
+const ProductsHome = () => {
   const { themeColors: { typography, primary }, myUser: { customer, access: { customerAccess } } } = useLogin()
   const { loadingProducts, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra()
   
@@ -76,7 +76,7 @@ const Products = () => {
                 )
               )}
               renderItem={({ item }) => (
-                <ProductsGrid key={item.id} product={item} />
+                <ProductGrid key={item.id} product={item} />
               )}
               onEndReached={loadMoreItems}
               onEndReachedThreshold={0}
@@ -88,4 +88,4 @@ const Products = () => {
   )
 }
 
-export default Products
+export default ProductsHome

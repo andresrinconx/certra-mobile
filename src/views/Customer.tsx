@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { UserFromScliInterface } from '../utils/interfaces'
 import useLogin from '../hooks/useLogin'
 import { formatText } from '../utils/helpers'
-import { CustomersSearch } from '../components'
+import { CustomerSearch } from '../components'
 
 const Customer = () => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
@@ -76,7 +76,7 @@ const Customer = () => {
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {
                 return (
-                  <CustomersSearch key={item.rifci} customer={item} />
+                  <CustomerSearch key={item.rifci} customer={item} />
                 )
               }}
             />
