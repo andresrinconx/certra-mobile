@@ -7,13 +7,13 @@ import useCertra from '../../hooks/useCertra'
 
 const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
   const { themeColors: { charge, typography }, setMyUser, myUser } = useLogin()
-  const { setProductsCart, setloadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useCertra()
+  const { setProductsCart, setLoadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useCertra()
   const { cliente, nombre } = customer
   const navigation = useNavigation()
 
   // select customer
   const selectCustomer = () => {
-    setloadingSelectCustomer(true)
+    setLoadingSelectCustomer(true)
     // user
     setMyUser({ ...myUser, customer })
 
@@ -25,7 +25,7 @@ const CustomersSearch = ({ customer }: { customer: UserFromScliInterface }) => {
     setLoadingProductsGrid(true)
 
     setTimeout(() => {
-      setloadingSelectCustomer(false)
+      setLoadingSelectCustomer(false)
     }, 500)
   }
 

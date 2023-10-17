@@ -20,7 +20,7 @@ const Login = () => {
     password: false,
   })
 
-  const { user, setUser, password, setPassword, loaders, setLoaders, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
+  const { user, setUser, password, setPassword, loadingAuth, setLoadingAuth, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
   const { getProducts } = useCertra()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
@@ -73,7 +73,7 @@ const Login = () => {
       setRequiredFields({ ...requiredFields, user: false, password: false })
     }
 
-    setLoaders({ ...loaders, loadingAuth: true })
+    setLoadingAuth(true)
     setIncorrectCredentials(false)
 
     // api call
@@ -81,7 +81,7 @@ const Login = () => {
     const dataUser = res[0]
 
     if (res?.message) { // incorrect credentials
-      setLoaders({ ...loaders, loadingAuth: false })
+      setLoadingAuth(false)
       setIncorrectCredentials(true)
       return
     } else { 
@@ -109,7 +109,7 @@ const Login = () => {
       })
 
       setLogin(true)
-      setLoaders({ ...loaders, loadingAuth: false })
+      setLoadingAuth(false)
       setShowPassword(false)
       getProducts()
       navigation.navigate('Home')
@@ -199,7 +199,7 @@ const Login = () => {
               <TouchableOpacity onPress={() => auth()} className='flex flex-col justify-center items-center rounded-xl p-1.5 w-36'
                 style={{ backgroundColor: '#92BF1E' }}
               >
-                {!loaders.loadingAuth && (
+                {!loadingAuth && (
                   <View className='flex flex-col items-center justify-center h-6'>
                     <Text className='font-medium text-center text-black' style={{ fontSize: wp(4.5) }}>
                       Iniciar Sesión
@@ -207,7 +207,7 @@ const Login = () => {
                   </View>
                 )}
 
-                {loaders.loadingAuth && (
+                {loadingAuth && (
                   <View className='flex flex-col items-center justify-center h-6'>
                     <Loader color='white' size={24} />
                   </View>

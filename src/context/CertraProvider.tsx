@@ -9,20 +9,12 @@ const CertraContext = createContext<{
   setProductsCart: (productsCart: ProductCartInterface[]) => void
   products: ProductInterface[]
   setProducts: (products: ProductInterface[]) => void
-  loaders: {
-    loadingProducts: boolean,
-    loadingConfirmOrder: boolean,
-    loadingLogOut: boolean,
-  }
-  setLoaders: (loaders: {
-    loadingProducts: boolean,
-    loadingConfirmOrder: boolean,
-    loadingLogOut: boolean,
-  }) => void
   loadingProductsGrid: boolean
   setLoadingProductsGrid: (loadingProductsGrid: boolean) => void
   loadingSelectCustomer: boolean
-  setloadingSelectCustomer: (loadingSelectCustomer: boolean) => void
+  setLoadingSelectCustomer: (loadingSelectCustomer: boolean) => void
+  loadingProducts: boolean
+  setLoadingProducts: (loadingProducts: boolean) => void
   removeElement: (codigo: string) => void
   addToCart: (codigo: string, amount: number) => void
   getProducts: () => void
@@ -41,20 +33,16 @@ const CertraContext = createContext<{
   setProducts: () => { 
     // do nothing
   },
-  loaders: {
-    loadingProducts: true,
-    loadingConfirmOrder: false,
-    loadingLogOut: false,
-  },
-  setLoaders: () => { 
-    // do nothing
-  },
   loadingProductsGrid: true,
   setLoadingProductsGrid: () => { 
     // do nothing
   },
   loadingSelectCustomer: false,
-  setloadingSelectCustomer: () => { 
+  setLoadingSelectCustomer: () => { 
+    // do nothing
+  },
+  loadingProducts: true,
+  setLoadingProducts: () => { 
     // do nothing
   },
   removeElement: () => { 
@@ -90,12 +78,8 @@ export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
 
   // LOADERS
   const [loadingProductsGrid, setLoadingProductsGrid] = useState(true)
-  const [loadingSelectCustomer, setloadingSelectCustomer] = useState(false)
-  const [loaders, setLoaders] = useState({
-    loadingProducts: true,
-    loadingConfirmOrder: false,
-    loadingLogOut: false,
-  })
+  const [loadingSelectCustomer, setLoadingSelectCustomer] = useState(false)
+  const [loadingProducts, setLoadingProducts] = useState(true)
 
   // ITINERARY & ORDER RECORD
   const [reloadItinerary, setReloadItinerary] = useState(false)
@@ -141,7 +125,7 @@ export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (data?.length > 0) {
         setProducts([ ...products, ...data ])
-        setLoaders({ ...loaders, loadingProducts: false })
+        setLoadingProducts(false)
         setLoadingProductsGrid(false)
       }
     } catch (error) {
@@ -170,10 +154,12 @@ export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
       setProductsCart,
       products,
       setProducts,
-      loaders,
-      setLoaders,
       loadingProductsGrid,
       setLoadingProductsGrid,
+      setLoadingSelectCustomer,
+      loadingProducts,
+      setLoadingProducts,
+      loadingSelectCustomer,
       removeElement,
       addToCart,
       getProducts,
@@ -183,8 +169,6 @@ export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
       setReloadItinerary,
       lookAtPharmacy,
       setLookAtPharmacy,
-      loadingSelectCustomer,
-      setloadingSelectCustomer
     }}>
       {children}
     </CertraContext.Provider>

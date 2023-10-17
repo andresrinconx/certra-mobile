@@ -58,7 +58,7 @@ export const getMonthAndDays = (date: Date) => {
   return data[date.getMonth()] // object {month: string, days: number}
 }
 
-export const getDateInRange = (initialDate: Date, finalDate: Date) => {
+export const valitadeDateInRange = (initialDate: Date, finalDate: Date) => {
   const date = new Date()
 
   if (initialDate < date && finalDate > date) {
@@ -106,7 +106,7 @@ export const calculateDiscountsPrice = (product: ProductInterface) => {
 
   // Product
   let productDiscountPriceBs = 0
-  if (getDateInRange(new Date(`${fdesde}`), new Date(`${fhasta}`))) {
+  if (valitadeDateInRange(new Date(`${fdesde}`), new Date(`${fhasta}`))) {
     productDiscountPriceBs = (calculatePercentProductDiscount(amount, { escala1, escala2, escala3, pescala1, pescala2, pescala3 } as ScalesInterface) 
       * (base1 - labDiscountPriceBs)) / 100
   }

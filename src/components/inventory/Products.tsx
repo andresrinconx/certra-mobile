@@ -8,7 +8,7 @@ import { LoaderProductsGrid, Loader, ProductsGrid } from '..'
 
 const Products = () => {
   const { themeColors: { typography, primary }, myUser: { customer, access: { customerAccess } } } = useLogin()
-  const { loaders, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra()
+  const { loadingProducts, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra()
   
   useEffect(() => {
     if (products?.length !== 0) {
@@ -69,7 +69,7 @@ const Products = () => {
                 </View>
               )}
               ListFooterComponent={() => (
-                !loaders.loadingProducts && (
+                !loadingProducts && (
                   <View>
                     <Loader size={40} color={primary} />
                   </View>

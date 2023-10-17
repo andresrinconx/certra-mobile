@@ -9,17 +9,18 @@ import useNavigation from '../../hooks/useNavigation'
 import { Loader } from '..'
 
 const IconLogOut = () => {
+  const [loadingLogOut, setLoadingLogOut] = useState(false)
   const [alertLogOut, setAlertLogOut] = useState(false)
 
   const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setThemeColors } = useLogin()
-  const { setProductsCart, setProducts, setLoaders, loaders, setCurrentPage, setLoadingProductsGrid, setloadingSelectCustomer } = useCertra()
+  const { setProductsCart, setProducts, setCurrentPage, setLoadingProductsGrid, setLoadingSelectCustomer, setLoadingProducts } = useCertra()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
 
   const onCloseAlertClearCart = () => setAlertLogOut(false)
 
   const logOut = async () => {
-    setLoaders({ ...loaders, loadingLogOut: true })
+    setLoadingLogOut(true)
 
     // reset login
     setUser('')
@@ -29,14 +30,9 @@ const IconLogOut = () => {
     setProductsCart([])
 
     // reset loaders
-    setLoaders({
-      ...loaders, 
-      loadingLogOut: false,
-      loadingProducts: false,
-      loadingConfirmOrder: false,
-    })
     setLoadingProductsGrid(true)
-    setloadingSelectCustomer(false)
+    setLoadingSelectCustomer(false)
+    setLoadingProducts(true)
 
     // reset storage
     await setDataStorage('login', false)
@@ -117,7 +113,7 @@ const IconLogOut = () => {
                 Cancelar
               </Button>
               <Button color={darkTurquoise} onPress={() => logOut()}>
-                {loaders.loadingLogOut ? (
+                {loadingLogOut ? (
                   <View className='flex flex-row justify-center items-center w-20'>
                     <Loader color='white' size={wp(4)} />
                   </View>

@@ -5,7 +5,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { AlertDialog, Button, Modal } from 'native-base'
 import { disponibility } from '../../utils/constants'
 import { ProductInterface, ScalesInterface } from '../../utils/interfaces'
-import { calculateDiscountsPrice, calculatePercentProductDiscount, currency } from '../../utils/helpers'
+import { calculateDiscountsPrice, calculatePercentProductDiscount, currency, valitadeDateInRange } from '../../utils/helpers'
 import { setDataStorage } from '../../utils/asyncStorage'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
@@ -29,7 +29,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess, customerAccess }, customer, dscCliente } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useCertra()
-  const { descrip, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3 } = product
+  const { descrip, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3, fdesde, fhasta } = product
   const cancelRef = useRef(null)
   const initialRef = useRef(null)
   const navigation = useNavigation()
@@ -282,7 +282,7 @@ const ProductsCart = ({ product }: { product: ProductInterface }) => {
 
                   <View style={{ width: wp(18) }} className='rounded-md'>
                     <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
-                      {calculatePercentProductDiscount(amount, { escala1, escala2, escala3, pescala1, pescala2, pescala3 } as ScalesInterface)}%
+                      {valitadeDateInRange(new Date(`${fdesde}`), new Date(`${fhasta}`)) ? calculatePercentProductDiscount(amount, { escala1, escala2, escala3, pescala1, pescala2, pescala3 } as ScalesInterface) : '0'}%
                     </Text>
                   </View>
                 </View>

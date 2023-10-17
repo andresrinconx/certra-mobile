@@ -14,8 +14,8 @@ const LoginContext = createContext<{
   setPassword: (password: string) => void
   myUser: MyUserInterface
   setMyUser: (myUser: MyUserInterface) => void
-  loaders: { loadingAuth: boolean, }
-  setLoaders: (loaders: { loadingAuth: boolean, }) => void
+  loadingAuth: boolean
+  setLoadingAuth: (loadingAuth: boolean) => void
   usersFromScli: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
@@ -45,8 +45,8 @@ const LoginContext = createContext<{
   setMyUser: () => { 
     // do nothing
   },
-  loaders: { loadingAuth: false, },
-  setLoaders: () => { 
+  loadingAuth: false,
+  setLoadingAuth: () => { 
     // do nothing
   },
   usersFromScli: [],
@@ -112,9 +112,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [password, setPassword] = useState('')
 
   // LOADERS
-  const [loaders, setLoaders] = useState({
-    loadingAuth: false,
-  })
+  const [loadingAuth, setLoadingAuth] = useState(false)
 
   // -----------------------------------------------
   // STORAGE
@@ -194,8 +192,8 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       setPassword,
       myUser,
       setMyUser,
-      loaders,
-      setLoaders,
+      loadingAuth,
+      setLoadingAuth,
       usersFromScli,
       themeColors,
       setThemeColors,
