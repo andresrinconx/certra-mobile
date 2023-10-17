@@ -117,10 +117,14 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
             <View className='w-[53%] pr-2 mt-1'>
 
               {/* bonus */}
-              <Bonus 
-                bonifica={bonifica as string}
-                bonicant={bonicant as string}
-              />
+              <View>
+                <Bonus 
+                  bonifica={bonifica as string}
+                  bonicant={bonicant as string}
+                  fdesde={fdesde as string}
+                  fhasta={fhasta as string}
+                />
+              </View>
 
               {/* price */}
               <View className='flex flex-row justify-between items-center mb-2'>

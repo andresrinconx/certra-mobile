@@ -18,7 +18,7 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
   const [openAmountModal, setOpenAmountModal] = useState(false)
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
-  const { descrip, precio1, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica } = product
+  const { descrip, precio1, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica, fdesde, fhasta } = product
   const { productsCart, addToCart } = useCertra()
   const navigation = useNavigation()
 
@@ -85,10 +85,12 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
           <View className='w-1/2 pr-2 -mt-4'>
 
             {/* bonus */}
-            <View className='pt-5'>
+            <View className='pt-2'>
               <Bonus
                 bonifica={bonifica as string}
                 bonicant={bonicant as string}
+                fdesde={fdesde as string}
+                fhasta={fhasta as string}
               />
             </View>
 

@@ -10,7 +10,7 @@ import useNavigation from '../hooks/useNavigation'
 import useLogin from '../hooks/useLogin'
 import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
-import { currency } from '../utils/helpers'
+import { currency, valitadeDateInRange } from '../utils/helpers'
 import { IconCart, Loader, ModalInfo, ProfileField, ModalAmount } from '../components'
  
 const Product = () => {
@@ -27,7 +27,7 @@ const Product = () => {
 
   const { themeColors: { background, typography, turquoise, lightList, darkTurquoise, green, primary, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { productsCart, addToCart, removeElement } = useCertra()
-  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva, bonicant, bonifica } } = useRoute() as { params: ProductInterface }
+  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva, bonicant, bonifica, fdesde, fhasta } } = useRoute() as { params: ProductInterface }
   const navigation = useNavigation()
 
   // Get datahseet
@@ -149,11 +149,11 @@ const Product = () => {
               </Text>
             </View>
 
-            {Number(bonicant) > 0 && (
+            {Number(bonicant) > 0 && valitadeDateInRange(new Date(`${fdesde}`), new Date(`${fhasta}`)) ? (
               <View className='flex flex-row justify-between rounded-md px-1 py-1 mt-1.5' style={{ backgroundColor: turquoise, width: wp(75) }}>
                 <Text className='font-medium text-white' style={{ fontSize: wp(4) }}>Bonificación: {Number(bonicant)}x{Number(bonifica)}.</Text>
               </View>
-            )}
+            ):null}
 
             {/* price */}
             <View className='mt-3 mb-5'>

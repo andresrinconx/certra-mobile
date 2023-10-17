@@ -20,7 +20,7 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
 
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { addToCart, productsCart, removeElement } = useCertra()
-  const { descrip, image_url, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica } = product
+  const { descrip, image_url, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica, fdesde, fhasta } = product
   const navigation = useNavigation()
 
   // Get max amount
@@ -125,10 +125,14 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
             </Pressable>
 
             {/* bonus */}
-            <Bonus
-              bonifica={bonifica as string}
-              bonicant={bonicant as string}
-            />
+            <View className='mt-1'>
+              <Bonus
+                bonifica={bonifica as string}
+                bonicant={bonicant as string}
+                fdesde={fdesde as string}
+                fhasta={fhasta as string}
+              />
+            </View>
 
             {/* price */}
             <View className='relative'>
