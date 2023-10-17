@@ -1,3 +1,4 @@
+import Navigation from './Navigation'
 import ProcessOrder from './cart/ProcessOrder'
 import CustomerSearch from './customer/CustomerSearch'
 import LabelCustomer from './customer/LabelCustomer'
@@ -23,7 +24,8 @@ import ItineraryDayEvent from './itinerary/ItineraryDayEvent'
 import IconLogOut from './profile/IconLogOut'
 import ProfileField from './profile/ProfileField'
 import ProfileGroup from './profile/ProfileGroup'
-import Navigation from './Navigation'
+import ModalAmount from './inventory/ModalAmount'
+import Bonus from './inventory/Bonus'
 
 export {
   ProcessOrder,
@@ -52,4 +54,6 @@ export {
   ProfileField,
   ProfileGroup,
   Navigation,
+  ModalAmount,
+  Bonus
 }

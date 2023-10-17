@@ -5,11 +5,13 @@ import { AlertDialog, Button, Modal } from 'native-base'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import { ProductInterface } from '../../utils/interfaces'
-import { calculateProccessOrderData, getDate, getHour, currency } from '../../utils/helpers'
+import { calculateProccessOrderData, getDate, getHour, currency, valitadeDateInRange } from '../../utils/helpers'
 import { fetchSendData } from '../../utils/api'
 import { setDataStorage } from '../../utils/asyncStorage'
+import { Loader } from '../.'
 
 const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
+  const [loadingProcess, setLoadingProcess] = useState(false)
   const [subtotal, setSubtotal] = useState(0)
   const [discount, setDiscount] = useState(0)
   const [iva, setIva] = useState(0)
@@ -37,6 +39,8 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
 
   // Process order
   const handleProcess = async () => {
+    setLoadingProcess(true)
+
     try {
       const res = await fetchSendData({
         date: getDate(new Date()),
@@ -58,6 +62,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
           iva: Number(product.iva),
           cantidad: Number(product.amount),
           descuento: labAccess ? String(product.labDiscount) : String(0),
+          bonifica: Number(product.bonicant) > 0 && valitadeDateInRange(new Date(`${product.fdesde}`), new Date(`${product.fhasta}`)) ? ~~(Number(product.amount) / (Number(product.bonifica) * Number(product.bonicant))) : 0
         })),
         subtotal: String(subtotal),
         total: String(total),
@@ -65,12 +70,15 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
 
       if (res?.message) {
         setProductsCart([])
+        setLoadingProcess(false)
         setAlertSuccessOrder(true)
         await setDataStorage('linealDiscount', '0')
       } else {
+        setLoadingProcess(false)
         setAlertErrorOrder(true)
       } 
     } catch (error) {
+      setLoadingProcess(false)
       setAlertErrorOrder(true)
     }
 
@@ -81,7 +89,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
   return (
     <>
       <View className='flex flex-col justify-center w-[100%] bottom-0 absolute border-t-[0.5px] border-t-[#999999]'
-        style={{ height: wp(discount > 0 || iva > 0 ? 40 : 32) }}
+        style={{ height: wp(discount > 0 && iva > 0 ? 43 : discount > 0 || iva > 0 ? 40 : 32) }}
       >
         <View className='flex flex-col justify-center h-full w-[92%]'
           style={{ backgroundColor: background, borderTopColor: icon, marginLeft: 16 }}
@@ -166,7 +174,13 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
                 Cancelar
               </Button>
               <Button color={darkTurquoise} onPress={handleProcess}>
-                <Text className='font-normal text-white'>Confirmar</Text>
+                {loadingProcess ? (
+                  <View className='flex flex-row justify-center items-center w-14'>
+                    <Loader color='white' size={wp(4)} />
+                  </View>
+                ) : (
+                  <Text className='font-normal text-white'>Confirmar</Text>
+                )}
               </Button>
             </Button.Group>
           </AlertDialog.Footer>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, TextInput, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { StatusBar } from 'react-native'
@@ -105,7 +105,7 @@ const Cart = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url as URL} />
@@ -187,7 +187,7 @@ const Cart = () => {
           )}
         </View>
 
-      </View>
+      </SafeAreaView>
 
       {/* process order */}
       {!loadingCart && (

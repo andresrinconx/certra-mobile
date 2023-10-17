@@ -10,8 +10,7 @@ import { setDataStorage } from '../../utils/asyncStorage'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
 import useNavigation from '../../hooks/useNavigation'
-import { ModalInfo } from '..'
-import ModalAmount from './ModalAmount'
+import { ModalInfo, ModalAmount, Bonus } from '..'
 
 const ProductCart = ({ product }: { product: ProductInterface }) => {
   const [added, setAdded] = useState(true)
@@ -29,7 +28,7 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
   
   const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, icon, primary, list, processBtn }, myUser: { deposito, access: { labAccess, customerAccess }, customer, dscCliente } } = useLogin()
   const { removeElement, productsCart, setProductsCart } = useCertra()
-  const { descrip, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3, fdesde, fhasta } = product
+  const { descrip, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3, fdesde, fhasta, bonicant, bonifica } = product
   const cancelRef = useRef(null)
   const initialRef = useRef(null)
   const navigation = useNavigation()
@@ -118,9 +117,13 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
             <View className='w-[53%] pr-2 mt-1'>
 
               {/* bonus */}
-              <View className='flex flex-row justify-between rounded-sm px-1 py-0.5 mb-1' style={{ backgroundColor: turquoise }}>
-                <Text className='font-medium text-white' style={{ fontSize: wp(2.5) }}>Bonificación: 1x1.</Text>
-                <Text className='font-medium text-white' style={{ fontSize: wp(2.5) }}>Crédito: 14 días</Text>
+              <View>
+                <Bonus 
+                  bonifica={bonifica as string}
+                  bonicant={bonicant as string}
+                  fdesde={fdesde as string}
+                  fhasta={fhasta as string}
+                />
               </View>
 
               {/* price */}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { View, Text, StatusBar, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StatusBar, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { Modal, useToast, Switch } from 'native-base'
 import { XMarkIcon } from 'react-native-heroicons/outline'
@@ -154,7 +154,7 @@ const OrderRecord = () => {
 
   return (
     <>
-      <View className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <SafeAreaView className='flex-1 px-3' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url as URL} />
@@ -311,7 +311,7 @@ const OrderRecord = () => {
             )
           )}
         </View>
-      </View>
+      </SafeAreaView>
 
       {/* modal details */}
       <Modal isOpen={modalDetails} onClose={() => setModalDetails(false)} animationPreset='fade'>
