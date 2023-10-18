@@ -23,6 +23,7 @@ const profileDataEndpoint = (params: { code: string, table: string }) => `${apiB
 const itineraryEndpoint = (params: { salesperson: string, year: string, month: string }) => `${apiBaseUrl}/appItinerario/itinerarioP2/${params.salesperson}/${params.year}/${params.month}`
 const itineraryItemEndpoint = () => `${apiBaseUrl}/appItinerario/itinerarioDetalle2`
 const reasonsEndpoint = () => `${apiBaseUrl}/appItinerario/motivo`
+const dataCustomerEndpoint = (customer: string) => `${apiBaseUrl}/appItinerario/data/${customer}`
 
 // ORDER RECORD
 // customer
@@ -97,6 +98,9 @@ export const fetchItineraryItem = (data: { numero: string, coordenadas: string, 
 }
 export const fetchReasons = () => {
   return apiCall(reasonsEndpoint(), 'GET')
+}
+export const fetchDataCustomer = (customer: string) => {
+  return apiCall(dataCustomerEndpoint(customer), 'GET')
 }
 
 // ORDER RECORD

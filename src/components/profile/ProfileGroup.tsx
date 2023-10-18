@@ -1,7 +1,7 @@
 import { View, Text, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../../hooks/useLogin'
-import { ProfileField } from '..'
+import { DataField } from '..'
 
 const ProfileGroup = ({ name, subname, fields }: { name: string, subname: string, fields: any[] }) => {
   const { themeColors: { typography } } = useLogin()
@@ -31,7 +31,7 @@ const ProfileGroup = ({ name, subname, fields }: { name: string, subname: string
             renderItem={({item}) => {
               const { label, value } = item
               return (
-                <ProfileField label={label} value={value} />
+                <DataField label={label} value={value} />
               )
             }} 
           />

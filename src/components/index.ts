@@ -22,10 +22,12 @@ import ProductGrid from './inventory/ProductGrid'
 import ProductSearch from './inventory/ProductSearch'
 import ItineraryDayEvent from './itinerary/ItineraryDayEvent'
 import IconLogOut from './profile/IconLogOut'
-import ProfileField from './profile/ProfileField'
 import ProfileGroup from './profile/ProfileGroup'
 import ModalAmount from './inventory/ModalAmount'
 import Bonus from './inventory/Bonus'
+import DataField from './elements/DataField'
+import Divider from './elements/Divider'
+import TextImage from './elements/TextImage'
 
 export {
   ProcessOrder,
@@ -51,9 +53,11 @@ export {
   ProductSearch,
   ItineraryDayEvent,
   IconLogOut,
-  ProfileField,
   ProfileGroup,
   Navigation,
   ModalAmount,
-  Bonus
+  Bonus,
+  DataField,
+  Divider,
+  TextImage
 }
