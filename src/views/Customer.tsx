@@ -10,7 +10,7 @@ import { CustomerSearch } from '../components'
 const Customer = () => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
 
-  const { themeColors: { background, typography, primary, list }, usersFromScli } = useLogin()
+  const { themeColors: { background, typography, primary, list }, allCustomers } = useLogin()
   const navigation = useNavigation()
 
   // SCREEN
@@ -23,7 +23,7 @@ const Customer = () => {
   const handleSearch = async (valueSearchCustomers: string) => {
     if (valueSearchCustomers?.length > 2) {
       // filter data
-      const data = usersFromScli?.filter(
+      const data = allCustomers?.filter(
         (user: UserFromScliInterface) => 
           user.nombre.toLowerCase().includes(formatText(valueSearchCustomers.toLowerCase())) || // search by name
           user.cliente.toLowerCase().includes(valueSearchCustomers.toLowerCase()) // search by number

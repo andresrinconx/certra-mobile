@@ -1,24 +1,38 @@
-import { View, Text, Image, Pressable } from 'react-native'
+import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import { LabelCustomer } from '..'
 
 const SelectCustomer = () => {
-  const { themeColors: { list, typography }, myUser: { access: { customerAccess }, customer } } = useLogin()
+  const { themeColors: { list, typography }, myUser: { access: { customerAccess, salespersonAccess }, customer } } = useLogin()
   const navigation = useNavigation()
 
   return (
     <>
       {!customerAccess && (
         <View className='space-y-4'>
-          {customer?.nombre && (
+          {customer && (
             <LabelCustomer name={customer?.nombre as string} />
           )}
           <View className='flex flex-row items-center'>
-            <Image style={{ width: wp(10), height: wp(10) }} resizeMode='cover'
-              source={require('../../assets/drugstore-search.png')}
-            />
+            {customer ? (
+              salespersonAccess ? (
+                <TouchableOpacity onPress={() => navigation.navigate('CustomerProfile')}>
+                  <Image style={{ width: wp(10), height: wp(10) }} resizeMode='cover'
+                    source={require('../../assets/drugstore-search.png')}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <Image style={{ width: wp(10), height: wp(10) }} resizeMode='cover'
+                  source={require('../../assets/drugstore-search.png')}
+                />
+              )
+            ) : (
+              <Image style={{ width: wp(10), height: wp(10) }} resizeMode='cover'
+                source={require('../../assets/drugstore-search-gray.png')}
+              />
+            )}
 
             <Pressable className='rounded-lg w-5/6 ml-3 py-0' 
               onPress={() => navigation.navigate('Customer')}

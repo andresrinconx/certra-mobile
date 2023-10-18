@@ -9,4 +9,5 @@ export type RootStackParamList = {
   Inventory: undefined
   Cart: undefined
   Product: any
+  CustomerProfile: undefined
 }

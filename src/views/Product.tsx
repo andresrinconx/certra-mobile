@@ -11,7 +11,8 @@ import useLogin from '../hooks/useLogin'
 import { fetchDatasheet } from '../utils/api'
 import { disponibility } from '../utils/constants'
 import { currency, valitadeDateInRange } from '../utils/helpers'
-import { IconCart, Loader, ModalInfo, ProfileField, ModalAmount } from '../components'
+import { IconCart, Loader, ModalInfo, ModalAmount, DataField, TextImage } from '../components'
+import { Divider } from 'native-base'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
@@ -263,27 +264,24 @@ const Product = () => {
             </View>
 
             {/* datasheet */}
-            <View className='mt-5 pt-5 border-t-[0.5px] border-t-[#999999]'>
-              <View className='flex flex-row items-center gap-x-2 mb-5'>
-                <Image style={{ width: wp(7), height: wp(7) }} resizeMode='contain'
-                  source={require('../assets/ficha.png')}
-                />
-                <Text style={{ fontSize: hp(2.5), color: typography }} className='font-medium'>
-                  Ficha Técnica:
-                </Text>
-              </View>
+            <View>
+              <Divider marginY={5} />
+              <TextImage
+                image={require('../assets/ficha.png')}
+                text='Ficha Técnica:'
+              />
 
               {loadingDatasheet ? (
                 <View className='mt-5'>
                   <Loader color={`${primary}`} />
                 </View>
               ) : (
-                <View className='px-5'>
+                <View className='px-5 pt-5'>
                   {datasheet.map((item) => {
                     return (
-                      <ProfileField
+                      <DataField
                         key={item[0]}
-                        label={String(item[0]).split('_').join(' ')}
+                        label={String(item[0]).split('_').join('. ')}
                         value={item[1]}
                       />
                     )

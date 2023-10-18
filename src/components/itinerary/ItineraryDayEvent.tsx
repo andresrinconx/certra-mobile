@@ -8,6 +8,7 @@ import { fetchItineraryItem } from '../../utils/api'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
 import useNavigation from '../../hooks/useNavigation'
+import { Loader } from '../'
 
 const ItineraryDayEvent = ({ 
   day, 
@@ -18,19 +19,17 @@ const ItineraryDayEvent = ({
   day: string
   dayInText: string 
   reasons: []
-  item: { cliente: string, direccion: string, telefono: string, numero: string, motivo: string, descrip: string }
+  item: { cliente: string, direccion: string, telefono: string, numero: string, motivo: string, descrip: string, codcli: string }
 }) => {
   const [openDetails, setOpenDetails] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
   const [observation, setObservation] = useState('')
   const [touch, setTouch] = useState(false)
 
+  const { cliente, direccion, telefono, numero, motivo, descrip, codcli } = item
+  const { allCustomers, themeColors: { typography, turquoise, lightList, charge, primary, green }, getCurrentLocation, setMyUser, myUser } = useLogin()
+  const { setReloadItinerary, setProductsCart } = useCertra()
   const navigation = useNavigation()
-  const { cliente, direccion, telefono, numero, motivo, descrip } = item
-  const { themeColors: { typography, turquoise, lightList, charge, primary, green }, getCurrentLocation } = useLogin()
-  const { setReloadItinerary } = useCertra()
-
-  // toast
   const toast = useToast()
   const id = 'toast'
 
@@ -99,6 +98,15 @@ const ItineraryDayEvent = ({
     }
   }
 
+  // Select Customer and Show data
+  const handleSelectCustomer = () => {
+    const customer = allCustomers.filter((customer) => customer.cliente === codcli)[0]
+    setMyUser({ ...myUser, customer })
+    setProductsCart([])
+
+    navigation.navigate('CustomerProfile')
+  }
+
   return (
     <View className='flex flex-col'>
 
@@ -111,10 +119,10 @@ const ItineraryDayEvent = ({
           <Text className='text-lg text-center' style={{ color: typography }}>{day}</Text>
         </View>
 
-        {/* drugstore */}
+        {/* customer name */}
         <TouchableOpacity className='flex-row' onPress={() => setOpenDetails(!openDetails)}>
-          <View className='p-1.5 rounded-lg' style={{ backgroundColor: motivo ? green : turquoise, width: wp(openDetails && !motivo ? 75 : 83) }}>
-            <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(70) }}>
+          <View className='p-1.5 rounded-lg' style={{ backgroundColor: motivo ? green : turquoise, width: wp(openDetails && !motivo ? 65 : 83) }}>
+            <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(openDetails ? 55 : 70) }}>
               {cliente}
             </Text>
           </View>
@@ -129,16 +137,27 @@ const ItineraryDayEvent = ({
         </TouchableOpacity>
 
         {openDetails && !motivo ? (
-          <TouchableOpacity onPress={() => {
-            if (!touch) {
-              setTouch(true)
-              handleSave()
-            }
-          }}>
-            <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-              source={require('../../assets/file.png')}
-            />
-          </TouchableOpacity>
+          <View className='flex flex-row items-center gap-x-1'>
+
+            {/* stadistic */}
+            <TouchableOpacity onPress={handleSelectCustomer}>
+              <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+                source={require('../../assets/stadistic-light.png')}
+              />
+            </TouchableOpacity>
+
+            {/* save */}
+            <TouchableOpacity onPress={() => {
+              if (!touch) {
+                setTouch(true)
+                handleSave()
+              }
+            }}>
+              <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+                source={require('../../assets/file.png')}
+              />
+            </TouchableOpacity>
+          </View>
         ):null}
       </View>
 
@@ -147,14 +166,17 @@ const ItineraryDayEvent = ({
         <View style={{ width: wp(10) }} />
 
         {openDetails && (
-          <PresenceTransition visible={openDetails} initial={{
-            opacity: 0
-          }} animate={{
-            opacity: 1,
-            transition: {
-              duration: 250
-            }
-          }}>
+          <PresenceTransition visible={openDetails} 
+            initial={{
+              opacity: 0
+            }} 
+            animate={{
+              opacity: 1,
+              transition: {
+                duration: 250
+              }
+            }}
+          >
             {/* address */}
             <View className='pl-2 mb-1.5' style={{ width: wp(83) }}>
               <Text className='text-base font-bold' style={{ color: typography }}>Dirección</Text>
@@ -174,7 +196,7 @@ const ItineraryDayEvent = ({
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
               <Text className='text-base font-bold' style={{ color: typography, width: wp(20) }}>Motivo</Text>
 
-              <Menu style={{ backgroundColor: lightList }} shadow={1} w='210' trigger={triggerProps => {
+              <Menu style={{ backgroundColor: lightList }} shadow={1} w={wp(55)} trigger={triggerProps => {
                 return <Pressable className='flex flex-col justify-center rounded-lg' 
                          style={{ height: wp(10), width: wp(55), backgroundColor: charge }} 
                          {...triggerProps}

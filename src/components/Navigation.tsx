@@ -5,7 +5,7 @@ import useCertra from '../hooks/useCertra'
 import useLogin from '../hooks/useLogin'
 import { getDataStorage } from '../utils/asyncStorage'
 import { LoaderLogoScreen } from '.'
-import { Home, Cart, Login, Inventory, Product, Profile, Itinerary, ItineraryDay, OrderRecord, Customer } from '../views'
+import { Home, Cart, Login, Inventory, Product, Profile, Itinerary, ItineraryDay, OrderRecord, Customer, CustomerProfile } from '../views'
 
 const Stack = createNativeStackNavigator()
 
@@ -54,6 +54,7 @@ const Navigation = () => {
             <Stack.Screen name='Inventory' component={Inventory} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Cart' component={Cart} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Product' component={Product} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
+            <Stack.Screen name='CustomerProfile' component={CustomerProfile} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

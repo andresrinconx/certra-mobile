@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import useLogin from '../../hooks/useLogin'
 
-const ProfileField = ({label, value}: {label: string, value: string}) => {
+const DataField = ({label, value}: {label: string, value: string}) => {
   const { themeColors: { typography, charge } } = useLogin()
 
   return (
@@ -24,4 +24,4 @@ const ProfileField = ({label, value}: {label: string, value: string}) => {
   )
 }
 
-export default ProfileField
+export default DataField

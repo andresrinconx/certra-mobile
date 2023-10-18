@@ -29,10 +29,10 @@ export const getHour = (date: Date) => {
 }
 
 export const getDayOfWeekInText = (date: Date) => {
-  const DAYS_OF_WEEK = [
+  const daysOfWeek = [
     'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
   ]
-  return DAYS_OF_WEEK[date.getDay()]
+  return daysOfWeek[date.getDay()]
 }
 
 const isLeapYear = (year: number) => {
@@ -66,6 +66,16 @@ export const valitadeDateInRange = (initialDate: Date, finalDate: Date) => {
   } else {
     return false
   }
+}
+
+export const getMonthInText = (date: string) => {
+  const months = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+    'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+  ]
+
+  const month = months[Number(date.substring(5, 7))-1]
+  return month
 }
 
 // -----------------------------------------------

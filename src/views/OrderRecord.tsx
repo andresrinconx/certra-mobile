@@ -334,7 +334,7 @@ const OrderRecord = () => {
           </View>
 
           {/* columns */}
-          <View className='flex flex-row items-center py-2' style={{ borderBottomWidth: 0.3, borderBottomColor: turquoise }}>
+          <View className='flex flex-row items-center py-2 pl-1.5' style={{ borderBottomWidth: 0.3, borderBottomColor: turquoise }}>
             {orderRecordCols[2].map((item) => {
               const { id, size, name } = item
               return (
@@ -354,20 +354,21 @@ const OrderRecord = () => {
             renderItem={({item, index}) => {
               const { codigo, nombreP, cantidad, precio, iva, total, preciodolar, totaldolar } = item
               const isLast = index === selectedItem?.productos.length - 1
+              console.log(precio)
               return (
                 <View className='flex flex-row items-center justify-center py-3'
                   style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}
                 >
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{codigo}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(42), fontSize: wp(2.6) }}
+                  <Text className='text-center' style={{ color: typography, width: wp(36), fontSize: wp(2.6) }}
                     numberOfLines={1}
                   >
                     {nombreP}
                   </Text>
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{cantidad}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(preciodolar, '$')}` : `${currency(precio)}`}</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(preciodolar, '$')}` : `${currency(precio)}`}</Text>
                   <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(total)}`}</Text>
+                  <Text className='text-center' style={{ color: typography, width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(total)}`}</Text>
                 </View>
               )
             }} 
