@@ -135,19 +135,17 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
             </View>
 
             {/* price */}
-            <View className='relative'>
-              <View className='my-2'>
-                <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
-                  Precio:
-                </Text>
+            <View className='my-2'>
+              <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                Precio:
+              </Text>
 
-                <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-                  {currency(base1)}
-                </Text>
-              </View>
+              <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                {currency(base1)}
+              </Text>
 
               {Number(iva) > 0 && (
-                <Text className='absolute right-5 top-2.5 w-20' style={{ fontSize: hp(1.5), color: turquoise }}>
+                <Text className='' style={{ fontSize: hp(1.6), color: turquoise }}>
                   IVA {currency((base1 * (iva as number)) / 100)}
                 </Text>
               )}

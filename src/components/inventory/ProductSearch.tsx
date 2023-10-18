@@ -79,10 +79,10 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
         </Pressable>
 
         {/* info */}
-        <View className='flex flex-row items-center'>
+        <View className='flex flex-row'>
 
           {/* left info */}
-          <View className='w-1/2 pr-2 -mt-4'>
+          <View className='w-1/2 pr-2'>
 
             {/* bonus */}
             <View className='pt-2'>
@@ -187,19 +187,17 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
           <View className='w-1/2 pl-2'>
 
             {/* price */}
-            <View className='relative'>
-              <View className='my-2'>
-                <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
-                  Precio:
-                </Text>
+            <View className='my-2'>
+              <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+                Precio:
+              </Text>
 
-                <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
-                  {currency(precio1)}
-                </Text>
-              </View>
-              
+              <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+                {currency(precio1)}
+              </Text>
+
               {Number(iva) > 0 && (
-                <Text className='absolute right-5 top-2.5' style={{ fontSize: hp(1.5), color: turquoise }}>
+                <Text className='' style={{ fontSize: hp(1.6), color: turquoise }}>
                   IVA {currency((base1 * (iva as number)) / 100)}
                 </Text>
               )}
