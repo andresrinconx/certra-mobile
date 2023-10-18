@@ -82,7 +82,7 @@ const CustomerProfile = () => {
 
               <Divider marginY={16} />
               <TextImage 
-                image={require('../assets/stadistic.png')}
+                image={require('../assets/stadistic-light.png')}
                 text='Estadísticas'
               />
 

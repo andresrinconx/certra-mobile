@@ -15,7 +15,7 @@ const Navigation = () => {
   const { login, setLogin, setThemeColors, setMyUser } = useLogin()
   const { setProductsCart } = useCertra()
 
-  // get storage (global)
+  // Get storage (global)
   useEffect(() => {
     const getStorage = async () => {
       // get storage

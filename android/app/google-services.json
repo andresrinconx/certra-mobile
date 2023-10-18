@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "566519174059",
+    "project_id": "certraapp",
+    "storage_bucket": "certraapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566519174059:android:01c72f3688f161791f78ee",
+        "android_client_info": {
+          "package_name": "com.certraapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEjdNW9K-QLTUQRSJ0fa3busnTqbS1jjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

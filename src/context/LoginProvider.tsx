@@ -4,6 +4,7 @@ import GetLocation from 'react-native-get-location'
 import { UserFromScliInterface, ThemeColorsInterface, MyUserInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
+import { notificationListener, requestUserPermission } from '../utils/pushNotification'
 
 const LoginContext = createContext<{
   login: boolean
@@ -135,6 +136,13 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // -----------------------------------------------
   // PERMISSIONS
   // -----------------------------------------------
+
+  // Push notification
+  // useEffect(() => {
+  //   PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
+  //   requestUserPermission()
+  //   notificationListener()
+  // }, [])
 
   const checkLocationPermission = async () => {
     const granted = await getLocationPermission()
