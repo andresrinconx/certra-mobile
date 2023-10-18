@@ -13,9 +13,10 @@ interface DataCustomer {
 }
 
 interface AverageData {
-  image_url: URL
   promdrocerca: string
   promotro: string
+  image_url: URL
+  utimaF: string
   promedios: { 
     fecham: string,
     promdrocerca: string,
@@ -140,12 +141,11 @@ const CustomerProfile = () => {
                     strokeWidth: 2,
                     decimalPlaces: 0,
                     propsForDots: {
-                      r: '5',
+                      r: '3',
                     }
                   }}
                 />
               </View>
-
             </View>
           )
         )}

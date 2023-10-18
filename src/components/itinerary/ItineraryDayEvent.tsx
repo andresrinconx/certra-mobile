@@ -196,7 +196,7 @@ const ItineraryDayEvent = ({
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
               <Text className='text-base font-bold' style={{ color: typography, width: wp(20) }}>Motivo</Text>
 
-              <Menu style={{ backgroundColor: lightList }} shadow={1} w='210' trigger={triggerProps => {
+              <Menu style={{ backgroundColor: lightList }} shadow={1} w={wp(55)} trigger={triggerProps => {
                 return <Pressable className='flex flex-col justify-center rounded-lg' 
                          style={{ height: wp(10), width: wp(55), backgroundColor: charge }} 
                          {...triggerProps}
