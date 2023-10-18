@@ -4,8 +4,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { LineChart } from 'react-native-chart-kit'
 import useLogin from '../hooks/useLogin'
 import { fetchDataCustomer } from '../utils/api'
+import { getMonthInText, longDate } from '../utils/helpers'
 import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText } from '../components'
-import { getMonthInText } from '../utils/helpers'
 
 interface DataCustomer {
   label: string
@@ -145,6 +145,11 @@ const CustomerProfile = () => {
                     }
                   }}
                 />
+              </View>
+
+              <View className='flex flex-row justify-between items-center pt-2'>
+                <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Último pedido realizado</Text>
+                <Text className='font-normal' style={{ fontSize: hp(2), color: typography }}>{longDate(averageData?.utimaF)}</Text>
               </View>
             </View>
           )

@@ -78,6 +78,12 @@ export const getMonthInText = (date: string) => {
   return month
 }
 
+export const longDate = (date: string) => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }
+  const formatedDate = new Date(date).toLocaleDateString('es-ES', options)
+  return formatedDate
+}
+
 // -----------------------------------------------
 // CALCS HELPERS
 // -----------------------------------------------
