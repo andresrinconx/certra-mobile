@@ -54,7 +54,7 @@ const CustomerProfile = () => {
   }, [])
 
   return (
-    <SafeAreaView className='flex-1 px-3' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={averageData?.image_url as URL} />
@@ -146,7 +146,7 @@ const CustomerProfile = () => {
                   }}
                 />
               </View>
-
+ 
               <View className='flex flex-row justify-between items-center pt-2'>
                 <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Último pedido realizado</Text>
                 <Text className='font-normal' style={{ fontSize: hp(2), color: typography }}>{longDate(averageData?.utimaF)}</Text>

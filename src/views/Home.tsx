@@ -10,7 +10,7 @@ const Home = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3' style={{ backgroundColor: background }}>
+      <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <View className='flex-1'>
