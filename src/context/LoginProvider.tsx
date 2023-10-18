@@ -16,7 +16,7 @@ const LoginContext = createContext<{
   setMyUser: (myUser: MyUserInterface) => void
   loadingAuth: boolean
   setLoadingAuth: (loadingAuth: boolean) => void
-  usersFromScli: UserFromScliInterface[]
+  allCustomers: UserFromScliInterface[]
   themeColors: ThemeColorsInterface
   setThemeColors: (themeColors: ThemeColorsInterface) => void
   checkLocationPermission: () => void
@@ -49,7 +49,7 @@ const LoginContext = createContext<{
   setLoadingAuth: () => { 
     // do nothing
   },
-  usersFromScli: [],
+  allCustomers: [],
   themeColors: {
     primary: '',
     background: '',
@@ -105,7 +105,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
 
   // API
-  const [usersFromScli, setUsersFromScli] = useState<UserFromScliInterface[]>([])
+  const [allCustomers, setAllCustomers] = useState<UserFromScliInterface[]>([])
 
   // INPUTS
   const [user, setUser] = useState('')
@@ -164,21 +164,21 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   // -----------------------------------------------
-  // API
+  // CUSTOMERS
   // -----------------------------------------------
   
-  // Get usersFromUsuario & usersFromScli
+  // Get customers
   useEffect(() => {
     if (login) {
-      const getUsers = async () => {
+      const getCustomers = async () => {
         try {
           const resScli = await fetchTableData('appClientes/scli')
-          setUsersFromScli(resScli)
+          setAllCustomers(resScli)
         } catch (error) {
           console.log(error)
         }
       }
-      getUsers()
+      getCustomers()
     }
   }, [login]) 
 
@@ -194,7 +194,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       setMyUser,
       loadingAuth,
       setLoadingAuth,
-      usersFromScli,
+      allCustomers,
       themeColors,
       setThemeColors,
       checkLocationPermission,

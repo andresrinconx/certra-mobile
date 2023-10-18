@@ -164,7 +164,7 @@ export const orderRecordCols = [
     },
     {
       id: 2,
-      size: 42,
+      size: 36,
       name: 'Nombre'
     },
     {
@@ -174,7 +174,7 @@ export const orderRecordCols = [
     },
     {
       id: 4,
-      size: 10,
+      size: 13,
       name: 'Precio'
     },
     {
@@ -184,7 +184,7 @@ export const orderRecordCols = [
     },
     {
       id: 6,
-      size: 10,
+      size: 13,
       name: 'Importe'
     }
   ]
