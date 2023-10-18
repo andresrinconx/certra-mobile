@@ -20,6 +20,7 @@
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.72.6",
+    "react-native-chart-kit": "^6.12.0",
     "react-native-date-picker": "^4.3.3",
     "react-native-dotenv": "^3.4.9",
     "react-native-get-location": "^4.0.0",
