@@ -195,7 +195,7 @@ const Profile = () => {
         <View className='flex flex-row bottom-0 py-2.5 w-screen absolute' style={{ backgroundColor: background }}>
           <View className='flex flex-col justify-center items-center space-y-0.5 pl-14' style={{ width: wp(25) }}>
             <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Conexión: DATASIS</Text>
-            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Certra 0.9.0</Text>
+            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Certra 1.0.0</Text>
           </View>
           <View className='flex flex-col justify-center items-center pl-5' style={{ width: wp(72) }}>
             <View className='flex flex-row justify-center items-center rounded-xl py-3' style={{ backgroundColor: darkTurquoise}}>
