@@ -126,11 +126,7 @@ const CustomerProfile = () => {
                     withVerticalLines={false}
                     segments={3}
                     data={{
-                      labels: [
-                        getMonthInText(averageData?.promedios[0]?.fecham as string), 
-                        getMonthInText(averageData?.promedios[1]?.fecham as string), 
-                        getMonthInText(averageData?.promedios[2]?.fecham as string)
-                      ],
+                      labels: averageData?.promedios.map((item) => getMonthInText(item.fecham)),
                       datasets: [
                         { // drocerca data
                           data: averageData?.promedios.map((item) => Number(item.promdrocerca)), 
