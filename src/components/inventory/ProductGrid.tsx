@@ -243,7 +243,14 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
             <View className='flex flex-row items-center justify-center w-full'>
 
               <View style={{ width: wp(20), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
-                <TouchableOpacity onPress={() => setOpenAmountModal(true)}>
+                <TouchableOpacity onPress={() => {
+                  if ((labAccess || salespersonAccess) && !customer) {
+                    setModalSelectCustomer(true)
+                    return
+                  }
+
+                  setOpenAmountModal(true)
+                }}>
                   <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
                     {amount}
                   </Text>

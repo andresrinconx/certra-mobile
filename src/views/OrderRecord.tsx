@@ -379,7 +379,7 @@ const OrderRecord = () => {
 
       {/* modal older ones */}
       <Modal isOpen={modalOlderOnes} onClose={() => setModalOlderOnes(false)}>
-        <Modal.Content style={{ width: 360, paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
+        <Modal.Content style={{ width: wp(95), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
           <Text className='font-normal mb-3' style={{ fontSize: wp(4.3), color: typography }}>
             Indique un rango de fecha que desea consultar

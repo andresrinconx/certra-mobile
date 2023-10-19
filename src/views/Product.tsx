@@ -317,7 +317,14 @@ const Product = () => {
           <View className='flex-1 flex-row items-center justify-center mx-6'>
 
             <View style={{ width: wp(35), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
-              <TouchableOpacity onPress={() => setOpenAmountModal(true)}>
+              <TouchableOpacity onPress={() => {
+                if ((labAccess || salespersonAccess) && !customer) {
+                  setModalSelectCustomer(true)
+                  return
+                }
+
+                setOpenAmountModal(true)
+              }}>
                 <Text style={{ color: darkTurquoise, fontSize: wp(6) }} className='text-center'>
                   {amount}
                 </Text>

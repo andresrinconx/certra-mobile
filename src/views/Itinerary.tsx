@@ -135,7 +135,7 @@ const Itinerary = () => {
 
       // days with info
       const dataItinerary = await fetchItinerary({
-        salesperson: String(myUser?.vendedor), 
+        salesperson: myUser?.vendedor ? myUser?.vendedor : String(0), 
         year: String(currentYear), 
         month: String(currentMonth + 1)
       })
