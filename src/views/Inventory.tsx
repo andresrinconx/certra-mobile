@@ -54,7 +54,7 @@ const Inventory = () => {
   const handleTextDebounce = debounce(handleSearch, 400)
 
   return (
-    <SafeAreaView className='flex-1 h-full pt-4' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 h-full pt-10' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* content */}

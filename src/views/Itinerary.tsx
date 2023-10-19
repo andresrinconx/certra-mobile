@@ -185,7 +185,7 @@ const Itinerary = () => {
   }
 
   return (
-    <SafeAreaView className='flex-1 px-2.5' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-2.5 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />

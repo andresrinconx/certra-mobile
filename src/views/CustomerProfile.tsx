@@ -13,10 +13,11 @@ interface DataCustomer {
 }
 
 interface AverageData {
-  promdrocerca: string
-  promotro: string
-  image_url: URL
-  utimaF: string
+  promdrocerca?: string
+  promotro?: string
+  image_url?: URL
+  utimaF?: string
+  message?: string
   promedios: { 
     fecham: string,
     promdrocerca: string,
@@ -46,15 +47,16 @@ const CustomerProfile = () => {
 
           setLoadingCustomerProfile(false)
         }
+        setLoadingCustomerProfile(false)
       } catch (error) {
-        console.log(error)
+        setLoadingCustomerProfile(false)
       }
     }
     getDataCustomer()
   }, [])
 
   return (
-    <SafeAreaView className='flex-1 px-3' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={averageData?.image_url as URL} />
@@ -69,7 +71,7 @@ const CustomerProfile = () => {
             <Loader color={`${primary}`} />
           </View>
         ) : (
-          !averageData?.promdrocerca ? (
+          averageData?.message || averageData === undefined ? (
             <NoDataText text='No se encontraron datos de este cliente' />
           ) : (
             <View className='px-3 pt-3'>
@@ -108,9 +110,9 @@ const CustomerProfile = () => {
                   segments={3}
                   data={{
                     labels: [
-                      getMonthInText(averageData?.promedios[0]?.fecham), 
-                      getMonthInText(averageData?.promedios[1]?.fecham), 
-                      getMonthInText(averageData?.promedios[2]?.fecham)
+                      getMonthInText(averageData?.promedios[0]?.fecham as string), 
+                      getMonthInText(averageData?.promedios[1]?.fecham as string), 
+                      getMonthInText(averageData?.promedios[2]?.fecham as string)
                     ],
                     datasets: [
                       { // drocerca data
@@ -149,7 +151,7 @@ const CustomerProfile = () => {
  
               <View className='flex flex-row justify-between items-center pt-2'>
                 <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Último pedido realizado</Text>
-                <Text className='font-normal' style={{ fontSize: hp(2), color: typography }}>{longDate(averageData?.utimaF)}</Text>
+                <Text className='font-normal' style={{ fontSize: hp(2), color: typography }}>{longDate(averageData?.utimaF as string)}</Text>
               </View>
             </View>
           )
