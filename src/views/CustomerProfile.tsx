@@ -133,19 +133,11 @@ const CustomerProfile = () => {
                       ],
                       datasets: [
                         { // drocerca data
-                          data: [ 
-                            Number(averageData?.promedios[0]?.promdrocerca), 
-                            Number(averageData?.promedios[1]?.promdrocerca), 
-                            Number(averageData?.promedios[2]?.promdrocerca),
-                          ], 
+                          data: averageData?.promedios.map((item) => Number(item.promdrocerca)), 
                           color: (opacity = 1) => `rgba(28, 129, 159, ${opacity})` 
                         },
                         { // data medical data
-                          data: [ 
-                            Number(averageData?.promedios[0]?.promotro), 
-                            Number(averageData?.promedios[1]?.promotro), 
-                            Number(averageData?.promedios[2]?.promotro),
-                          ], 
+                          data: averageData?.promedios.map((item) => Number(item.promotro)), 
                           color: (opacity = 1) => `rgba(146, 191, 30, ${opacity})` 
                         },
                       ]
