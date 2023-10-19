@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Image, FlatList, StatusBar, SafeAreaView } from 'react-native'
+import { View, Image, FlatList, StatusBar, SafeAreaView, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DataConfigProfileInterface } from '../utils/interfaces'
 import useCertra from '../hooks/useCertra'
@@ -12,7 +12,7 @@ const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
-  const { themeColors: { primary, background, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
+  const { themeColors: { primary, background, typography, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
   const { setLookAtPharmacy } = useCertra()
   const navigation = useNavigation()
 
@@ -192,11 +192,15 @@ const Profile = () => {
 
       {/* log out */}
       {!loadingProfile && (
-        <View className='flex flex-row items-center justify-center bottom-0 py-2.5 w-screen absolute'
-          style={{ backgroundColor: background }}
-        >
-          <View className='flex flex-row justify-center items-center w-5/6 rounded-xl py-3' style={{ backgroundColor: darkTurquoise}}>
-            <IconLogOut />
+        <View className='flex flex-row bottom-0 py-2.5 w-screen absolute' style={{ backgroundColor: background }}>
+          <View className='flex flex-col justify-center items-center space-y-0.5 pl-14' style={{ width: wp(25) }}>
+            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Conexión: DATASIS</Text>
+            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Certra 0.9.0</Text>
+          </View>
+          <View className='flex flex-col justify-center items-center pl-5' style={{ width: wp(72) }}>
+            <View className='flex flex-row justify-center items-center rounded-xl py-3' style={{ backgroundColor: darkTurquoise}}>
+              <IconLogOut />
+            </View>
           </View>
         </View>
       )}

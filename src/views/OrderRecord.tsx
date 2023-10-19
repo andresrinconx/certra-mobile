@@ -268,13 +268,13 @@ const OrderRecord = () => {
                               }}
                             >
                               <Text className='text-center' style={{ color: typography, width: wp(12), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(28), fontSize: wp(2.6) }}
-                                numberOfLines={1}
-                              >
+                              <Text className='text-center' style={{ color: typography, width: wp(28), fontSize: wp(2.6) }} numberOfLines={1}>
                                 {nombre}
                               </Text>
                               <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{fecha}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(16), fontSize: wp(2.6) }} numberOfLines={2}>
+                                {dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}
+                              </Text>
                               <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{unidades}</Text>
                               <TouchableOpacity className='flex flex-col justify-center items-center' 
                                 onPress={() => handleDetails(item)}

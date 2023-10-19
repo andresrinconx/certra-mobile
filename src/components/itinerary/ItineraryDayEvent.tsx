@@ -121,7 +121,7 @@ const ItineraryDayEvent = ({
 
         {/* customer name */}
         <TouchableOpacity className='flex-row' onPress={() => setOpenDetails(!openDetails)}>
-          <View className='p-1.5 rounded-lg' style={{ backgroundColor: motivo ? green : turquoise, width: wp(openDetails && !motivo ? 65 : 83) }}>
+          <View className='p-1.5 rounded-lg' style={{ backgroundColor: motivo ? green : turquoise, width: wp(openDetails && !motivo ? 67 : 83) }}>
             <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(openDetails ? 55 : 70) }}>
               {cliente}
             </Text>
