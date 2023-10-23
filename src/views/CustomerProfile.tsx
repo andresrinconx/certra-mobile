@@ -5,7 +5,7 @@ import { InformationCircleIcon } from 'react-native-heroicons/outline'
 import { LineChart } from 'react-native-chart-kit'
 import useLogin from '../hooks/useLogin'
 import { fetchDataCustomer } from '../utils/api'
-import { getMonthInText, longDate } from '../utils/helpers'
+import { currency, getMonthInText, longDate } from '../utils/helpers'
 import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText } from '../components'
 
 interface DataCustomer {
@@ -17,6 +17,7 @@ interface AverageData {
   promdrocerca?: string
   promotro?: string
   image_url?: URL
+  deuda?: string
   utimaF?: string
   message?: string
   promedios: { 
@@ -158,6 +159,12 @@ const CustomerProfile = () => {
                   <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Último pedido realizado</Text>
                   <Text className='font-normal' style={{ fontSize: hp(2), color: typography }}>{longDate(averageData?.utimaF as string)}</Text>
                 </View>
+                {averageData?.deuda && (
+                  <View className='flex flex-row justify-between items-center pt-2'>
+                    <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Deuda</Text>
+                    <Text className='font-extrabold' style={{ fontSize: hp(2), color: typography }}>{currency(averageData?.deuda)}</Text>
+                  </View>
+                )}
               </View>
             )
           )}

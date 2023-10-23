@@ -321,7 +321,7 @@ const OrderRecord = () => {
           <View className='flex flex-row items-center justify-between' style={{ height: wp(16), backgroundColor: list }}>
             <View className='flex flex-row items-center'>
               <Text className='pl-5' style={{ fontSize: wp(4.5), color: typography, width: wp(60) }}>
-                {selectedItem?.fecha}
+                {getDayMonthYear(selectedItem?.fecha)}
               </Text>
             </View>
 

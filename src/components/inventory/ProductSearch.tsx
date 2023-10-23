@@ -197,7 +197,7 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
               </Text>
 
               {Number(iva) > 0 && (
-                <Text className='' style={{ fontSize: hp(1.6), color: turquoise }}>
+                <Text style={{ fontSize: hp(1.6), color: turquoise }}>
                   IVA {currency((base1 * (iva as number)) / 100)}
                 </Text>
               )}
