@@ -3,12 +3,11 @@ import { View, Text, TouchableOpacity, Image, Pressable, TextInput } from 'react
 import { PresenceTransition, Menu, useToast } from 'native-base'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini'
-import { getDate } from '../../utils/helpers'
+import { getDateDesc } from '../../utils/helpers'
 import { fetchItineraryItem } from '../../utils/api'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
 import useNavigation from '../../hooks/useNavigation'
-import { Loader } from '../'
 
 const ItineraryDayEvent = ({ 
   day, 
@@ -67,7 +66,7 @@ const ItineraryDayEvent = ({
             coordenadas: `${latitude}, ${longitude}`,
             observacion: observation,
             motivo: selectedReason,
-            fecha: getDate(new Date())
+            fecha: getDateDesc(new Date())
           }
   
           // send data
@@ -101,9 +100,11 @@ const ItineraryDayEvent = ({
   // Select Customer and Show data
   const handleSelectCustomer = () => {
     const customer = allCustomers.filter((customer) => customer.cliente === codcli)[0]
-    setMyUser({ ...myUser, customer })
-    setProductsCart([])
-
+    if (customer) {
+      setMyUser({ ...myUser, customer })
+      setProductsCart([])
+    }
+    
     navigation.navigate('CustomerProfile')
   }
 

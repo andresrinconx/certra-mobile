@@ -5,7 +5,7 @@ import { InformationCircleIcon } from 'react-native-heroicons/outline'
 import { LineChart } from 'react-native-chart-kit'
 import useLogin from '../hooks/useLogin'
 import { fetchDataCustomer } from '../utils/api'
-import { getMonthInText, longDate } from '../utils/helpers'
+import { currency, getMonthInText, longDate } from '../utils/helpers'
 import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText } from '../components'
 
 interface DataCustomer {
@@ -17,6 +17,7 @@ interface AverageData {
   promdrocerca?: string
   promotro?: string
   image_url?: URL
+  deuda?: string
   utimaF?: string
   message?: string
   promedios: { 
@@ -126,26 +127,14 @@ const CustomerProfile = () => {
                     withVerticalLines={false}
                     segments={3}
                     data={{
-                      labels: [
-                        getMonthInText(averageData?.promedios[0]?.fecham as string), 
-                        getMonthInText(averageData?.promedios[1]?.fecham as string), 
-                        getMonthInText(averageData?.promedios[2]?.fecham as string)
-                      ],
+                      labels: averageData?.promedios.map((item) => getMonthInText(item.fecham)),
                       datasets: [
                         { // drocerca data
-                          data: [ 
-                            Number(averageData?.promedios[0]?.promdrocerca), 
-                            Number(averageData?.promedios[1]?.promdrocerca), 
-                            Number(averageData?.promedios[2]?.promdrocerca),
-                          ], 
+                          data: averageData?.promedios.map((item) => Number(item.promdrocerca)), 
                           color: (opacity = 1) => `rgba(28, 129, 159, ${opacity})` 
                         },
                         { // data medical data
-                          data: [ 
-                            Number(averageData?.promedios[0]?.promotro), 
-                            Number(averageData?.promedios[1]?.promotro), 
-                            Number(averageData?.promedios[2]?.promotro),
-                          ], 
+                          data: averageData?.promedios.map((item) => Number(item.promotro)), 
                           color: (opacity = 1) => `rgba(146, 191, 30, ${opacity})` 
                         },
                       ]
@@ -170,6 +159,12 @@ const CustomerProfile = () => {
                   <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Último pedido realizado</Text>
                   <Text className='font-normal' style={{ fontSize: hp(2), color: typography }}>{longDate(averageData?.utimaF as string)}</Text>
                 </View>
+                {averageData?.deuda && (
+                  <View className='flex flex-row justify-between items-center pt-2'>
+                    <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Deuda</Text>
+                    <Text className='font-extrabold' style={{ fontSize: hp(2), color: typography }}>{currency(averageData?.deuda)}</Text>
+                  </View>
+                )}
               </View>
             )
           )}

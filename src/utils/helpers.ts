@@ -8,11 +8,27 @@ export const formatText = (text: string) => {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
-export const getDate = (date: Date) => {
+export const getDateDesc = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
   return `${year}-${String(month).length === 1 ? `0${month}` : `${month}`}-${String(day).length === 1 ? `0${day}` : `${day}`}`
+}
+
+export const getDateAsc = (date: Date) => {
+  const formatedDate = new Date(date)
+  
+  const day = formatedDate.getDate()
+  const month = formatedDate.getMonth() + 1
+  const year = formatedDate.getFullYear()
+  return `${String(day).length === 1 ? `0${day}` : `${day}-${String(month).length === 1 ? `0${month}` : `${month}`}-${year}`}`
+}
+
+export const getDayMonthYear = (date: string) => {
+  const day = date.substring(8, 10)
+  const month = date.substring(5, 7)
+  const year = date.substring(0, 4)
+  return `${day}-${month}-${year}`
 }
 
 export const getDateWithoutHyphen = (date: Date) => {

@@ -5,7 +5,7 @@ import { AlertDialog, Button, Modal } from 'native-base'
 import useCertra from '../../hooks/useCertra'
 import useLogin from '../../hooks/useLogin'
 import { ProductInterface } from '../../utils/interfaces'
-import { calculateProccessOrderData, getDate, getHour, currency, valitadeDateInRange } from '../../utils/helpers'
+import { calculateProccessOrderData, getDateDesc, getHour, currency, valitadeDateInRange } from '../../utils/helpers'
 import { fetchSendData } from '../../utils/api'
 import { setDataStorage } from '../../utils/asyncStorage'
 import { Loader } from '../.'
@@ -43,7 +43,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
 
     try {
       const res = await fetchSendData({
-        date: getDate(new Date()),
+        date: getDateDesc(new Date()),
         hora: getHour(new Date()),
         cliente: customerAccess ? {
           name: String(nombre),

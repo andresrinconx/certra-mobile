@@ -35,7 +35,7 @@ const Product = () => {
   useEffect(() => {
     const getDatasheet = async () => {
       const data = await fetchDatasheet(codigo)
-      const datasheet = Object.entries(data[0])
+      const datasheet = Object.entries(data)
       setDatasheet(datasheet as [])
       setLoadingDatasheet(false)
     }
@@ -277,7 +277,7 @@ const Product = () => {
                 </View>
               ) : (
                 <View className='px-5 pt-5'>
-                  {datasheet.map((item) => {
+                  {datasheet?.map((item) => {
                     return (
                       <DataField
                         key={item[0]}
