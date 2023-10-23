@@ -8,7 +8,6 @@ import { fetchItineraryItem } from '../../utils/api'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
 import useNavigation from '../../hooks/useNavigation'
-import { Loader } from '../'
 
 const ItineraryDayEvent = ({ 
   day, 
@@ -101,9 +100,11 @@ const ItineraryDayEvent = ({
   // Select Customer and Show data
   const handleSelectCustomer = () => {
     const customer = allCustomers.filter((customer) => customer.cliente === codcli)[0]
-    setMyUser({ ...myUser, customer })
-    setProductsCart([])
-
+    if (customer) {
+      setMyUser({ ...myUser, customer })
+      setProductsCart([])
+    }
+    
     navigation.navigate('CustomerProfile')
   }
 
