@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, Pressable, TextInput } from 'react
 import { PresenceTransition, Menu, useToast } from 'native-base'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini'
-import { getDate } from '../../utils/helpers'
+import { getDateDesc } from '../../utils/helpers'
 import { fetchItineraryItem } from '../../utils/api'
 import useLogin from '../../hooks/useLogin'
 import useCertra from '../../hooks/useCertra'
@@ -67,7 +67,7 @@ const ItineraryDayEvent = ({
             coordenadas: `${latitude}, ${longitude}`,
             observacion: observation,
             motivo: selectedReason,
-            fecha: getDate(new Date())
+            fecha: getDateDesc(new Date())
           }
   
           // send data

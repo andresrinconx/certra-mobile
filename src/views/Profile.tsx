@@ -12,7 +12,7 @@ const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
-  const { themeColors: { primary, background, typography, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url } } = useLogin()
+  const { themeColors: { primary, background, typography, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url, us_codigo, conexion } } = useLogin()
   const { setLookAtPharmacy } = useCertra()
   const navigation = useNavigation()
 
@@ -27,7 +27,7 @@ const Profile = () => {
 
           code: `${customerAccess     ? `${cliente}` : 
                    salespersonAccess  ? `${cedula}`  :
-                   labAccess          ? `${clipro}`  : null}`,
+                   labAccess          ? `${clipro}/${us_codigo}`  : null}`,
         })
         setDataConfig(res)
 
@@ -194,8 +194,8 @@ const Profile = () => {
       {!loadingProfile && (
         <View className='flex flex-row bottom-0 py-2.5 w-screen absolute' style={{ backgroundColor: background }}>
           <View className='flex flex-col justify-center items-center space-y-0.5 pl-14' style={{ width: wp(25) }}>
-            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Conexión: PRUEBA</Text>
-            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Certra (Beta)</Text>
+            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Conexión: {conexion}</Text>
+            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Certra 1.0.0</Text>
           </View>
           <View className='flex flex-col justify-center items-center pl-5' style={{ width: wp(72) }}>
             <View className='flex flex-row justify-center items-center rounded-xl py-3' style={{ backgroundColor: darkTurquoise}}>

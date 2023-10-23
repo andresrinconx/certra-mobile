@@ -127,12 +127,12 @@ export const orderRecordCols = [
   [ // lab & salesperson
     {
       id: 1,
-      size: 12,
+      size: 14,
       name: 'Pedido'
     },
     {
       id: 2,
-      size: 28,
+      size: 26,
       name: 'Nombre'
     },
     {

@@ -8,7 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import useLogin from '../hooks/useLogin'
 import useCertra from '../hooks/useCertra'
 import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api'
-import { currency, getDate, getDateWithoutHyphen } from '../utils/helpers'
+import { currency, getDayMonthYear, getDateDesc, getDateWithoutHyphen, getDateAsc } from '../utils/helpers'
 import { OrderRecordItemInterface } from '../utils/interfaces'
 import { orderRecordCols } from '../utils/constants'
 import { Loader, BackScreen, Logos, NoDataText, LabelCustomer } from '../components'
@@ -118,7 +118,7 @@ const OrderRecord = () => {
           addAndroidDownloads: {
             useDownloadManager: true,
             notification: true,
-            path: downloads + '/' + `certra${getDate(dateTo)}` + '.pdf',
+            path: downloads + '/' + `certra${getDateDesc(dateTo)}` + '.pdf',
           }
         })
         .fetch('GET', pdfUrl)
@@ -236,7 +236,7 @@ const OrderRecord = () => {
                               }}
                             >
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{fecha}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
@@ -267,11 +267,11 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(12), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(28), fontSize: wp(2.6) }} numberOfLines={1}>
+                              <Text className='text-center' style={{ color: typography, width: wp(14), fontSize: wp(2.6) }}>{pedido}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>
                                 {nombre}
                               </Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{fecha}</Text>
+                              <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
                               <Text className='text-center' style={{ color: typography, width: wp(16), fontSize: wp(2.6) }} numberOfLines={2}>
                                 {dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}
                               </Text>
@@ -396,7 +396,7 @@ const OrderRecord = () => {
                     source={require('../assets/calendar.png')}
                   />
                   <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
-                    {getDate(dateFrom)}
+                    {getDateAsc(dateFrom)}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -411,7 +411,7 @@ const OrderRecord = () => {
                     source={require('../assets/calendar.png')}
                   />
                   <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
-                    {getDate(dateTo)}
+                    {getDateAsc(dateTo)}
                   </Text>
                 </TouchableOpacity>
               </View>
