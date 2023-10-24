@@ -5,7 +5,7 @@ import useLogin from '../../hooks/useLogin'
 import useNavigation from '../../hooks/useNavigation'
 import { ModalInfo } from '..'
 
-const IconInventory = () => {
+const IconSearchProducts = () => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
   
   const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
@@ -20,13 +20,13 @@ const IconInventory = () => {
             return
           }
 
-          navigation.navigate('Inventory')
+          navigation.navigate('SearchProducts')
         }}
       >
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
           source={require('../../assets/search.png')}
         />
-        <Text className='w-10 text-[8px] text-center text-white font-normal'>Productos</Text>
+        <Text className='text-[9.5px] text-center text-white font-normal'>Productos</Text>
       </Pressable>
 
       <ModalInfo 
@@ -41,4 +41,4 @@ const IconInventory = () => {
   )
 }
 
-export default IconInventory
+export default IconSearchProducts

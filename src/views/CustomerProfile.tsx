@@ -21,8 +21,8 @@ interface AverageData {
   utimaF?: string
   message?: string
   promedios: { 
-    fecham: string,
-    promdrocerca: string,
+    fecham: string
+    promdrocerca: string
     promotro: string
   }[]
 }
@@ -74,7 +74,8 @@ const CustomerProfile = () => {
 
         {/* info */}
         <ScrollView
-          overScrollMode='never'
+          overScrollMode='auto'
+          showsVerticalScrollIndicator={false}
         >
           {loadingCustomerProfile ? (
             <View className='mt-5'>
@@ -119,7 +120,7 @@ const CustomerProfile = () => {
                 </View>
 
                 {/* chart */}
-                <View className='pt-8 -ml-6' >
+                <View className='pt-8 -ml-6'>
                   <LineChart
                     width={wp(125)}
                     height={220}
@@ -161,7 +162,7 @@ const CustomerProfile = () => {
                 </View>
                 {averageData?.deuda && (
                   <View className='flex flex-row justify-between items-center pt-2'>
-                    <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Deuda</Text>
+                    <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Saldo vencido</Text>
                     <Text className='font-extrabold' style={{ fontSize: hp(2), color: typography }}>{currency(averageData?.deuda)}</Text>
                   </View>
                 )}

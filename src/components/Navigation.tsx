@@ -5,7 +5,7 @@ import useCertra from '../hooks/useCertra'
 import useLogin from '../hooks/useLogin'
 import { getDataStorage } from '../utils/asyncStorage'
 import { LoaderLogoScreen } from '.'
-import { Home, Cart, Login, Inventory, Product, Profile, Itinerary, ItineraryDay, OrderRecord, Customer, CustomerProfile } from '../views'
+import { Home, Cart, Login, SearchProducts, Product, Profile, Itinerary, ItineraryDay, OrderRecord, Customer, CustomerProfile } from '../views'
 
 const Stack = createNativeStackNavigator()
 
@@ -51,7 +51,7 @@ const Navigation = () => {
             <Stack.Screen name='Itinerary' component={Itinerary} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='ItineraryDay' component={ItineraryDay} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='OrderRecord' component={OrderRecord} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
-            <Stack.Screen name='Inventory' component={Inventory} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
+            <Stack.Screen name='SearchProducts' component={SearchProducts} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Cart' component={Cart} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Product' component={Product} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='CustomerProfile' component={CustomerProfile} options={{ headerShown: false, animation: 'fade_from_bottom' }} />

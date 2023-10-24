@@ -354,7 +354,6 @@ const OrderRecord = () => {
             renderItem={({item, index}) => {
               const { codigo, nombreP, cantidad, precio, iva, total, preciodolar, totaldolar } = item
               const isLast = index === selectedItem?.productos.length - 1
-              console.log(precio)
               return (
                 <View className='flex flex-row items-center justify-center py-3'
                   style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}

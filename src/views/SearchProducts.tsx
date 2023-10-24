@@ -10,7 +10,7 @@ import { fetchSearchedItems } from '../utils/api'
 import { formatText } from '../utils/helpers'
 import { ProductSearch, IconCart } from '../components'
 
-const Inventory = () => {
+const SearchProducts = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
 
   const { themeColors: { background, typography, primary, list }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin()
@@ -111,4 +111,4 @@ const Inventory = () => {
   )
 }
 
-export default Inventory
+export default SearchProducts

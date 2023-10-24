@@ -42,7 +42,7 @@ const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boole
           }
         </View>
         {showText && (
-          <Text className='w-8 text-[8px] text-center text-white font-normal'>Carrito</Text>
+          <Text className='text-[9.5px] text-center text-white font-normal'>Carrito</Text>
         )}
       </Pressable>
 

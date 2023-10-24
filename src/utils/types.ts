@@ -6,7 +6,7 @@ export type RootStackParamList = {
   Itinerary: undefined
   ItineraryDay: any
   OrderRecord: undefined
-  Inventory: undefined
+  SearchProducts: undefined
   Cart: undefined
   Product: any
   CustomerProfile: undefined

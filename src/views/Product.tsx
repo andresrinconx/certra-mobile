@@ -35,7 +35,7 @@ const Product = () => {
   useEffect(() => {
     const getDatasheet = async () => {
       const data = await fetchDatasheet(codigo)
-      const datasheet = Object.entries(data)
+      const datasheet = Object.entries(data[0])
       setDatasheet(datasheet as [])
       setLoadingDatasheet(false)
     }

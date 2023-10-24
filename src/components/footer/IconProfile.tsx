@@ -10,7 +10,7 @@ const IconProfile = () => {
       <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
         source={require('../../assets/profile.png')}
       />
-      <Text className='w-9 text-[8px] text-center text-white font-normal'>Perfil</Text>
+      <Text className='text-[9.5px] text-center font-normal text-white'>Perfil</Text>
     </Pressable>
   )
 }
