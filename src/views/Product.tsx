@@ -263,7 +263,7 @@ const Product = () => {
 
             {/* datasheet */}
             <View>
-              <Divider marginY={5} />
+              <Divider marginY={16} />
               <TextImage
                 image={require('../assets/ficha.png')}
                 text='Ficha Técnica:'

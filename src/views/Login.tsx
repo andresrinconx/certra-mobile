@@ -112,6 +112,9 @@ const Login = () => {
       setShowPassword(false)
       getProducts()
       navigation.navigate('Home')
+
+      setUser('')
+      setPassword('')
     }
   }
 
