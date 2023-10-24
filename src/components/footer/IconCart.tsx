@@ -1,15 +1,13 @@
 import { useState } from 'react'
 import { View, Text, Pressable, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useCertra from '../../hooks/useCertra'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useCertra, useLogin, useNavigation } from '../../hooks'
 import { ModalInfo } from '..'
 
 const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boolean }) => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
 
-  const { themeColors: { green }, myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
+  const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
   const { productsCart } = useCertra()
   const navigation = useNavigation()
 
@@ -31,10 +29,8 @@ const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boole
           />
           {productsCart?.length > 0
             && (
-              <View className='flex flex-row justify-center items-center absolute -top-1 -right-1 w-4 h-4 rounded-full'
-                style={{ backgroundColor: green }}
-              >
-                <Text className='w-full text-center color-black text-[10px]'>
+              <View className='flex flex-row justify-center items-center absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green'>
+                <Text className='w-full text-center text-[10px] text-black'>
                   {productsCart?.length}
                 </Text>
               </View>
@@ -42,7 +38,7 @@ const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boole
           }
         </View>
         {showText && (
-          <Text className='text-[9.5px] text-center text-white font-normal'>Carrito</Text>
+          <Text className='text-[9.5px] text-center font-normal text-white'>Carrito</Text>
         )}
       </Pressable>
 

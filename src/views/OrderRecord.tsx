@@ -5,12 +5,12 @@ import { Modal, useToast, Switch } from 'native-base'
 import { XMarkIcon } from 'react-native-heroicons/outline'
 import DatePicker from 'react-native-date-picker'
 import RNFetchBlob from 'rn-fetch-blob'
-import useLogin from '../hooks/useLogin'
-import useCertra from '../hooks/useCertra'
+import { themeColors } from '../../tailwind.config'
 import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api'
 import { currency, getDayMonthYear, getDateDesc, getDateWithoutHyphen, getDateAsc } from '../utils/helpers'
 import { OrderRecordItemInterface } from '../utils/interfaces'
 import { orderRecordCols } from '../utils/constants'
+import { useCertra, useLogin } from '../hooks'
 import { Loader, BackScreen, Logos, NoDataText, LabelCustomer } from '../components'
 
 const OrderRecord = () => {
@@ -27,7 +27,8 @@ const OrderRecord = () => {
   const [openDatePickerTo, setOpenDatePickerTo] = useState(false)
   const [dateTo, setDateTo] = useState(new Date())
 
-  const { themeColors: { background, primary, typography, list, green, lightList, turquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin()
+  const { background, lightList } = themeColors
+  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin()
   const { lookAtPharmacy } = useCertra()
   const toast = useToast()
   const id = 'toast'
@@ -154,7 +155,7 @@ const OrderRecord = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url as URL} />
@@ -165,7 +166,7 @@ const OrderRecord = () => {
 
           {lastItems?.length !== 0 && (
             <View className='flex flex-row items-center'>
-              <Text className='font-black' style={{ fontSize: wp(5), color: turquoise }}>Bs</Text>
+              <Text className='font-black text-turquoise' style={{ fontSize: wp(5) }}>Bs</Text>
               <Switch 
                 onToggle={() => setDollarCurrency(!dollarCurrency)}
                 value={dollarCurrency}
@@ -173,7 +174,7 @@ const OrderRecord = () => {
                 offTrackColor={'gray.400'}
                 size='md'
               />
-              <Text className='font-black' style={{ fontSize: wp(5.5), color: turquoise }}>$</Text>
+              <Text className='font-black text-turquoise' style={{ fontSize: wp(5.5) }}>$</Text>
             </View>
           )}
         </View>
@@ -189,7 +190,7 @@ const OrderRecord = () => {
         <View>
           {loadingOrderRecord ? (
             <View className='mt-5'>
-              <Loader color={`${primary}`} />
+              <Loader />
             </View>
           ) : (
             lastItems?.length === 0 ? (
@@ -204,8 +205,8 @@ const OrderRecord = () => {
                   {orderRecordCols[customerAccess ? 0 : 1].map((item) => {
                     const { id, size, name } = item
                     return (
-                      <Text key={id} className='text-center' 
-                        style={{ fontSize: wp(2.4), color: typography, width: wp(size) }}
+                      <Text key={id} className='text-center text-typography' 
+                        style={{ fontSize: wp(2.4), width: wp(size) }}
                       >{name}</Text>
                     )
                   })}
@@ -225,9 +226,8 @@ const OrderRecord = () => {
                       return (
                         <>
                           {customerAccess ? (
-                            <View key={pedido} className='flex flex-row justify-center items-center mb-[1px]' 
+                            <View key={pedido} className={`flex flex-row justify-center items-center mb-[1px] ${!isPair ? 'bg-background' : 'bg-list'}`}
                               style={{ 
-                                backgroundColor: !isPair ? background : list, 
                                 height: wp(14),
                                 borderTopRightRadius: index === 0 ? wp(5) : 0,
                                 borderTopLeftRadius: index === 0 ? wp(5) : 0, 
@@ -235,18 +235,17 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(13.5), fontSize: wp(2.6) }}>{unidades}</Text>
-                              <TouchableOpacity className='flex flex-col justify-center items-center' 
+                              <Text className='text-center text-typography' style={{ width: wp(13.5), fontSize: wp(2.6) }}>{pedido}</Text>
+                              <Text className='text-center text-typography' style={{ width: wp(13.5), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
+                              <Text className='text-center text-typography' style={{ width: wp(13.5), fontSize: wp(2.6) }}>{subTotal}</Text>
+                              <Text className='text-center text-typography' style={{ width: wp(13.5), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
+                              <Text className='text-center text-typography' style={{ width: wp(13.5), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
+                              <Text className='text-center text-typography' style={{ width: wp(13.5), fontSize: wp(2.6) }}>{unidades}</Text>
+                              <TouchableOpacity className='flex flex-col justify-center items-center bg-green' 
                                 onPress={() => handleDetails(item)}
                                 style={{ 
                                   width: wp(13.5), 
                                   height: '100%', 
-                                  backgroundColor: green,
                                   borderTopRightRadius: index === 0 ? wp(5) : 0,
                                   borderBottomRightRadius: isLast ? wp(5) : 0,
                                 }}
@@ -257,9 +256,8 @@ const OrderRecord = () => {
                               </TouchableOpacity>
                             </View>
                           ) : (
-                            <View key={pedido} className='flex flex-row justify-center items-center mb-[1px]' 
+                            <View key={pedido} className={`flex flex-row justify-center items-center mb-[1px] ${!isPair ? 'bg-background' : 'bg-list'}`}
                               style={{ 
-                                backgroundColor: !isPair ? background : list, 
                                 height: wp(14),
                                 borderTopRightRadius: index === 0 ? wp(5) : 0,
                                 borderTopLeftRadius: index === 0 ? wp(5) : 0, 
@@ -267,21 +265,20 @@ const OrderRecord = () => {
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
                             >
-                              <Text className='text-center' style={{ color: typography, width: wp(14), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>
+                              <Text className='text-center text-typography' style={{ width: wp(14), fontSize: wp(2.6) }}>{pedido}</Text>
+                              <Text className='text-center text-typography' style={{ width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>
                                 {nombre}
                               </Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(15), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(16), fontSize: wp(2.6) }} numberOfLines={2}>
+                              <Text className='text-center text-typography' style={{ width: wp(15), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
+                              <Text className='text-center text-typography' style={{ width: wp(16), fontSize: wp(2.6) }} numberOfLines={2}>
                                 {dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}
                               </Text>
-                              <Text className='text-center' style={{ color: typography, width: wp(11), fontSize: wp(2.6) }}>{unidades}</Text>
-                              <TouchableOpacity className='flex flex-col justify-center items-center' 
+                              <Text className='text-center text-typography' style={{ width: wp(11), fontSize: wp(2.6) }}>{unidades}</Text>
+                              <TouchableOpacity className='flex flex-col justify-center items-center bg-green' 
                                 onPress={() => handleDetails(item)}
                                 style={{ 
                                   width: wp(13.5), 
                                   height: '100%', 
-                                  backgroundColor: green,
                                   borderTopRightRadius: index === 0 ? wp(5) : 0,
                                   borderBottomRightRadius: isLast ? wp(5) : 0,
                                 }}
@@ -299,7 +296,7 @@ const OrderRecord = () => {
                 </View>
 
                 {/* older ones */}
-                <View className='rounded-xl py-3' style={{ backgroundColor: turquoise}}>
+                <View className='rounded-xl py-3 bg-turquoise'>
                   <TouchableOpacity onPress={() => setModalOlderOnes(true)}>
                     <Text className='text-center font-bold text-white' style={{ fontSize: wp(5) }}>
                       Ver más antiguos
@@ -318,28 +315,28 @@ const OrderRecord = () => {
         <Modal.Content style={{ width: wp(95), minHeight: 350, maxHeight: 700, backgroundColor: lightList }}>
 
           {/* header */}
-          <View className='flex flex-row items-center justify-between' style={{ height: wp(16), backgroundColor: list }}>
+          <View className='flex flex-row items-center justify-between bg-list' style={{ height: wp(16) }}>
             <View className='flex flex-row items-center'>
-              <Text className='pl-5' style={{ fontSize: wp(4.5), color: typography, width: wp(60) }}>
+              <Text className='pl-5 text-typography' style={{ fontSize: wp(4.5), width: wp(60) }}>
                 {getDayMonthYear(selectedItem?.fecha)}
               </Text>
             </View>
 
-            <TouchableOpacity className='flex flex-row items-center justify-center' 
+            <TouchableOpacity className='flex flex-row items-center justify-center bg-green' 
               onPress={() => setModalDetails(false)}
-              style={{ height: wp(16), width: wp(16), backgroundColor: green }}
+              style={{ height: wp(16), width: wp(16) }}
             >
               <XMarkIcon size={wp(10)} color='white' />
             </TouchableOpacity>
           </View>
 
           {/* columns */}
-          <View className='flex flex-row items-center py-2 pl-1.5' style={{ borderBottomWidth: 0.3, borderBottomColor: turquoise }}>
+          <View className='flex flex-row items-center py-2 pl-1.5 border-b-turquoise' style={{ borderBottomWidth: 0.3 }}>
             {orderRecordCols[2].map((item) => {
               const { id, size, name } = item
               return (
-                <Text key={id} className='text-center'
-                  style={{ fontSize: wp(2.4), color: typography, width: wp(size) }}
+                <Text key={id} className='text-center text-typography'
+                  style={{ fontSize: wp(2.4), width: wp(size) }}
                 >{name}</Text>
               )
             })}
@@ -355,19 +352,19 @@ const OrderRecord = () => {
               const { codigo, nombreP, cantidad, precio, iva, total, preciodolar, totaldolar } = item
               const isLast = index === selectedItem?.productos.length - 1
               return (
-                <View className='flex flex-row items-center justify-center py-3'
-                  style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}
+                <View className='flex flex-row items-center justify-center py-3 border-b-turquoise'
+                  style={{ borderBottomWidth: isLast ? 0 : 0.3 }}
                 >
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{codigo}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(36), fontSize: wp(2.6) }}
+                  <Text className='text-center text-typography' style={{ width: wp(10), fontSize: wp(2.6) }}>{codigo}</Text>
+                  <Text className='text-center text-typography' style={{ width: wp(36), fontSize: wp(2.6) }}
                     numberOfLines={1}
                   >
                     {nombreP}
                   </Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{cantidad}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(preciodolar, '$')}` : `${currency(precio)}`}</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(10), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
-                  <Text className='text-center' style={{ color: typography, width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(total)}`}</Text>
+                  <Text className='text-center text-typography' style={{ width: wp(10), fontSize: wp(2.6) }}>{cantidad}</Text>
+                  <Text className='text-center text-typography' style={{ width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(preciodolar, '$')}` : `${currency(precio)}`}</Text>
+                  <Text className='text-center text-typography' style={{ width: wp(10), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
+                  <Text className='text-center text-typography' style={{ width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(total)}`}</Text>
                 </View>
               )
             }} 
@@ -380,21 +377,21 @@ const OrderRecord = () => {
       <Modal isOpen={modalOlderOnes} onClose={() => setModalOlderOnes(false)}>
         <Modal.Content style={{ width: wp(95), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
-          <Text className='font-normal mb-3' style={{ fontSize: wp(4.3), color: typography }}>
+          <Text className='font-normal mb-3 text-typography' style={{ fontSize: wp(4.3) }}>
             Indique un rango de fecha que desea consultar
           </Text>
 
           {/* range */}
           <View className='flex flex-row items-center justify-between mb-3'>
             <View className='w-[48%] flex flex-col'>
-              <Text className='font-bold mb-0.5' style={{ fontSize: wp(3.5), color: typography }}>Desde</Text>
+              <Text className='font-bold mb-0.5 text-typography' style={{ fontSize: wp(3.5) }}>Desde</Text>
 
-              <View className='flex flex-row items-center rounded-lg pl-2' style={{ backgroundColor: lightList, height: wp(10) }}>
+              <View className='flex flex-row items-center rounded-lg pl-2 bg-lightList' style={{ height: wp(10) }}>
                 <TouchableOpacity onPress={() => setOpenDatePickerFrom(true)} className='flex flex-row items-center'>
                   <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
                     source={require('../assets/calendar.png')}
                   />
-                  <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
+                  <Text className='font-normal pl-2 text-typography' style={{ fontSize: wp(3.5) }}>
                     {getDateAsc(dateFrom)}
                   </Text>
                 </TouchableOpacity>
@@ -402,14 +399,14 @@ const OrderRecord = () => {
             </View>
 
             <View className='w-[48%] flex flex-col'>
-              <Text className='font-bold mb-0.5' style={{ fontSize: wp(3.5), color: typography }}>Hasta</Text>
+              <Text className='font-bold mb-0.5 text-typography' style={{ fontSize: wp(3.5) }}>Hasta</Text>
 
-              <View className='flex flex-row items-center rounded-lg pl-2' style={{ backgroundColor: lightList, height: wp(10) }}>
+              <View className='flex flex-row items-center rounded-lg pl-2 bg-lightList' style={{ height: wp(10) }}>
                 <TouchableOpacity onPress={() => setOpenDatePickerTo(true)} className='flex flex-row items-center'>
                   <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
                     source={require('../assets/calendar.png')}
                   />
-                  <Text className='font-normal pl-2' style={{ fontSize: wp(3.5), color: typography }}>
+                  <Text className='font-normal pl-2 text-typography' style={{ fontSize: wp(3.5) }}>
                     {getDateAsc(dateTo)}
                   </Text>
                 </TouchableOpacity>
@@ -419,7 +416,7 @@ const OrderRecord = () => {
           
           {/* filter btn */}
           <View className='flex flex-row items-center justify-between'>
-            <View style={{ backgroundColor: green }} className='flex justify-center w-full rounded-xl'>
+            <View className='flex justify-center w-full rounded-xl bg-green'>
               <TouchableOpacity onPress={() => filter()}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Filtrar

@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { View, Image, FlatList, StatusBar, SafeAreaView, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { themeColors } from '../../tailwind.config'
 import { DataConfigProfileInterface } from '../utils/interfaces'
-import useCertra from '../hooks/useCertra'
-import useNavigation from '../hooks/useNavigation'
-import useLogin from '../hooks/useLogin'
 import { fetchProfileData } from '../utils/api'
+import { useCertra, useLogin, useNavigation } from '../hooks'
 import { Loader, Logos, BackScreen, ProfileGroup, IconLogOut } from '../components'
 
 const Profile = () => {
   const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
   const [loadingProfile, setLoadingProfile] = useState(true)
   
-  const { themeColors: { primary, background, typography, darkTurquoise }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url, us_codigo, conexion } } = useLogin()
+  const { background } = themeColors
+  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url, us_codigo, conexion } } = useLogin()
   const { setLookAtPharmacy } = useCertra()
   const navigation = useNavigation()
 
@@ -134,7 +134,7 @@ const Profile = () => {
   ]
   
   return (
-    <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={image_url as URL} />
@@ -152,7 +152,7 @@ const Profile = () => {
       <View className='h-full'>
         {loadingProfile ? (
           <View className='mt-5'>
-            <Loader color={`${primary}`} />
+            <Loader />
           </View>
         ) : (
           <View className='px-3'>
@@ -192,13 +192,13 @@ const Profile = () => {
 
       {/* log out */}
       {!loadingProfile && (
-        <View className='flex flex-row bottom-0 py-2.5 w-screen absolute' style={{ backgroundColor: background }}>
+        <View className='flex flex-row bottom-0 py-2.5 w-screen absolute bg-background'>
           <View className='flex flex-col justify-center items-center space-y-0.5 pl-14' style={{ width: wp(25) }}>
-            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Conexión: {conexion}</Text>
-            <Text className='w-32' style={{ fontSize: wp(3), color: typography }}>Certra 1.0.0</Text>
+            <Text className='w-32 text-typography' style={{ fontSize: wp(3) }}>Conexión: {conexion}</Text>
+            <Text className='w-32 text-typography' style={{ fontSize: wp(3) }}>Certra 1.0.0</Text>
           </View>
           <View className='flex flex-col justify-center items-center pl-5' style={{ width: wp(72) }}>
-            <View className='flex flex-row justify-center items-center rounded-xl py-3' style={{ backgroundColor: darkTurquoise}}>
+            <View className='flex flex-row justify-center items-center rounded-xl py-3 bg-darkTurquoise'>
               <IconLogOut />
             </View>
           </View>

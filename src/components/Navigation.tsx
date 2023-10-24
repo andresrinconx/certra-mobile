@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import useCertra from '../hooks/useCertra'
-import useLogin from '../hooks/useLogin'
 import { getDataStorage } from '../utils/asyncStorage'
+import { useCertra, useLogin } from '../hooks'
 import { LoaderLogoScreen } from '.'
 import { Home, Cart, Login, SearchProducts, Product, Profile, Itinerary, ItineraryDay, OrderRecord, Customer, CustomerProfile } from '../views'
 
@@ -12,7 +11,7 @@ const Stack = createNativeStackNavigator()
 const Navigation = () => {
   const [loadingStorage, setLoadingStorage] = useState(true)
 
-  const { login, setLogin, setThemeColors, setMyUser } = useLogin()
+  const { login, setLogin, setMyUser } = useLogin()
   const { setProductsCart } = useCertra()
 
   // Get storage (global)
@@ -20,13 +19,11 @@ const Navigation = () => {
     const getStorage = async () => {
       // get storage
       const productsCartStorage = await getDataStorage('productsCart')
-      const themeColorsStorage = await getDataStorage('themeColors')
       const loginStorage = await getDataStorage('login')
       const myUserStorage = await getDataStorage('myUser')
   
       // set data
       setProductsCart(productsCartStorage ? JSON.parse(productsCartStorage) : [])
-      setThemeColors(themeColorsStorage ? JSON.parse(themeColorsStorage) : {})
       setLogin(loginStorage === 'true' ? true : false)
       setMyUser(myUserStorage ? JSON.parse(myUserStorage) : {})
     }

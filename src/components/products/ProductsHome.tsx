@@ -2,12 +2,13 @@ import { useEffect } from 'react'
 import { View, Text, FlatList } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { items } from '../../utils/constants'
-import useCertra from '../../hooks/useCertra'
-import useLogin from '../../hooks/useLogin'
+import { useCertra, useLogin } from '../../hooks'
 import { LoaderProductsGrid, Loader, ProductGrid } from '..'
+import { themeColors } from '../../../tailwind.config'
 
 const ProductsHome = () => {
-  const { themeColors: { typography, primary }, myUser: { customer, access: { customerAccess } } } = useLogin()
+  const { darkTurquoise } = themeColors
+  const { myUser: { customer, access: { customerAccess } } } = useLogin()
   const { loadingProducts, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra()
   
   useEffect(() => {
@@ -63,7 +64,7 @@ const ProductsHome = () => {
               overScrollMode='never'
               ListHeaderComponent={() => (
                 <View className='mb-2'>
-                  <Text className='font-bold' style={{ fontSize: wp(4.5), color: typography }}>
+                  <Text className='font-bold text-typography' style={{ fontSize: wp(4.5) }}>
                     Productos
                   </Text>
                 </View>
@@ -71,7 +72,7 @@ const ProductsHome = () => {
               ListFooterComponent={() => (
                 !loadingProducts && (
                   <View>
-                    <Loader size={40} color={primary} />
+                    <Loader size={40} color={darkTurquoise} />
                   </View>
                 )
               )}

@@ -1,11 +1,8 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
-import useLogin from '../../hooks/useLogin'
+import { useNavigation } from '../../hooks'
 
 const BackScreen = ({ title, condition, iconImage, onPressIcon }: { title: string, condition?: boolean, iconImage?: any, onPressIcon?: () => void }) => {
-
-  const { themeColors: { typography } } = useLogin()
   const navigation = useNavigation()
   
   return (
@@ -20,7 +17,7 @@ const BackScreen = ({ title, condition, iconImage, onPressIcon }: { title: strin
           />
         </TouchableOpacity>
         
-        <Text className='font-bold' style={{ color: typography, fontSize: wp(4.5) }}>{title}</Text>
+        <Text className='font-bold text-typography' style={{ fontSize: wp(4.5) }}>{title}</Text>
       </View>
 
       {condition && (

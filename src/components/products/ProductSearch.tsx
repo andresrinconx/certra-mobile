@@ -5,9 +5,7 @@ import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { disponibility } from '../../utils/constants'
 import { ProductInterface } from '../../utils/interfaces'
 import { currency } from '../../utils/helpers'
-import useCertra from '../../hooks/useCertra'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useCertra, useLogin, useNavigation } from '../../hooks'
 import { Bonus, ModalAmount } from '..'
 
 const ProductSearch = ({ product }: { product: ProductInterface }) => {
@@ -17,7 +15,7 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
 
   const [openAmountModal, setOpenAmountModal] = useState(false)
   
-  const { themeColors: { typography, lightList, darkTurquoise, green, turquoise, processBtn }, myUser: { deposito } } = useLogin()
+  const { myUser: { deposito } } = useLogin()
   const { descrip, precio1, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica, fdesde, fhasta } = product
   const { productsCart, addToCart } = useCertra()
   const navigation = useNavigation()
@@ -69,11 +67,11 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
 
   return (
     <>
-      <View className='flex flex-col mb-3 p-2 rounded-2xl' style={{ backgroundColor: lightList }}>
+      <View className='flex flex-col mb-3 p-2 rounded-2xl bg-lightList'>
 
         {/* descrip */}
         <Pressable onPress={() => navigation.navigate('Product', { ...product })}>
-          <Text style={{ fontSize: wp(4), color: typography }} className='font-bold' numberOfLines={1}>
+          <Text style={{ fontSize: wp(4) }} className='font-bold text-typography' numberOfLines={1}>
             {descrip}
           </Text>
         </Pressable>
@@ -96,7 +94,7 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
 
             {/* disponibility */}
             <View className='mb-2'>
-              <Text style={{ fontSize: hp(1.6), color: typography }} className='pb-0.5 font-bold'>
+              <Text style={{ fontSize: hp(1.6) }} className='pb-0.5 font-bold text-typography'>
                 Disponibilidad:
               </Text>
 
@@ -118,11 +116,11 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
                       <>
                         {deposito === 'MERIDA' ? (
                           <View key={id} className='flex flex-col items-center'>
-                            <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                            <Text style={{ fontSize: hp(1.5) }} className='w-10 text-center font-bold text-darkTurquoise'>
                               {name === 'Oriente' ? '' : name}
                             </Text>
 
-                            <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                            <Text style={{ fontSize: hp(1.6) }} className='text-center font-bold text-typography'>
                               {
                                 name === 'Mérida' ? parseInt(String(merida)) :
                                 name === 'Centro' ? parseInt(String(centro)) : null
@@ -132,11 +130,11 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
                         ) : 
                           deposito === 'CARACAS' ? (
                             <View key={id} className='flex flex-col items-center'>
-                              <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                              <Text style={{ fontSize: hp(1.5) }} className='w-10 text-center font-bold text-darkTurquoise'>
                                 {name}
                               </Text>
 
-                              <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                              <Text style={{ fontSize: hp(1.6) }} className='text-center font-bold text-typography'>
                                 {
                                   name === 'Mérida' ? parseInt(String(merida)) :
                                   name === 'Centro' ? parseInt(String(centro)) :
@@ -147,11 +145,11 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
                           ) : (
                             deposito === 'ORIENTE' ? (
                               <View key={id} className='flex flex-col items-center'>
-                                <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                <Text style={{ fontSize: hp(1.5) }} className='w-10 text-center font-bold text-darkTurquoise'>
                                   {name === 'Mérida' ? '' : name}
                                 </Text>
 
-                                <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                <Text style={{ fontSize: hp(1.6) }} className='text-center font-bold text-typography'>
                                   {
                                     name === 'Centro' ? parseInt(String(centro)) :
                                     name === 'Oriente' ? parseInt(String(oriente)) : null
@@ -160,11 +158,11 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
                               </View>
                             ) : (
                               <View key={id} className='flex flex-col items-center'>
-                                <Text style={{ fontSize: hp(1.5), color: darkTurquoise }} className='w-10 text-center font-bold'>
+                                <Text style={{ fontSize: hp(1.5) }} className='w-10 text-center font-bold text-darkTurquoise'>
                                   {name}
                                 </Text>
 
-                                <Text style={{ fontSize: hp(1.6), color: typography }} className='text-center font-bold'>
+                                <Text style={{ fontSize: hp(1.6) }} className='text-center font-bold text-typography'>
                                   {
                                     name === 'Mérida' ? parseInt(String(merida)) :
                                     name === 'Centro' ? parseInt(String(centro)) :
@@ -188,16 +186,16 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
 
             {/* price */}
             <View className='my-2'>
-              <Text style={{ fontSize: hp(1.5), color: typography }} className='font-bold'>
+              <Text style={{ fontSize: hp(1.5) }} className='font-bold text-typography'>
                 Precio:
               </Text>
 
-              <Text style={{ fontSize: hp(2.2), color: darkTurquoise }} className='font-bold'>
+              <Text style={{ fontSize: hp(2.2) }} className='font-bold text-darkTurquoise'>
                 {currency(precio1)}
               </Text>
 
               {Number(iva) > 0 && (
-                <Text style={{ fontSize: hp(1.6), color: turquoise }}>
+                <Text style={{ fontSize: hp(1.6) }} className='text-turquoise'>
                   IVA {currency((base1 * (iva as number)) / 100)}
                 </Text>
               )}
@@ -206,9 +204,9 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
             {/* amount and added */}
             <View className='flex flex-row items-center justify-end w-full'>
 
-              <View style={{ width: wp(20), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+              <View style={{ width: wp(20), borderWidth: .5 }} className='rounded-md border-turquoise'>
                 <TouchableOpacity onPress={() => setOpenAmountModal(true)}>
-                  <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                  <Text style={{ fontSize: wp(4.5) }} className='text-center text-darkTurquoise'>
                     {amount}
                   </Text>
                 </TouchableOpacity>
@@ -217,16 +215,13 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
               {/* add & added */}
               <View className='pl-5'>
                 {!added ? (
-                  <Pressable onPress={handleAddToCart} className='flex flex-row items-center justify-center rounded-md w-7 h-7'
-                    style={{ backgroundColor: maxAmount === 0 ? processBtn : darkTurquoise }}
+                  <Pressable onPress={handleAddToCart} className={`flex flex-row items-center justify-center rounded-md w-7 h-7 ${maxAmount === 0 ? 'bg-processBtn': 'bg-darkTurquoise'}`}
                     disabled={maxAmount === 0}
                   >
                     <PlusIcon size={25} color='white' strokeWidth={2} />
                   </Pressable>
                 ) : (
-                  <View className='flex flex-row items-center justify-center rounded-md w-7 h-7'
-                    style={{ backgroundColor: green }}
-                  >
+                  <View className='flex flex-row items-center justify-center rounded-md w-7 h-7 bg-green'>
                     <CheckIcon size={20} color='white' strokeWidth={3} />
                   </View>
                 )}

@@ -2,17 +2,17 @@ import { useState, useRef } from 'react'
 import { View, TouchableOpacity, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AlertDialog, Button } from 'native-base'
+import { themeColors } from '../../../tailwind.config'
 import { setDataStorage } from '../../utils/asyncStorage'
-import useCertra from '../../hooks/useCertra'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useCertra, useLogin, useNavigation } from '../../hooks'
 import { Loader } from '..'
 
 const IconLogOut = () => {
   const [loadingLogOut, setLoadingLogOut] = useState(false)
   const [alertLogOut, setAlertLogOut] = useState(false)
 
-  const { themeColors: { darkTurquoise, typography }, setMyUser, setUser, setPassword, setThemeColors } = useLogin()
+  const { darkTurquoise } = themeColors
+  const { setMyUser } = useLogin()
   const { setProductsCart, setProducts, setCurrentPage, setLoadingProductsGrid, setLoadingSelectCustomer, setLoadingProducts } = useCertra()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -21,10 +21,6 @@ const IconLogOut = () => {
 
   const logOut = async () => {
     setLoadingLogOut(true)
-
-    // reset login
-    setUser('')
-    setPassword('')
 
     // reset products
     setProductsCart([])
@@ -40,19 +36,6 @@ const IconLogOut = () => {
     await setDataStorage('myUser', {})
     await setDataStorage('productsCart', [])
     await setDataStorage('linealDiscount', '0')
-    await setDataStorage('themeColors', {
-      primary: '',
-      background: '',
-      charge: '',
-      list: '',
-      turquoise: '',
-      darkTurquoise: '',
-      green: '',
-      blue: '',
-      icon: '',
-      typography: '',
-      processBtn: '',
-    })
 
     // go login
     navigation.navigate('Login')
@@ -64,20 +47,6 @@ const IconLogOut = () => {
         labAccess: false,
         salespersonAccess: false
       }
-    })
-    setThemeColors({
-      primary: '',
-      background: '',
-      charge: '',
-      list: '',
-      lightList: '',
-      turquoise: '',
-      darkTurquoise: '',
-      green: '',
-      blue: '',
-      icon: '',
-      typography: '',
-      processBtn: '',
     })
 
     setProducts([])
@@ -91,7 +60,7 @@ const IconLogOut = () => {
           <Image style={{ width: wp(6), height: wp(6) }} resizeMode='cover'
             source={require('../../assets/leave.png')}
           />
-          <Text className='text-lg text-white font-bold'>Salir</Text>
+          <Text className='text-lg font-bold text-white'>Salir</Text>
         </View>
       </TouchableOpacity>
 
@@ -102,7 +71,7 @@ const IconLogOut = () => {
           <AlertDialog.Header>¿Deseas cerrar sesión?</AlertDialog.Header>
 
           <AlertDialog.Body>
-            <Text className='font-normal' style={{ color: typography }}>
+            <Text className='font-normal text-typography'>
               Se eliminarán todos los productos de tu carrito.
             </Text>
           </AlertDialog.Body>

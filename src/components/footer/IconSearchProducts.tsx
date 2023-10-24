@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Pressable, Image, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useNavigation, useLogin } from '../../hooks'
 import { ModalInfo } from '..'
 
 const IconSearchProducts = () => {
@@ -26,7 +25,7 @@ const IconSearchProducts = () => {
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
           source={require('../../assets/search.png')}
         />
-        <Text className='text-[9.5px] text-center text-white font-normal'>Productos</Text>
+        <Text className='text-[9.5px] text-center font-normal text-white'>Productos</Text>
       </Pressable>
 
       <ModalInfo 

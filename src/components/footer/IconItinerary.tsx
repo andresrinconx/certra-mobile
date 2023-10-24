@@ -1,6 +1,6 @@
 import { Text, Pressable, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useNavigation from '../../hooks/useNavigation'
+import { useNavigation } from '../../hooks'
 
 const IconItinerary = () => {
   const navigation = useNavigation()
@@ -10,7 +10,7 @@ const IconItinerary = () => {
       <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
         source={require('../../assets/itinerary.png')}
       />
-      <Text className='text-[9.5px] text-center text-white font-normal'>Itinerario</Text>
+      <Text className='text-[9.5px] text-center font-normal text-white'>Itinerario</Text>
     </Pressable>
   )
 }

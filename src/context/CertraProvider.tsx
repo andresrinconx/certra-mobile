@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from 'react'
 import { ProductInterface, ProductCartInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchSearchedItems } from '../utils/api'
-import useLogin from '../hooks/useLogin'
+import { useLogin } from '../hooks'
 
 const CertraContext = createContext<{
   productsCart: ProductCartInterface[]

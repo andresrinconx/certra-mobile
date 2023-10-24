@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react'
 import { View, SafeAreaView, StatusBar, Text, ScrollView, Pressable } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { InformationCircleIcon } from 'react-native-heroicons/outline'
+import { themeColors } from '../../tailwind.config'
 import { LineChart } from 'react-native-chart-kit'
-import useLogin from '../hooks/useLogin'
 import { fetchDataCustomer } from '../utils/api'
 import { currency, getMonthInText, longDate } from '../utils/helpers'
+import { useLogin } from '../hooks'
 import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText } from '../components'
 
 interface DataCustomer {
@@ -33,7 +34,8 @@ const CustomerProfile = () => {
   const [averageData, setAverageData] = useState<AverageData>()
   const [modalDetails, setModalDetails] = useState(false)
 
-  const { themeColors: { background, primary, typography, turquoise, green }, myUser: { customer } } = useLogin()
+  const { background, turquoise, green } = themeColors
+  const { myUser: { customer } } = useLogin()
 
   // Get info
   useEffect(() => {
@@ -66,7 +68,7 @@ const CustomerProfile = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={averageData?.image_url as URL} />
@@ -79,7 +81,7 @@ const CustomerProfile = () => {
         >
           {loadingCustomerProfile ? (
             <View className='mt-5'>
-              <Loader color={`${primary}`} />
+              <Loader />
             </View>
           ) : (
             averageData?.message || averageData === undefined ? (
@@ -102,19 +104,19 @@ const CustomerProfile = () => {
                 {/* averages */}
                 <View className='flex flex-col pt-4'>
                   <View className='flex flex-row justify-between items-center'>
-                    <Text className='font-medium' style={{ fontSize: hp(2.5), color: typography }}>Promedio Drocerca</Text>
+                    <Text className='font-medium text-typography' style={{ fontSize: hp(2.5) }}>Promedio Drocerca</Text>
                     
                     <Pressable onPress={() => handleDetailsAverage()} className='flex flex-row items-center space-x-1'>
                       <InformationCircleIcon size={wp(5)} color={turquoise} />
-                      <Text className='font-bold' style={{ fontSize: hp(2.5), color: turquoise }}>{Number(averageData?.promdrocerca).toFixed(2)}</Text>
+                      <Text className='font-bold text-turquoise' style={{ fontSize: hp(2.5) }}>{Number(averageData?.promdrocerca).toFixed(2)}</Text>
                     </Pressable>
                   </View>
                   <View className='flex flex-row justify-between items-center'>
-                    <Text className='font-medium' style={{ fontSize: hp(2.5), color: typography }}>Promedio Data Medical</Text>
+                    <Text className='font-medium text-typography' style={{ fontSize: hp(2.5) }}>Promedio Data Medical</Text>
 
                     <Pressable onPress={() => handleDetailsAverage()} className='flex flex-row items-center space-x-1'>
                       <InformationCircleIcon size={wp(5)} color={green} />
-                      <Text className='font-bold' style={{ fontSize: hp(2.5), color: green }}>{Number(averageData?.promotro).toFixed(2)}</Text>
+                      <Text className='font-bold text-green' style={{ fontSize: hp(2.5) }}>{Number(averageData?.promotro).toFixed(2)}</Text>
                     </Pressable>
                   </View>
                 </View>
@@ -157,13 +159,13 @@ const CustomerProfile = () => {
                 </View>
   
                 <View className='flex flex-row justify-between items-center pt-2'>
-                  <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Último pedido realizado</Text>
-                  <Text className='font-normal' style={{ fontSize: hp(2), color: typography }}>{longDate(averageData?.utimaF as string)}</Text>
+                  <Text className='font-medium text-typography' style={{ fontSize: hp(2) }}>Último pedido realizado</Text>
+                  <Text className='font-normal text-typography' style={{ fontSize: hp(2) }}>{longDate(averageData?.utimaF as string)}</Text>
                 </View>
                 {averageData?.deuda && (
                   <View className='flex flex-row justify-between items-center pt-2'>
-                    <Text className='font-medium' style={{ fontSize: hp(2), color: typography }}>Saldo vencido</Text>
-                    <Text className='font-extrabold' style={{ fontSize: hp(2), color: typography }}>{currency(averageData?.deuda)}</Text>
+                    <Text className='font-medium text-typography' style={{ fontSize: hp(2) }}>Saldo vencido</Text>
+                    <Text className='font-extrabold text-typography' style={{ fontSize: hp(2) }}>{currency(averageData?.deuda)}</Text>
                   </View>
                 )}
               </View>

@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import { PermissionsAndroid } from 'react-native'
 import GetLocation from 'react-native-get-location'
-import { UserFromScliInterface, ThemeColorsInterface, MyUserInterface } from '../utils/interfaces'
+import { UserFromScliInterface, MyUserInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
 import { notificationListener, requestUserPermission } from '../utils/pushNotification'
@@ -9,31 +9,17 @@ import { notificationListener, requestUserPermission } from '../utils/pushNotifi
 const LoginContext = createContext<{
   login: boolean
   setLogin: (login: boolean) => void
-  user: string
-  setUser: (user: string) => void
-  password: string
-  setPassword: (password: string) => void
   myUser: MyUserInterface
   setMyUser: (myUser: MyUserInterface) => void
   loadingAuth: boolean
   setLoadingAuth: (loadingAuth: boolean) => void
   allCustomers: UserFromScliInterface[]
-  themeColors: ThemeColorsInterface
-  setThemeColors: (themeColors: ThemeColorsInterface) => void
   checkLocationPermission: () => void
   locationPermissionGranted: boolean
   getCurrentLocation: () => unknown
 }>({
   login: false,
   setLogin: () => { 
-    // do nothing
-  },
-  user: '',
-  setUser: () => { 
-    // do nothing
-  },
-  password: '',
-  setPassword: () => { 
     // do nothing
   },
   myUser: {
@@ -51,23 +37,6 @@ const LoginContext = createContext<{
     // do nothing
   },
   allCustomers: [],
-  themeColors: {
-    primary: '',
-    background: '',
-    charge: '',
-    list: '',
-    lightList: '',
-    turquoise: '',
-    darkTurquoise: '',
-    green: '',
-    blue: '',
-    icon: '',
-    typography: '',
-    processBtn: ''
-  },
-  setThemeColors: () => { 
-    // do nothing
-  },
   checkLocationPermission: () => { 
     // do nothing
   },
@@ -87,30 +56,12 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       salespersonAccess: false
     }
   })
-  const [themeColors, setThemeColors] = useState<ThemeColorsInterface>({
-    primary: '',
-    background: '',
-    charge: '',
-    list: '',
-    lightList: '',
-    turquoise: '',
-    darkTurquoise: '',
-    green: '',
-    blue: '',
-    icon: '',
-    typography: '',
-    processBtn: '',
-  })
 
   // LOCATION
   const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
 
   // API
   const [allCustomers, setAllCustomers] = useState<UserFromScliInterface[]>([])
-
-  // INPUTS
-  const [user, setUser] = useState('')
-  const [password, setPassword] = useState('')
 
   // LOADERS
   const [loadingAuth, setLoadingAuth] = useState(false)
@@ -194,17 +145,11 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     <LoginContext.Provider value={{
       login,
       setLogin,
-      user,
-      setUser,
-      password,
-      setPassword,
       myUser,
       setMyUser,
       loadingAuth,
       setLoadingAuth,
       allCustomers,
-      themeColors,
-      setThemeColors,
       checkLocationPermission,
       locationPermissionGranted,
       getCurrentLocation

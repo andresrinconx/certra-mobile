@@ -5,9 +5,8 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini'
 import { getDateDesc } from '../../utils/helpers'
 import { fetchItineraryItem } from '../../utils/api'
-import useLogin from '../../hooks/useLogin'
-import useCertra from '../../hooks/useCertra'
-import useNavigation from '../../hooks/useNavigation'
+import { useCertra, useLogin, useNavigation } from '../../hooks'
+import { themeColors } from '../../../tailwind.config'
 
 const ItineraryDayEvent = ({ 
   day, 
@@ -26,7 +25,8 @@ const ItineraryDayEvent = ({
   const [touch, setTouch] = useState(false)
 
   const { cliente, direccion, telefono, numero, motivo, descrip, codcli } = item
-  const { allCustomers, themeColors: { typography, turquoise, lightList, charge, primary, green }, getCurrentLocation, setMyUser, myUser } = useLogin()
+  const { lightList, turquoise, darkTurquoise } = themeColors
+  const { allCustomers, getCurrentLocation, setMyUser, myUser } = useLogin()
   const { setReloadItinerary, setProductsCart } = useCertra()
   const navigation = useNavigation()
   const toast = useToast()
@@ -116,13 +116,13 @@ const ItineraryDayEvent = ({
 
         {/* day */}
         <View className='flex flex-col justify-center mb-2' style={{ width: wp(10) }}>
-          <Text className='-mb-2 text-center text-sm lowercase' style={{ color: typography }}>{dayInText.substring(0, 3)}</Text>
-          <Text className='text-lg text-center' style={{ color: typography }}>{day}</Text>
+          <Text className='-mb-2 text-center text-sm lowercase text-typography'>{dayInText.substring(0, 3)}</Text>
+          <Text className='text-lg text-center text-typography'>{day}</Text>
         </View>
 
         {/* customer name */}
         <TouchableOpacity className='flex-row' onPress={() => setOpenDetails(!openDetails)}>
-          <View className='p-1.5 rounded-lg' style={{ backgroundColor: motivo ? green : turquoise, width: wp(openDetails && !motivo ? 67 : 83) }}>
+          <View className={`p-1.5 rounded-lg ${motivo ? 'bg-green' : 'bg-turquoise'}`} style={{ width: wp(openDetails && !motivo ? 67 : 83) }}>
             <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(openDetails ? 55 : 70) }}>
               {cliente}
             </Text>
@@ -180,29 +180,29 @@ const ItineraryDayEvent = ({
           >
             {/* address */}
             <View className='pl-2 mb-1.5' style={{ width: wp(83) }}>
-              <Text className='text-base font-bold' style={{ color: typography }}>Dirección</Text>
-              <Text className='text-base font-normal' style={{ color: typography }}>{direccion}</Text>
+              <Text className='text-base font-bold text-typography'>Dirección</Text>
+              <Text className='text-base font-normal text-typography'>{direccion}</Text>
             </View>
 
             {/* phone number */}
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5' style={{ width: wp(83) }}>
-              <Text className='text-base font-bold' style={{ color: typography }}>Teléfono</Text>
+              <Text className='text-base font-bold text-typography'>Teléfono</Text>
               
-              <View className='flex flex-row items-center justify-center rounded-lg' style={{ backgroundColor: charge, width: wp(55), height: wp(10) }}>
-                <Text className='text-base font-normal' style={{ color: typography }}>{telefono}</Text>
+              <View className='flex flex-row items-center justify-center rounded-lg bg-charge' style={{ width: wp(55), height: wp(10) }}>
+                <Text className='text-base font-normal text-typography'>{telefono}</Text>
               </View>
             </View>
 
             {/* reasons */}
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
-              <Text className='text-base font-bold' style={{ color: typography, width: wp(20) }}>Motivo</Text>
+              <Text className='text-base font-bold text-typography' style={{ width: wp(20) }}>Motivo</Text>
 
               <Menu style={{ backgroundColor: lightList }} shadow={1} w={wp(55)} trigger={triggerProps => {
-                return <Pressable className='flex flex-col justify-center rounded-lg' 
-                         style={{ height: wp(10), width: wp(55), backgroundColor: charge }} 
+                return <Pressable className='flex flex-col justify-center rounded-lg bg-charge' 
+                         style={{ height: wp(10), width: wp(55) }} 
                          {...triggerProps}
                        >
-                         <Text className='text-center text-sm' style={{ color: turquoise }}>
+                         <Text className='text-center text-sm text-turquoise'>
                            {selectedReason ? selectedReason : '----------------------'}
                          </Text>
 
@@ -219,7 +219,7 @@ const ItineraryDayEvent = ({
                       <Menu.Item key={motivo} onPress={() => setSelectedReason(motivo)}
                         style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}
                       >
-                        <Text className='font-normal' style={{ color: typography }}>{motivo}</Text>
+                        <Text className='font-normal text-typography'>{motivo}</Text>
                       </Menu.Item>
                     )
                   })
@@ -229,19 +229,19 @@ const ItineraryDayEvent = ({
 
             {/* observation */}
             <View className='flex flex-row items-center justify-between pl-2 mb-1.5'>
-              <Text className='text-base font-bold' style={{ color: typography }}>Observación</Text>
+              <Text className='text-base font-bold text-typography'>Observación</Text>
 
               {!descrip ? (
-                <TextInput className='px-2 rounded-lg text-sm'
-                  style={{ color: typography, backgroundColor: charge, minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}
+                <TextInput className='px-2 rounded-lg text-sm text-typography bg-charge'
+                  style={{ minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}
                   value={observation}
                   onChangeText={setObservation}
-                  selectionColor={primary}
+                  selectionColor={darkTurquoise}
                   multiline={true}
                 />
               ) : (
-                <View className='flex flex-row items-center px-2 py-3.5 rounded-lg text-sm' style={{ backgroundColor: charge, minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}>
-                  <Text style={{ color: typography }}>
+                <View className='flex flex-row items-center px-2 py-3.5 rounded-lg text-sm bg-charge' style={{ minHeight: wp(10), maxHeight: wp(30), width: wp(55) }}>
+                  <Text className='text-typography'>
                     {descrip}
                   </Text>
                 </View>

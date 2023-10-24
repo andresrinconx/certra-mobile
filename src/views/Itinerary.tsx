@@ -3,13 +3,12 @@ import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from 'react-nati
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
-import useLogin from '../hooks/useLogin'
-import useCertra from '../hooks/useCertra'
-import useNavigation from '../hooks/useNavigation'
+import { themeColors } from '../../tailwind.config'
 import { ItineraryEventInterface } from '../utils/interfaces'
 import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
 import { fetchItinerary, fetchReasons } from '../utils/api'
 import { days } from '../utils/constants'
+import { useCertra, useLogin, useNavigation } from '../hooks'
 import { Loader, Logos, BackScreen } from '../components'
 
 interface daysItineraryInterface {
@@ -30,7 +29,8 @@ const Itinerary = () => {
 
   const [reasons, setReasons] = useState([])
 
-  const { themeColors: { background, typography, primary, turquoise, lightList }, myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
+  const { background, turquoise } = themeColors
+  const { myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
   const { reloadItinerary } = useCertra()
   const navigation = useNavigation()
 
@@ -185,7 +185,7 @@ const Itinerary = () => {
   }
 
   return (
-    <SafeAreaView className='flex-1 px-2.5 pt-6' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-2.5 pt-6 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />
@@ -194,19 +194,19 @@ const Itinerary = () => {
       <View>
         {loadingItinerary ? (
           <View className='mt-5'>
-            <Loader color={primary} />
+            <Loader />
           </View>
         ) : (
           !locationPermissionGranted ? (
             <View className='mt-5'>
-              <Text className='text-center font-bold' style={{ color: typography, fontSize: wp(4) }}>Por favor activar GPS</Text>
+              <Text className='text-center font-bold text-typography' style={{ fontSize: wp(4) }}>Por favor activar GPS</Text>
             </View>
           ) : (
             <>
 
               {/* current month */}
               <View className='mt-2'>
-                <Text className='text-center font-bold' style={{ color: typography, fontSize: wp(5) }}>
+                <Text className='text-center font-bold text-typography' style={{ fontSize: wp(5) }}>
                   {currentMonthInText}
                 </Text>
               </View>
@@ -216,15 +216,15 @@ const Itinerary = () => {
                 {days.map((item) => {
                   const { id, name } = item
                   return (
-                    <Text key={id} className='uppercase text-center' 
-                      style={{ fontSize: wp(2.4), color: name === dayOfWeekInText ? turquoise : typography, width: wp(13.5) }}
+                    <Text key={id} className={`uppercase text-center ${name === dayOfWeekInText ? 'text-turquoise' : 'text-typography'}`} 
+                      style={{ fontSize: wp(2.4), width: wp(13.5) }}
                     >{name}</Text>
                   )
                 })}
               </View>
 
               {/* square days view */}
-              <View className='border-[0.5px] mt-1' style={{ borderColor: typography }}>
+              <View className='border-[0.5px] mt-1 border-typography'>
                 <FlatList
                   data={daysItinerary}
                   numColumns={7}
@@ -234,12 +234,10 @@ const Itinerary = () => {
                     const dayInText = getDayOfWeekInText(date)
 
                     return (
-                      <TouchableOpacity key={index} className='border-[0.5px] p-0.5'
+                      <TouchableOpacity key={index} className={`p-0.5 border-[0.5px] border-typography ${current ? 'bg-background' : 'bg-lightList'}`}
                         style={{ 
                           width: wp(13.5), 
                           height: wp(20), 
-                          borderColor: typography, 
-                          backgroundColor: current ? background : lightList,
                         }}
                         onPress={() => current ? navigation.navigate('ItineraryDay', {
                           month: currentMonthInText,
@@ -250,15 +248,14 @@ const Itinerary = () => {
                         }) : ''}
                       >
                         {/* circle day */}
-                        <View className='flex flex-row justify-center items-center mb-0.5'
+                        <View className={`flex flex-row justify-center items-center mb-0.5 ${day === Number(currentDay) ? 'bg-turquoise' : 'bg-transparent'}`}
                           style={{ 
-                            backgroundColor: day === Number(currentDay) ? turquoise : 'transparent', 
                             width: wp(4), 
                             height: wp(4),
                             borderRadius: day === Number(currentDay) ? 999 : 0, 
                           }}
                         >
-                          <Text style={{ fontSize: wp(2.5), color: day === Number(currentDay) ? 'white' : typography }}>
+                          <Text className={`${day === Number(currentDay) ? 'text-white' : 'text-typography'}`} style={{ fontSize: wp(2.5) }}>
                             {day}
                           </Text>
                         </View>

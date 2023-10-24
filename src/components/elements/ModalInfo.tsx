@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { Modal } from 'native-base'
-import useLogin from '../../hooks/useLogin'
 
 const ModalInfo = ({
   stateModal, 
@@ -18,13 +17,11 @@ const ModalInfo = ({
   aceptButtonText?: string
   onPressAcept?: () => void
 }) => {
-  const { themeColors: { typography, turquoise } } = useLogin()
-
   return (
     <Modal isOpen={stateModal} onClose={() => setStateModal(false)}>
       <Modal.Content style={{ width: wp(80), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 5 }}>
         <View className='flex flex-col'>
-          <Text className='pb-8' style={{ fontSize: wp(4), color: typography }}>{message}</Text>
+          <Text className='pb-8 text-typography' style={{ fontSize: wp(4) }}>{message}</Text>
           
           <View className='flex flex-row justify-end gap-x-5'>
             {aceptButtonText && (
@@ -34,12 +31,12 @@ const ModalInfo = ({
                   onPressAcept()
                 }
               }}>
-                <Text className='font-semibold' style={{ fontSize: wp(4), color: turquoise }}>{aceptButtonText}</Text>
+                <Text className='font-semibold text-turquoise' style={{ fontSize: wp(4) }}>{aceptButtonText}</Text>
               </TouchableOpacity>
             )}
             {cancelButtonText && (
               <TouchableOpacity onPress={() => setStateModal(false)}>
-                <Text className='font-semibold' style={{ fontSize: wp(4), color: turquoise }}>{cancelButtonText ?? 'Cancelar'}</Text>
+                <Text className='font-semibold text-turquoise' style={{ fontSize: wp(4) }}>{cancelButtonText ?? 'Cancelar'}</Text>
               </TouchableOpacity>
             )}
           </View>

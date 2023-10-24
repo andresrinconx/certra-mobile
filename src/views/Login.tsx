@@ -3,16 +3,17 @@ import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Lin
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
-import useLogin from '../hooks/useLogin'
-import useCertra from '../hooks/useCertra'
-import useNavigation from '../hooks/useNavigation'
-import { pallete } from '../utils/pallete'
+import { themeColors } from '../../tailwind.config'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchLogin } from '../utils/api'
 import { socialMedia } from '../utils/constants'
+import { useCertra, useLogin, useNavigation } from '../hooks'
 import { Loader } from '../components'
 
 const Login = () => {
+  const [user, setUser] = useState('')
+  const [password, setPassword] = useState('')
+
   const [showPassword, setShowPassword] = useState(false)
   const [incorrectCredentials, setIncorrectCredentials] = useState(false)
   const [requiredFields, setRequiredFields] = useState({
@@ -20,7 +21,8 @@ const Login = () => {
     password: false,
   })
 
-  const { user, setUser, password, setPassword, loadingAuth, setLoadingAuth, setMyUser, setLogin, setThemeColors, checkLocationPermission } = useLogin()
+  const { icon } = themeColors
+  const { loadingAuth, setLoadingAuth, setMyUser, setLogin, checkLocationPermission } = useLogin()
   const { getProducts } = useCertra()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
@@ -83,7 +85,6 @@ const Login = () => {
     if (res?.message) { // incorrect credentials
       setLoadingAuth(false)
       setIncorrectCredentials(true)
-      return
     } else { 
       setIncorrectCredentials(false)
 
@@ -95,10 +96,7 @@ const Login = () => {
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       })
-      setThemeColors({ ...pallete[dataUser?.cliente ? 1 : 0] })
-
-      await setDataStorage('themeColors', { ...pallete[dataUser?.cliente ? 1 : 0] })
-      await setDataStorage('login', true)
+      
       await setDataStorage('myUser', {
         ...dataUser,
         access: {
@@ -107,7 +105,8 @@ const Login = () => {
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       })
-
+      await setDataStorage('login', true)
+      
       setLogin(true)
       setLoadingAuth(false)
       setShowPassword(false)
@@ -141,7 +140,7 @@ const Login = () => {
             {/* username */}
             <View>
               <View className='flex-row items-center rounded-2xl py-2 bg-white'>
-                <TextInput className='w-full pl-5' style={{ fontSize: wp(4.5), color: '#666666' }}
+                <TextInput className='w-full pl-5 text-typography' style={{ fontSize: wp(4.5) }}
                   ref={textInputRefUser}
                   placeholder='Usuario'
                   placeholderTextColor='#999999'
@@ -160,7 +159,7 @@ const Login = () => {
             {/* password */}
             <View>
               <View className='flex-row items-center rounded-2xl py-2 bg-white'>
-                <TextInput className='w-full pl-5' style={{ fontSize: wp(4.5), color: '#666666' }}
+                <TextInput className='w-full pl-5 text-typography' style={{ fontSize: wp(4.5) }}
                   ref={textInputRefPassword}
                   secureTextEntry={!showPassword}
                   placeholder='Contraseña'
@@ -170,12 +169,12 @@ const Login = () => {
                 />
                 {!showPassword && (
                   <TouchableOpacity onPress={() => setShowPassword(true)} className='absolute right-4'>
-                    <EyeIcon size={30} color='#B3B3B3' />
+                    <EyeIcon size={30} color={icon} />
                   </TouchableOpacity>
                 )}
                 {showPassword && (
                   <TouchableOpacity onPress={() => setShowPassword(false)} className='absolute right-4'>
-                    <EyeSlashIcon size={30} color='#B3B3B3' />
+                    <EyeSlashIcon size={30} color={icon} />
                   </TouchableOpacity>
                 )}
               </View>
@@ -196,9 +195,7 @@ const Login = () => {
 
             {/* sign in */}
             <View className='flex flex-col items-center justify-center'>
-              <TouchableOpacity onPress={() => auth()} className='flex flex-col justify-center items-center rounded-xl p-1.5 w-36'
-                style={{ backgroundColor: '#92BF1E' }}
-              >
+              <TouchableOpacity onPress={() => auth()} className='flex flex-col justify-center items-center rounded-xl p-1.5 w-36 bg-green'>
                 {!loadingAuth && (
                   <View className='flex flex-col items-center justify-center h-6'>
                     <Text className='font-medium text-center text-black' style={{ fontSize: wp(4.5) }}>

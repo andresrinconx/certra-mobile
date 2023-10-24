@@ -1,19 +1,20 @@
 import { useRef, useState } from 'react'
-import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, SafeAreaView } from 'react-native'
+import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
-import { StatusBar } from 'react-native'
 import { debounce } from 'lodash'
-import useLogin from '../hooks/useLogin'
 import { ProductInterface } from '../utils/interfaces'
 import { fetchSearchedItems } from '../utils/api'
 import { formatText } from '../utils/helpers'
+import { useLogin } from '../hooks'
 import { ProductSearch, IconCart } from '../components'
+import { themeColors } from '../../tailwind.config'
 
 const SearchProducts = () => {
   const [searchedProducts, setSearchedProducts] = useState([])
 
-  const { themeColors: { background, typography, primary, list }, myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin()
+  const { background, darkTurquoise, typography } = themeColors
+  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin()
   const navigation = useNavigation()
   const textInputRef = useRef<TextInput | null>(null)
 
@@ -54,7 +55,7 @@ const SearchProducts = () => {
   const handleTextDebounce = debounce(handleSearch, 400)
 
   return (
-    <SafeAreaView className='flex-1 h-full pt-10' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 h-full pt-10 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* content */}
@@ -70,13 +71,13 @@ const SearchProducts = () => {
             />
           </TouchableOpacity>
 
-          <View className='rounded-lg mx-3' style={{ backgroundColor: list, width: wp(70) }}>
-            <TextInput className='mx-3 text-base py-0' style={{ color: typography }}
+          <View className='rounded-lg mx-3 bg-list' style={{ width: wp(70) }}>
+            <TextInput className='mx-3 text-base py-0 text-typography'
               placeholder='Buscar Productos'
               placeholderTextColor={typography}
               ref={textInputRef}
               onChangeText={handleTextDebounce}
-              selectionColor={primary}
+              selectionColor={darkTurquoise}
               autoFocus
             />
           </View>

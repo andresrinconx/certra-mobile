@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { View, FlatList, StatusBar, SafeAreaView } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { ItineraryEventInterface } from '../utils/interfaces'
-import useLogin from '../hooks/useLogin'
-import useCertra from '../hooks/useCertra'
+import { useCertra, useLogin } from '../hooks'
 import { Logos, BackScreen, ItineraryDayEvent, NoDataText } from '../components'
+import { themeColors } from '../../tailwind.config'
 
 const ItineraryDay = () => {
   const { params: { 
@@ -20,7 +20,8 @@ const ItineraryDay = () => {
     events: ItineraryEventInterface[]
     reasons: []
   } }
-  const { themeColors: { background }, myUser } = useLogin()
+  const { background } = themeColors
+  const { myUser } = useLogin()
   const { setReloadItinerary } = useCertra()
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const ItineraryDay = () => {
   }, [])
 
   return (
-    <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />
