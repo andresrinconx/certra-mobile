@@ -132,11 +132,11 @@ const CustomerProfile = () => {
                     data={{
                       labels: averageData?.promedios.map((item) => getMonthInText(item.fecham)),
                       datasets: [
-                        { // drocerca data
+                        { // drocerca
                           data: averageData?.promedios.map((item) => Number(item.promdrocerca)), 
                           color: (opacity = 1) => `rgba(28, 129, 159, ${opacity})` 
                         },
-                        { // data medical data
+                        { // data medical
                           data: averageData?.promedios.map((item) => Number(item.promotro)), 
                           color: (opacity = 1) => `rgba(146, 191, 30, ${opacity})` 
                         },

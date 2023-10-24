@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import { View, Animated, Easing } from 'react-native'
+import { View, Animated, Easing, StatusBar } from 'react-native'
+import { themeColors } from '../../../tailwind.config'
 
 const LoaderLogoScreen = () => {
   const [rotationValue] = useState(new Animated.Value(0))
+  const { background } = themeColors
 
   useEffect(() => {
     const rotateImage = () => {
@@ -26,7 +28,9 @@ const LoaderLogoScreen = () => {
   })
 
   return (
-    <View className='flex-1 justify-center items-center bg-white'>
+    <View className='flex-1 justify-center items-center bg-background'>
+      <StatusBar backgroundColor={background} barStyle='dark-content' />
+
       <Animated.Image
         source={require('../../assets/pastilla.png')}
         style={{
