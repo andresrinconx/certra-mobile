@@ -19,5 +19,5 @@
     For more info, see https://bit.ly/3CdLStv (react-native/pull/29452) and https://bit.ly/3nxOMoR.
   -->
   <item android:drawable="@color/primary" />
-  <item android:width="200dp" android:height="200dp" android:drawable="@drawable/icon" android:gravity="center" />
+  <item android:width="100dp" android:height="100dp" android:drawable="@drawable/icon" android:gravity="center" />
 </layer-list>
