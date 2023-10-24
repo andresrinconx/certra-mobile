@@ -1,5 +1,5 @@
 import Cart from './Cart'
-import Customer from './Customer'
+import SearchCustomer from './SearchCustomer'
 import Home from './Home'
 import SearchProducts from './SearchProducts'
 import Itinerary from './Itinerary'
@@ -12,7 +12,7 @@ import CustomerProfile from './CustomerProfile'
 
 export {
   Cart,
-  Customer,
+  SearchCustomer,
   Home,
   SearchProducts,
   Itinerary,

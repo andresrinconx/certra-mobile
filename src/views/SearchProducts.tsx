@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { View, TouchableOpacity, TextInput, Keyboard, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
+import { View, TextInput, Keyboard, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import { debounce } from 'lodash'
@@ -7,7 +7,7 @@ import { ProductInterface } from '../utils/interfaces'
 import { fetchSearchedItems } from '../utils/api'
 import { formatText } from '../utils/helpers'
 import { useLogin } from '../hooks'
-import { ProductSearch, IconCart } from '../components'
+import { ProductSearch, IconCart, Highlight } from '../components'
 import { themeColors } from '../../tailwind.config'
 
 const SearchProducts = () => {
@@ -63,15 +63,16 @@ const SearchProducts = () => {
 
         {/* arrow & input */}
         <View className='flex flex-row items-center px-3'>
-          <TouchableOpacity onPress={() => {
-            navigation.goBack()
-          }}>
+          <Highlight
+            onPress={() => navigation.goBack()}
+            padding={4}
+          >
             <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
               source={require('../assets/back.png')}
             />
-          </TouchableOpacity>
+          </Highlight>
 
-          <View className='rounded-lg mx-3 bg-list' style={{ width: wp(70) }}>
+          <View className='rounded-lg mr-3 ml-2 bg-list' style={{ width: wp(70) }}>
             <TextInput className='mx-3 text-base py-0 text-typography'
               placeholder='Buscar Productos'
               placeholderTextColor={typography}

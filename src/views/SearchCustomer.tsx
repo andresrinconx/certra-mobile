@@ -5,9 +5,9 @@ import { themeColors } from '../../tailwind.config'
 import { UserFromScliInterface } from '../utils/interfaces'
 import { formatText } from '../utils/helpers'
 import { useLogin, useNavigation } from '../hooks'
-import { CustomerSearch } from '../components'
+import { CustomerSearch, Highlight } from '../components'
 
-const Customer = () => {
+const SearchCustomer = () => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
 
   const { background, typography, darkTurquoise } = themeColors
@@ -42,15 +42,16 @@ const Customer = () => {
 
       {/* search */}
       <View className='flex flex-row items-center'>
-        <TouchableOpacity onPress={() => {
-          navigation.goBack()
-        }}>
+        <Highlight
+          onPress={() => navigation.goBack()}
+          padding={4}
+        >
           <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
             source={require('../assets/back.png')}
           />
-        </TouchableOpacity>
+        </Highlight>
 
-        <View className='rounded-lg ml-3 py-0 bg-list' style={{ width: wp(80) }}>
+        <View className='rounded-lg ml-2 py-0 bg-list' style={{ width: wp(80) }}>
           <TextInput className='w-full pl-3 py-0 text-typography' style={{ fontSize: wp(4) }}
             placeholder='Buscar un cliente'
             placeholderTextColor={typography}
@@ -92,4 +93,4 @@ const Customer = () => {
   )
 }
 
-export default Customer
+export default SearchCustomer

@@ -34,7 +34,7 @@ const SelectCustomer = () => {
             )}
 
             <Pressable className='rounded-lg w-5/6 ml-3 py-0 bg-list' 
-              onPress={() => navigation.navigate('Customer')}
+              onPress={() => navigation.navigate('SearchCustomer')}
             >
               <Text className='pl-3 py-1 text-typography' style={{ fontSize: wp(4) }}>Buscar un cliente</Text>
             </Pressable>

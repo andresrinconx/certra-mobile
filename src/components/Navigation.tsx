@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { getDataStorage } from '../utils/asyncStorage'
 import { useCertra, useLogin } from '../hooks'
 import { LoaderLogoScreen } from '.'
-import { Home, Cart, Login, SearchProducts, Product, Profile, Itinerary, ItineraryDay, OrderRecord, Customer, CustomerProfile } from '../views'
+import { Home, Cart, Login, SearchProducts, Product, Profile, Itinerary, ItineraryDay, OrderRecord, SearchCustomer, CustomerProfile } from '../views'
 
 const Stack = createNativeStackNavigator()
 
@@ -43,7 +43,7 @@ const Navigation = () => {
           <Stack.Navigator initialRouteName={login ? 'Home' : 'Login'}>
             <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
             <Stack.Screen name='Home' component={Home} options={{ headerShown: false, headerBackVisible: false }} />
-            <Stack.Screen name='Customer' component={Customer} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
+            <Stack.Screen name='SearchCustomer' component={SearchCustomer} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='Itinerary' component={Itinerary} options={{ headerShown: false, animation: 'fade_from_bottom' }} />
             <Stack.Screen name='ItineraryDay' component={ItineraryDay} options={{ headerShown: false, animation: 'fade_from_bottom' }} />

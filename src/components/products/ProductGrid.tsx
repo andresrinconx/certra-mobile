@@ -291,7 +291,7 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
         message='Debes seleccionar un cliente para continuar.'
         cancelButtonText='Cancelar'
         aceptButtonText='Aceptar'
-        onPressAcept={() => navigation.navigate('Customer')}
+        onPressAcept={() => navigation.navigate('SearchCustomer')}
       />
     </>
   )

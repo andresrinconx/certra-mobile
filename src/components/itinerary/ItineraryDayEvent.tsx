@@ -99,7 +99,7 @@ const ItineraryDayEvent = ({
 
   // Select Customer and Show data
   const handleSelectCustomer = () => {
-    const customer = allCustomers.filter((customer) => customer.cliente === codcli)[0]
+    const customer = allCustomers.find((customer) => customer.cliente === codcli)
     if (customer) {
       setMyUser({ ...myUser, customer })
       setProductsCart([])
