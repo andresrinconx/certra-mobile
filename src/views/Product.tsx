@@ -10,7 +10,7 @@ import { fetchDatasheet } from '../utils/api'
 import { currency, valitadeDateInRange } from '../utils/helpers'
 import { disponibility } from '../utils/constants'
 import { useCertra, useLogin, useNavigation } from '../hooks'
-import { IconCart, Loader, ModalInfo, ModalAmount, DataField, TextImage, Divider } from '../components'
+import { IconCart, Loader, ModalInfo, ModalAmount, DataField, TextImage, Divider, Highlight } from '../components'
  
 const Product = () => {
   const [added, setAdded] = useState(false)
@@ -103,12 +103,15 @@ const Product = () => {
         <StatusBar backgroundColor={background} barStyle='dark-content' />
         
         {/* back and cart */}
-        <View className='flex flex-row items-center justify-between gap-2 my-3'>
-          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+        <View className='flex flex-row items-center justify-between gap-x-2 my-3'>
+          <Highlight
+            onPress={() => navigation.goBack()}
+            padding={4}
+          >
             <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
               source={require('../assets/back.png')}
             />
-          </TouchableOpacity>
+          </Highlight>
           
           <Text className='max-w-[70%] font-bold text-typography' style={{ fontSize: wp(4.5) }}
             numberOfLines={1}

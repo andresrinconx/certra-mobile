@@ -1,5 +1,6 @@
-import { View, SafeAreaView } from 'react-native'
-import { StatusBar } from 'react-native'
+import { useEffect } from 'react'
+import { View, SafeAreaView, StatusBar, BackHandler } from 'react-native'
+import { useRoute } from '@react-navigation/native'
 import { themeColors } from '../../tailwind.config'
 import { useCertra, useLogin } from '../hooks'
 import { SelectCustomer, Loader, Logos, ProductsHome, Footer } from '../components'
@@ -8,6 +9,20 @@ const Home = () => {
   const { background } = themeColors
   const { myUser: { image_url } } = useLogin()
   const { loadingSelectCustomer } = useCertra()
+  const { name } = useRoute()
+
+  // Back handler
+  useEffect(() => {
+    if (name === 'Home') {
+      const backAction = () => {
+        BackHandler.exitApp()
+        return true
+      }
+  
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
+      return () => backHandler.remove()
+    }
+  }, [])
 
   return (
     <>

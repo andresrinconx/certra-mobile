@@ -266,13 +266,9 @@ const OrderRecord = () => {
                               }}
                             >
                               <Text className='text-center text-typography' style={{ width: wp(14), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center text-typography' style={{ width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>
-                                {nombre}
-                              </Text>
+                              <Text className='text-center text-typography' style={{ width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>{nombre}</Text>
                               <Text className='text-center text-typography' style={{ width: wp(15), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
-                              <Text className='text-center text-typography' style={{ width: wp(16), fontSize: wp(2.6) }} numberOfLines={2}>
-                                {dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}
-                              </Text>
+                              <Text className='text-center text-typography' style={{ width: wp(16), fontSize: wp(2.6) }} numberOfLines={2}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
                               <Text className='text-center text-typography' style={{ width: wp(11), fontSize: wp(2.6) }}>{unidades}</Text>
                               <TouchableOpacity className='flex flex-col justify-center items-center bg-green' 
                                 onPress={() => handleDetails(item)}
@@ -346,9 +342,9 @@ const OrderRecord = () => {
           <FlatList
             data={selectedItem?.productos}
             numColumns={1}
-            contentContainerStyle={{paddingBottom: 10}}
+            contentContainerStyle={{ paddingBottom: 10 }}
             showsVerticalScrollIndicator={false}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               const { codigo, nombreP, cantidad, precio, iva, total, preciodolar, totaldolar } = item
               const isLast = index === selectedItem?.productos.length - 1
               return (
@@ -356,11 +352,7 @@ const OrderRecord = () => {
                   style={{ borderBottomWidth: isLast ? 0 : 0.3 }}
                 >
                   <Text className='text-center text-typography' style={{ width: wp(10), fontSize: wp(2.6) }}>{codigo}</Text>
-                  <Text className='text-center text-typography' style={{ width: wp(36), fontSize: wp(2.6) }}
-                    numberOfLines={1}
-                  >
-                    {nombreP}
-                  </Text>
+                  <Text className='text-center text-typography' style={{ width: wp(36), fontSize: wp(2.6) }} numberOfLines={1}>{nombreP}</Text>
                   <Text className='text-center text-typography' style={{ width: wp(10), fontSize: wp(2.6) }}>{cantidad}</Text>
                   <Text className='text-center text-typography' style={{ width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(preciodolar, '$')}` : `${currency(precio)}`}</Text>
                   <Text className='text-center text-typography' style={{ width: wp(10), fontSize: wp(2.6) }}>{Number(iva)}%</Text>

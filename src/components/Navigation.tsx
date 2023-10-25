@@ -10,7 +10,6 @@ const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
   const [loadingStorage, setLoadingStorage] = useState(true)
-
   const { login, setLogin, setMyUser } = useLogin()
   const { setProductsCart } = useCertra()
 

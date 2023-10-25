@@ -15,16 +15,24 @@ interface DataCustomer {
 }
 
 interface AverageData {
-  promdrocerca?: string
-  promotro?: string
-  image_url?: URL
-  deuda?: string
-  utimaF?: string
-  message?: string
-  promedios: { 
-    fecham: string
+  promdrocerca: string
+  promotro: string
+  image_url: URL
+  deuda: string
+  utimaF: string
+  message: string
+  combinedData: { 
+    fecha: string
     promdrocerca: string
     promotro: string
+  }[]
+  promedios: {
+    drogueria: string
+    unidades: string
+  }[]
+  promedioDrogueria: {
+    drogueria: string
+    unidades: string
   }[]
 }
 
@@ -130,14 +138,14 @@ const CustomerProfile = () => {
                     withVerticalLines={false}
                     segments={3}
                     data={{
-                      labels: averageData?.promedios.map((item) => getMonthInText(item.fecham)),
+                      labels: averageData?.combinedData?.map((item) => getMonthInText(item.fecha)),
                       datasets: [
                         { // drocerca
-                          data: averageData?.promedios.map((item) => Number(item.promdrocerca)), 
+                          data: averageData?.combinedData?.map((item) => Number(item.promdrocerca)), 
                           color: (opacity = 1) => `rgba(28, 129, 159, ${opacity})` 
                         },
                         { // data medical
-                          data: averageData?.promedios.map((item) => Number(item.promotro)), 
+                          data: averageData?.combinedData?.map((item) => Number(item.promotro)), 
                           color: (opacity = 1) => `rgba(146, 191, 30, ${opacity})` 
                         },
                       ]
