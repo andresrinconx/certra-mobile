@@ -7,7 +7,7 @@ const BackScreen = ({ title, condition, iconImage, onPressIcon }: { title: strin
   const navigation = useNavigation()
   
   return (
-    <View className='flex flex-row items-center justify-between mb-2'>
+    <View className='flex flex-row items-center justify-between'>
       <View className='flex flex-row items-center gap-x-1'>
         <Highlight
           onPress={() => navigation.goBack()}

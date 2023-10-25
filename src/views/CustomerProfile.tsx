@@ -21,18 +21,18 @@ interface AverageData {
   deuda: string
   utimaF: string
   message: string
-  combinedData: { 
+  grafica: { 
     fecha: string
     promdrocerca: string
     promotro: string
   }[]
-  promedios: {
+  promedioOtrasDroguerias: {
     drogueria: string
-    unidades: string
+    promedio: string
   }[]
-  promedioDrogueria: {
+  promedioDrocerca: {
     drogueria: string
-    unidades: string
+    promedio: string
   }[]
 }
 
@@ -138,14 +138,14 @@ const CustomerProfile = () => {
                     withVerticalLines={false}
                     segments={3}
                     data={{
-                      labels: averageData?.combinedData?.map((item) => getMonthInText(item.fecha)),
+                      labels: averageData?.grafica?.map((item) => getMonthInText(item.fecha)),
                       datasets: [
                         { // drocerca
-                          data: averageData?.combinedData?.map((item) => Number(item.promdrocerca)), 
+                          data: averageData?.grafica?.map((item) => Number(item.promdrocerca)), 
                           color: (opacity = 1) => `rgba(28, 129, 159, ${opacity})` 
                         },
                         { // data medical
-                          data: averageData?.combinedData?.map((item) => Number(item.promotro)), 
+                          data: averageData?.grafica?.map((item) => Number(item.promotro)), 
                           color: (opacity = 1) => `rgba(146, 191, 30, ${opacity})` 
                         },
                       ]
@@ -167,13 +167,13 @@ const CustomerProfile = () => {
                 </View>
   
                 <View className='flex flex-row justify-between items-center pt-2'>
-                  <Text className='font-medium text-typography' style={{ fontSize: hp(2) }}>Último pedido realizado</Text>
-                  <Text className='font-normal text-typography' style={{ fontSize: hp(2) }}>{longDate(averageData?.utimaF as string)}</Text>
+                  <Text className='font-medium text-typography' style={{ fontSize: hp(1.9) }}>Último pedido realizado</Text>
+                  <Text className='font-normal text-typography' style={{ fontSize: hp(1.9) }}>{longDate(averageData?.utimaF as string)}</Text>
                 </View>
                 {averageData?.deuda && (
                   <View className='flex flex-row justify-between items-center pt-2'>
-                    <Text className='font-medium text-typography' style={{ fontSize: hp(2) }}>Saldo vencido</Text>
-                    <Text className='font-extrabold text-typography' style={{ fontSize: hp(2) }}>{currency(averageData?.deuda)}</Text>
+                    <Text className='font-medium text-typography' style={{ fontSize: hp(1.9) }}>Saldo vencido</Text>
+                    <Text className='font-extrabold text-typography' style={{ fontSize: hp(1.9) }}>{currency(averageData?.deuda)}</Text>
                   </View>
                 )}
               </View>

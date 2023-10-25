@@ -103,7 +103,7 @@ const Product = () => {
         <StatusBar backgroundColor={background} barStyle='dark-content' />
         
         {/* back and cart */}
-        <View className='flex flex-row items-center justify-between gap-x-2 my-3'>
+        <View className='flex flex-row items-center justify-between my-3'>
           <Highlight
             onPress={() => navigation.goBack()}
             padding={4}

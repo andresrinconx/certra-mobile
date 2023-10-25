@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { View, Text, StatusBar, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Modal, useToast, Switch } from 'native-base'
+import { Modal, useToast, Switch, Popover } from 'native-base'
 import { XMarkIcon } from 'react-native-heroicons/outline'
 import DatePicker from 'react-native-date-picker'
 import RNFetchBlob from 'rn-fetch-blob'
@@ -266,7 +266,17 @@ const OrderRecord = () => {
                               }}
                             >
                               <Text className='text-center text-typography' style={{ width: wp(14), fontSize: wp(2.6) }}>{pedido}</Text>
-                              <Text className='text-center text-typography' style={{ width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>{nombre}</Text>
+                              <Popover trigger={triggerProps => {
+                                return <Text {...triggerProps} className='text-center text-typography' style={{ width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>
+                                         {nombre}
+                                       </Text>
+                              }}>
+                                <Popover.Content w='56'>
+                                  <View className='bg-turquoise p-0.5'>
+                                    <Text className='text-center text-white'>{nombre}</Text>
+                                  </View>
+                                </Popover.Content>
+                              </Popover>
                               <Text className='text-center text-typography' style={{ width: wp(15), fontSize: wp(2.6) }}>{getDayMonthYear(fecha)}</Text>
                               <Text className='text-center text-typography' style={{ width: wp(16), fontSize: wp(2.6) }} numberOfLines={2}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(importe)}` ?? `${currency(total)}`}</Text>
                               <Text className='text-center text-typography' style={{ width: wp(11), fontSize: wp(2.6) }}>{unidades}</Text>
