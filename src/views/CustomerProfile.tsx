@@ -63,7 +63,7 @@ const CustomerProfile = () => {
         }
         setLoadingCustomerProfile(false)
       } catch (error) {
-        setLoadingCustomerProfile(false)
+        console.log(error)
       }
     }
     getDataCustomer()
