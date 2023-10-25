@@ -104,6 +104,10 @@ export const longDate = (date: string) => {
 // CALCS HELPERS
 // -----------------------------------------------
 
+export const formatAmount = (amount: number | string) => {
+  return Math.round(Number(amount))
+}
+
 export const currency = (price: number | string, currency?: '$' | '€') => {
   return `${currency ?? 'Bs.'} ${Number(price).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }

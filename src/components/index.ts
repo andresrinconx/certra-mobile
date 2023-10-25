@@ -29,6 +29,7 @@ import DataField from './certra/DataField'
 import Divider from './elements/Divider'
 import TextImage from './elements/TextImage'
 import Highlight from './elements/Highlight'
+import Modal from './elements/Modal'
 
 export {
   ProcessOrder,
@@ -61,5 +62,6 @@ export {
   DataField,
   Divider,
   TextImage,
-  Highlight
+  Highlight,
+  Modal
 }

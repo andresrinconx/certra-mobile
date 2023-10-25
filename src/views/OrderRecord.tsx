@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { View, Text, StatusBar, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Modal, useToast, Switch, Popover } from 'native-base'
+import { useToast, Switch, Popover } from 'native-base'
 import { XMarkIcon } from 'react-native-heroicons/outline'
 import DatePicker from 'react-native-date-picker'
 import RNFetchBlob from 'rn-fetch-blob'
@@ -11,7 +11,7 @@ import { currency, getDayMonthYear, getDateDesc, getDateWithoutHyphen, getDateAs
 import { OrderRecordItemInterface } from '../utils/interfaces'
 import { orderRecordCols } from '../utils/constants'
 import { useCertra, useLogin } from '../hooks'
-import { Loader, BackScreen, Logos, NoDataText, LabelCustomer } from '../components'
+import { Loader, BackScreen, Logos, NoDataText, LabelCustomer, Modal } from '../components'
 
 const OrderRecord = () => {
   const [loadingOrderRecord, setLoadingOrderRecord] = useState(true)
@@ -260,7 +260,7 @@ const OrderRecord = () => {
                               style={{ 
                                 height: wp(14),
                                 borderTopRightRadius: index === 0 ? wp(5) : 0,
-                                borderTopLeftRadius: index === 0 ? wp(5) : 0, 
+                                borderTopLeftRadius: index === 0 ? wp(5) : 0,
                                 borderBottomRightRadius: isLast ? wp(5) : 0,
                                 borderBottomLeftRadius: isLast ? wp(5) : 0,
                               }}
@@ -317,9 +317,13 @@ const OrderRecord = () => {
       </SafeAreaView>
 
       {/* modal details */}
-      <Modal isOpen={modalDetails} onClose={() => setModalDetails(false)} animationPreset='fade'>
-        <Modal.Content style={{ width: wp(95), minHeight: 350, maxHeight: 700, backgroundColor: lightList }}>
-
+      <Modal
+        bgColor={lightList}
+        minHeight={86}
+        openModal={modalDetails}
+        setOpenModal={setModalDetails}
+      >
+        <View>
           {/* header */}
           <View className='flex flex-row items-center justify-between bg-list' style={{ height: wp(16) }}>
             <View className='flex flex-row items-center'>
@@ -371,14 +375,18 @@ const OrderRecord = () => {
               )
             }} 
           />
-
-        </Modal.Content>
+        </View>
       </Modal>
 
       {/* modal older ones */}
-      <Modal isOpen={modalOlderOnes} onClose={() => setModalOlderOnes(false)}>
-        <Modal.Content style={{ width: wp(95), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
-
+      <Modal
+        bgColor={'white'}
+        minHeight={20}
+        borderRadius={25}
+        openModal={modalOlderOnes}
+        setOpenModal={setModalOlderOnes}
+      >
+        <View className='px-7 py-5'>
           <Text className='font-normal mb-3 text-typography' style={{ fontSize: wp(4.3) }}>
             Indique un rango de fecha que desea consultar
           </Text>
@@ -426,8 +434,7 @@ const OrderRecord = () => {
               </TouchableOpacity>
             </View>
           </View>
-
-        </Modal.Content>
+        </View>
       </Modal>
 
       {/* date picker from */}

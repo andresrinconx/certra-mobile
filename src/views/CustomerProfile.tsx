@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
-import { View, SafeAreaView, StatusBar, Text, ScrollView, Pressable } from 'react-native'
+import { View, SafeAreaView, StatusBar, Text, ScrollView, Pressable, FlatList } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { InformationCircleIcon } from 'react-native-heroicons/outline'
 import { themeColors } from '../../tailwind.config'
 import { LineChart } from 'react-native-chart-kit'
 import { fetchDataCustomer } from '../utils/api'
-import { currency, getMonthInText, longDate } from '../utils/helpers'
+import { currency, formatAmount, getMonthInText, longDate } from '../utils/helpers'
 import { useLogin } from '../hooks'
-import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText } from '../components'
+import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText, Modal } from '../components'
 
 interface DataCustomer {
   label: string
@@ -40,6 +40,8 @@ const CustomerProfile = () => {
   const [loadingCustomerProfile, setLoadingCustomerProfile] = useState(true)
   const [dataCustomer, setDataCustomer] = useState<DataCustomer[]>([])
   const [averageData, setAverageData] = useState<AverageData>()
+  const [selectedAverages, setSelectedAverages] = useState([])
+
   const [modalDetails, setModalDetails] = useState(false)
 
   const { background, turquoise, green } = themeColors
@@ -70,7 +72,8 @@ const CustomerProfile = () => {
   }, [])
 
   // Average Details
-  const handleDetailsAverage = () => {
+  const handleDetailsAverage = (data: any) => {
+    setSelectedAverages(data)
     setModalDetails(true)
   }
 
@@ -110,21 +113,21 @@ const CustomerProfile = () => {
                 />
 
                 {/* averages */}
-                <View className='flex flex-col pt-4'>
+                <View className='flex flex-col pt-4 space-y-1'>
                   <View className='flex flex-row justify-between items-center'>
                     <Text className='font-medium text-typography' style={{ fontSize: hp(2.5) }}>Promedio Drocerca</Text>
                     
-                    <Pressable onPress={() => handleDetailsAverage()} className='flex flex-row items-center space-x-1'>
+                    <Pressable onPress={() => handleDetailsAverage(averageData?.promedioDrocerca)} className='flex flex-row items-center space-x-1'>
                       <InformationCircleIcon size={wp(5)} color={turquoise} />
-                      <Text className='font-bold text-turquoise' style={{ fontSize: hp(2.5) }}>{Number(averageData?.promdrocerca).toFixed(2)}</Text>
+                      <Text className='font-bold text-turquoise' style={{ fontSize: hp(2.5) }}>{formatAmount(averageData?.promdrocerca)}</Text>
                     </Pressable>
                   </View>
                   <View className='flex flex-row justify-between items-center'>
                     <Text className='font-medium text-typography' style={{ fontSize: hp(2.5) }}>Promedio Data Medical</Text>
 
-                    <Pressable onPress={() => handleDetailsAverage()} className='flex flex-row items-center space-x-1'>
+                    <Pressable onPress={() => handleDetailsAverage(averageData?.promedioOtrasDroguerias)} className='flex flex-row items-center space-x-1'>
                       <InformationCircleIcon size={wp(5)} color={green} />
-                      <Text className='font-bold text-green' style={{ fontSize: hp(2.5) }}>{Number(averageData?.promotro).toFixed(2)}</Text>
+                      <Text className='font-bold text-green' style={{ fontSize: hp(2.5) }}>{formatAmount(averageData?.promotro)}</Text>
                     </Pressable>
                   </View>
                 </View>
@@ -182,7 +185,37 @@ const CustomerProfile = () => {
         </ScrollView>
       </SafeAreaView>
       
-      
+      <Modal
+        bgColor={background}
+        minHeight={50}
+        maxHeight={100}
+        openModal={modalDetails}
+        setOpenModal={setModalDetails}
+      >
+        <View>
+          <FlatList
+            data={selectedAverages}
+            numColumns={1}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => {
+              const { drogueria, promedio } = item
+              const isLast = index === selectedAverages.length - 1
+              return (
+                <View className='flex flex-row justify-between items-center px-3 py-4 space-x-2 border-b-turquoise'
+                  style={{ borderBottomWidth: isLast ? 0 : 0.3 }}
+                >
+                  <Text className='font-medium text-typography' style={{ fontSize: hp(2), width: wp(65) }}>
+                    {drogueria}
+                  </Text>
+                  <Text className='font-bold text-right text-turquoise' style={{ fontSize: hp(2), width: wp(18) }}>
+                    {formatAmount(promedio)}
+                  </Text>
+                </View>
+              )
+            }} 
+          />
+        </View>
+      </Modal>
     </>
   )
 }
