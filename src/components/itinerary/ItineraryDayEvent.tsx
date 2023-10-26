@@ -45,6 +45,30 @@ const ItineraryDayEvent = ({
     }
   }, [])
 
+  const selectCustomer = () => {
+    const customer = allCustomers.find((customer) => customer.cliente === codcli)
+    if (customer) {
+      setMyUser({ ...myUser, customer })
+      setProductsCart([])
+    }
+  }
+
+  // -----------------------------------------------
+  // HANDLERS
+  // -----------------------------------------------
+
+  // Search products
+  const handleSearchProducts = () => {
+    selectCustomer()
+    navigation.navigate('SearchProducts')
+  }
+
+  // Select Customer and Show data
+  const handleSelectCustomer = () => {
+    selectCustomer()
+    navigation.navigate('CustomerProfile')
+  }
+
   // Save
   const handleSave = async () => {
     if (!touch) {
@@ -93,23 +117,12 @@ const ItineraryDayEvent = ({
         if (!toast.isActive(id)) {
           toast.show({
             id,
-            title: 'No se ha podido enviar'
+            title: '¡Error! No se ha podido enviar'
           })
         }
         setTouch(false)
       }
     }
-  }
-
-  // Select Customer and Show data
-  const handleSelectCustomer = () => {
-    const customer = allCustomers.find((customer) => customer.cliente === codcli)
-    if (customer) {
-      setMyUser({ ...myUser, customer })
-      setProductsCart([])
-    }
-    
-    navigation.navigate('CustomerProfile')
   }
 
   return (
@@ -157,8 +170,8 @@ const ItineraryDayEvent = ({
             setOpenEdit(false)
             setOpenDetails(!openDetails)
           }}>
-            <View className={`p-1.5 rounded-lg ${motivo ? 'bg-green' : 'bg-turquoise'}`} style={{ width: wp(openDetails && !motivo ? 67 : openEdit ? 75 : 83) }}>
-              <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(openDetails ? 55 : 70) }}>
+            <View className={`p-1.5 rounded-lg ${motivo ? 'bg-green' : 'bg-turquoise'}`} style={{ width: wp(openDetails && !motivo ? 59 : openEdit ? 75 : 83) }}>
+              <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(openDetails && !motivo ? 50 : 74) }}>
                 {cliente}
               </Text>
             </View>
@@ -174,6 +187,13 @@ const ItineraryDayEvent = ({
 
           {openDetails && !motivo ? (
             <View className='flex flex-row items-center gap-x-1'>
+
+              {/* products */}
+              <TouchableOpacity onPress={handleSearchProducts}>
+                <Image style={{ width: wp(6.3), height: wp(6.3) }} resizeMode='cover'
+                  source={require('../../assets/drugstore.png')}
+                />
+              </TouchableOpacity>
 
               {/* stadistic */}
               <TouchableOpacity onPress={handleSelectCustomer}>

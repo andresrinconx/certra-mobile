@@ -202,16 +202,20 @@ const CustomerProfile = () => {
               const { drogueria, promedio } = item
               const isLast = index === selectedAverages.length - 1
               return (
-                <View className='flex flex-row justify-between items-center px-3 py-4 space-x-2 border-b-turquoise'
-                  style={{ borderBottomWidth: isLast ? 0 : 0.3 }}
-                >
-                  <Text className='font-medium text-typography' style={{ fontSize: hp(2), width: wp(65) }}>
-                    {drogueria}
-                  </Text>
-                  <Text className='font-bold text-right text-turquoise' style={{ fontSize: hp(2), width: wp(18) }}>
-                    {formatAmount(promedio)}
-                  </Text>
-                </View>
+                <>
+                  {drogueria && (
+                    <View className='flex flex-row justify-between items-center px-3 py-4 space-x-2 border-b-turquoise'
+                      style={{ borderBottomWidth: isLast ? 0 : 0.3 }}
+                    >
+                      <Text className='font-medium text-typography' style={{ fontSize: hp(2), width: wp(65) }}>
+                        {drogueria}
+                      </Text>
+                      <Text className='font-bold text-right text-turquoise' style={{ fontSize: hp(2), width: wp(18) }}>
+                        {formatAmount(promedio)}
+                      </Text>
+                    </View>
+                  )}
+                </>
               )
             }} 
           />

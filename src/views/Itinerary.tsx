@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Pressable } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { StatusBar } from 'react-native'
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
@@ -28,23 +28,39 @@ const Itinerary = () => {
   const [daysItinerary, setDaysItinerary] = useState<daysItineraryInterface[]>([])
 
   const [reasons, setReasons] = useState([])
+  const [location, setLocation] = useState('')
 
   const { background, turquoise } = themeColors
-  const { myUser, locationPermissionGranted, checkLocationPermission } = useLogin()
+  const { myUser, locationPermissionGranted, checkLocationPermission, getCurrentLocation } = useLogin()
   const { reloadItinerary } = useCertra()
   const navigation = useNavigation()
 
   // Load
   useEffect(() => {
     checkLocationPermission()
-    setData()
+    getLocation()
   }, [])
 
   // Reload
   useEffect(() => {
-    setLoadingItinerary(true)
-    setData()
+    if (reloadItinerary) {
+      setLoadingItinerary(true)
+      setData()
+    }
   }, [reloadItinerary])
+
+  const getLocation = async () => {
+    try {
+      const { latitude } = await getCurrentLocation() as { latitude: number }
+      
+      if (latitude) {
+        setLocation(String(latitude))
+        setData()
+      }
+    } catch (error) {
+      setLoadingItinerary(false)
+    }
+  }
 
   // Set data
   const setData = async () => {
@@ -197,10 +213,14 @@ const Itinerary = () => {
             <Loader />
           </View>
         ) : (
-          !locationPermissionGranted ? (
-            <View className='mt-5'>
+          !locationPermissionGranted || location === '' ? (
+            <Pressable onPress={() => {
+              setLoadingItinerary(true)
+              getLocation()
+            }} className='mt-5'>
               <Text className='text-center font-bold text-typography' style={{ fontSize: wp(4) }}>Por favor activar GPS</Text>
-            </View>
+              <Text className='text-center font-medium text-darkTurquoise' style={{ fontSize: wp(4) }}>Volver a cargar</Text>
+            </Pressable>
           ) : (
             <>
 
