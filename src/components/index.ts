@@ -3,31 +3,33 @@ import ProcessOrder from './cart/ProcessOrder'
 import CustomerSearch from './customer/CustomerSearch'
 import LabelCustomer from './customer/LabelCustomer'
 import SelectCustomer from './customer/SelectCustomer'
-import BackScreen from './elements/BackScreen'
+import BackScreen from './certra/BackScreen'
 import Loader from './elements/Loader'
-import LoaderLogoScreen from './elements/LoaderLogoScreen'
-import LoaderProductsGrid from './elements/LoaderProductsGrid'
-import Logos from './elements/Logos'
+import LoaderLogoScreen from './certra/LoaderLogoScreen'
+import LoaderProductsGrid from './certra/LoaderProductsGrid'
+import Logos from './certra/Logos'
 import ModalInfo from './elements/ModalInfo'
-import NoDataText from './elements/NoDataText'
+import NoDataText from './certra/NoDataText'
 import Footer from './footer/Footer'
 import IconCart from './footer/IconCart'
-import IconInventory from './footer/IconInventory'
+import IconSearchProducts from './footer/IconSearchProducts'
 import IconItinerary from './footer/IconItinerary'
 import IconOrderRecord from './footer/IconOrderRecord'
 import IconProfile from './footer/IconProfile'
-import ProductsHome from './inventory/ProductsHome'
-import ProductCart from './inventory/ProductCart'
-import ProductGrid from './inventory/ProductGrid'
-import ProductSearch from './inventory/ProductSearch'
+import ProductsHome from './products/ProductsHome'
+import ProductCart from './products/ProductCart'
+import ProductGrid from './products/ProductGrid'
+import ProductSearch from './products/ProductSearch'
 import ItineraryDayEvent from './itinerary/ItineraryDayEvent'
 import IconLogOut from './profile/IconLogOut'
 import ProfileGroup from './profile/ProfileGroup'
-import ModalAmount from './inventory/ModalAmount'
-import Bonus from './inventory/Bonus'
-import DataField from './elements/DataField'
+import ModalAmount from './products/ModalAmount'
+import Bonus from './products/Bonus'
+import DataField from './certra/DataField'
 import Divider from './elements/Divider'
 import TextImage from './elements/TextImage'
+import Highlight from './elements/Highlight'
+import Modal from './elements/Modal'
 
 export {
   ProcessOrder,
@@ -43,7 +45,7 @@ export {
   NoDataText,
   Footer,
   IconCart,
-  IconInventory,
+  IconSearchProducts,
   IconItinerary,
   IconOrderRecord,
   IconProfile,
@@ -59,5 +61,7 @@ export {
   Bonus,
   DataField,
   Divider,
-  TextImage
+  TextImage,
+  Highlight,
+  Modal
 }

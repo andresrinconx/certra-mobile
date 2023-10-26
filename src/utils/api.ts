@@ -24,6 +24,7 @@ const itineraryEndpoint = (params: { salesperson: string, year: string, month: s
 const itineraryItemEndpoint = () => `${apiBaseUrl}/appItinerario/itinerarioDetalle2`
 const reasonsEndpoint = () => `${apiBaseUrl}/appItinerario/motivo`
 const dataCustomerEndpoint = (customer: string) => `${apiBaseUrl}/appItinerario/data/${customer}`
+const reasignEndpoint = () => `${apiBaseUrl}/appItinerario/reasignar`
 
 // ORDER RECORD
 // customer
@@ -101,6 +102,9 @@ export const fetchReasons = () => {
 }
 export const fetchDataCustomer = (customer: string) => {
   return apiCall(dataCustomerEndpoint(customer), 'GET')
+}
+export const fetchReasign = (data: { usuario: string, numero: string, fecha: string }) => {
+  return apiCall(reasignEndpoint(), 'PUT', data)
 }
 
 // ORDER RECORD

@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { Pressable, Text, Image } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useCertra from '../../hooks/useCertra'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useCertra, useLogin, useNavigation } from '../../hooks'
 import { ModalInfo } from '..'
 
 const IconOrderRecord = () => {
@@ -28,7 +26,7 @@ const IconOrderRecord = () => {
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
           source={require('../../assets/history.png')}
         />
-        <Text className='w-9 text-[8px] text-center text-white font-normal'>Historial</Text>
+        <Text className='text-[9.5px] text-center font-normal text-white'>Historial</Text>
       </Pressable>
       
       <ModalInfo 
@@ -37,7 +35,7 @@ const IconOrderRecord = () => {
         message='Debes seleccionar un cliente para continuar.'
         cancelButtonText='Cancelar'
         aceptButtonText='Aceptar'
-        onPressAcept={() => navigation.navigate('Customer')}
+        onPressAcept={() => navigation.navigate('SearchCustomer')}
       />
     </>
   )

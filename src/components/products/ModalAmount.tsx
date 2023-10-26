@@ -2,9 +2,9 @@ import { useState, useRef } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { Modal } from 'native-base'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useLogin from '../../hooks/useLogin'
-import useCertra from '../../hooks/useCertra'
 import { ProductCartInterface } from '../../utils/interfaces'
+import { useCertra } from '../../hooks'
+import { themeColors } from '../../../tailwind.config'
 
 const ModalAmount = ({
   stateModal,
@@ -22,7 +22,7 @@ const ModalAmount = ({
   const [amountInput, setAmountInput] = useState('')
   const [disableAcept, setDisableAcept] = useState(true)
 
-  const { themeColors: { list, turquoise, typography, primary, green, processBtn } } = useLogin()
+  const { darkTurquoise } = themeColors
   const { productsCart, setProductsCart, addToCart } = useCertra()
   const initialRef = useRef(null)
 
@@ -30,11 +30,11 @@ const ModalAmount = ({
     <Modal isOpen={stateModal} initialFocusRef={initialRef}>
       <Modal.Content style={{ width: wp(89), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
-        <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Cantidad</Text>
+        <Text className='text-center mb-3 text-typography' style={{ fontSize: wp(5) }}>Cantidad</Text>
 
         {/* input */}
-        <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
-          <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
+        <View className='w-full rounded-xl mb-4 bg-list'>
+          <TextInput className='h-12 text-center rounded-xl text-turquoise' style={{ fontSize: wp(5) }}
             keyboardType='numeric'
             onChangeText={text => {
               if (Number(text) < 1 || Number(text) > maxAmount) { // no acept
@@ -49,13 +49,13 @@ const ModalAmount = ({
                 setAmountInput(text.replace(/-/g, ''))
               }
             }}
-            selectionColor={primary}
+            selectionColor={darkTurquoise}
           />
         </View>
         
         {/* btns */}
         <View className='flex flex-row items-center justify-between'>
-          <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
+          <View className='flex justify-center w-[48%] rounded-xl bg-green'>
             <TouchableOpacity onPress={() => {
               setStateModal(false)
               setDisableAcept(true)
@@ -67,7 +67,7 @@ const ModalAmount = ({
             </TouchableOpacity>
           </View>
 
-          <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
+          <View className={`flex justify-center w-[48%] rounded-xl ${disableAcept ? 'bg-processBtn' : 'bg-green'}`}>
             <TouchableOpacity disabled={disableAcept} onPress={() => {
               // not in cart (add)
               const productInCart = productsCart.find((product) => product.codigo === codigo)

@@ -1,7 +1,7 @@
 import Cart from './Cart'
-import Customer from './Customer'
+import SearchCustomer from './SearchCustomer'
 import Home from './Home'
-import Inventory from './Inventory'
+import SearchProducts from './SearchProducts'
 import Itinerary from './Itinerary'
 import ItineraryDay from './ItineraryDay'
 import Login from './Login'
@@ -12,9 +12,9 @@ import CustomerProfile from './CustomerProfile'
 
 export {
   Cart,
-  Customer,
+  SearchCustomer,
   Home,
-  Inventory,
+  SearchProducts,
   Itinerary,
   ItineraryDay,
   Login,

@@ -3,12 +3,11 @@ import { View, Text, TouchableOpacity, FlatList, TextInput, SafeAreaView } from 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { AlertDialog, Button, Modal } from 'native-base'
 import { StatusBar } from 'react-native'
-import useCertra from '../hooks/useCertra'
-import useLogin from '../hooks/useLogin'
-import useNavigation from '../hooks/useNavigation'
+import { themeColors } from '../../tailwind.config'
 import { fetchOneItem } from '../utils/api'
 import { ProductInterface } from '../utils/interfaces'
 import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
+import { useCertra, useLogin, useNavigation } from '../hooks'
 import { ProductCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components'
 
 const Cart = () => {
@@ -22,7 +21,8 @@ const Cart = () => {
   const [disableAcept, setDisableAcept] = useState(true)
   const [modalInfo, setModalInfo] = useState(false)
 
-  const { themeColors: { typography, background, processBtn, darkTurquoise, green, primary, turquoise, list }, myUser: { access: { customerAccess, labAccess }, customer, image_url, dscCliente } } = useLogin()
+  const { background, darkTurquoise } = themeColors
+  const { myUser: { access: { customerAccess, labAccess }, customer, image_url, dscCliente } } = useLogin()
   const { productsCart, setProductsCart } = useCertra()
   const initialRef = useRef(null)
   const cancelRef = useRef(null)
@@ -105,7 +105,7 @@ const Cart = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6' style={{ backgroundColor: background }}>
+      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url as URL} />
@@ -134,11 +134,11 @@ const Cart = () => {
 
               {labAccess && (
                 <View>
-                  <Text className='font-bold' style={{ fontSize: hp(1.5), color: typography }}>Dcto. Lineal</Text>
+                  <Text className='font-bold text-typography' style={{ fontSize: hp(1.5) }}>Dcto. Lineal</Text>
                   
-                  <View style={{ width: wp(18), borderColor: turquoise, borderWidth: .5 }} className='rounded-md'>
+                  <View style={{ width: wp(18), borderWidth: .5 }} className='rounded-md border-turquoise'>
                     <TouchableOpacity onPress={() => setOpenLinealDiscountModal(true)}>
-                      <Text style={{ color: darkTurquoise, fontSize: wp(4.5) }} className='text-center'>
+                      <Text style={{ fontSize: wp(4.5) }} className='text-center text-darkTurquoise'>
                         {linealDiscount}%
                       </Text>
                     </TouchableOpacity>
@@ -151,19 +151,19 @@ const Cart = () => {
           {/* products */}
           {loadingCart ? (
             <View className='mt-5'>
-              <Loader color={`${primary}`} />
+              <Loader />
             </View>
           ) : (
             <View className='flex flex-col justify-center'>
               {productsCart.length === 0 && !loadingCart ? (
                 <View className='flex flex-col items-center justify-center' style={{ height: hp(65) }}>
-                  <Text className='font-extrabold text-center mt-6' style={{ color: typography, fontSize: wp(6) }}>
+                  <Text className='font-extrabold text-center mt-6 text-typography' style={{ fontSize: wp(6) }}>
                     No hay productos
                   </Text>
 
-                  <Text style={{ color: typography, fontSize: wp(4) }} className='font-medium h-8'
+                  <Text style={{ fontSize: wp(4) }} className='font-medium h-8 text-typography'
                     onPress={() => navigation.navigate('Home')}>Continúa {''}
-                    <Text style={{ color: darkTurquoise, fontSize: wp(4) }} className='font-medium'>aquí</Text>
+                    <Text style={{ fontSize: wp(4) }} className='font-medium text-darkTurquoise'>aquí</Text>
                   </Text>
                 </View>
               ) : (
@@ -202,7 +202,7 @@ const Cart = () => {
           <AlertDialog.CloseButton />
           <AlertDialog.Header>¿Deseas continuar?</AlertDialog.Header>
           <AlertDialog.Body>
-            <Text className='font-normal' style={{ color: typography }}>
+            <Text className='font-normal text-typography'>
               Se eliminarán todos los productos de tu carrito.
             </Text>
           </AlertDialog.Body>
@@ -223,11 +223,11 @@ const Cart = () => {
       <Modal isOpen={openLinealDiscountModal} initialFocusRef={initialRef}>
         <Modal.Content style={{ width: wp(89), paddingHorizontal: 25, paddingVertical: 20, borderRadius: 25 }}>
 
-          <Text className='text-center mb-3' style={{ fontSize: wp(5), color: typography }}>Descuento Lineal</Text>
+          <Text className='text-center mb-3 text-typography' style={{ fontSize: wp(5) }}>Descuento Lineal</Text>
 
           {/* input */}
-          <View className='w-full rounded-xl mb-4' style={{ backgroundColor: list }}>
-            <TextInput className='h-12 text-center rounded-xl' style={{ color: turquoise, fontSize: wp(5) }}
+          <View className='w-full rounded-xl mb-4 bg-list'>
+            <TextInput className='h-12 text-center rounded-xl text-turquoise' style={{ fontSize: wp(5) }}
               keyboardType='numeric'
               onChangeText={text => {
                 if (Number(text) < 0 || Number(text) > 99) {
@@ -237,13 +237,13 @@ const Cart = () => {
                   setLinealDiscountInput(text)
                 }
               }}
-              selectionColor={primary}
+              selectionColor={darkTurquoise}
             />
           </View>
           
           {/* btns */}
           <View className='flex flex-row items-center justify-between'>
-            <View style={{ backgroundColor: green }} className='flex justify-center w-[48%] rounded-xl'>
+            <View className='flex justify-center w-[48%] rounded-xl bg-green'>
               <TouchableOpacity onPress={() => {
                 setOpenLinealDiscountModal(false)
                 setDisableAcept(true)
@@ -255,7 +255,7 @@ const Cart = () => {
               </TouchableOpacity>
             </View>
 
-            <View style={{ backgroundColor: `${disableAcept ? processBtn : green}` }} className='flex justify-center w-[48%] rounded-xl'>
+            <View className={`flex justify-center w-[48%] rounded-xl ${disableAcept ? 'bg-processBtn' : 'bg-green'}`}>
               <TouchableOpacity onPress={() => aceptDiscount()} disabled={disableAcept}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Aceptar

@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import { View, Text, StatusBar, TouchableOpacity, Image, TextInput, FlatList, Keyboard, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
+import { themeColors } from '../../tailwind.config'
 import { UserFromScliInterface } from '../utils/interfaces'
-import useLogin from '../hooks/useLogin'
 import { formatText } from '../utils/helpers'
-import { CustomerSearch } from '../components'
+import { useLogin, useNavigation } from '../hooks'
+import { CustomerSearch, Highlight } from '../components'
 
-const Customer = () => {
+const SearchCustomer = () => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
 
-  const { themeColors: { background, typography, primary, list }, allCustomers } = useLogin()
+  const { background, typography, darkTurquoise } = themeColors
+  const { allCustomers } = useLogin()
   const navigation = useNavigation()
 
   // SCREEN
@@ -36,25 +37,26 @@ const Customer = () => {
   }
 
   return (
-    <SafeAreaView className='flex-1 px-2.5 pt-10' style={{ backgroundColor: background }}>
+    <SafeAreaView className='flex-1 px-2.5 pt-10 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* search */}
       <View className='flex flex-row items-center'>
-        <TouchableOpacity onPress={() => {
-          navigation.goBack()
-        }}>
+        <Highlight
+          onPress={() => navigation.goBack()}
+          padding={4}
+        >
           <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
             source={require('../assets/back.png')}
           />
-        </TouchableOpacity>
+        </Highlight>
 
-        <View className='rounded-lg ml-3 py-0' style={{ backgroundColor: list, width: wp(80) }}>
-          <TextInput className='w-full pl-3 py-0' style={{ fontSize: wp(4), color: typography }}
+        <View className='rounded-lg ml-2 py-0 bg-list' style={{ width: wp(80) }}>
+          <TextInput className='w-full pl-3 py-0 text-typography' style={{ fontSize: wp(4) }}
             placeholder='Buscar un cliente'
             placeholderTextColor={typography}
             onChangeText={handleSearch}
-            selectionColor={primary}
+            selectionColor={darkTurquoise}
             autoFocus
           />
         </View>
@@ -82,7 +84,7 @@ const Customer = () => {
             />
           ) : (
             <View className='flex flex-row items-center justify-center py-8'>
-              <Text className='text-xl w-full text-center' style={{ color: typography }}>No hay resultados</Text>
+              <Text className='text-xl w-full text-center text-typography'>No hay resultados</Text>
             </View>
           )}
         </View>
@@ -91,4 +93,4 @@ const Customer = () => {
   )
 }
 
-export default Customer
+export default SearchCustomer

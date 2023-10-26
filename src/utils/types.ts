@@ -1,12 +1,12 @@
 export type RootStackParamList = {
   Login: undefined
   Home: undefined
-  Customer: undefined
+  SearchCustomer: undefined
   Profile: undefined
   Itinerary: undefined
   ItineraryDay: any
   OrderRecord: undefined
-  Inventory: undefined
+  SearchProducts: undefined
   Cart: undefined
   Product: any
   CustomerProfile: undefined

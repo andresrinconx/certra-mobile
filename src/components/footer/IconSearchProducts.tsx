@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { Pressable, Image, Text } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useNavigation, useLogin } from '../../hooks'
 import { ModalInfo } from '..'
 
-const IconInventory = () => {
+const IconSearchProducts = () => {
   const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
   
   const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
@@ -20,13 +19,13 @@ const IconInventory = () => {
             return
           }
 
-          navigation.navigate('Inventory')
+          navigation.navigate('SearchProducts')
         }}
       >
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
           source={require('../../assets/search.png')}
         />
-        <Text className='w-10 text-[8px] text-center text-white font-normal'>Productos</Text>
+        <Text className='text-[9.5px] text-center font-normal text-white'>Productos</Text>
       </Pressable>
 
       <ModalInfo 
@@ -35,10 +34,10 @@ const IconInventory = () => {
         message='Debes seleccionar un cliente para continuar.'
         cancelButtonText='Cancelar'
         aceptButtonText='Aceptar'
-        onPressAcept={() => navigation.navigate('Customer')}
+        onPressAcept={() => navigation.navigate('SearchCustomer')}
       />
     </>
   )
 }
 
-export default IconInventory
+export default IconSearchProducts

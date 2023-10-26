@@ -1,7 +1,6 @@
 import { View, Image, Pressable } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useNavigation, useLogin } from '../../hooks'
 
 const Logos = ({image}: {image: URL}) => {
   const { myUser: { access: { labAccess, salespersonAccess } } } = useLogin()

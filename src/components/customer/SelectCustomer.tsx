@@ -1,11 +1,10 @@
 import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import useLogin from '../../hooks/useLogin'
-import useNavigation from '../../hooks/useNavigation'
+import { useLogin, useNavigation } from '../../hooks'
 import { LabelCustomer } from '..'
 
 const SelectCustomer = () => {
-  const { themeColors: { list, typography }, myUser: { access: { customerAccess, salespersonAccess }, customer } } = useLogin()
+  const { myUser: { access: { customerAccess, salespersonAccess }, customer } } = useLogin()
   const navigation = useNavigation()
 
   return (
@@ -34,11 +33,10 @@ const SelectCustomer = () => {
               />
             )}
 
-            <Pressable className='rounded-lg w-5/6 ml-3 py-0' 
-              onPress={() => navigation.navigate('Customer')}
-              style={{ backgroundColor: list }}
+            <Pressable className='rounded-lg w-5/6 ml-3 py-0 bg-list' 
+              onPress={() => navigation.navigate('SearchCustomer')}
             >
-              <Text className='pl-3 py-1' style={{ fontSize: wp(4), color: typography }}>Buscar un cliente</Text>
+              <Text className='pl-3 py-1 text-typography' style={{ fontSize: wp(4) }}>Buscar un cliente</Text>
             </Pressable>
           </View>
         </View>
