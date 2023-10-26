@@ -14,6 +14,11 @@ interface DataCustomer {
   value: string
 }
 
+interface Averages {
+  drogueria: string
+  promedio: string
+}
+
 interface AverageData {
   promdrocerca: string
   promotro: string
@@ -26,21 +31,15 @@ interface AverageData {
     promdrocerca: string
     promotro: string
   }[]
-  promedioOtrasDroguerias: {
-    drogueria: string
-    promedio: string
-  }[]
-  promedioDrocerca: {
-    drogueria: string
-    promedio: string
-  }[]
+  promedioOtrasDroguerias: Averages[]
+  promedioDrocerca: Averages[]
 }
 
 const CustomerProfile = () => {
   const [loadingCustomerProfile, setLoadingCustomerProfile] = useState(true)
   const [dataCustomer, setDataCustomer] = useState<DataCustomer[]>([])
   const [averageData, setAverageData] = useState<AverageData>()
-  const [selectedAverages, setSelectedAverages] = useState([])
+  const [selectedAverages, setSelectedAverages] = useState<Averages[]>([])
 
   const [modalDetails, setModalDetails] = useState(false)
 
@@ -72,7 +71,7 @@ const CustomerProfile = () => {
   }, [])
 
   // Average Details
-  const handleDetailsAverage = (data: any) => {
+  const handleDetailsAverage = (data: Averages[]) => {
     setSelectedAverages(data)
     setModalDetails(true)
   }
@@ -169,8 +168,9 @@ const CustomerProfile = () => {
                   />
                 </View>
   
+                {/* other data */}
                 <View className='flex flex-row justify-between items-center pt-2'>
-                  <Text className='font-medium text-typography' style={{ fontSize: hp(1.9) }}>Último pedido realizado</Text>
+                  <Text className='font-medium text-typography' style={{ fontSize: hp(1.9) }}>Última compra</Text>
                   <Text className='font-normal text-typography' style={{ fontSize: hp(1.9) }}>{longDate(averageData?.utimaF as string)}</Text>
                 </View>
                 {averageData?.deuda && (
@@ -185,10 +185,11 @@ const CustomerProfile = () => {
         </ScrollView>
       </SafeAreaView>
       
+      {/* modal selected averages */}
       <Modal
         bgColor={background}
         minHeight={50}
-        maxHeight={100}
+        maxHeight={120}
         openModal={modalDetails}
         setOpenModal={setModalDetails}
       >
