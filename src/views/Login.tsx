@@ -7,7 +7,7 @@ import { themeColors } from '../../tailwind.config'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchLogin } from '../utils/api'
 import { socialMedia } from '../utils/constants'
-import { useCertra, useLogin, useNavigation } from '../hooks'
+import { useLogin, useNavigation } from '../hooks'
 import { Loader } from '../components'
 
 const Login = () => {
@@ -23,7 +23,6 @@ const Login = () => {
 
   const { icon } = themeColors
   const { loadingAuth, setLoadingAuth, setMyUser, setLogin, checkLocationPermission } = useLogin()
-  const { getProducts } = useCertra()
   const navigation = useNavigation()
   const textInputRefUser = useRef<TextInput | null>(null)
   const textInputRefPassword = useRef<TextInput | null>(null)
@@ -110,7 +109,6 @@ const Login = () => {
       setLogin(true)
       setLoadingAuth(false)
       setShowPassword(false)
-      getProducts()
       navigation.navigate('Home')
 
       setUser('')

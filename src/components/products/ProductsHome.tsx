@@ -8,8 +8,16 @@ import { themeColors } from '../../../tailwind.config'
 
 const ProductsHome = () => {
   const { darkTurquoise } = themeColors
-  const { myUser: { customer, access: { customerAccess } } } = useLogin()
+  const { myUser: { customer, access: { customerAccess } }, login } = useLogin()
   const { loadingProducts, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra()
+
+  useEffect(() => {
+    if (products?.length === 0 && login) {
+      setCurrentPage(1)
+      setProducts([])
+      getProducts()
+    }
+  }, [login])
   
   useEffect(() => {
     if (products?.length !== 0) {
