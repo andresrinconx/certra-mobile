@@ -3,7 +3,7 @@ import { useLogin } from '../../hooks'
 import { themeColors } from '../../../tailwind.config'
 import { IconCart, IconSearchProducts, IconProfile, IconItinerary, IconOrderRecord } from '..'
 
-const Footer = () => {
+const TabBar = () => {
   const { blue, darkTurquoise } = themeColors
   const { myUser: { access: { salespersonAccess, customerAccess } } } = useLogin()
 
@@ -20,4 +20,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default TabBar

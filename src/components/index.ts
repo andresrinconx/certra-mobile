@@ -10,12 +10,12 @@ import LoaderProductsGrid from './certra/LoaderProductsGrid'
 import Logos from './certra/Logos'
 import ModalInfo from './elements/ModalInfo'
 import NoDataText from './certra/NoDataText'
-import Footer from './footer/Footer'
-import IconCart from './footer/IconCart'
-import IconSearchProducts from './footer/IconSearchProducts'
-import IconItinerary from './footer/IconItinerary'
-import IconOrderRecord from './footer/IconOrderRecord'
-import IconProfile from './footer/IconProfile'
+import TabBar from './tabBar/TabBar'
+import IconCart from './tabBar/IconCart'
+import IconSearchProducts from './tabBar/IconSearchProducts'
+import IconItinerary from './tabBar/IconItinerary'
+import IconOrderRecord from './tabBar/IconOrderRecord'
+import IconProfile from './tabBar/IconProfile'
 import ProductsHome from './products/ProductsHome'
 import ProductCart from './products/ProductCart'
 import ProductGrid from './products/ProductGrid'
@@ -43,7 +43,7 @@ export {
   Logos,
   ModalInfo,
   NoDataText,
-  Footer,
+  TabBar,
   IconCart,
   IconSearchProducts,
   IconItinerary,
