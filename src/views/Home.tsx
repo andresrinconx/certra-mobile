@@ -3,7 +3,7 @@ import { View, SafeAreaView, StatusBar, BackHandler } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { themeColors } from '../../tailwind.config'
 import { useCertra, useLogin } from '../hooks'
-import { SelectCustomer, Loader, Logos, ProductsHome, Footer } from '../components'
+import { SelectCustomer, Loader, Logos, ProductsHome, TabBar } from '../components'
 
 const Home = () => {
   const { background } = themeColors
@@ -49,7 +49,7 @@ const Home = () => {
       </SafeAreaView>
       
       <View className='bottom-0'>
-        <Footer />
+        <TabBar />
       </View>
     </>
   )

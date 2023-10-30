@@ -12,7 +12,7 @@ const IconLogOut = () => {
   const [alertLogOut, setAlertLogOut] = useState(false)
 
   const { darkTurquoise } = themeColors
-  const { setMyUser } = useLogin()
+  const { setMyUser, setLogin } = useLogin()
   const { setProductsCart, setProducts, setCurrentPage, setLoadingProductsGrid, setLoadingSelectCustomer, setLoadingProducts } = useCertra()
   const cancelRef = useRef(null)
   const navigation = useNavigation()
@@ -21,6 +21,7 @@ const IconLogOut = () => {
 
   const logOut = async () => {
     setLoadingLogOut(true)
+    setLogin(false)
 
     // reset products
     setProductsCart([])
@@ -32,7 +33,6 @@ const IconLogOut = () => {
 
     // reset storage
     await setDataStorage('login', false)
-    await setDataStorage('themeColors', {})
     await setDataStorage('myUser', {})
     await setDataStorage('productsCart', [])
     await setDataStorage('linealDiscount', '0')
