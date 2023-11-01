@@ -93,7 +93,7 @@ const ItineraryDayEvent = ({
   
           // send data
           const res = await fetchItineraryItem({
-            numero,
+            id: numero,
             coordenadas: `${latitude}, ${longitude}`,
             observacion: observation,
             motivo: selectedReason,
@@ -253,7 +253,7 @@ const ItineraryDayEvent = ({
                 <Text className='text-base font-bold text-typography' style={{ width: wp(20) }}>Motivo</Text>
 
                 <Menu style={{ backgroundColor: lightList }} shadow={1} w={wp(55)} trigger={triggerProps => {
-                  return <Pressable className='flex flex-col justify-center rounded-lg bg-charge' 
+                 return <Pressable className='flex flex-col justify-center rounded-lg bg-charge' 
                           style={{ height: wp(10), width: wp(55) }} 
                           {...triggerProps}
                         >
@@ -319,7 +319,7 @@ const ItineraryDayEvent = ({
           try {
             const res = await fetchReasign({
               usuario: us_codigo as string,
-              numero: numero,
+              id: numero,
               fecha: getDateDesc(date)
             })
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, StatusBar, TouchableOpacity, Image, TextInput, FlatList, Keyboard, SafeAreaView } from 'react-native'
+import { View, Text, StatusBar, Image, TextInput, FlatList, Keyboard, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { themeColors } from '../../tailwind.config'
 import { UserFromScliInterface } from '../utils/interfaces'
@@ -24,10 +24,9 @@ const SearchCustomer = () => {
   const handleSearch = async (valueSearchCustomers: string) => {
     if (valueSearchCustomers?.length > 2) {
       // filter data
-      const data = allCustomers?.filter(
-        (user: UserFromScliInterface) => 
-          user.nombre.toLowerCase().includes(formatText(valueSearchCustomers.toLowerCase())) || // search by name
-          user.cliente.toLowerCase().includes(valueSearchCustomers.toLowerCase()) // search by number
+      const data = allCustomers?.filter((user: UserFromScliInterface) => 
+        user.nombre.toLowerCase().includes(formatText(valueSearchCustomers.toLowerCase())) || // search by name
+        user.cliente.toLowerCase().includes(valueSearchCustomers.toLowerCase()) // search by number
       )
       setSearchedCustomers(data)
     } else {

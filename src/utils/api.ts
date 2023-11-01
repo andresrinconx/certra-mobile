@@ -94,7 +94,7 @@ export const fetchProfileData = async (params: { code: string, table: string }) 
 export const fetchItinerary = async (params: { salesperson: string, year: string, month: string }) => {
   return apiCall(itineraryEndpoint(params), 'GET')
 }
-export const fetchItineraryItem = (data: { numero: string, coordenadas: string, observacion: string, motivo: string, fecha: string }) => {
+export const fetchItineraryItem = (data: { id: string, coordenadas: string, observacion: string, motivo: string, fecha: string }) => {
   return apiCall(itineraryItemEndpoint(), 'PUT', data)
 }
 export const fetchReasons = () => {
@@ -103,7 +103,7 @@ export const fetchReasons = () => {
 export const fetchDataCustomer = (customer: string) => {
   return apiCall(dataCustomerEndpoint(customer), 'GET')
 }
-export const fetchReasign = (data: { usuario: string, numero: string, fecha: string }) => {
+export const fetchReasign = (data: { usuario: string, id: string, fecha: string }) => {
   return apiCall(reasignEndpoint(), 'PUT', data)
 }
 

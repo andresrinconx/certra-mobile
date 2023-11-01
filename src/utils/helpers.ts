@@ -28,7 +28,7 @@ export const getDateAsc = (date: Date) => {
   const day = formatedDate.getDate()
   const month = formatedDate.getMonth() + 1
   const year = formatedDate.getFullYear()
-  return `${String(day).length === 1 ? `0${day}` : `${day}-${String(month).length === 1 ? `0${month}` : `${month}`}-${year}`}`
+  return `${String(day).length === 1 ? `0${day}` : `${day}`}-${String(month).length === 1 ? `0${month}` : `${month}`}-${year}`
 }
 
 export const getDayMonthYear = (date: string) => {
