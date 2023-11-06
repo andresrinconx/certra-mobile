@@ -4,7 +4,7 @@ import GetLocation from 'react-native-get-location'
 import { UserFromScliInterface, MyUserInterface } from '../utils/interfaces'
 import { setDataStorage } from '../utils/asyncStorage'
 import { fetchTableData } from '../utils/api'
-import { notificationListener, requestUserPermission } from '../utils/pushNotification'
+// import { notificationListener, requestUserPermission } from '../utils/pushNotification'
 
 const LoginContext = createContext<{
   login: boolean
