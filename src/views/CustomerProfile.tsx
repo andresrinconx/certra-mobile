@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import { View, SafeAreaView, StatusBar, Text, ScrollView, Pressable, FlatList } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { InformationCircleIcon } from 'react-native-heroicons/outline'
-import { themeColors } from '../../tailwind.config'
-import { LineChart } from 'react-native-chart-kit'
-import { fetchDataCustomer } from '../utils/api'
-import { currency, formatAmount, getMonthInText, longDate } from '../utils/helpers'
-import { useLogin } from '../hooks'
-import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText, Modal } from '../components'
+import { useState, useEffect } from 'react';
+import { View, SafeAreaView, StatusBar, Text, ScrollView, Pressable, FlatList } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { InformationCircleIcon } from 'react-native-heroicons/outline';
+import { themeColors } from '../../tailwind.config';
+import { LineChart } from 'react-native-chart-kit';
+import { fetchDataCustomer } from '../utils/api';
+import { currency, formatAmount, getMonthInText, longDate } from '../utils/helpers';
+import { useLogin } from '../hooks';
+import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText, Modal } from '../components';
 
 interface DataCustomer {
   label: string
@@ -36,45 +36,45 @@ interface AverageData {
 }
 
 const CustomerProfile = () => {
-  const [loadingCustomerProfile, setLoadingCustomerProfile] = useState(true)
-  const [dataCustomer, setDataCustomer] = useState<DataCustomer[]>([])
-  const [averageData, setAverageData] = useState<AverageData>()
-  const [selectedAverages, setSelectedAverages] = useState<Averages[]>([])
+  const [loadingCustomerProfile, setLoadingCustomerProfile] = useState(true);
+  const [dataCustomer, setDataCustomer] = useState<DataCustomer[]>([]);
+  const [averageData, setAverageData] = useState<AverageData>();
+  const [selectedAverages, setSelectedAverages] = useState<Averages[]>([]);
 
-  const [modalDetails, setModalDetails] = useState(false)
+  const [modalDetails, setModalDetails] = useState(false);
 
-  const { background, turquoise, green } = themeColors
-  const { myUser: { customer } } = useLogin()
+  const { background, turquoise, green } = themeColors;
+  const { myUser: { customer } } = useLogin();
 
   // Get info
   useEffect(() => {
     const getDataCustomer = async () => {
       try {
-        const res = await fetchDataCustomer(customer?.cliente as string)
+        const res = await fetchDataCustomer(customer?.cliente as string);
 
         if (res) {
-          setAverageData(res)
+          setAverageData(res);
           setDataCustomer([
             { label: 'Código', value: res?.cod_cli },
             { label: 'Nombre', value: res?.nombre },
             { label: 'RIF', value: res?.rif },
-          ])
+          ]);
 
-          setLoadingCustomerProfile(false)
+          setLoadingCustomerProfile(false);
         }
-        setLoadingCustomerProfile(false)
+        setLoadingCustomerProfile(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getDataCustomer()
-  }, [])
+    };
+    getDataCustomer();
+  }, []);
 
   // Average Details
   const handleDetailsAverage = (data: Averages[]) => {
-    setSelectedAverages(data)
-    setModalDetails(true)
-  }
+    setSelectedAverages(data);
+    setModalDetails(true);
+  };
 
   return (
     <>
@@ -99,10 +99,10 @@ const CustomerProfile = () => {
             ) : (
               <View className='px-3 pt-3'>
                 {dataCustomer.map((item) => {
-                  const { label, value } = item
+                  const { label, value } = item;
                   return (
                     <DataField key={label} label={label} value={value} />
-                  )
+                  );
                 })}
 
                 <Divider marginY={16} />
@@ -199,8 +199,8 @@ const CustomerProfile = () => {
             numColumns={1}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => {
-              const { drogueria, promedio } = item
-              const isLast = index === selectedAverages.length - 1
+              const { drogueria, promedio } = item;
+              const isLast = index === selectedAverages.length - 1;
               return (
                 <>
                   {drogueria && (
@@ -216,13 +216,13 @@ const CustomerProfile = () => {
                     </View>
                   )}
                 </>
-              )
+              );
             }} 
           />
         </View>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default CustomerProfile
+export default CustomerProfile;

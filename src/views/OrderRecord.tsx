@@ -1,83 +1,83 @@
-import { useState, useEffect } from 'react'
-import { View, Text, StatusBar, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useToast, Switch, Popover } from 'native-base'
-import { XMarkIcon } from 'react-native-heroicons/outline'
-import DatePicker from 'react-native-date-picker'
-import RNFetchBlob from 'rn-fetch-blob'
-import { themeColors } from '../../tailwind.config'
-import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api'
-import { currency, getDayMonthYear, getDateDesc, getDateWithoutHyphen, getDateAsc } from '../utils/helpers'
-import { OrderRecordItemInterface } from '../utils/interfaces'
-import { orderRecordCols } from '../utils/constants'
-import { useCertra, useLogin } from '../hooks'
-import { Loader, BackScreen, Logos, NoDataText, LabelCustomer, Modal } from '../components'
+import { useState, useEffect } from 'react';
+import { View, Text, StatusBar, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useToast, Switch, Popover } from 'native-base';
+import { XMarkIcon } from 'react-native-heroicons/outline';
+import DatePicker from 'react-native-date-picker';
+import RNFetchBlob from 'rn-fetch-blob';
+import { themeColors } from '../../tailwind.config';
+import { fetchLastItemsLab, fetchLastItemsLabCustomer, fetchLastItemsSalesperson, fetchLastItemsSalespersonCustomer, fetchLastItemsCustomer, fetchRangeCustomer, fetchRangeLabCustomer, fetchRangeLab, fetchRangeSalespersonCustomer, fetchRangeSalesperson } from '../utils/api';
+import { currency, getDayMonthYear, getDateDesc, getDateWithoutHyphen, getDateAsc } from '../utils/helpers';
+import { OrderRecordItemInterface } from '../utils/interfaces';
+import { orderRecordCols } from '../utils/constants';
+import { useCertra, useLogin } from '../hooks';
+import { Loader, BackScreen, Logos, NoDataText, LabelCustomer, Modal } from '../components';
 
 const OrderRecord = () => {
-  const [loadingOrderRecord, setLoadingOrderRecord] = useState(true)
-  const [lastItems, setLastItems] = useState([])
-  const [selectedItem, setSelectedItem] = useState<any>({})
+  const [loadingOrderRecord, setLoadingOrderRecord] = useState(true);
+  const [lastItems, setLastItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState<any>({});
 
-  const [dollarCurrency, setDollarCurrency] = useState(false)
-  const [modalDetails, setModalDetails] = useState(false)
-  const [modalOlderOnes, setModalOlderOnes] = useState(false)
+  const [dollarCurrency, setDollarCurrency] = useState(false);
+  const [modalDetails, setModalDetails] = useState(false);
+  const [modalOlderOnes, setModalOlderOnes] = useState(false);
 
-  const [openDatePickerFrom, setOpenDatePickerFrom] = useState(false)
-  const [dateFrom, setDateFrom] = useState(new Date())
-  const [openDatePickerTo, setOpenDatePickerTo] = useState(false)
-  const [dateTo, setDateTo] = useState(new Date())
+  const [openDatePickerFrom, setOpenDatePickerFrom] = useState(false);
+  const [dateFrom, setDateFrom] = useState(new Date());
+  const [openDatePickerTo, setOpenDatePickerTo] = useState(false);
+  const [dateTo, setDateTo] = useState(new Date());
 
-  const { background, lightList } = themeColors
-  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin()
-  const { lookAtPharmacy } = useCertra()
-  const toast = useToast()
-  const id = 'toast'
+  const { background, lightList } = themeColors;
+  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, us_codigo, clipro, cliente, customer, image_url } } = useLogin();
+  const { lookAtPharmacy } = useCertra();
+  const toast = useToast();
+  const id = 'toast';
 
   // Date from
   useEffect(() => {
-    const currentDate = new Date()
-    currentDate.setMonth(currentDate.getMonth() - 1)
-    setDateFrom(currentDate)
-  }, [])
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    setDateFrom(currentDate);
+  }, []);
 
   // Get last items
   useEffect(() => {
     const getLastItems = async () => {
       try {
-        let data
+        let data;
 
         if (customerAccess) {
-          data = await fetchLastItemsCustomer(cliente as string)
+          data = await fetchLastItemsCustomer(cliente as string);
         } else if (labAccess) {
           if (lookAtPharmacy) {
-            data = await fetchLastItemsLabCustomer({ code: us_codigo as string, customer: String(customer?.cliente) })
+            data = await fetchLastItemsLabCustomer({ code: us_codigo as string, customer: String(customer?.cliente) });
           } else {
-            data = await fetchLastItemsLab({ clipro: clipro as string, code: us_codigo as string })
+            data = await fetchLastItemsLab({ clipro: clipro as string, code: us_codigo as string });
           }
         } else if (salespersonAccess) {
           if (lookAtPharmacy) {
-            data = await fetchLastItemsSalespersonCustomer({ code: us_codigo as string, customer: String(customer?.cliente) })
+            data = await fetchLastItemsSalespersonCustomer({ code: us_codigo as string, customer: String(customer?.cliente) });
           } else {
-            data = await fetchLastItemsSalesperson(String(us_codigo))
+            data = await fetchLastItemsSalesperson(String(us_codigo));
           }
         }
         
         if (data) {
-          setLastItems(data)
-          setLoadingOrderRecord(false)
+          setLastItems(data);
+          setLoadingOrderRecord(false);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getLastItems()
-  }, [])
+    };
+    getLastItems();
+  }, []);
 
   // Show details
   const handleDetails = (item: OrderRecordItemInterface) => {
-    setSelectedItem(item)
-    setModalDetails(true)
-  }
+    setSelectedItem(item);
+    setModalDetails(true);
+  };
 
   // Filter range
   const filter = async () => {
@@ -88,32 +88,32 @@ const OrderRecord = () => {
           id,
           title: 'Rango de fechas no válido',
           duration: 1500
-        })
+        });
       } 
     }
 
     // download pdf
     try {
-      let pdfUrl
+      let pdfUrl;
       if (customerAccess) {
-        pdfUrl = await fetchRangeCustomer({ customer: String(cliente), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+        pdfUrl = await fetchRangeCustomer({ customer: String(cliente), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) });
       } else if (labAccess) {
         if (lookAtPharmacy) {
-          pdfUrl = await fetchRangeLabCustomer({ customer: String(customer?.cliente), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+          pdfUrl = await fetchRangeLabCustomer({ customer: String(customer?.cliente), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) });
         } else {
-          pdfUrl = await fetchRangeLab({ clipro: String(clipro), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+          pdfUrl = await fetchRangeLab({ clipro: String(clipro), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) });
         }
       } else if (salespersonAccess) {
         if (lookAtPharmacy) {
-          pdfUrl = await fetchRangeSalespersonCustomer({ customer: String(customer?.cliente), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+          pdfUrl = await fetchRangeSalespersonCustomer({ customer: String(customer?.cliente), code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) });
         } else {
-          pdfUrl = await fetchRangeSalesperson({ code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) })
+          pdfUrl = await fetchRangeSalesperson({ code: String(us_codigo), dateFrom: getDateWithoutHyphen(dateFrom), dateTo: getDateWithoutHyphen(dateTo) });
         }
       }
 
       if (pdfUrl) {
-        const { config, fs } = RNFetchBlob
-        const downloads = fs.dirs?.DownloadDir
+        const { config, fs } = RNFetchBlob;
+        const downloads = fs.dirs?.DownloadDir;
         return config({
           fileCache: true,
           addAndroidDownloads: {
@@ -129,7 +129,7 @@ const OrderRecord = () => {
                 id,
                 title: 'PDF descargado correctamente',
                 duration: 2500
-              })
+              });
             } 
           })
           .catch(() => {
@@ -138,9 +138,9 @@ const OrderRecord = () => {
                 id,
                 title: 'No se encontraron datos',
                 duration: 1500
-              })
+              });
             } 
-          })
+          });
       }
     } catch (error) {
       if (!toast.isActive(id)) {
@@ -148,10 +148,10 @@ const OrderRecord = () => {
           id,
           title: 'Error al filtrar',
           duration: 1500
-        })
+        });
       } 
     }
-  }
+  };
 
   return (
     <>
@@ -203,12 +203,12 @@ const OrderRecord = () => {
                 {/* table header */}
                 <View className='flex flex-row justify-center items-center mt-4'>
                   {orderRecordCols[customerAccess ? 0 : 1].map((item) => {
-                    const { id, size, name } = item
+                    const { id, size, name } = item;
                     return (
                       <Text key={id} className='text-center text-typography' 
                         style={{ fontSize: wp(2.4), width: wp(size) }}
                       >{name}</Text>
-                    )
+                    );
                   })}
                 </View>
 
@@ -220,9 +220,9 @@ const OrderRecord = () => {
                     contentContainerStyle={{ paddingBottom: wp(3) }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item, index}) => {
-                      const { pedido, fecha, subTotal, iva, importe, unidades, total, nombre, totaldolar } = item
-                      const isPair = index % 2 === 0
-                      const isLast = index === lastItems.length - 1
+                      const { pedido, fecha, subTotal, iva, importe, unidades, total, nombre, totaldolar } = item;
+                      const isPair = index % 2 === 0;
+                      const isLast = index === lastItems.length - 1;
                       return (
                         <>
                           {customerAccess ? (
@@ -269,7 +269,7 @@ const OrderRecord = () => {
                               <Popover trigger={triggerProps => {
                                 return <Text {...triggerProps} className='text-center text-typography' style={{ width: wp(26), fontSize: wp(2.6) }} numberOfLines={1}>
                                          {nombre}
-                                       </Text>
+                                       </Text>;
                               }}>
                                 <Popover.Content w='56'>
                                   <View className='bg-turquoise p-0.5'>
@@ -296,7 +296,7 @@ const OrderRecord = () => {
                             </View>
                           )}
                         </>
-                      )
+                      );
                     }} 
                   />
                 </View>
@@ -343,12 +343,12 @@ const OrderRecord = () => {
           {/* columns */}
           <View className='flex flex-row items-center py-2 pl-1.5 border-b-turquoise' style={{ borderBottomWidth: 0.3 }}>
             {orderRecordCols[2].map((item) => {
-              const { id, size, name } = item
+              const { id, size, name } = item;
               return (
                 <Text key={id} className='text-center text-typography'
                   style={{ fontSize: wp(2.4), width: wp(size) }}
                 >{name}</Text>
-              )
+              );
             })}
           </View>
 
@@ -359,8 +359,8 @@ const OrderRecord = () => {
             contentContainerStyle={{ paddingBottom: 10 }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => {
-              const { codigo, nombreP, cantidad, precio, iva, total, preciodolar, totaldolar } = item
-              const isLast = index === selectedItem?.productos.length - 1
+              const { codigo, nombreP, cantidad, precio, iva, total, preciodolar, totaldolar } = item;
+              const isLast = index === selectedItem?.productos.length - 1;
               return (
                 <View className='flex flex-row items-center justify-center py-3 border-b-turquoise'
                   style={{ borderBottomWidth: isLast ? 0 : 0.3 }}
@@ -372,7 +372,7 @@ const OrderRecord = () => {
                   <Text className='text-center text-typography' style={{ width: wp(10), fontSize: wp(2.6) }}>{Number(iva)}%</Text>
                   <Text className='text-center text-typography' style={{ width: wp(13), fontSize: wp(2.6) }}>{dollarCurrency ? `${currency(totaldolar, '$')}` : `${currency(total)}`}</Text>
                 </View>
-              )
+              );
             }} 
           />
         </View>
@@ -444,11 +444,11 @@ const OrderRecord = () => {
         open={openDatePickerFrom}
         date={dateFrom}
         onConfirm={(date) => {
-          setOpenDatePickerFrom(false)
-          setDateFrom(date)
+          setOpenDatePickerFrom(false);
+          setDateFrom(date);
         }}
         onCancel={() => {
-          setOpenDatePickerFrom(false)
+          setOpenDatePickerFrom(false);
         }}
       />
 
@@ -459,15 +459,15 @@ const OrderRecord = () => {
         open={openDatePickerTo}
         date={dateTo}
         onConfirm={(date) => {
-          setOpenDatePickerTo(false)
-          setDateTo(date)
+          setOpenDatePickerTo(false);
+          setDateTo(date);
         }}
         onCancel={() => {
-          setOpenDatePickerTo(false)
+          setOpenDatePickerTo(false);
         }}
       />
     </>
-  )
-}
+  );
+};
 
-export default OrderRecord
+export default OrderRecord;

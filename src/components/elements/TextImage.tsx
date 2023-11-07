@@ -1,5 +1,5 @@
-import { View, Text, Image } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { View, Text, Image } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const TextImage = ({ image, text }: { image: any, text: string }) => {
   return (
@@ -11,7 +11,7 @@ const TextImage = ({ image, text }: { image: any, text: string }) => {
         {text}
       </Text>
     </View>
-  )
-}
+  );
+};
 
-export default TextImage
+export default TextImage;

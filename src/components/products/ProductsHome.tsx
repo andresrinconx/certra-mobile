@@ -1,39 +1,39 @@
-import { useEffect } from 'react'
-import { View, Text, FlatList } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { items } from '../../utils/constants'
-import { useCertra, useLogin } from '../../hooks'
-import { LoaderProductsGrid, Loader, ProductGrid } from '..'
-import { themeColors } from '../../../tailwind.config'
+import { useEffect } from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { items } from '../../utils/constants';
+import { useCertra, useLogin } from '../../hooks';
+import { LoaderProductsGrid, Loader, ProductGrid } from '..';
+import { themeColors } from '../../../tailwind.config';
 
 const ProductsHome = () => {
-  const { darkTurquoise } = themeColors
-  const { myUser: { customer, access: { customerAccess } }, login } = useLogin()
-  const { loadingProducts, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra()
+  const { darkTurquoise } = themeColors;
+  const { myUser: { customer, access: { customerAccess } }, login } = useLogin();
+  const { loadingProducts, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra();
 
   useEffect(() => {
     if (products?.length === 0 && login) {
-      setCurrentPage(1)
-      setProducts([])
-      getProducts()
+      setCurrentPage(1);
+      setProducts([]);
+      getProducts();
     }
-  }, [login])
+  }, [login]);
   
   useEffect(() => {
     if (products?.length !== 0) {
-      getProducts()
+      getProducts();
     } else {
-      setCurrentPage(1)
-      setProducts([])
-      getProducts()
+      setCurrentPage(1);
+      setProducts([]);
+      getProducts();
     }
-  }, [currentPage])
+  }, [currentPage]);
 
   const loadMoreItems = () => {
     if (products?.length !== 0) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage + 1);
     }
-  }
+  };
 
   return (
     <>
@@ -52,7 +52,7 @@ const ProductsHome = () => {
               renderItem={({ item }) => {
                 return (
                   <LoaderProductsGrid key={item.id} />
-                )
+                );
               }}
             />
           </View>
@@ -94,7 +94,7 @@ const ProductsHome = () => {
         </View>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ProductsHome
+export default ProductsHome;

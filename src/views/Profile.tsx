@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react'
-import { View, Image, FlatList, StatusBar, SafeAreaView, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { themeColors } from '../../tailwind.config'
-import { DataConfigProfileInterface } from '../utils/interfaces'
-import { fetchProfileData } from '../utils/api'
-import { useCertra, useLogin, useNavigation } from '../hooks'
-import { Loader, Logos, BackScreen, ProfileGroup, IconLogOut } from '../components'
+import { useEffect, useState } from 'react';
+import { View, Image, FlatList, StatusBar, SafeAreaView, Text } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { themeColors } from '../../tailwind.config';
+import { DataConfigProfileInterface } from '../utils/interfaces';
+import { fetchProfileData } from '../utils/api';
+import { useCertra, useLogin, useNavigation } from '../hooks';
+import { Loader, Logos, BackScreen, ProfileGroup, IconLogOut } from '../components';
 
 const Profile = () => {
-  const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({})
-  const [loadingProfile, setLoadingProfile] = useState(true)
+  const [dataConfig, setDataConfig] = useState<DataConfigProfileInterface>({});
+  const [loadingProfile, setLoadingProfile] = useState(true);
   
-  const { background } = themeColors
-  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url, us_codigo, conexion } } = useLogin()
-  const { setLookAtPharmacy } = useCertra()
-  const navigation = useNavigation()
+  const { background } = themeColors;
+  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url, us_codigo, conexion } } = useLogin();
+  const { setLookAtPharmacy } = useCertra();
+  const navigation = useNavigation();
 
   // Get data
   useEffect(() => {
@@ -28,19 +28,19 @@ const Profile = () => {
           code: `${customerAccess     ? `${cliente}` : 
                    salespersonAccess  ? `${cedula}`  :
                    labAccess          ? `${clipro}/${us_codigo}`  : null}`,
-        })
-        setDataConfig(res)
+        });
+        setDataConfig(res);
 
         if (res) {
-          setLoadingProfile(false)
+          setLoadingProfile(false);
         }
         
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getData()
-  }, [])
+    };
+    getData();
+  }, []);
 
   const groups = [
     // main info
@@ -131,7 +131,7 @@ const Profile = () => {
         },
       ]
     }
-  ]
+  ];
   
   return (
     <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
@@ -143,8 +143,8 @@ const Profile = () => {
         condition={!customerAccess}
         iconImage={require('../assets/history-blue.png')}
         onPressIcon={() => {
-          setLookAtPharmacy(false)
-          navigation.navigate('OrderRecord')
+          setLookAtPharmacy(false);
+          navigation.navigate('OrderRecord');
         }}
       />
       
@@ -176,14 +176,14 @@ const Profile = () => {
                 </View>
               )}
               renderItem={({item}) => {
-                const { name, subname, fields } = item
+                const { name, subname, fields } = item;
                 return (
                   <ProfileGroup 
                     name={name as string}
                     subname={String(subname)}
                     fields={fields}
                   />
-                )
+                );
               }} 
             />
           </View>
@@ -205,7 +205,7 @@ const Profile = () => {
         </View>
       )}
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

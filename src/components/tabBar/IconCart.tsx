@@ -1,26 +1,26 @@
-import { useState } from 'react'
-import { View, Text, Pressable, Image } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useCertra, useLogin, useNavigation } from '../../hooks'
-import { ModalInfo } from '..'
+import { useState } from 'react';
+import { View, Text, Pressable, Image } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useCertra, useLogin, useNavigation } from '../../hooks';
+import { ModalInfo } from '..';
 
 const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boolean }) => {
-  const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
+  const [modalSelectCustomer, setModalSelectCustomer] = useState(false);
 
-  const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { productsCart } = useCertra()
-  const navigation = useNavigation()
+  const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin();
+  const { productsCart } = useCertra();
+  const navigation = useNavigation();
 
   return (
     <>
       <Pressable className={`${showText ? 'w-full h-full flex flex-1 flex-col items-center justify-center' : ''}`}
         onPress={() => {
           if ((labAccess || salespersonAccess) && !customer) {
-            setModalSelectCustomer(true)
-            return
+            setModalSelectCustomer(true);
+            return;
           }
 
-          navigation.navigate('Cart')
+          navigation.navigate('Cart');
         }}
       >
         <View>
@@ -51,7 +51,7 @@ const IconCart = ({ showText, blueCart }: { showText?: boolean, blueCart?: boole
         onPressAcept={() => navigation.navigate('SearchCustomer')}
       />
     </>
-  )
-}
+  );
+};
 
-export default IconCart
+export default IconCart;

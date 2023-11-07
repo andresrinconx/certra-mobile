@@ -1,38 +1,38 @@
-import { useState, useEffect, useRef } from 'react'
-import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from 'react-native'
-import { XMarkIcon } from 'react-native-heroicons/outline'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { AlertDialog, Button, Modal } from 'native-base'
-import { themeColors } from '../../../tailwind.config'
-import { disponibility } from '../../utils/constants'
-import { ProductInterface, ScalesInterface } from '../../utils/interfaces'
-import { calculateDiscountsPrice, calculatePercentProductDiscount, currency, valitadeDateInRange } from '../../utils/helpers'
-import { setDataStorage } from '../../utils/asyncStorage'
-import { useCertra, useLogin, useNavigation } from '../../hooks'
-import { ModalInfo, ModalAmount, Bonus } from '..'
+import { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, FlatList, Pressable, TextInput } from 'react-native';
+import { XMarkIcon } from 'react-native-heroicons/outline';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { AlertDialog, Button, Modal } from 'native-base';
+import { themeColors } from '../../../tailwind.config';
+import { disponibility } from '../../utils/constants';
+import { ProductInterface, ScalesInterface } from '../../utils/interfaces';
+import { calculateDiscountsPrice, calculatePercentProductDiscount, currency, valitadeDateInRange } from '../../utils/helpers';
+import { setDataStorage } from '../../utils/asyncStorage';
+import { useCertra, useLogin, useNavigation } from '../../hooks';
+import { ModalInfo, ModalAmount, Bonus } from '..';
 
 const ProductCart = ({ product }: { product: ProductInterface }) => {
-  const [added, setAdded] = useState(true)
-  const [amount, setAmount] = useState(1)
-  const [maxAmount, setMaxAmount] = useState(0)
-  const [labDiscount, setLabDiscount] = useState(0)
-  const [labDiscountInput, setLabDiscountInput] = useState('')
+  const [added, setAdded] = useState(true);
+  const [amount, setAmount] = useState(1);
+  const [maxAmount, setMaxAmount] = useState(0);
+  const [labDiscount, setLabDiscount] = useState(0);
+  const [labDiscountInput, setLabDiscountInput] = useState('');
   
-  const [alertRemoveElement, setAlertRemoveElement] = useState(false)
-  const [openAmountModal, setOpenAmountModal] = useState(false)
-  const [openDiscountModal, setOpenDiscountModal] = useState(false)
-  const [disableAcept, setDisableAcept] = useState(true)
-  const [modalInfo, setModalInfo] = useState(false)
+  const [alertRemoveElement, setAlertRemoveElement] = useState(false);
+  const [openAmountModal, setOpenAmountModal] = useState(false);
+  const [openDiscountModal, setOpenDiscountModal] = useState(false);
+  const [disableAcept, setDisableAcept] = useState(true);
+  const [modalInfo, setModalInfo] = useState(false);
   
-  const { icon, darkTurquoise } = themeColors
-  const { myUser: { deposito, access: { labAccess, customerAccess }, customer, dscCliente } } = useLogin()
-  const { removeElement, productsCart, setProductsCart } = useCertra()
-  const { descrip, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3, fdesde, fhasta, bonicant, bonifica } = product
-  const cancelRef = useRef(null)
-  const initialRef = useRef(null)
-  const navigation = useNavigation()
+  const { icon, darkTurquoise } = themeColors;
+  const { myUser: { deposito, access: { labAccess, customerAccess }, customer, dscCliente } } = useLogin();
+  const { removeElement, productsCart, setProductsCart } = useCertra();
+  const { descrip, codigo, centro, merida, oriente, base1, escala1, pescala1, escala2, pescala2, escala3, pescala3, fdesde, fhasta, bonicant, bonifica } = product;
+  const cancelRef = useRef(null);
+  const initialRef = useRef(null);
+  const navigation = useNavigation();
 
-  const onCloseAlertRemoveElement = () => setAlertRemoveElement(false)
+  const onCloseAlertRemoveElement = () => setAlertRemoveElement(false);
 
   // -----------------------------------------------
   // ACTIONS
@@ -44,32 +44,32 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
       if (merida || centro || oriente) {
         if (deposito) {
           if (deposito === 'MERIDA') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)));
           } else if (deposito === 'CARACAS') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
           } else if (deposito === 'ORIENTE') {
-            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)));
           }
         } else {
-          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
         }
       }
     }
-  }, [])
+  }, []);
 
   // Refresh data when cart change
   useEffect(() => {
-    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
+    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo);
     if (productInCart !== undefined) { 
 
       // product in cart
-      setAdded(true)
-      setAmount(productInCart.amount)
+      setAdded(true);
+      setAmount(productInCart.amount);
 
-      setLabDiscount(Number(productInCart.labDiscount))
-      setLabDiscountInput('')
+      setLabDiscount(Number(productInCart.labDiscount));
+      setLabDiscountInput('');
     }
-  }, [productsCart])
+  }, [productsCart]);
 
   // -----------------------------------------------
   // HANDLERS
@@ -77,15 +77,15 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
 
   const handleRemoveElement = async () => {
     if (productsCart?.length === 1) {
-      await setDataStorage('linealDiscount', '0')
-      setProductsCart([])
+      await setDataStorage('linealDiscount', '0');
+      setProductsCart([]);
     }
-    removeElement(codigo)
+    removeElement(codigo);
 
-    setAdded(false)
-    setAmount(1)
-    setAlertRemoveElement(false)
-  }
+    setAdded(false);
+    setAmount(1);
+    setAlertRemoveElement(false);
+  };
 
   return (
     <>
@@ -230,7 +230,7 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
                             )
                           }
                         </>
-                      )
+                      );
                     }}
                   />
                 </View>
@@ -326,10 +326,10 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
               keyboardType='numeric'
               onChangeText={text => {
                 if (Number(text) < 0 || Number(text) > 99) {
-                  setDisableAcept(true)
+                  setDisableAcept(true);
                 } else {
-                  setDisableAcept(false)
-                  setLabDiscountInput(text)
+                  setDisableAcept(false);
+                  setLabDiscountInput(text);
                 }
               }}
               selectionColor={darkTurquoise}
@@ -340,9 +340,9 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
           <View className='flex flex-row items-center justify-between'>
             <View className='flex justify-center w-[48%] rounded-xl bg-green'>
               <TouchableOpacity onPress={() => {
-                setOpenDiscountModal(false)
-                setDisableAcept(true)
-                setLabDiscountInput('')
+                setOpenDiscountModal(false);
+                setDisableAcept(true);
+                setLabDiscountInput('');
               }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Cancelar
@@ -355,18 +355,18 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
                 // changes to the cart
                 const updatedProductsCart = productsCart.map(item => {
                   if (item.codigo === codigo) {
-                    const cleanDiscount = parseInt(String(labDiscountInput).replace(/-/g, ''))
+                    const cleanDiscount = parseInt(String(labDiscountInput).replace(/-/g, ''));
             
-                    return { ...item, labDiscount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
+                    return { ...item, labDiscount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) };
                   } else {
-                    return { ...item }
+                    return { ...item };
                   }
-                })
-                setProductsCart(updatedProductsCart)
-                setOpenDiscountModal(false)
-                setDisableAcept(true)
+                });
+                setProductsCart(updatedProductsCart);
+                setOpenDiscountModal(false);
+                setDisableAcept(true);
                 if (Number(labDiscountInput) >= 20) {
-                  setModalInfo(true)
+                  setModalInfo(true);
                 }
               }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
@@ -410,7 +410,7 @@ const ProductCart = ({ product }: { product: ProductInterface }) => {
         aceptButtonText='Aceptar'
       />
     </>
-  )
-}
+  );
+};
 
-export default ProductCart
+export default ProductCart;

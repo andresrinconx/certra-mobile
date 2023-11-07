@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, Pressable } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
-import { disponibility } from '../../utils/constants'
-import { ProductInterface } from '../../utils/interfaces'
-import { currency } from '../../utils/helpers'
-import { useCertra, useLogin, useNavigation } from '../../hooks'
-import { Bonus, ModalAmount } from '..'
+import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList, Pressable } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline';
+import { disponibility } from '../../utils/constants';
+import { ProductInterface } from '../../utils/interfaces';
+import { currency } from '../../utils/helpers';
+import { useCertra, useLogin, useNavigation } from '../../hooks';
+import { Bonus, ModalAmount } from '..';
 
 const ProductSearch = ({ product }: { product: ProductInterface }) => {
-  const [added, setAdded] = useState(false)
-  const [amount, setAmount] = useState(1)
-  const [maxAmount, setMaxAmount] = useState(0)
+  const [added, setAdded] = useState(false);
+  const [amount, setAmount] = useState(1);
+  const [maxAmount, setMaxAmount] = useState(0);
 
-  const [openAmountModal, setOpenAmountModal] = useState(false)
+  const [openAmountModal, setOpenAmountModal] = useState(false);
   
-  const { myUser: { deposito } } = useLogin()
-  const { descrip, precio1, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica, fdesde, fhasta } = product
-  const { productsCart, addToCart } = useCertra()
-  const navigation = useNavigation()
+  const { myUser: { deposito } } = useLogin();
+  const { descrip, precio1, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica, fdesde, fhasta } = product;
+  const { productsCart, addToCart } = useCertra();
+  const navigation = useNavigation();
 
   // Get max amount
   useEffect(() => {
@@ -26,18 +26,18 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
       if (merida || centro || oriente) {
         if (deposito) {
           if (deposito === 'MERIDA') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)));
           } else if (deposito === 'CARACAS') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
           } else if (deposito === 'ORIENTE') {
-            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)));
           }
         } else {
-          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
         }
       }
     }
-  }, [])
+  }, []);
 
   // -----------------------------------------------
   // ACTIONS
@@ -45,25 +45,25 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
 
   // Refresh data when cart change
   useEffect(() => {
-    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
+    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo);
     if (productInCart !== undefined) { 
 
       // product in cart
-      setAdded(true)
-      setAmount(productInCart.amount)
+      setAdded(true);
+      setAmount(productInCart.amount);
     } else {
 
       // product not in cart
-      setAdded(false)
-      setAmount(1)
+      setAdded(false);
+      setAmount(1);
     }
-  }, [productsCart])
+  }, [productsCart]);
 
   // Handle actions
   const handleAddToCart = () => {
-    setAdded(true)
-    addToCart(codigo, amount)
-  }
+    setAdded(true);
+    addToCart(codigo, amount);
+  };
 
   return (
     <>
@@ -174,7 +174,7 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
                           )
                         }
                       </>
-                    )
+                    );
                   }}
                 />
               </View>
@@ -242,7 +242,7 @@ const ProductSearch = ({ product }: { product: ProductInterface }) => {
         maxAmount={maxAmount}
       />
     </>
-  )
-}
+  );
+};
 
-export default ProductSearch
+export default ProductSearch;

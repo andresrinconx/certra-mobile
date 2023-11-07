@@ -1,44 +1,44 @@
-import { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable, SafeAreaView } from 'react-native'
-import { useRoute } from '@react-navigation/native'
-import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { StatusBar } from 'react-native'
-import { themeColors } from '../../tailwind.config'
-import { ProductInterface } from '../utils/interfaces'
-import { fetchDatasheet } from '../utils/api'
-import { currency, valitadeDateInRange } from '../utils/helpers'
-import { disponibility } from '../utils/constants'
-import { useCertra, useLogin, useNavigation } from '../hooks'
-import { IconCart, Loader, ModalInfo, ModalAmount, DataField, TextImage, Divider, Highlight } from '../components'
+import { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable, SafeAreaView } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { StatusBar } from 'react-native';
+import { themeColors } from '../../tailwind.config';
+import { ProductInterface } from '../utils/interfaces';
+import { fetchDatasheet } from '../utils/api';
+import { currency, valitadeDateInRange } from '../utils/helpers';
+import { disponibility } from '../utils/constants';
+import { useCertra, useLogin, useNavigation } from '../hooks';
+import { IconCart, Loader, ModalInfo, ModalAmount, DataField, TextImage, Divider, Highlight } from '../components';
  
 const Product = () => {
-  const [added, setAdded] = useState(false)
-  const [amount, setAmount] = useState(1)
-  const [maxAmount, setMaxAmount] = useState(0)
-  const [datasheet, setDatasheet] = useState([])
+  const [added, setAdded] = useState(false);
+  const [amount, setAmount] = useState(1);
+  const [maxAmount, setMaxAmount] = useState(0);
+  const [datasheet, setDatasheet] = useState([]);
   
-  const [openAmountModal, setOpenAmountModal] = useState(false)
-  const [loadingDatasheet, setLoadingDatasheet] = useState(true)
-  const [loadingProduct, setLoadingProduct] = useState(true)
-  const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
+  const [openAmountModal, setOpenAmountModal] = useState(false);
+  const [loadingDatasheet, setLoadingDatasheet] = useState(true);
+  const [loadingProduct, setLoadingProduct] = useState(true);
+  const [modalSelectCustomer, setModalSelectCustomer] = useState(false);
 
-  const { background } = themeColors
-  const { myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { productsCart, addToCart, removeElement } = useCertra()
-  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva, bonicant, bonifica, fdesde, fhasta } } = useRoute() as { params: ProductInterface }
-  const navigation = useNavigation()
+  const { background } = themeColors;
+  const { myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin();
+  const { productsCart, addToCart, removeElement } = useCertra();
+  const { params: { descrip, codigo, image_url, merida, centro, oriente, base1, iva, bonicant, bonifica, fdesde, fhasta } } = useRoute() as { params: ProductInterface };
+  const navigation = useNavigation();
 
   // Get datahseet
   useEffect(() => {
     const getDatasheet = async () => {
-      const data = await fetchDatasheet(codigo)
-      const datasheet = Object.entries(data[0])
-      setDatasheet(datasheet as [])
-      setLoadingDatasheet(false)
-    }
-    getDatasheet()
-  }, [])
+      const data = await fetchDatasheet(codigo);
+      const datasheet = Object.entries(data[0]);
+      setDatasheet(datasheet as []);
+      setLoadingDatasheet(false);
+    };
+    getDatasheet();
+  }, []);
 
   // Get max amount
   useEffect(() => {
@@ -46,18 +46,18 @@ const Product = () => {
       if (merida || centro || oriente) {
         if (deposito) {
           if (deposito === 'MERIDA') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)));
           } else if (deposito === 'CARACAS') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
           } else if (deposito === 'ORIENTE') {
-            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)));
           }
         } else {
-          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
         }
       }
     }
-  }, [])
+  }, []);
 
   // -----------------------------------------------
   // ACTIONS
@@ -65,37 +65,37 @@ const Product = () => {
 
   // Refresh data when cart change
   useEffect(() => {
-    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
+    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo);
     if (productInCart !== undefined) { 
 
       // product in cart
-      setAdded(true)
-      setAmount(productInCart.amount)
-      setLoadingProduct(false)
+      setAdded(true);
+      setAmount(productInCart.amount);
+      setLoadingProduct(false);
     } else {
 
       // product not in cart
-      setAdded(false)
-      setAmount(1)
-      setLoadingProduct(false)
+      setAdded(false);
+      setAmount(1);
+      setLoadingProduct(false);
     }
-  }, [productsCart])
+  }, [productsCart]);
 
   // Handle actions
   const handleAddToCart = () => {
     if ((labAccess || salespersonAccess) && !customer) {
-      setModalSelectCustomer(true)
-      return
+      setModalSelectCustomer(true);
+      return;
     }
-    addToCart(codigo, amount)
+    addToCart(codigo, amount);
 
-    setAdded(true)
-  }
+    setAdded(true);
+  };
   const handleRemoveElement = () => {
-    setAdded(false)
-    setAmount(1)
-    removeElement(codigo)
-  }
+    setAdded(false);
+    setAmount(1);
+    removeElement(codigo);
+  };
 
   return (
     <>
@@ -258,7 +258,7 @@ const Product = () => {
                           )
                         }
                       </>
-                    )
+                    );
                   }}
                 />
               </View>
@@ -285,7 +285,7 @@ const Product = () => {
                         label={String(item[0]).split('_').join('. ')}
                         value={item[1]}
                       />
-                    )
+                    );
                   })}
                 </View>
               )}
@@ -319,11 +319,11 @@ const Product = () => {
             <View style={{ width: wp(35), borderWidth: .5 }} className='rounded-md border-turquoise'>
               <TouchableOpacity onPress={() => {
                 if ((labAccess || salespersonAccess) && !customer) {
-                  setModalSelectCustomer(true)
-                  return
+                  setModalSelectCustomer(true);
+                  return;
                 }
 
-                setOpenAmountModal(true)
+                setOpenAmountModal(true);
               }}>
                 <Text style={{ fontSize: wp(6) }} className='text-center text-darkTurquoise'>
                   {amount}
@@ -368,7 +368,7 @@ const Product = () => {
         onPressAcept={() => navigation.navigate('SearchCustomer')}
       />
     </>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

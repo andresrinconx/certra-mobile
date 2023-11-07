@@ -1,36 +1,36 @@
-import { useState, useEffect, useRef } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking } from 'react-native'
-import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { StatusBar } from 'react-native'
-import { themeColors } from '../../tailwind.config'
-import { setDataStorage } from '../utils/asyncStorage'
-import { fetchLogin } from '../utils/api'
-import { socialMedia } from '../utils/constants'
-import { useLogin, useNavigation } from '../hooks'
-import { Loader } from '../components'
+import { useState, useEffect, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, FlatList, Linking } from 'react-native';
+import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/mini';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { StatusBar } from 'react-native';
+import { themeColors } from '../../tailwind.config';
+import { setDataStorage } from '../utils/asyncStorage';
+import { fetchLogin } from '../utils/api';
+import { socialMedia } from '../utils/constants';
+import { useLogin, useNavigation } from '../hooks';
+import { Loader } from '../components';
 
 const Login = () => {
-  const [user, setUser] = useState('')
-  const [password, setPassword] = useState('')
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [showPassword, setShowPassword] = useState(false)
-  const [incorrectCredentials, setIncorrectCredentials] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [incorrectCredentials, setIncorrectCredentials] = useState(false);
   const [requiredFields, setRequiredFields] = useState({
     user: false,
     password: false,
-  })
+  });
 
-  const { icon } = themeColors
-  const { loadingAuth, setLoadingAuth, setMyUser, setLogin, checkLocationPermission } = useLogin()
-  const navigation = useNavigation()
-  const textInputRefUser = useRef<TextInput | null>(null)
-  const textInputRefPassword = useRef<TextInput | null>(null)
+  const { icon } = themeColors;
+  const { loadingAuth, setLoadingAuth, setMyUser, setLogin, checkLocationPermission } = useLogin();
+  const navigation = useNavigation();
+  const textInputRefUser = useRef<TextInput | null>(null);
+  const textInputRefPassword = useRef<TextInput | null>(null);
 
   // Start login
   useEffect(() => {
-    checkLocationPermission()
-  }, [])
+    checkLocationPermission();
+  }, []);
   
   // -----------------------------------------------
   // SCREEN
@@ -38,19 +38,19 @@ const Login = () => {
   
   // Input
   useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus)
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', removeInputFocus);
     return () => {
-      keyboardDidHideListener.remove()
-    }
-  }, [])
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const removeInputFocus = () => {
     if (textInputRefUser.current) {
-      textInputRefUser.current.blur()
+      textInputRefUser.current.blur();
     }
     if (textInputRefPassword.current) {
-      textInputRefPassword.current.blur()
+      textInputRefPassword.current.blur();
     }
-  }
+  };
 
   // -----------------------------------------------
   // AUTH
@@ -59,33 +59,33 @@ const Login = () => {
   const auth = async () => {
     // required fields
     if (user === '' && password === '') {
-      setRequiredFields({ ...requiredFields, user: true, password: true })
-      setIncorrectCredentials(false)
-      return
+      setRequiredFields({ ...requiredFields, user: true, password: true });
+      setIncorrectCredentials(false);
+      return;
     } else if (user === '') {
-      setRequiredFields({ ...requiredFields, user: true, password: false })
-      setIncorrectCredentials(false)
-      return
+      setRequiredFields({ ...requiredFields, user: true, password: false });
+      setIncorrectCredentials(false);
+      return;
     } else if (password === '') {
-      setRequiredFields({ ...requiredFields, user: false, password: true })
-      setIncorrectCredentials(false)
-      return
+      setRequiredFields({ ...requiredFields, user: false, password: true });
+      setIncorrectCredentials(false);
+      return;
     } else {
-      setRequiredFields({ ...requiredFields, user: false, password: false })
+      setRequiredFields({ ...requiredFields, user: false, password: false });
     }
 
-    setLoadingAuth(true)
-    setIncorrectCredentials(false)
+    setLoadingAuth(true);
+    setIncorrectCredentials(false);
 
     // api call
-    const res = await fetchLogin({ usuario: user, password })
-    const dataUser = res[0]
+    const res = await fetchLogin({ usuario: user, password });
+    const dataUser = res[0];
 
     if (res?.message) { // incorrect credentials
-      setLoadingAuth(false)
-      setIncorrectCredentials(true)
+      setLoadingAuth(false);
+      setIncorrectCredentials(true);
     } else { 
-      setIncorrectCredentials(false)
+      setIncorrectCredentials(false);
 
       setMyUser({
         ...dataUser,
@@ -94,7 +94,7 @@ const Login = () => {
           labAccess: dataUser?.clipro ? true : false,
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
-      })
+      });
       
       await setDataStorage('myUser', {
         ...dataUser,
@@ -103,18 +103,18 @@ const Login = () => {
           labAccess: dataUser?.clipro ? true : false,
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
-      })
-      await setDataStorage('login', true)
+      });
+      await setDataStorage('login', true);
       
-      setLogin(true)
-      setLoadingAuth(false)
-      setShowPassword(false)
-      navigation.navigate('Home')
+      setLogin(true);
+      setLoadingAuth(false);
+      setShowPassword(false);
+      navigation.navigate('Home');
 
-      setUser('')
-      setPassword('')
+      setUser('');
+      setPassword('');
     }
-  }
+  };
 
   return (
     <View className='flex-1 relative'>
@@ -224,10 +224,10 @@ const Login = () => {
             horizontal={true}
             showsVerticalScrollIndicator={false}
             renderItem={({item: {url, image, id}}) => {
-              const isLast = socialMedia.length === id
-              const noMargin = `${isLast ? 'mr-0' : 'mr-3'}`
+              const isLast = socialMedia.length === id;
+              const noMargin = `${isLast ? 'mr-0' : 'mr-3'}`;
               return (
-                <TouchableOpacity key={id} onPress={() => { Linking.openURL(`${url}`) }} 
+                <TouchableOpacity key={id} onPress={() => { Linking.openURL(`${url}`); }} 
                   style={{ width: wp(8), height: wp(10) }}
                   className={`${noMargin}`}
                 >
@@ -235,14 +235,14 @@ const Login = () => {
                     source={image}
                   />
                 </TouchableOpacity>
-              )
+              );
             }} 
           />
         </View>
         
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -1,8 +1,8 @@
-import { useContext } from 'react'
-import CertraContext from '../context/CertraProvider'
+import { useContext } from 'react';
+import CertraContext from '../context/CertraProvider';
 
 const useCertra = () => {
-  return useContext(CertraContext)
-}
+  return useContext(CertraContext);
+};
 
-export default useCertra
+export default useCertra;

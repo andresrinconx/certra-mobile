@@ -1,28 +1,28 @@
-import { useEffect } from 'react'
-import { View, SafeAreaView, StatusBar, BackHandler } from 'react-native'
-import { useRoute } from '@react-navigation/native'
-import { themeColors } from '../../tailwind.config'
-import { useCertra, useLogin } from '../hooks'
-import { SelectCustomer, Loader, Logos, ProductsHome, TabBar } from '../components'
+import { useEffect } from 'react';
+import { View, SafeAreaView, StatusBar, BackHandler } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { themeColors } from '../../tailwind.config';
+import { useCertra, useLogin } from '../hooks';
+import { SelectCustomer, Loader, Logos, ProductsHome, TabBar } from '../components';
 
 const Home = () => {
-  const { background } = themeColors
-  const { myUser: { image_url } } = useLogin()
-  const { loadingSelectCustomer } = useCertra()
-  const { name } = useRoute()
+  const { background } = themeColors;
+  const { myUser: { image_url } } = useLogin();
+  const { loadingSelectCustomer } = useCertra();
+  const { name } = useRoute();
 
   // Back handler
   useEffect(() => {
     if (name === 'Home') {
       const backAction = () => {
-        BackHandler.exitApp()
-        return true
-      }
+        BackHandler.exitApp();
+        return true;
+      };
   
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
-      return () => backHandler.remove()
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+      return () => backHandler.remove();
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -52,7 +52,7 @@ const Home = () => {
         <TabBar />
       </View>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

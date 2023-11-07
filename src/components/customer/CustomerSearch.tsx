@@ -1,31 +1,31 @@
-import { Text, TouchableOpacity, View } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { UserFromScliInterface } from '../../utils/interfaces'
-import { useCertra, useLogin, useNavigation } from '../../hooks'
+import { Text, TouchableOpacity, View } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { UserFromScliInterface } from '../../utils/interfaces';
+import { useCertra, useLogin, useNavigation } from '../../hooks';
 
 const CustomerSearch = ({ customer }: { customer: UserFromScliInterface }) => {
-  const { setMyUser, myUser } = useLogin()
-  const { setProductsCart, setLoadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useCertra()
-  const { cliente, nombre } = customer
-  const navigation = useNavigation()
+  const { setMyUser, myUser } = useLogin();
+  const { setProductsCart, setLoadingSelectCustomer, setLoadingProductsGrid, setProducts, setCurrentPage } = useCertra();
+  const { cliente, nombre } = customer;
+  const navigation = useNavigation();
 
   // select customer
   const selectCustomer = () => {
-    setLoadingSelectCustomer(true)
+    setLoadingSelectCustomer(true);
     // user
-    setMyUser({ ...myUser, customer })
+    setMyUser({ ...myUser, customer });
 
     // products & cart
-    setProductsCart([])
-    setProducts([])
-    setCurrentPage(1)
-    navigation.navigate('Home')
-    setLoadingProductsGrid(true)
+    setProductsCart([]);
+    setProducts([]);
+    setCurrentPage(1);
+    navigation.navigate('Home');
+    setLoadingProductsGrid(true);
 
     setTimeout(() => {
-      setLoadingSelectCustomer(false)
-    }, 500)
-  }
+      setLoadingSelectCustomer(false);
+    }, 500);
+  };
 
   return (
     <TouchableOpacity className='flex flex-col justify-center h-12 mb-4 rounded-xl bg-charge'
@@ -40,7 +40,7 @@ const CustomerSearch = ({ customer }: { customer: UserFromScliInterface }) => {
         </Text>
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default CustomerSearch
+export default CustomerSearch;

@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import { Modal } from 'native-base'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { ProductCartInterface } from '../../utils/interfaces'
-import { useCertra } from '../../hooks'
-import { themeColors } from '../../../tailwind.config'
+import { useState, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Modal } from 'native-base';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { ProductCartInterface } from '../../utils/interfaces';
+import { useCertra } from '../../hooks';
+import { themeColors } from '../../../tailwind.config';
 
 const ModalAmount = ({
   stateModal,
@@ -19,12 +19,12 @@ const ModalAmount = ({
   amount: number
   maxAmount: number
 }) => {
-  const [amountInput, setAmountInput] = useState('')
-  const [disableAcept, setDisableAcept] = useState(true)
+  const [amountInput, setAmountInput] = useState('');
+  const [disableAcept, setDisableAcept] = useState(true);
 
-  const { darkTurquoise } = themeColors
-  const { productsCart, setProductsCart, addToCart } = useCertra()
-  const initialRef = useRef(null)
+  const { darkTurquoise } = themeColors;
+  const { productsCart, setProductsCart, addToCart } = useCertra();
+  const initialRef = useRef(null);
 
   return (
     <Modal isOpen={stateModal} initialFocusRef={initialRef}>
@@ -38,15 +38,15 @@ const ModalAmount = ({
             keyboardType='numeric'
             onChangeText={text => {
               if (Number(text) < 1 || Number(text) > maxAmount) { // no acept
-                setDisableAcept(true)
+                setDisableAcept(true);
               } else if ( 
                 // igual, mayor o menor (y no es cero)
                 amount === Number(text) || 
                 amount < Number(text) || 
                 amount > Number(text) && Number(text) !== 0
               ) {
-                setDisableAcept(false)
-                setAmountInput(text.replace(/-/g, ''))
+                setDisableAcept(false);
+                setAmountInput(text.replace(/-/g, ''));
               }
             }}
             selectionColor={darkTurquoise}
@@ -57,9 +57,9 @@ const ModalAmount = ({
         <View className='flex flex-row items-center justify-between'>
           <View className='flex justify-center w-[48%] rounded-xl bg-green'>
             <TouchableOpacity onPress={() => {
-              setStateModal(false)
-              setDisableAcept(true)
-              setAmountInput(String(amount))
+              setStateModal(false);
+              setDisableAcept(true);
+              setAmountInput(String(amount));
             }}>
               <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                 Cancelar
@@ -70,25 +70,25 @@ const ModalAmount = ({
           <View className={`flex justify-center w-[48%] rounded-xl ${disableAcept ? 'bg-processBtn' : 'bg-green'}`}>
             <TouchableOpacity disabled={disableAcept} onPress={() => {
               // not in cart (add)
-              const productInCart = productsCart.find((product) => product.codigo === codigo)
+              const productInCart = productsCart.find((product) => product.codigo === codigo);
               if (!productInCart) {
-                addToCart(codigo, Number(amountInput))
-                setStateModal(false)
-                setDisableAcept(true)
-                return
+                addToCart(codigo, Number(amountInput));
+                setStateModal(false);
+                setDisableAcept(true);
+                return;
               }
 
               // in cart (update)
               const updatedProductsCart = productsCart.map(item => {
                 if (item.codigo === codigo) {
-                  return { ...item, amount: Number(amountInput) }
+                  return { ...item, amount: Number(amountInput) };
                 } else {
-                  return { ...item }
+                  return { ...item };
                 }
-              })
-              setProductsCart(updatedProductsCart as ProductCartInterface[])
-              setStateModal(false)
-              setDisableAcept(true)
+              });
+              setProductsCart(updatedProductsCart as ProductCartInterface[]);
+              setStateModal(false);
+              setDisableAcept(true);
             }}>
               <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                 Aceptar
@@ -99,7 +99,7 @@ const ModalAmount = ({
 
       </Modal.Content>
     </Modal>
-  )
-}
+  );
+};
 
-export default ModalAmount
+export default ModalAmount;

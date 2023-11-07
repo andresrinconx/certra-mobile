@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
-import { View, Animated, Easing, StatusBar } from 'react-native'
-import { themeColors } from '../../../tailwind.config'
+import { useState, useEffect } from 'react';
+import { View, Animated, Easing, StatusBar } from 'react-native';
+import { themeColors } from '../../../tailwind.config';
 
 const LoaderLogoScreen = () => {
-  const [rotationValue] = useState(new Animated.Value(0))
-  const { background } = themeColors
+  const [rotationValue] = useState(new Animated.Value(0));
+  const { background } = themeColors;
 
   useEffect(() => {
     const rotateImage = () => {
@@ -14,18 +14,18 @@ const LoaderLogoScreen = () => {
         easing: Easing.linear,
         useNativeDriver: false,
       }).start(() => {
-        rotationValue.setValue(0)
-        rotateImage()
-      })
-    }
+        rotationValue.setValue(0);
+        rotateImage();
+      });
+    };
 
-    rotateImage()
-  }, [])
+    rotateImage();
+  }, []);
 
   const rotateInterpolation = rotationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
-  })
+  });
 
   return (
     <View className='flex-1 justify-center items-center bg-background'>
@@ -41,7 +41,7 @@ const LoaderLogoScreen = () => {
         resizeMode='contain'
       />
     </View>
-  )
-}
+  );
+};
 
-export default LoaderLogoScreen
+export default LoaderLogoScreen;

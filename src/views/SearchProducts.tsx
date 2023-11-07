@@ -1,22 +1,22 @@
-import { useRef, useState } from 'react'
-import { View, TextInput, Keyboard, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '@react-navigation/native'
-import { debounce } from 'lodash'
-import { ProductInterface } from '../utils/interfaces'
-import { fetchSearchedItems } from '../utils/api'
-import { formatText } from '../utils/helpers'
-import { useLogin } from '../hooks'
-import { ProductSearch, IconCart, Highlight } from '../components'
-import { themeColors } from '../../tailwind.config'
+import { useRef, useState } from 'react';
+import { View, TextInput, Keyboard, FlatList, Image, SafeAreaView, StatusBar } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
+import { debounce } from 'lodash';
+import { ProductInterface } from '../utils/interfaces';
+import { fetchSearchedItems } from '../utils/api';
+import { formatText } from '../utils/helpers';
+import { useLogin } from '../hooks';
+import { ProductSearch, IconCart, Highlight } from '../components';
+import { themeColors } from '../../tailwind.config';
 
 const SearchProducts = () => {
-  const [searchedProducts, setSearchedProducts] = useState([])
+  const [searchedProducts, setSearchedProducts] = useState([]);
 
-  const { background, darkTurquoise, typography } = themeColors
-  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin()
-  const navigation = useNavigation()
-  const textInputRef = useRef<TextInput | null>(null)
+  const { background, darkTurquoise, typography } = themeColors;
+  const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, clipro } } = useLogin();
+  const navigation = useNavigation();
+  const textInputRef = useRef<TextInput | null>(null);
 
   // -----------------------------------------------
   // SCREEN
@@ -25,8 +25,8 @@ const SearchProducts = () => {
   // hide keyboard
   const handleScroll = () => {
     // Cerrar el teclado
-    Keyboard.dismiss()
-  }
+    Keyboard.dismiss();
+  };
 
   // -----------------------------------------------
   // SEARCH
@@ -35,24 +35,24 @@ const SearchProducts = () => {
     if (value.length > 2) {
       // search
       
-      let data: ProductInterface[] = []
+      let data: ProductInterface[] = [];
 
       // fetch data
       if (customerAccess || salespersonAccess) { // all products (scli & usuario)
-        data = await fetchSearchedItems({ searchTerm: formatText(value), table: 'appSinv/search' })
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: 'appSinv/search' });
 
       } else if(labAccess) { // products by lab (usuario-clipro)
-        data = await fetchSearchedItems({ searchTerm: formatText(value), table: `appSinv/searchPp/${clipro}` })
+        data = await fetchSearchedItems({ searchTerm: formatText(value), table: `appSinv/searchPp/${clipro}` });
 
       }
 
-      setSearchedProducts(data)
+      setSearchedProducts(data);
     } else {
       // no search
-      setSearchedProducts([])
+      setSearchedProducts([]);
     }
-  }
-  const handleTextDebounce = debounce(handleSearch, 400)
+  };
+  const handleTextDebounce = debounce(handleSearch, 400);
 
   return (
     <SafeAreaView className='flex-1 h-full pt-10 bg-background'>
@@ -100,17 +100,17 @@ const SearchProducts = () => {
               }}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {
-                const { id } = item
+                const { id } = item;
                 return (
                   <ProductSearch key={id} product={item} />
-                )
+                );
               }}
             />
           )}
         </View>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default SearchProducts
+export default SearchProducts;

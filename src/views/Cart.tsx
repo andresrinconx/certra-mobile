@@ -1,34 +1,34 @@
-import { useEffect, useState, useRef } from 'react'
-import { View, Text, TouchableOpacity, FlatList, TextInput, SafeAreaView } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { AlertDialog, Button, Modal } from 'native-base'
-import { StatusBar } from 'react-native'
-import { themeColors } from '../../tailwind.config'
-import { fetchOneItem } from '../utils/api'
-import { ProductInterface } from '../utils/interfaces'
-import { getDataStorage, setDataStorage } from '../utils/asyncStorage'
-import { useCertra, useLogin, useNavigation } from '../hooks'
-import { ProductCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components'
+import { useEffect, useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, FlatList, TextInput, SafeAreaView } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { AlertDialog, Button, Modal } from 'native-base';
+import { StatusBar } from 'react-native';
+import { themeColors } from '../../tailwind.config';
+import { fetchOneItem } from '../utils/api';
+import { ProductInterface } from '../utils/interfaces';
+import { getDataStorage, setDataStorage } from '../utils/asyncStorage';
+import { useCertra, useLogin, useNavigation } from '../hooks';
+import { ProductCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components';
 
 const Cart = () => {
-  const [loadingCart, setLoadingCart] = useState(true)
-  const [fullProductsCart, setFullProductsCart] = useState([])
-  const [linealDiscount, setLinealDiscount] = useState(0)
-  const [linealDiscountInput, setLinealDiscountInput] = useState('')
+  const [loadingCart, setLoadingCart] = useState(true);
+  const [fullProductsCart, setFullProductsCart] = useState([]);
+  const [linealDiscount, setLinealDiscount] = useState(0);
+  const [linealDiscountInput, setLinealDiscountInput] = useState('');
   
-  const [alertClearCart, setAlertClearCart] = useState(false)
-  const [openLinealDiscountModal, setOpenLinealDiscountModal] = useState(false)
-  const [disableAcept, setDisableAcept] = useState(true)
-  const [modalInfo, setModalInfo] = useState(false)
+  const [alertClearCart, setAlertClearCart] = useState(false);
+  const [openLinealDiscountModal, setOpenLinealDiscountModal] = useState(false);
+  const [disableAcept, setDisableAcept] = useState(true);
+  const [modalInfo, setModalInfo] = useState(false);
 
-  const { background, darkTurquoise } = themeColors
-  const { myUser: { access: { customerAccess, labAccess }, customer, image_url, dscCliente } } = useLogin()
-  const { productsCart, setProductsCart } = useCertra()
-  const initialRef = useRef(null)
-  const cancelRef = useRef(null)
-  const navigation = useNavigation()
+  const { background, darkTurquoise } = themeColors;
+  const { myUser: { access: { customerAccess, labAccess }, customer, image_url, dscCliente } } = useLogin();
+  const { productsCart, setProductsCart } = useCertra();
+  const initialRef = useRef(null);
+  const cancelRef = useRef(null);
+  const navigation = useNavigation();
 
-  const onCloseAlertClearCart = () => setAlertClearCart(false)
+  const onCloseAlertClearCart = () => setAlertClearCart(false);
   
   // Get full products cart
   useEffect(() => {
@@ -36,38 +36,38 @@ const Cart = () => {
 
       // lineal discount storage
       if (!linealDiscount) {
-        const linealDiscountStorage = await getDataStorage('linealDiscount')
-        setLinealDiscount(linealDiscountStorage ? JSON.parse(linealDiscountStorage) : 0)
-        setLinealDiscountInput(linealDiscountStorage ? JSON.parse(linealDiscountStorage) : '')
+        const linealDiscountStorage = await getDataStorage('linealDiscount');
+        setLinealDiscount(linealDiscountStorage ? JSON.parse(linealDiscountStorage) : 0);
+        setLinealDiscountInput(linealDiscountStorage ? JSON.parse(linealDiscountStorage) : '');
       }
 
       if (productsCart?.length > 0) {
-        const newFullProductsCart = []
+        const newFullProductsCart = [];
     
         for (let i = 0; i < productsCart?.length; i++) {
-          const code = productsCart[i].codigo
-          const amount = productsCart[i].amount
-          const labDiscount = productsCart[i].labDiscount
-          const customerDiscount = customerAccess ? dscCliente : customer?.dscCliente
+          const code = productsCart[i].codigo;
+          const amount = productsCart[i].amount;
+          const labDiscount = productsCart[i].labDiscount;
+          const customerDiscount = customerAccess ? dscCliente : customer?.dscCliente;
     
           // get product api
-          const res: ProductInterface[] = await fetchOneItem('appSinv/searchC', code)
-          newFullProductsCart.push({ ...res[0], amount, labDiscount, customerDiscount })
+          const res: ProductInterface[] = await fetchOneItem('appSinv/searchC', code);
+          newFullProductsCart.push({ ...res[0], amount, labDiscount, customerDiscount });
           
           // last item
           if (i === productsCart?.length - 1) {
-            setFullProductsCart(newFullProductsCart as any)
-            setLoadingCart(false)
+            setFullProductsCart(newFullProductsCart as any);
+            setLoadingCart(false);
           }
         }
 
       } else {
-        setLoadingCart(false)
+        setLoadingCart(false);
       }
-    }
+    };
 
-    getFullProductsCart()
-  }, [productsCart])
+    getFullProductsCart();
+  }, [productsCart]);
 
   // -----------------------------------------------
   // ACTIONS
@@ -75,33 +75,33 @@ const Cart = () => {
 
   // Clear cart
   const clearCart = async () => {
-    await setDataStorage('linealDiscount', '0')
-    setAlertClearCart(false)
-    setProductsCart([])
-  }
+    await setDataStorage('linealDiscount', '0');
+    setAlertClearCart(false);
+    setProductsCart([]);
+  };
 
   const aceptDiscount = async () => {
     const updatedProductsCart = productsCart.map(item => {
-      const cleanDiscount = parseInt(String(linealDiscountInput).replace(/-/g, ''))
-      return { ...item, labDiscount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) }
-    })
-    setProductsCart(updatedProductsCart)
+      const cleanDiscount = parseInt(String(linealDiscountInput).replace(/-/g, ''));
+      return { ...item, labDiscount: isNaN(cleanDiscount) ? '0' : String(cleanDiscount) };
+    });
+    setProductsCart(updatedProductsCart);
     
     // set discounts
-    const cleanDiscount = parseInt(String(linealDiscountInput).replace(/-/g, ''))
-    setLinealDiscount(isNaN(cleanDiscount) ? 0 : cleanDiscount)
+    const cleanDiscount = parseInt(String(linealDiscountInput).replace(/-/g, ''));
+    setLinealDiscount(isNaN(cleanDiscount) ? 0 : cleanDiscount);
     try {
-      await setDataStorage('linealDiscount', isNaN(cleanDiscount) ? '0' : String(cleanDiscount))
+      await setDataStorage('linealDiscount', isNaN(cleanDiscount) ? '0' : String(cleanDiscount));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
-    setOpenLinealDiscountModal(false)
-    setDisableAcept(true)
+    setOpenLinealDiscountModal(false);
+    setDisableAcept(true);
     if (Number(linealDiscountInput) >= 20) {
-      setModalInfo(true)
+      setModalInfo(true);
     }
-  }
+  };
 
   return (
     <>
@@ -179,7 +179,7 @@ const Cart = () => {
                   renderItem={({ item }: { item: ProductInterface }) => {
                     return (
                       <ProductCart key={item.id} product={item} />
-                    )
+                    );
                   }}
                 />
               )}
@@ -231,10 +231,10 @@ const Cart = () => {
               keyboardType='numeric'
               onChangeText={text => {
                 if (Number(text) < 0 || Number(text) > 99) {
-                  setDisableAcept(true)
+                  setDisableAcept(true);
                 } else {
-                  setDisableAcept(false)
-                  setLinealDiscountInput(text)
+                  setDisableAcept(false);
+                  setLinealDiscountInput(text);
                 }
               }}
               selectionColor={darkTurquoise}
@@ -245,9 +245,9 @@ const Cart = () => {
           <View className='flex flex-row items-center justify-between'>
             <View className='flex justify-center w-[48%] rounded-xl bg-green'>
               <TouchableOpacity onPress={() => {
-                setOpenLinealDiscountModal(false)
-                setDisableAcept(true)
-                setLinealDiscountInput('')
+                setOpenLinealDiscountModal(false);
+                setDisableAcept(true);
+                setLinealDiscountInput('');
               }}>
                 <Text style={{ fontSize: wp(4.5) }} className='py-2 text-center font-bold text-white'>
                   Cancelar
@@ -275,7 +275,7 @@ const Cart = () => {
         aceptButtonText='Aceptar'
       />
     </>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;

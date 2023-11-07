@@ -1,25 +1,25 @@
-import { useState } from 'react'
-import { Pressable, Image, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation, useLogin } from '../../hooks'
-import { ModalInfo } from '..'
+import { useState } from 'react';
+import { Pressable, Image, Text } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useNavigation, useLogin } from '../../hooks';
+import { ModalInfo } from '..';
 
 const IconSearchProducts = () => {
-  const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
+  const [modalSelectCustomer, setModalSelectCustomer] = useState(false);
   
-  const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const navigation = useNavigation()
+  const { myUser: { access: { labAccess, salespersonAccess }, customer } } = useLogin();
+  const navigation = useNavigation();
 
   return (
     <>
       <Pressable className='w-full h-full flex flex-col items-center justify-center'
         onPress={() => {
           if ((labAccess || salespersonAccess) && !customer) {
-            setModalSelectCustomer(true)
-            return
+            setModalSelectCustomer(true);
+            return;
           }
 
-          navigation.navigate('SearchProducts')
+          navigation.navigate('SearchProducts');
         }}
       >
         <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
@@ -37,7 +37,7 @@ const IconSearchProducts = () => {
         onPressAcept={() => navigation.navigate('SearchCustomer')}
       />
     </>
-  )
-}
+  );
+};
 
-export default IconSearchProducts
+export default IconSearchProducts;

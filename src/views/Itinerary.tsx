@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Pressable } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { StatusBar } from 'react-native'
-import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid'
-import { themeColors } from '../../tailwind.config'
-import { ItineraryEventInterface } from '../utils/interfaces'
-import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers'
-import { fetchItinerary, fetchReasons } from '../utils/api'
-import { days } from '../utils/constants'
-import { useCertra, useLogin, useNavigation } from '../hooks'
-import { Loader, Logos, BackScreen } from '../components'
+import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Pressable } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { StatusBar } from 'react-native';
+import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid';
+import { themeColors } from '../../tailwind.config';
+import { ItineraryEventInterface } from '../utils/interfaces';
+import { getDayOfWeekInText, getMonthAndDays } from '../utils/helpers';
+import { fetchItinerary, fetchReasons } from '../utils/api';
+import { days } from '../utils/constants';
+import { useCertra, useLogin, useNavigation } from '../hooks';
+import { Loader, Logos, BackScreen } from '../components';
 
 interface daysItineraryInterface {
   current: boolean,
@@ -18,83 +18,83 @@ interface daysItineraryInterface {
 }
 
 const Itinerary = () => {
-  const [loadingItinerary, setLoadingItinerary] = useState(true)
+  const [loadingItinerary, setLoadingItinerary] = useState(true);
 
-  const [currentYear, setCurrentYear] = useState('')
-  const [currentMonth, setCurrentMonth] = useState('')
-  const [currentMonthInText, setCurrentMonthInText] = useState('')
-  const [currentDay, setCurrentDay] = useState('')
-  const [dayOfWeekInText, setDayOfWeekInText] = useState('')
-  const [daysItinerary, setDaysItinerary] = useState<daysItineraryInterface[]>([])
+  const [currentYear, setCurrentYear] = useState('');
+  const [currentMonth, setCurrentMonth] = useState('');
+  const [currentMonthInText, setCurrentMonthInText] = useState('');
+  const [currentDay, setCurrentDay] = useState('');
+  const [dayOfWeekInText, setDayOfWeekInText] = useState('');
+  const [daysItinerary, setDaysItinerary] = useState<daysItineraryInterface[]>([]);
 
-  const [reasons, setReasons] = useState([])
-  const [location, setLocation] = useState('')
+  const [reasons, setReasons] = useState([]);
+  const [location, setLocation] = useState('');
 
-  const { background, turquoise } = themeColors
-  const { myUser, locationPermissionGranted, checkLocationPermission, getCurrentLocation } = useLogin()
-  const { reloadItinerary } = useCertra()
-  const navigation = useNavigation()
+  const { background, turquoise } = themeColors;
+  const { myUser, locationPermissionGranted, checkLocationPermission, getCurrentLocation } = useLogin();
+  const { reloadItinerary } = useCertra();
+  const navigation = useNavigation();
 
   // Load
   useEffect(() => {
-    checkLocationPermission()
-    getLocation()
-  }, [])
+    checkLocationPermission();
+    getLocation();
+  }, []);
 
   // Reload
   useEffect(() => {
     if (reloadItinerary) {
-      setLoadingItinerary(true)
-      setData()
+      setLoadingItinerary(true);
+      setData();
     }
-  }, [reloadItinerary])
+  }, [reloadItinerary]);
 
   const getLocation = async () => {
     try {
-      const { latitude } = await getCurrentLocation() as { latitude: number }
+      const { latitude } = await getCurrentLocation() as { latitude: number };
       
       if (latitude) {
-        setLocation(String(latitude))
-        setData()
+        setLocation(String(latitude));
+        setData();
       }
     } catch (error) {
-      setLoadingItinerary(false)
+      setLoadingItinerary(false);
     }
-  }
+  };
 
   // Set data
   const setData = async () => {
     try {
       // date
-      const currentDate = new Date()
+      const currentDate = new Date();
 
       // -----------------------------------------------
       // CURRENT DATA
       // -----------------------------------------------
 
       // year
-      const currentYear = currentDate.getFullYear()
-      setCurrentYear(String(currentYear))
+      const currentYear = currentDate.getFullYear();
+      setCurrentYear(String(currentYear));
 
       // month and days
-      const currentMonthAndDays = getMonthAndDays(currentDate) // object {month: string, days: number}
-      setCurrentMonthInText(currentMonthAndDays.month)
+      const currentMonthAndDays = getMonthAndDays(currentDate); // object {month: string, days: number}
+      setCurrentMonthInText(currentMonthAndDays.month);
 
       // month
-      const currentMonth = currentDate.getMonth()
-      setCurrentMonth(String(currentMonth + 1))
+      const currentMonth = currentDate.getMonth();
+      setCurrentMonth(String(currentMonth + 1));
 
       // day
-      const currentDay = currentDate.getDate()
-      setCurrentDay(String(currentDay))
+      const currentDay = currentDate.getDate();
+      setCurrentDay(String(currentDay));
 
       // day name
-      const currentDayOfWeekInText = getDayOfWeekInText(currentDate)
-      setDayOfWeekInText(currentDayOfWeekInText)
+      const currentDayOfWeekInText = getDayOfWeekInText(currentDate);
+      setDayOfWeekInText(currentDayOfWeekInText);
 
       // first day of month
-      const currentFirstDay = new Date(currentYear, currentMonth, 1)
-      const currentFirstDayInText = getDayOfWeekInText(currentFirstDay).substring(0, 3)
+      const currentFirstDay = new Date(currentYear, currentMonth, 1);
+      const currentFirstDayInText = getDayOfWeekInText(currentFirstDay).substring(0, 3);
 
       // prev days number
       const prevDaysNumber = 
@@ -104,7 +104,7 @@ const Itinerary = () => {
         'Jue' === currentFirstDayInText ? 3 : 
         'Vie' === currentFirstDayInText ? 4 : 
         'Sáb' === currentFirstDayInText ? 5 : 
-        'Dom' === currentFirstDayInText ? 6 : 0
+        'Dom' === currentFirstDayInText ? 6 : 0;
 
 
       // post days number
@@ -143,7 +143,7 @@ const Itinerary = () => {
           currentMonthAndDays.days === 31 ? 5 :
           currentMonthAndDays.days === 30 ? 6 :
           currentMonthAndDays.days === 29 ? 7 :
-          currentMonthAndDays.days === 28 ? 8 : 0 : 0
+          currentMonthAndDays.days === 28 ? 8 : 0 : 0;
       
       // -----------------------------------------------
       // MONTH ITINERARY
@@ -154,9 +154,9 @@ const Itinerary = () => {
         salesperson: myUser?.vendedor ? myUser?.vendedor : String(0), 
         year: String(currentYear), 
         month: String(currentMonth + 1)
-      })
+      });
 
-      const daysItinerary: daysItineraryInterface[] = []
+      const daysItinerary: daysItineraryInterface[] = [];
 
       // previous days
       for (let i = 0; i < prevDaysNumber; i++) {
@@ -164,7 +164,7 @@ const Itinerary = () => {
           current: false,
           day: '',
           events: []
-        })
+        });
       }
 
       // days itinerary
@@ -173,7 +173,7 @@ const Itinerary = () => {
           current: true,
           day: i + 1,
           events: dataItinerary?.filter((item: ItineraryEventInterface) => String(item.fecha).substring(8, 10) === (String(i + 1).length === 1 ? `0${i + 1}` : String(i + 1)))
-        })
+        });
       }
 
       // post days
@@ -182,23 +182,23 @@ const Itinerary = () => {
           current: false,
           day: '',
           events: []
-        })
+        });
       }
-      setDaysItinerary(daysItinerary)
+      setDaysItinerary(daysItinerary);
 
       // -----------------------------------------------
       // OTHER
       // -----------------------------------------------
 
       // reasons
-      const reasons = await fetchReasons()
-      setReasons(reasons)
+      const reasons = await fetchReasons();
+      setReasons(reasons);
 
-      setLoadingItinerary(false)
+      setLoadingItinerary(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <SafeAreaView className='flex-1 px-2.5 pt-6 bg-background'>
@@ -215,8 +215,8 @@ const Itinerary = () => {
         ) : (
           !locationPermissionGranted || location === '' ? (
             <Pressable onPress={() => {
-              setLoadingItinerary(true)
-              getLocation()
+              setLoadingItinerary(true);
+              getLocation();
             }} className='mt-5'>
               <Text className='text-center font-bold text-typography' style={{ fontSize: wp(4) }}>Por favor activar GPS</Text>
               <Text className='text-center font-medium text-darkTurquoise' style={{ fontSize: wp(4) }}>Volver a cargar</Text>
@@ -234,12 +234,12 @@ const Itinerary = () => {
               {/* days view */}
               <View className='flex flex-row justify-center items-center mt-4'>
                 {days.map((item) => {
-                  const { id, name } = item
+                  const { id, name } = item;
                   return (
                     <Text key={id} className={`uppercase text-center ${name === dayOfWeekInText ? 'text-turquoise' : 'text-typography'}`} 
                       style={{ fontSize: wp(2.4), width: wp(13.5) }}
                     >{name}</Text>
-                  )
+                  );
                 })}
               </View>
 
@@ -250,8 +250,8 @@ const Itinerary = () => {
                   numColumns={7}
                   showsVerticalScrollIndicator={false}
                   renderItem={({item: {current, day, events}, index}) => {
-                    const date = new Date(`${currentYear}-${currentMonth}-${Number(day) + 1}`)
-                    const dayInText = getDayOfWeekInText(date)
+                    const date = new Date(`${currentYear}-${currentMonth}-${Number(day) + 1}`);
+                    const dayInText = getDayOfWeekInText(date);
 
                     return (
                       <TouchableOpacity key={index} className={`p-0.5 border-[0.5px] border-typography ${current ? 'bg-background' : 'bg-lightList'}`}
@@ -287,7 +287,7 @@ const Itinerary = () => {
                           </View>
                         )}
                       </TouchableOpacity>
-                    )
+                    );
                   }} 
                 />
               </View>
@@ -297,7 +297,7 @@ const Itinerary = () => {
       </View>
 
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Itinerary
+export default Itinerary;

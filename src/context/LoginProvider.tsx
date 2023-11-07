@@ -1,9 +1,9 @@
-import { createContext, useState, useEffect } from 'react'
-import { PermissionsAndroid } from 'react-native'
-import GetLocation from 'react-native-get-location'
-import { UserFromScliInterface, MyUserInterface } from '../utils/interfaces'
-import { setDataStorage } from '../utils/asyncStorage'
-import { fetchTableData } from '../utils/api'
+import { createContext, useState, useEffect } from 'react';
+import { PermissionsAndroid } from 'react-native';
+import GetLocation from 'react-native-get-location';
+import { UserFromScliInterface, MyUserInterface } from '../utils/interfaces';
+import { setDataStorage } from '../utils/asyncStorage';
+import { fetchTableData } from '../utils/api';
 // import { notificationListener, requestUserPermission } from '../utils/pushNotification'
 
 const LoginContext = createContext<{
@@ -44,27 +44,27 @@ const LoginContext = createContext<{
   getCurrentLocation: () => { 
     // do nothing
   }
-})
+});
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // USER
-  const [login, setLogin] = useState(false)
+  const [login, setLogin] = useState(false);
   const [myUser, setMyUser] = useState<MyUserInterface>({
     access: {
       customerAccess: false,
       labAccess: false,
       salespersonAccess: false
     }
-  })
+  });
 
   // LOCATION
-  const [locationPermissionGranted, setLocationPermissionGranted] = useState(false)
+  const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
 
   // API
-  const [allCustomers, setAllCustomers] = useState<UserFromScliInterface[]>([])
+  const [allCustomers, setAllCustomers] = useState<UserFromScliInterface[]>([]);
 
   // LOADERS
-  const [loadingAuth, setLoadingAuth] = useState(false)
+  const [loadingAuth, setLoadingAuth] = useState(false);
 
   // -----------------------------------------------
   // STORAGE
@@ -75,14 +75,14 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     if (myUser?.customer) {
       const setMyUserStorage = async () => {
         try {
-          await setDataStorage('myUser', myUser)
+          await setDataStorage('myUser', myUser);
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
-      }
-      setMyUserStorage()
+      };
+      setMyUserStorage();
     }
-  }, [myUser])
+  }, [myUser]);
 
   // -----------------------------------------------
   // PERMISSIONS
@@ -96,31 +96,31 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   // }, [])
 
   const checkLocationPermission = async () => {
-    const granted = await getLocationPermission()
-    setLocationPermissionGranted(granted)
-  }
+    const granted = await getLocationPermission();
+    setLocationPermissionGranted(granted);
+  };
 
   const getLocationPermission = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     ).catch((err) => {
-      console.warn(err)
-    })
-    return granted === PermissionsAndroid.RESULTS.GRANTED
-  }
+      console.warn(err);
+    });
+    return granted === PermissionsAndroid.RESULTS.GRANTED;
+  };
 
   const getCurrentLocation = async () => {
     const location = await GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 15000,
-    })
+    });
     
     if (location) {
-      return location
+      return location;
     } else {
-      return null
+      return null;
     }
-  }
+  };
 
   // -----------------------------------------------
   // CUSTOMERS
@@ -131,15 +131,15 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     if (login) {
       const getCustomers = async () => {
         try {
-          const resScli = await fetchTableData('appClientes/scli')
-          setAllCustomers(resScli)
+          const resScli = await fetchTableData('appClientes/scli');
+          setAllCustomers(resScli);
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
-      }
-      getCustomers()
+      };
+      getCustomers();
     }
-  }, [login]) 
+  }, [login]); 
 
   return (
     <LoginContext.Provider value={{
@@ -156,7 +156,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
     }}>
       {children}
     </LoginContext.Provider>
-  )
-}
+  );
+};
 
-export default LoginContext
+export default LoginContext;

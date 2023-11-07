@@ -1,10 +1,10 @@
-import { View, Image, Pressable } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation, useLogin } from '../../hooks'
+import { View, Image, Pressable } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useNavigation, useLogin } from '../../hooks';
 
 const Logos = ({image}: {image: URL}) => {
-  const { myUser: { access: { labAccess, salespersonAccess } } } = useLogin()
-  const navigation = useNavigation()
+  const { myUser: { access: { labAccess, salespersonAccess } } } = useLogin();
+  const navigation = useNavigation();
 
   return (
     <View className='flex-row justify-between'>
@@ -26,7 +26,7 @@ const Logos = ({image}: {image: URL}) => {
         />
       )}
     </View>
-  )
-}
+  );
+};
 
-export default Logos
+export default Logos;

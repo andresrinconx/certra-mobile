@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Pressable, TextInput } from 'react-native'
-import { PresenceTransition, Menu, useToast } from 'native-base'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini'
-import DatePicker from 'react-native-date-picker'
-import { themeColors } from '../../../tailwind.config'
-import { getDateDesc } from '../../utils/helpers'
-import { fetchItineraryItem, fetchReasign } from '../../utils/api'
-import { useCertra, useLogin, useNavigation } from '../../hooks'
+import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Image, Pressable, TextInput } from 'react-native';
+import { PresenceTransition, Menu, useToast } from 'native-base';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/mini';
+import DatePicker from 'react-native-date-picker';
+import { themeColors } from '../../../tailwind.config';
+import { getDateDesc } from '../../utils/helpers';
+import { fetchItineraryItem, fetchReasign } from '../../utils/api';
+import { useCertra, useLogin, useNavigation } from '../../hooks';
 
 const ItineraryDayEvent = ({ 
   day, 
@@ -20,38 +20,38 @@ const ItineraryDayEvent = ({
   reasons: []
   item: { cliente: string, direccion: string, telefono: string, numero: string, motivo: string, descrip: string, codcli: string }
 }) => {
-  const [selectedReason, setSelectedReason] = useState('')
-  const [observation, setObservation] = useState('')
-  const [touch, setTouch] = useState(false)
-  const [openDetails, setOpenDetails] = useState(false)
-  const [openEdit, setOpenEdit] = useState(false)
+  const [selectedReason, setSelectedReason] = useState('');
+  const [observation, setObservation] = useState('');
+  const [touch, setTouch] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
-  const [date, setDate] = useState(new Date())
-  const [openDatePickerReasign, setOpenDatePickerReasign] = useState(false)
+  const [date, setDate] = useState(new Date());
+  const [openDatePickerReasign, setOpenDatePickerReasign] = useState(false);
 
-  const { cliente, direccion, telefono, numero, motivo, descrip, codcli } = item
-  const { lightList, turquoise, darkTurquoise } = themeColors
-  const { allCustomers, getCurrentLocation, setMyUser, myUser, myUser: { us_codigo } } = useLogin()
-  const { setReloadItinerary, setProductsCart } = useCertra()
-  const navigation = useNavigation()
-  const toast = useToast()
-  const id = 'toast'
+  const { cliente, direccion, telefono, numero, motivo, descrip, codcli } = item;
+  const { lightList, turquoise, darkTurquoise } = themeColors;
+  const { allCustomers, getCurrentLocation, setMyUser, myUser, myUser: { us_codigo } } = useLogin();
+  const { setReloadItinerary, setProductsCart } = useCertra();
+  const navigation = useNavigation();
+  const toast = useToast();
+  const id = 'toast';
 
   // Saved Event
   useEffect(() => {
     if (motivo || descrip) {
-      setSelectedReason(motivo)
-      setObservation(descrip)
+      setSelectedReason(motivo);
+      setObservation(descrip);
     }
-  }, [])
+  }, []);
 
   const selectCustomer = () => {
-    const customer = allCustomers.find((customer) => customer.cliente === codcli)
+    const customer = allCustomers.find((customer) => customer.cliente === codcli);
     if (customer) {
-      setMyUser({ ...myUser, customer })
-      setProductsCart([])
+      setMyUser({ ...myUser, customer });
+      setProductsCart([]);
     }
-  }
+  };
 
   // -----------------------------------------------
   // HANDLERS
@@ -59,15 +59,15 @@ const ItineraryDayEvent = ({
 
   // Search products
   const handleSearchProducts = () => {
-    selectCustomer()
-    navigation.navigate('SearchProducts')
-  }
+    selectCustomer();
+    navigation.navigate('SearchProducts');
+  };
 
   // Select Customer and Show data
   const handleSelectCustomer = () => {
-    selectCustomer()
-    navigation.navigate('CustomerProfile')
-  }
+    selectCustomer();
+    navigation.navigate('CustomerProfile');
+  };
 
   // Save
   const handleSave = async () => {
@@ -78,16 +78,16 @@ const ItineraryDayEvent = ({
             id,
             title: selectedReason ? 'Debe escribir una observación' : 'Debe seleccionar un motivo',
             duration: 1500
-          })
+          });
         } 
-        setTouch(false)
-        return
+        setTouch(false);
+        return;
       }
   
       try {
         // get location
-        const currentLocation = await getCurrentLocation()
-        const { latitude, longitude } = currentLocation as { latitude: number, longitude: number }
+        const currentLocation = await getCurrentLocation();
+        const { latitude, longitude } = currentLocation as { latitude: number, longitude: number };
   
         if (currentLocation) {
   
@@ -98,32 +98,32 @@ const ItineraryDayEvent = ({
             observacion: observation,
             motivo: selectedReason,
             fecha: getDateDesc(new Date())
-          })
+          });
           
           // toast message
           if (!toast.isActive(id)) {
             toast.show({
               id,
               title: res ? 'Se ha enviado correctamente' : 'No se ha podido enviar',
-            })
+            });
           }
           
           // success
-          navigation.navigate('Itinerary')
-          setReloadItinerary(true)
-          setTouch(false)
+          navigation.navigate('Itinerary');
+          setReloadItinerary(true);
+          setTouch(false);
         }
       } catch (error) {
         if (!toast.isActive(id)) {
           toast.show({
             id,
             title: '¡Error! No se ha podido enviar'
-          })
+          });
         }
-        setTouch(false)
+        setTouch(false);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -135,8 +135,8 @@ const ItineraryDayEvent = ({
           {/* day */}
           <Pressable className='flex flex-col justify-center mb-2' onLongPress={() => {
             if (!motivo) {
-              setOpenDetails(false)
-              setOpenEdit(true)
+              setOpenDetails(false);
+              setOpenEdit(true);
             }
           }} 
             style={{ width: wp(10) }}
@@ -167,8 +167,8 @@ const ItineraryDayEvent = ({
 
           {/* customer name */}
           <TouchableOpacity className='flex-row' onPress={() => {
-            setOpenEdit(false)
-            setOpenDetails(!openDetails)
+            setOpenEdit(false);
+            setOpenDetails(!openDetails);
           }}>
             <View className={`p-1.5 rounded-lg ${motivo ? 'bg-green' : 'bg-turquoise'}`} style={{ width: wp(openDetails && !motivo ? 59 : openEdit ? 75 : 83) }}>
               <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(openDetails && !motivo ? 50 : 74) }}>
@@ -205,8 +205,8 @@ const ItineraryDayEvent = ({
               {/* save */}
               <TouchableOpacity onPress={() => {
                 if (!touch) {
-                  setTouch(true)
-                  handleSave()
+                  setTouch(true);
+                  handleSave();
                 }
               }}>
                 <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
@@ -264,19 +264,19 @@ const ItineraryDayEvent = ({
                           <View className='flex flex-row justify-center items-center absolute right-2 top-2.5'>
                             <ChevronDownIcon size={18} color={turquoise} strokeWidth={2} />
                           </View>
-                        </Pressable>
+                        </Pressable>;
                 }}>
                   {!motivo ? (
                     reasons?.map((reason, index) => {
-                      const { motivo } = reason
-                      const isLast = index === reasons.length - 1
+                      const { motivo } = reason;
+                      const isLast = index === reasons.length - 1;
                       return (
                         <Menu.Item key={motivo} onPress={() => setSelectedReason(motivo)}
                           style={{ borderBottomWidth: isLast ? 0 : 0.3, borderBottomColor: turquoise }}
                         >
                           <Text className='font-normal text-typography'>{motivo}</Text>
                         </Menu.Item>
-                      )
+                      );
                     })
                   ):null}
                 </Menu>
@@ -314,35 +314,35 @@ const ItineraryDayEvent = ({
         open={openDatePickerReasign}
         date={date}
         onConfirm={async (date) => {
-          setOpenDatePickerReasign(false)
-          setDate(date)
+          setOpenDatePickerReasign(false);
+          setDate(date);
           try {
             const res = await fetchReasign({
               usuario: us_codigo as string,
               id: numero,
               fecha: getDateDesc(date)
-            })
+            });
 
             if (!toast.isActive(id)) {
               toast.show({
                 id,
                 title: res ? 'Se ha actualizado correctamente' : 'No se ha podido actualizar',
-              })
+              });
             }
             
             // success
-            navigation.navigate('Itinerary')
-            setReloadItinerary(true)
+            navigation.navigate('Itinerary');
+            setReloadItinerary(true);
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
         }}
         onCancel={() => {
-          setOpenDatePickerReasign(false)
+          setOpenDatePickerReasign(false);
         }}
       />
     </>
-  )
-}
+  );
+};
 
-export default ItineraryDayEvent
+export default ItineraryDayEvent;

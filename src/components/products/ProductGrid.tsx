@@ -1,25 +1,25 @@
-import { useState, useEffect, memo } from 'react'
-import { View, Text, Image, TouchableOpacity, Pressable, FlatList } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline'
-import { ProductInterface } from '../../utils/interfaces'
-import { disponibility } from '../../utils/constants'
-import { currency } from '../../utils/helpers'
-import { useCertra, useLogin, useNavigation } from '../../hooks'
-import { ModalInfo, ModalAmount, Bonus } from '..'
+import { useState, useEffect, memo } from 'react';
+import { View, Text, Image, TouchableOpacity, Pressable, FlatList } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline';
+import { ProductInterface } from '../../utils/interfaces';
+import { disponibility } from '../../utils/constants';
+import { currency } from '../../utils/helpers';
+import { useCertra, useLogin, useNavigation } from '../../hooks';
+import { ModalInfo, ModalAmount, Bonus } from '..';
 
 const ProductGrid = ({ product }: { product: ProductInterface }) => {
-  const [added, setAdded] = useState(false)
-  const [amount, setAmount] = useState(1)
-  const [maxAmount, setMaxAmount] = useState(0)
+  const [added, setAdded] = useState(false);
+  const [amount, setAmount] = useState(1);
+  const [maxAmount, setMaxAmount] = useState(0);
 
-  const [openAmountModal, setOpenAmountModal] = useState(false)
-  const [modalSelectCustomer, setModalSelectCustomer] = useState(false)
+  const [openAmountModal, setOpenAmountModal] = useState(false);
+  const [modalSelectCustomer, setModalSelectCustomer] = useState(false);
 
-  const { myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin()
-  const { addToCart, productsCart, removeElement } = useCertra()
-  const { descrip, image_url, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica, fdesde, fhasta } = product
-  const navigation = useNavigation()
+  const { myUser: { deposito, access: { labAccess, salespersonAccess }, customer } } = useLogin();
+  const { addToCart, productsCart, removeElement } = useCertra();
+  const { descrip, image_url, merida, centro, oriente, codigo, base1, iva, bonicant, bonifica, fdesde, fhasta } = product;
+  const navigation = useNavigation();
 
   // Get max amount
   useEffect(() => {
@@ -27,18 +27,18 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
       if (merida || centro || oriente) {
         if (deposito) {
           if (deposito === 'MERIDA') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)));
           } else if (deposito === 'CARACAS') {
-            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
           } else if (deposito === 'ORIENTE') {
-            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)))
+            setMaxAmount(parseInt(String(centro)) + parseInt(String(oriente)));
           }
         } else {
-          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)))
+          setMaxAmount(parseInt(String(merida)) + parseInt(String(centro)) + parseInt(String(oriente)));
         }
       }
     }
-  }, [])
+  }, []);
 
   // -----------------------------------------------
   // ACTIONS
@@ -46,35 +46,35 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
 
   // Refresh data when cart change
   useEffect(() => {
-    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo)
+    const productInCart = productsCart.find(productInCart => productInCart.codigo === codigo);
     if (productInCart !== undefined) { 
 
       // product in cart
-      setAdded(true)
-      setAmount(productInCart.amount)
+      setAdded(true);
+      setAmount(productInCart.amount);
     } else {
 
       // product not in cart
-      setAdded(false)
-      setAmount(1)
+      setAdded(false);
+      setAmount(1);
     }
-  }, [productsCart])
+  }, [productsCart]);
 
   // Handle actions
   const handleAddToCart = () => {
     if ((labAccess || salespersonAccess) && !customer) {
-      setModalSelectCustomer(true)
-      return
+      setModalSelectCustomer(true);
+      return;
     }
-    addToCart(codigo, amount)
+    addToCart(codigo, amount);
 
-    setAdded(true)
-  }
+    setAdded(true);
+  };
   const handleRemoveElement = () => {
-    setAdded(false)
-    setAmount(1)
-    removeElement(codigo)
-  }
+    setAdded(false);
+    setAmount(1);
+    removeElement(codigo);
+  };
 
   return (
     <>
@@ -231,7 +231,7 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
                           )
                         }
                       </>
-                    )
+                    );
                   }}
                 />
               </View>
@@ -243,11 +243,11 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
               <View style={{ width: wp(20), borderWidth: .5 }} className='rounded-md border-turquoise'>
                 <TouchableOpacity onPress={() => {
                   if ((labAccess || salespersonAccess) && !customer) {
-                    setModalSelectCustomer(true)
-                    return
+                    setModalSelectCustomer(true);
+                    return;
                   }
 
-                  setOpenAmountModal(true)
+                  setOpenAmountModal(true);
                 }}>
                   <Text style={{ fontSize: wp(4.5) }} className='text-center text-darkTurquoise'>
                     {amount}
@@ -294,7 +294,7 @@ const ProductGrid = ({ product }: { product: ProductInterface }) => {
         onPressAcept={() => navigation.navigate('SearchCustomer')}
       />
     </>
-  )
-}
+  );
+};
 
-export default memo(ProductGrid)
+export default memo(ProductGrid);

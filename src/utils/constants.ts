@@ -5,7 +5,7 @@ export const items = [
   {id: 4, number: 4},
   {id: 5, number: 5},
   {id: 6, number: 6},
-]
+];
 
 export const socialMedia = [
   {
@@ -38,7 +38,7 @@ export const socialMedia = [
     url: 'https://t.me/Drocerca_bot',
     image: require('../assets/telegram.png')
   }
-]
+];
 
 export const disponibility = [
   {
@@ -53,7 +53,7 @@ export const disponibility = [
     id: 3,
     name: 'Oriente',
   },
-]
+];
 
 export const days = [
   {
@@ -84,7 +84,7 @@ export const days = [
     id: 7,
     name: 'Domingo',
   },
-]
+];
 
 export const orderRecordCols = [
   [ // scli
@@ -188,4 +188,4 @@ export const orderRecordCols = [
       name: 'Importe'
     }
   ]
-]
+];

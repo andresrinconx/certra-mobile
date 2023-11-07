@@ -1,5 +1,5 @@
-import { View, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { View, Text } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const DataField = ({label, value}: {label: string, value: string}) => {
   return (
@@ -18,7 +18,7 @@ const DataField = ({label, value}: {label: string, value: string}) => {
         </View>
       )}
     </>
-  )
-}
+  );
+};
 
-export default DataField
+export default DataField;

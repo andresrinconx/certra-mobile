@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Modal } from 'native-base'
+import { View, Text, TouchableOpacity } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { Modal } from 'native-base';
 
 const ModalInfo = ({
   stateModal, 
@@ -26,9 +26,9 @@ const ModalInfo = ({
           <View className='flex flex-row justify-end gap-x-5'>
             {aceptButtonText && (
               <TouchableOpacity onPress={() => {
-                setStateModal(false)
+                setStateModal(false);
                 if (onPressAcept) {
-                  onPressAcept()
+                  onPressAcept();
                 }
               }}>
                 <Text className='font-semibold text-turquoise' style={{ fontSize: wp(4) }}>{aceptButtonText}</Text>
@@ -43,7 +43,7 @@ const ModalInfo = ({
         </View>
       </Modal.Content>
     </Modal>
-  )
-}
+  );
+};
 
-export default ModalInfo
+export default ModalInfo;

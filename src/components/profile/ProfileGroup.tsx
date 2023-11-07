@@ -1,6 +1,6 @@
-import { View, Text, FlatList } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { DataField } from '..'
+import { View, Text, FlatList } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { DataField } from '..';
 
 const ProfileGroup = ({ name, subname, fields }: { name: string, subname: string, fields: any[] }) => {
   return (
@@ -26,16 +26,16 @@ const ProfileGroup = ({ name, subname, fields }: { name: string, subname: string
             numColumns={1}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
-              const { label, value } = item
+              const { label, value } = item;
               return (
                 <DataField label={label} value={value} />
-              )
+              );
             }} 
           />
         </View>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ProfileGroup
+export default ProfileGroup;

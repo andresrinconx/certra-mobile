@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { valitadeDateInRange } from '../../utils/helpers'
+import { View, Text } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { valitadeDateInRange } from '../../utils/helpers';
 
 const Bonus = ({ bonicant, bonifica, fdesde, fhasta }: { bonicant: string, bonifica: string, fdesde: string, fhasta: string }) => {
   return (
@@ -11,7 +11,7 @@ const Bonus = ({ bonicant, bonifica, fdesde, fhasta }: { bonicant: string, bonif
         </View>
       ):null}
     </>
-  )
-}
+  );
+};
 
-export default Bonus
+export default Bonus;

@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
-import { View, FlatList, StatusBar, SafeAreaView } from 'react-native'
-import { useRoute } from '@react-navigation/native'
-import { ItineraryEventInterface } from '../utils/interfaces'
-import { useCertra, useLogin } from '../hooks'
-import { Logos, BackScreen, ItineraryDayEvent, NoDataText } from '../components'
-import { themeColors } from '../../tailwind.config'
+import { useEffect } from 'react';
+import { View, FlatList, StatusBar, SafeAreaView } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { ItineraryEventInterface } from '../utils/interfaces';
+import { useCertra, useLogin } from '../hooks';
+import { Logos, BackScreen, ItineraryDayEvent, NoDataText } from '../components';
+import { themeColors } from '../../tailwind.config';
 
 const ItineraryDay = () => {
   const { params: { 
@@ -19,14 +19,14 @@ const ItineraryDay = () => {
     dayInText: string
     events: ItineraryEventInterface[]
     reasons: []
-  } }
-  const { background } = themeColors
-  const { myUser } = useLogin()
-  const { setReloadItinerary } = useCertra()
+  } };
+  const { background } = themeColors;
+  const { myUser } = useLogin();
+  const { setReloadItinerary } = useCertra();
 
   useEffect(() => {
-    setReloadItinerary(false)
-  }, [])
+    setReloadItinerary(false);
+  }, []);
 
   return (
     <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
@@ -56,13 +56,13 @@ const ItineraryDay = () => {
                   dayInText={dayInText} 
                   reasons={reasons}
                 />
-              )
+              );
             }} 
           />
         </View>
       )}
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default ItineraryDay
+export default ItineraryDay;

@@ -1,46 +1,46 @@
-import { useEffect, useState, useRef } from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { AlertDialog, Button } from 'native-base'
-import { themeColors } from '../../../tailwind.config'
-import { ProductInterface } from '../../utils/interfaces'
-import { calculateProccessOrderData, getDateDesc, getHour, currency, valitadeDateInRange } from '../../utils/helpers'
-import { fetchSendData } from '../../utils/api'
-import { setDataStorage } from '../../utils/asyncStorage'
-import { useCertra, useLogin } from '../../hooks'
-import { Loader, Modal } from '../.'
+import { useEffect, useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { AlertDialog, Button } from 'native-base';
+import { themeColors } from '../../../tailwind.config';
+import { ProductInterface } from '../../utils/interfaces';
+import { calculateProccessOrderData, getDateDesc, getHour, currency, valitadeDateInRange } from '../../utils/helpers';
+import { fetchSendData } from '../../utils/api';
+import { setDataStorage } from '../../utils/asyncStorage';
+import { useCertra, useLogin } from '../../hooks';
+import { Loader, Modal } from '../.';
 
 const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
-  const [loadingProcess, setLoadingProcess] = useState(false)
-  const [subtotal, setSubtotal] = useState(0)
-  const [discount, setDiscount] = useState(0)
-  const [iva, setIva] = useState(0)
-  const [total, setTotal] = useState(0)
+  const [loadingProcess, setLoadingProcess] = useState(false);
+  const [subtotal, setSubtotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [iva, setIva] = useState(0);
+  const [total, setTotal] = useState(0);
 
-  const [alertProcessOrder, setAlertProcessOrder] = useState(false)
-  const [alertSuccessOrder, setAlertSuccessOrder] = useState(false)
-  const [alertErrorOrder, setAlertErrorOrder] = useState(false)
+  const [alertProcessOrder, setAlertProcessOrder] = useState(false);
+  const [alertSuccessOrder, setAlertSuccessOrder] = useState(false);
+  const [alertErrorOrder, setAlertErrorOrder] = useState(false);
 
-  const { blue, darkTurquoise, processBtn } = themeColors
-  const { myUser: { access: { customerAccess, labAccess }, nombre, cliente, us_codigo, customer } } = useLogin()
-  const { setProductsCart, productsCart } = useCertra()
+  const { blue, darkTurquoise, processBtn } = themeColors;
+  const { myUser: { access: { customerAccess, labAccess }, nombre, cliente, us_codigo, customer } } = useLogin();
+  const { setProductsCart, productsCart } = useCertra();
 
-  const cancelRef = useRef(null)
-  const onCloseAlertProcessOrder = () => setAlertProcessOrder(false)
+  const cancelRef = useRef(null);
+  const onCloseAlertProcessOrder = () => setAlertProcessOrder(false);
 
   // Calc subtotal, discount, IVA & total
   useEffect(() => {
-    const { subtotal, discount, iva, total } = calculateProccessOrderData(fullProductsCart)
+    const { subtotal, discount, iva, total } = calculateProccessOrderData(fullProductsCart);
 
-    setSubtotal(subtotal)
-    setDiscount(discount)
-    setIva(iva)
-    setTotal(total)
-  }, [fullProductsCart])
+    setSubtotal(subtotal);
+    setDiscount(discount);
+    setIva(iva);
+    setTotal(total);
+  }, [fullProductsCart]);
 
   // Process order
   const handleProcess = async () => {
-    setLoadingProcess(true)
+    setLoadingProcess(true);
 
     try {
       const res = await fetchSendData({
@@ -67,25 +67,25 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
         })),
         subtotal: String(subtotal),
         total: String(total),
-      })
+      });
 
       if (res?.message) {
-        setProductsCart([])
-        setLoadingProcess(false)
-        setAlertSuccessOrder(true)
-        await setDataStorage('linealDiscount', '0')
+        setProductsCart([]);
+        setLoadingProcess(false);
+        setAlertSuccessOrder(true);
+        await setDataStorage('linealDiscount', '0');
       } else {
-        setLoadingProcess(false)
-        setAlertErrorOrder(true)
+        setLoadingProcess(false);
+        setAlertErrorOrder(true);
       } 
     } catch (error) {
-      setLoadingProcess(false)
-      setAlertErrorOrder(true)
+      setLoadingProcess(false);
+      setAlertErrorOrder(true);
     }
 
     // close process alert
-    setAlertProcessOrder(false)
-  }
+    setAlertProcessOrder(false);
+  };
 
   return (
     <>
@@ -260,7 +260,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
         </View>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default ProcessOrder
+export default ProcessOrder;

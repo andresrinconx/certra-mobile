@@ -1,45 +1,45 @@
-import { useState, useRef } from 'react'
-import { View, TouchableOpacity, Text, Image } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { AlertDialog, Button } from 'native-base'
-import { themeColors } from '../../../tailwind.config'
-import { setDataStorage } from '../../utils/asyncStorage'
-import { useCertra, useLogin, useNavigation } from '../../hooks'
-import { Loader } from '..'
+import { useState, useRef } from 'react';
+import { View, TouchableOpacity, Text, Image } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { AlertDialog, Button } from 'native-base';
+import { themeColors } from '../../../tailwind.config';
+import { setDataStorage } from '../../utils/asyncStorage';
+import { useCertra, useLogin, useNavigation } from '../../hooks';
+import { Loader } from '..';
 
 const IconLogOut = () => {
-  const [loadingLogOut, setLoadingLogOut] = useState(false)
-  const [alertLogOut, setAlertLogOut] = useState(false)
+  const [loadingLogOut, setLoadingLogOut] = useState(false);
+  const [alertLogOut, setAlertLogOut] = useState(false);
 
-  const { darkTurquoise } = themeColors
-  const { setMyUser, setLogin } = useLogin()
-  const { setProductsCart, setProducts, setCurrentPage, setLoadingProductsGrid, setLoadingSelectCustomer, setLoadingProducts } = useCertra()
-  const cancelRef = useRef(null)
-  const navigation = useNavigation()
+  const { darkTurquoise } = themeColors;
+  const { setMyUser, setLogin } = useLogin();
+  const { setProductsCart, setProducts, setCurrentPage, setLoadingProductsGrid, setLoadingSelectCustomer, setLoadingProducts } = useCertra();
+  const cancelRef = useRef(null);
+  const navigation = useNavigation();
 
-  const onCloseAlertClearCart = () => setAlertLogOut(false)
+  const onCloseAlertClearCart = () => setAlertLogOut(false);
 
   const logOut = async () => {
-    setLoadingLogOut(true)
-    setLogin(false)
+    setLoadingLogOut(true);
+    setLogin(false);
 
     // reset products
-    setProductsCart([])
+    setProductsCart([]);
 
     // reset loaders
-    setLoadingProductsGrid(true)
-    setLoadingSelectCustomer(false)
-    setLoadingProducts(true)
+    setLoadingProductsGrid(true);
+    setLoadingSelectCustomer(false);
+    setLoadingProducts(true);
 
     // reset storage
-    await setDataStorage('login', false)
-    await setDataStorage('myUser', {})
-    await setDataStorage('productsCart', [])
-    await setDataStorage('linealDiscount', '0')
+    await setDataStorage('login', false);
+    await setDataStorage('myUser', {});
+    await setDataStorage('productsCart', []);
+    await setDataStorage('linealDiscount', '0');
 
     // go login
-    navigation.navigate('Login')
-    setAlertLogOut(false)
+    navigation.navigate('Login');
+    setAlertLogOut(false);
 
     setMyUser({
       access: {
@@ -47,11 +47,11 @@ const IconLogOut = () => {
         labAccess: false,
         salespersonAccess: false
       }
-    })
+    });
 
-    setProducts([])
-    setCurrentPage(1)
-  }
+    setProducts([]);
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -95,7 +95,7 @@ const IconLogOut = () => {
         </AlertDialog.Content>
       </AlertDialog>
     </>
-  )
-}
+  );
+};
 
-export default IconLogOut
+export default IconLogOut;

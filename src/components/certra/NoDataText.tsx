@@ -1,5 +1,5 @@
-import { View, Text } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { View, Text } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const NoDataText = ({ text }: { text: string }) => {
   return (
@@ -8,7 +8,7 @@ const NoDataText = ({ text }: { text: string }) => {
         {text}
       </Text>
     </View>
-  )
-}
+  );
+};
 
-export default NoDataText
+export default NoDataText;

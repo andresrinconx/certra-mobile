@@ -1,5 +1,5 @@
-import { Modal as ModalNativeBase } from 'native-base'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { Modal as ModalNativeBase } from 'native-base';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const Modal = ({ 
   children, 
@@ -33,7 +33,7 @@ const Modal = ({
         {children}
       </ModalNativeBase.Content>
     </ModalNativeBase>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

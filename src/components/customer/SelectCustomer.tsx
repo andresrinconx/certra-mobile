@@ -1,11 +1,11 @@
-import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useLogin, useNavigation } from '../../hooks'
-import { LabelCustomer } from '..'
+import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useLogin, useNavigation } from '../../hooks';
+import { LabelCustomer } from '..';
 
 const SelectCustomer = () => {
-  const { myUser: { access: { customerAccess, salespersonAccess }, customer } } = useLogin()
-  const navigation = useNavigation()
+  const { myUser: { access: { customerAccess, salespersonAccess }, customer } } = useLogin();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -42,7 +42,7 @@ const SelectCustomer = () => {
         </View>
       )}
     </>
-  )
-}
+  );
+};
 
-export default SelectCustomer
+export default SelectCustomer;

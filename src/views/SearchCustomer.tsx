@@ -1,24 +1,24 @@
-import { useState } from 'react'
-import { View, Text, StatusBar, Image, TextInput, FlatList, Keyboard, SafeAreaView } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { themeColors } from '../../tailwind.config'
-import { UserFromScliInterface } from '../utils/interfaces'
-import { formatText } from '../utils/helpers'
-import { useLogin, useNavigation } from '../hooks'
-import { CustomerSearch, Highlight } from '../components'
+import { useState } from 'react';
+import { View, Text, StatusBar, Image, TextInput, FlatList, Keyboard, SafeAreaView } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { themeColors } from '../../tailwind.config';
+import { UserFromScliInterface } from '../utils/interfaces';
+import { formatText } from '../utils/helpers';
+import { useLogin, useNavigation } from '../hooks';
+import { CustomerSearch, Highlight } from '../components';
 
 const SearchCustomer = () => {
-  const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([])
+  const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([]);
 
-  const { background, typography, darkTurquoise } = themeColors
-  const { allCustomers } = useLogin()
-  const navigation = useNavigation()
+  const { background, typography, darkTurquoise } = themeColors;
+  const { allCustomers } = useLogin();
+  const navigation = useNavigation();
 
   // SCREEN
   const handleScroll = () => {
     // Cerrar el teclado
-    Keyboard.dismiss()
-  }
+    Keyboard.dismiss();
+  };
 
   // Search
   const handleSearch = async (valueSearchCustomers: string) => {
@@ -27,13 +27,13 @@ const SearchCustomer = () => {
       const data = allCustomers?.filter((user: UserFromScliInterface) => 
         user.nombre.toLowerCase().includes(formatText(valueSearchCustomers.toLowerCase())) || // search by name
         user.cliente.toLowerCase().includes(valueSearchCustomers.toLowerCase()) // search by number
-      )
-      setSearchedCustomers(data)
+      );
+      setSearchedCustomers(data);
     } else {
       // no search
-      setSearchedCustomers([])
+      setSearchedCustomers([]);
     }
-  }
+  };
 
   return (
     <SafeAreaView className='flex-1 px-2.5 pt-10 bg-background'>
@@ -78,7 +78,7 @@ const SearchCustomer = () => {
               renderItem={({ item }) => {
                 return (
                   <CustomerSearch key={item.rifci} customer={item} />
-                )
+                );
               }}
             />
           ) : (
@@ -89,7 +89,7 @@ const SearchCustomer = () => {
         </View>
       )}
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default SearchCustomer
+export default SearchCustomer;

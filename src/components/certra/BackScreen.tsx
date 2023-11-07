@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { useNavigation } from '../../hooks'
-import Highlight from '../elements/Highlight'
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useNavigation } from '../../hooks';
+import Highlight from '../elements/Highlight';
 
 const BackScreen = ({ title, condition, iconImage, onPressIcon }: { title: string, condition?: boolean, iconImage?: any, onPressIcon?: () => void }) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   
   return (
     <View className='flex flex-row items-center justify-between'>
@@ -32,7 +32,7 @@ const BackScreen = ({ title, condition, iconImage, onPressIcon }: { title: strin
         </Highlight>
       ):null}
     </View>
-  )
-}
+  );
+};
 
-export default BackScreen
+export default BackScreen;
