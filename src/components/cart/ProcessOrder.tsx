@@ -63,7 +63,7 @@ const ProcessOrder = ({ fullProductsCart }: { fullProductsCart: any }) => {
           iva: Number(product.iva),
           cantidad: Number(product.amount),
           descuento: labAccess ? String(product.labDiscount) : String(0),
-          bonifica: Number(product.bonicant) > 0 && valitadeDateInRange(new Date(`${product.fdesde}`), new Date(`${product.fhasta}`)) ? ~~(Number(product.amount) / (Number(product.bonifica) * Number(product.bonicant))) : 0
+          bonifica: Number(product.bonicant) > 0 && valitadeDateInRange(new Date(`${product.fdesde}`), new Date(`${product.fhasta}`)) ? ~~(Number(product.amount) / Number(product.bonifica)) * Number(product.bonicant) : 0
         })),
         subtotal: String(subtotal),
         total: String(total),

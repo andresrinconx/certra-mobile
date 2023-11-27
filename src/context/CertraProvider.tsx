@@ -4,7 +4,7 @@ import { setDataStorage } from '../utils/asyncStorage';
 import { fetchSearchedItems } from '../utils/api';
 import { useLogin } from '../hooks';
 
-const CertraContext = createContext<{
+interface CertraContextProps {
   productsCart: ProductCartInterface[]
   setProductsCart: (productsCart: ProductCartInterface[]) => void
   products: ProductInterface[]
@@ -24,49 +24,8 @@ const CertraContext = createContext<{
   setReloadItinerary: (reloadItinerary: boolean) => void
   lookAtPharmacy: boolean
   setLookAtPharmacy: (lookAtPharmacy: boolean) => void
-}>({
-  productsCart: [],
-  setProductsCart: () => { 
-    // do nothing
-  },
-  products: [],
-  setProducts: () => { 
-    // do nothing
-  },
-  loadingProductsGrid: true,
-  setLoadingProductsGrid: () => { 
-    // do nothing
-  },
-  loadingSelectCustomer: false,
-  setLoadingSelectCustomer: () => { 
-    // do nothing
-  },
-  loadingProducts: true,
-  setLoadingProducts: () => { 
-    // do nothing
-  },
-  removeElement: () => { 
-    // do nothing
-  },
-  addToCart: () => { 
-    // do nothing
-  },
-  getProducts: () => { 
-    // do nothing
-  },
-  currentPage: 1,
-  setCurrentPage: () => { 
-    // do nothing
-  },
-  reloadItinerary: false,
-  setReloadItinerary: () => { 
-    // do nothing
-  },
-  lookAtPharmacy: false,
-  setLookAtPharmacy: () => { 
-    // do nothing
-  },
-});
+}
+const CertraContext = createContext({} as CertraContextProps);
 
 export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
   // PRODUCTS
