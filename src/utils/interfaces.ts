@@ -18,6 +18,7 @@ export interface MyUserInterface {
   us_codigo?: string
   conexion?: string
   vendedor?: string
+  datamedi?: boolean
   customer?: {
     cliente: string
     dscCliente: string

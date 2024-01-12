@@ -75,6 +75,8 @@ const ProductsHome = () => {
                   <Text className='font-bold text-typography' style={{ fontSize: wp(4.5) }}>
                     Productos
                   </Text>
+
+                  
                 </View>
               )}
               ListFooterComponent={() => (

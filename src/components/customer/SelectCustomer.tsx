@@ -4,7 +4,7 @@ import { useLogin, useNavigation } from '../../hooks';
 import { LabelCustomer } from '..';
 
 const SelectCustomer = () => {
-  const { myUser: { access: { customerAccess, salespersonAccess }, customer } } = useLogin();
+  const { myUser: { access: { customerAccess, salespersonAccess }, customer, datamedi } } = useLogin();
   const navigation = useNavigation();
 
   return (
@@ -16,7 +16,7 @@ const SelectCustomer = () => {
           )}
           <View className='flex flex-row items-center'>
             {customer ? (
-              salespersonAccess ? (
+              salespersonAccess && datamedi ? (
                 <TouchableOpacity onPress={() => navigation.navigate('CustomerProfile')}>
                   <Image style={{ width: wp(10), height: wp(10) }} resizeMode='cover'
                     source={require('../../assets/drugstore-search.png')}

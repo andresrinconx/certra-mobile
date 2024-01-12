@@ -91,7 +91,7 @@ const Login = () => {
         ...dataUser,
         access: {
           customerAccess: dataUser?.cliente ? true : false,
-          labAccess: dataUser?.clipro ? true : false,
+          labAccess: dataUser?.clipro !== '' ? true : false,
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       });
@@ -100,7 +100,7 @@ const Login = () => {
         ...dataUser,
         access: {
           customerAccess: dataUser?.cliente ? true : false,
-          labAccess: dataUser?.clipro ? true : false,
+          labAccess: dataUser?.clipro !== '' ? true : false,
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       });
@@ -130,7 +130,7 @@ const Login = () => {
         {/* logo drocerca */}
         <View className='flex flex-row justify-center h-1/6 pt-10'>
           <Image resizeMode='contain' style={{ width: wp(90), height: wp(20) }}
-            source={require('../assets/logo-drocerca.png')}
+            source={require('../assets/logo-drocerca-white.png')}
           />
         </View>
 
