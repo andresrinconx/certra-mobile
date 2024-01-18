@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AlertDialog, Button, Modal } from 'native-base';
 import { StatusBar } from 'react-native';
@@ -9,6 +9,7 @@ import { ProductInterface } from '../utils/interfaces';
 import { getDataStorage, setDataStorage } from '../utils/asyncStorage';
 import { useCertra, useLogin, useNavigation } from '../hooks';
 import { ProductCart, Loader, Logos, LabelCustomer, BackScreen, ProcessOrder, ModalInfo } from '../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Cart = () => {
   const [loadingCart, setLoadingCart] = useState(true);
@@ -105,7 +106,7 @@ const Cart = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
+      <SafeAreaView className='flex-1 px-3 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url as URL} />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, FlatList, Pressable } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { CheckIcon, PlusIcon } from 'react-native-heroicons/outline';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -11,6 +11,7 @@ import { currency, valitadeDateInRange } from '../utils/helpers';
 import { disponibility } from '../utils/constants';
 import { useCertra, useLogin, useNavigation } from '../hooks';
 import { IconCart, Loader, ModalInfo, ModalAmount, DataField, TextImage, Divider, Highlight } from '../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
  
 const Product = () => {
   const [added, setAdded] = useState(false);
@@ -99,7 +100,7 @@ const Product = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
+      <SafeAreaView className='flex-1 px-3 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
         
         {/* back and cart */}

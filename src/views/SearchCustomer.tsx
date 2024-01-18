@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { View, Text, StatusBar, Image, TextInput, FlatList, Keyboard, SafeAreaView } from 'react-native';
+import { View, Text, StatusBar, Image, TextInput, FlatList, Keyboard } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { themeColors } from '../../tailwind.config';
 import { UserFromScliInterface } from '../utils/interfaces';
 import { formatText } from '../utils/helpers';
 import { useLogin, useNavigation } from '../hooks';
 import { CustomerSearch, Highlight } from '../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SearchCustomer = () => {
   const [searchedCustomers, setSearchedCustomers] = useState<UserFromScliInterface[]>([]);
@@ -36,7 +37,7 @@ const SearchCustomer = () => {
   };
 
   return (
-    <SafeAreaView className='flex-1 px-2.5 pt-10 bg-background'>
+    <SafeAreaView className='flex-1 px-2.5 pt-4 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* search */}

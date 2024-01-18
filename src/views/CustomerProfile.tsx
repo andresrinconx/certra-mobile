@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, SafeAreaView, StatusBar, Text, ScrollView, Pressable, FlatList } from 'react-native';
+import { View, StatusBar, Text, ScrollView, Pressable, FlatList } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { InformationCircleIcon } from 'react-native-heroicons/outline';
 import { themeColors } from '../../tailwind.config';
@@ -8,6 +8,7 @@ import { fetchDataCustomer } from '../utils/api';
 import { currency, formatAmount, getMonthInText, longDate } from '../utils/helpers';
 import { useLogin } from '../hooks';
 import { Logos, BackScreen, Loader, DataField, Divider, TextImage, NoDataText, Modal } from '../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface DataCustomer {
   label: string
@@ -78,7 +79,7 @@ const CustomerProfile = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
+      <SafeAreaView className='flex-1 px-3 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={averageData?.image_url as URL} />

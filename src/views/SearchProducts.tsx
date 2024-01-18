@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { View, TextInput, Keyboard, FlatList, Image, SafeAreaView, StatusBar } from 'react-native';
+import { View, TextInput, Keyboard, FlatList, Image, StatusBar } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import { debounce } from 'lodash';
@@ -9,6 +9,7 @@ import { formatText } from '../utils/helpers';
 import { useLogin } from '../hooks';
 import { ProductSearch, IconCart, Highlight } from '../components';
 import { themeColors } from '../../tailwind.config';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SearchProducts = () => {
   const [searchedProducts, setSearchedProducts] = useState([]);
@@ -55,7 +56,7 @@ const SearchProducts = () => {
   const handleTextDebounce = debounce(handleSearch, 400);
 
   return (
-    <SafeAreaView className='flex-1 h-full pt-10 bg-background'>
+    <SafeAreaView className='flex-1 h-full pt-4 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       {/* content */}

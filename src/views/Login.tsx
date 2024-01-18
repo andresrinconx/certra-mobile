@@ -91,7 +91,7 @@ const Login = () => {
         ...dataUser,
         access: {
           customerAccess: dataUser?.cliente ? true : false,
-          labAccess: dataUser?.clipro !== '' ? true : false,
+          labAccess: dataUser?.clipro ? true : false,
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       });
@@ -100,7 +100,7 @@ const Login = () => {
         ...dataUser,
         access: {
           customerAccess: dataUser?.cliente ? true : false,
-          labAccess: dataUser?.clipro !== '' ? true : false,
+          labAccess: dataUser?.clipro ? true : false,
           salespersonAccess: dataUser?.clipro === '' ? true : false
         }
       });

@@ -24,6 +24,8 @@ interface CertraContextProps {
   setReloadItinerary: (reloadItinerary: boolean) => void
   lookAtPharmacy: boolean
   setLookAtPharmacy: (lookAtPharmacy: boolean) => void
+  isPsicotropicos: boolean
+  setIsPsicotropicos: (isPsicotropicos: boolean) => void
 }
 const CertraContext = createContext({} as CertraContextProps);
 
@@ -34,6 +36,7 @@ export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
 
   // CART & ORDER 
   const [productsCart, setProductsCart] = useState<ProductCartInterface[]>([]); // code and amount
+  const [isPsicotropicos, setIsPsicotropicos] = useState(false);
 
   // LOADERS
   const [loadingProductsGrid, setLoadingProductsGrid] = useState(true);
@@ -128,6 +131,8 @@ export const CertraProvider = ({ children }: { children: React.ReactNode }) => {
       setReloadItinerary,
       lookAtPharmacy,
       setLookAtPharmacy,
+      isPsicotropicos,
+      setIsPsicotropicos
     }}>
       {children}
     </CertraContext.Provider>

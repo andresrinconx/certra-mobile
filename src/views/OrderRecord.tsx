@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StatusBar, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { View, Text, StatusBar, FlatList, TouchableOpacity, Image } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useToast, Switch, Popover } from 'native-base';
 import { XMarkIcon } from 'react-native-heroicons/outline';
@@ -12,6 +12,7 @@ import { OrderRecordItemInterface } from '../utils/interfaces';
 import { orderRecordCols } from '../utils/constants';
 import { useCertra, useLogin } from '../hooks';
 import { Loader, BackScreen, Logos, NoDataText, LabelCustomer, Modal } from '../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const OrderRecord = () => {
   const [loadingOrderRecord, setLoadingOrderRecord] = useState(true);
@@ -155,7 +156,7 @@ const OrderRecord = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
+      <SafeAreaView className='flex-1 px-3 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <Logos image={image_url as URL} />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, SafeAreaView, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Pressable } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { StatusBar } from 'react-native';
 import { EllipsisHorizontalIcon } from 'react-native-heroicons/solid';
@@ -10,6 +10,7 @@ import { fetchItinerary, fetchReasons } from '../utils/api';
 import { days } from '../utils/constants';
 import { useCertra, useLogin, useNavigation } from '../hooks';
 import { Loader, Logos, BackScreen } from '../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface daysItineraryInterface {
   current: boolean,
@@ -201,7 +202,7 @@ const Itinerary = () => {
   };
 
   return (
-    <SafeAreaView className='flex-1 px-2.5 pt-6 bg-background'>
+    <SafeAreaView className='flex-1 px-2.5 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />

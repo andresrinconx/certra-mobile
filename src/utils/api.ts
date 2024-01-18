@@ -15,9 +15,11 @@ const searchOneItemEndpoint = (table: string, code: string) => `${apiBaseUrl}/${
 const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.searchTerm}`;
 const datasheetEndpoint = (code: string) => `${apiBaseUrl}/appSinv/ficha/${code}`;
 const sendDataEndpoint = () => `${apiBaseUrl}/appUsuarios/pedidoguardar`;
+const psicotropicosEndpoint = () => `${apiBaseUrl}/appSinv/psicotropicos/1`;
 
 // PROFILE
 const profileDataEndpoint = (params: { code: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.code}`;
+const psicotropicosInfoEndpoint = () => `${apiBaseUrl}/appSinv/imagenes`;
 
 // ITINERARY
 const itineraryEndpoint = (params: { salesperson: string, year: string, month: string }) => `${apiBaseUrl}/appItinerario/itinerarioP2/${params.salesperson}/${params.year}/${params.month}`;
@@ -84,10 +86,16 @@ export const fetchDatasheet = (code: string) => {
 export const fetchSendData = async (order: OrderInterface) => {
   return apiCall(sendDataEndpoint(), 'POST', order);
 };
+export const fetchPsicotropicos = () => {
+  return apiCall(psicotropicosEndpoint(), 'GET');
+};
 
 // PROFILE
 export const fetchProfileData = async (params: { code: string, table: string }) => {
   return apiCall(profileDataEndpoint(params), 'GET');
+};
+export const fetchPsicotropicosInfo = (data: any) => {
+  return apiCall(psicotropicosInfoEndpoint(), 'POST', data);
 };
 
 // ITINERARY

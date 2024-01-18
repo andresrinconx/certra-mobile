@@ -23,6 +23,7 @@ export const getDateWithoutHyphen = (date: Date) => {
 };
 
 export const getDateAsc = (date: Date) => {
+  if (!date) return '';
   const formatedDate = new Date(date);
   
   const day = formatedDate.getDate();
@@ -99,6 +100,29 @@ export const longDate = (date: string) => {
   const formatedDate = new Date(date).toLocaleDateString('es-ES', options);
   return formatedDate;
 };
+
+export const getEndDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const daysInMonth: { [key: number]: number } = {
+    1: 31,
+    2: isLeapYear(date.getFullYear()) ? 29 : 28,
+    3: 31,
+    4: 30,
+    5: 31,
+    6: 30,
+    7: 31,
+    8: 31,
+    9: 30,
+    10: 31,
+    11: 30,
+    12: 31,
+  };
+  const day = daysInMonth[month];
+
+  return `${String(day).length === 1 ? `0${day}` : `${day}`}-${String(month).length === 1 ? `0${month}` : `${month}`}-${year}`;
+};
+
 
 // -----------------------------------------------
 // CALCS HELPERS

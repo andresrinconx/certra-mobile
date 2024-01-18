@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { View, SafeAreaView, StatusBar, BackHandler } from 'react-native';
+import { View, StatusBar, BackHandler } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { themeColors } from '../../tailwind.config';
 import { useCertra, useLogin } from '../hooks';
 import { SelectCustomer, Loader, Logos, ProductsHome, TabBar } from '../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = () => {
   const { background } = themeColors;
@@ -26,7 +27,7 @@ const Home = () => {
 
   return (
     <>
-      <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
+      <SafeAreaView className='flex-1 px-3 bg-background'>
         <StatusBar backgroundColor={background} barStyle='dark-content' />
 
         <View className='flex-1'>

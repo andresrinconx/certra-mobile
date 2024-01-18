@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { View, FlatList, StatusBar, SafeAreaView } from 'react-native';
+import { View, FlatList, StatusBar } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { ItineraryEventInterface } from '../utils/interfaces';
 import { useCertra, useLogin } from '../hooks';
 import { Logos, BackScreen, ItineraryDayEvent, NoDataText } from '../components';
 import { themeColors } from '../../tailwind.config';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ItineraryDay = () => {
   const { params: { 
@@ -29,7 +30,7 @@ const ItineraryDay = () => {
   }, []);
 
   return (
-    <SafeAreaView className='flex-1 px-3 pt-6 bg-background'>
+    <SafeAreaView className='flex-1 px-3 bg-background'>
       <StatusBar backgroundColor={background} barStyle='dark-content' />
 
       <Logos image={myUser?.image_url as URL} />
