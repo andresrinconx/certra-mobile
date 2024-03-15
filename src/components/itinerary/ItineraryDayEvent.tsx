@@ -31,7 +31,7 @@ const ItineraryDayEvent = ({
 
   const { cliente, direccion, telefono, numero, motivo, descrip, codcli } = item;
   const { lightList, turquoise, darkTurquoise } = themeColors;
-  const { allCustomers, getCurrentLocation, setMyUser, myUser, myUser: { us_codigo } } = useLogin();
+  const { allCustomers, getCurrentLocation, setMyUser, myUser, myUser: { us_codigo, access: { salespersonAccess }, datamedi } } = useLogin();
   const { setReloadItinerary, setProductsCart } = useCertra();
   const navigation = useNavigation();
   const toast = useToast();
@@ -170,7 +170,9 @@ const ItineraryDayEvent = ({
             setOpenEdit(false);
             setOpenDetails(!openDetails);
           }}>
-            <View className={`p-1.5 rounded-lg ${motivo ? 'bg-green' : 'bg-turquoise'}`} style={{ width: wp(openDetails && !motivo ? 59 : openEdit ? 75 : 83) }}>
+            <View className={`p-1.5 rounded-lg ${motivo ? 'bg-green' : 'bg-turquoise'}`} style={{ 
+              width: wp(openDetails && !motivo ? salespersonAccess && !datamedi ? 65 : 59 : openEdit ? 75 : 83) 
+            }}>
               <Text className='font-normal text-white' numberOfLines={openDetails ? 2 : 1} style={{ maxWidth: wp(openDetails && !motivo ? 50 : 74) }}>
                 {cliente}
               </Text>
@@ -196,11 +198,13 @@ const ItineraryDayEvent = ({
               </TouchableOpacity>
 
               {/* stadistic */}
-              <TouchableOpacity onPress={handleSelectCustomer}>
-                <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
-                  source={require('../../assets/stadistic-light.png')}
-                />
-              </TouchableOpacity>
+              {salespersonAccess && datamedi ? (
+                <TouchableOpacity onPress={handleSelectCustomer}>
+                  <Image style={{ width: wp(7), height: wp(7) }} resizeMode='cover'
+                    source={require('../../assets/stadistic-light.png')}
+                  />
+                </TouchableOpacity>
+              ):null}
 
               {/* save */}
               <TouchableOpacity onPress={() => {

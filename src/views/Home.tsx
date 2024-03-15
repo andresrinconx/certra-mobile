@@ -3,7 +3,7 @@ import { View, StatusBar, BackHandler } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { themeColors } from '../../tailwind.config';
 import { useCertra, useLogin } from '../hooks';
-import { SelectCustomer, Loader, Logos, ProductsHome, TabBar } from '../components';
+import { SelectCustomer, Loader, Logos, ProductsHome, TabBar, IconLogOut } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = () => {

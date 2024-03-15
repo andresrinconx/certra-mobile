@@ -6,7 +6,7 @@ import { useCertra, useLogin } from '../../hooks';
 import { LoaderProductsGrid, Loader, ProductGrid } from '..';
 import { themeColors } from '../../../tailwind.config';
 import { Switch } from 'native-base';
-import { fetchPsicotropicos } from '../../utils/api';
+import { fetchLabPsicotropicos, fetchPsicotropicos } from '../../utils/api';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { ProductInterface } from '../../utils/interfaces';
 
@@ -16,7 +16,7 @@ const ProductsHome = () => {
   const [currentProducts, setCurrentProducts] = useState<ProductInterface[]>([]);
 
   const { darkTurquoise } = themeColors;
-  const { myUser: { customer, access: { customerAccess } }, login } = useLogin();
+  const { myUser: { customer, access: { customerAccess, labAccess }, clipro }, login } = useLogin();
   const { loadingProducts, products, setCurrentPage, currentPage, getProducts, loadingProductsGrid, setProducts } = useCertra();
 
   useEffect(() => {
@@ -57,7 +57,11 @@ const ProductsHome = () => {
     } else {
       setIsSwitchLoading(true);
       setCurrentProducts(products);
-      setProducts(await fetchPsicotropicos());
+      if (labAccess) {
+        setProducts(await fetchLabPsicotropicos(clipro as string));
+      } else {
+        setProducts(await fetchPsicotropicos());
+      }
       setIsSwitchLoading(false);
     }
   };

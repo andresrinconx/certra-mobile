@@ -2,7 +2,7 @@ import axios from 'axios';
 import { LOCAL_API_URL, API_URL } from '@env';
 import { OrderInterface } from '../utils/interfaces';
 
-const apiBaseUrl = 'http://192.168.230.19/proteoerp/sincro';
+const apiBaseUrl = 'http://192.168.230.98/prueba/sincro';
 
 // -----------------------------------------------
 // ENDPOINTS
@@ -16,6 +16,7 @@ const searchedItemsEndpoint = (params: { searchTerm: string, table: string }) =>
 const datasheetEndpoint = (code: string) => `${apiBaseUrl}/appSinv/ficha/${code}`;
 const sendDataEndpoint = () => `${apiBaseUrl}/appUsuarios/pedidoguardar`;
 const psicotropicosEndpoint = () => `${apiBaseUrl}/appSinv/psicotropicos/1`;
+const labPsicotropicosEndpoint = (clipro: string) => `${apiBaseUrl}/appSinv/psicotropicos2/${clipro}`;
 
 // PROFILE
 const profileDataEndpoint = (params: { code: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.code}`;
@@ -90,13 +91,16 @@ export const fetchSendData = async (order: OrderInterface) => {
 export const fetchPsicotropicos = () => {
   return apiCall(psicotropicosEndpoint(), 'GET');
 };
+export const fetchLabPsicotropicos = (clipro: string) => {
+  return apiCall(labPsicotropicosEndpoint(clipro), 'GET');
+};
 
 // PROFILE
 export const fetchProfileData = async (params: { code: string, table: string }) => {
   return apiCall(profileDataEndpoint(params), 'GET');
 };
 export const fetchPsicotropicosInfo = async (data: any) => {
-  return apiCall(psicotropicosInfoEndpoint(), 'POST', data, { 'Content-Type': 'multipart/form-data' });
+  return apiCall(psicotropicosInfoEndpoint(), 'POST', data);
 };
 
 // ITINERARY

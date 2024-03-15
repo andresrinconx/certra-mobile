@@ -77,18 +77,18 @@ const Profile = () => {
   const saveInfo = async () => {
     setIsSending(true);
     try {
-      const res: any = await fetchPsicotropicosInfo({ 
-        // cliente,
-        // startDateSolvence,
-        // endDateSolvence,
-        // startDateWorking,
-        // endDateWorking,
+      const data = { 
+        cliente,
+        startDateSolvence,
+        endDateSolvence,
+        startDateWorking,
+        endDateWorking,
         solvenceFile,
-        // permissionFile,
-        // titleFile,
-        // idCardFile,
-      });
-      console.log(res);
+        permissionFile,
+        titleFile,
+        idCardFile,
+      };
+      const res: any = await fetchPsicotropicosInfo(data);
       
       if (res?.success) {
         setIsSending(false);
@@ -228,14 +228,16 @@ const Profile = () => {
           <BackScreen title='Mi perfil' />
 
           <View className='flex-row items-center gap-x-2'>
-            <Highlight
-              onPress={() => setIsPsicotropicosModalOpen(true)}
-              padding={4}
-            >
-              <Image style={{ width: 30, height: 30 }} resizeMode='contain'
-                source={require('../assets/pill.png')}
-              />
-            </Highlight>        
+            {customerAccess && (
+              <Highlight
+                onPress={() => setIsPsicotropicosModalOpen(true)}
+                padding={4}
+              >
+                <Image style={{ width: 30, height: 30 }} resizeMode='contain'
+                  source={require('../assets/pill.png')}
+                />
+              </Highlight>      
+            )}
 
             {/* order record */}
             {!customerAccess && (
@@ -373,7 +375,7 @@ const Profile = () => {
           <View className='items-center pt-4'>
             <View className={`w-[70%] flex-row justify-center items-center rounded-xl ${disabled ? 'bg-processBtn' : 'bg-darkTurquoise'}`}>
               <TouchableOpacity className='w-full h-full py-3'
-                // disabled={disabled} 
+                disabled={disabled} 
                 onPress={saveInfo} 
               >
                 {isSending ? (
