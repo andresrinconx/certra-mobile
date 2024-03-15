@@ -22,8 +22,8 @@ const SetPhoto = ({ title, isNotTitle, imageName, imageFile, setImageFile }: Pro
       quality: 0.5,
     });
     if (result.assets) {
-      const { type, base64, fileName: name } = result.assets[0];
-      setImageFile({ type, base64, name } as { type: string, base64: string, name: string });
+      const { type, base64 } = result.assets[0];
+      setImageFile({ type, base64, name: imageName } as { type: string, base64: string, name: string });
       setIsModalOpen(false);
     }
   };
@@ -35,8 +35,8 @@ const SetPhoto = ({ title, isNotTitle, imageName, imageFile, setImageFile }: Pro
       quality: 0.5,
     });
     if (result.assets) {
-      const { type, base64, fileName: name } = result.assets[0];
-      setImageFile({ type, base64, name } as { type: string, base64: string, name: string });
+      const { type, base64 } = result.assets[0];
+      setImageFile({ type, base64, name: imageName } as { type: string, base64: string, name: string });
       setIsModalOpen(false);
     }
   };
