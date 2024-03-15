@@ -1,46 +1,44 @@
+import { Modal } from 'native-base';
+import { useState } from 'react';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface Props {
   title: string;
   isNotTitle?: boolean;
   imageName: string;
-  imageFile: FormData | Record<string, never>;
-  setImageFile: (imageFile: FormData) => void;
+  imageFile: { type: string, base64: string, name: string };
+  setImageFile: (imageFile: { type: string, base64: string, name: string }) => void;
 }
 
 const SetPhoto = ({ title, isNotTitle, imageName, imageFile, setImageFile }: Props) => {
-  // const takePhoto = () => {
-  //   launchCamera({ mediaType: 'photo', quality: 0.5 }, (resp) => {
-  //     if (resp?.didCancel) return;
-  //     if (!resp?.assets?.[0]?.uri) return;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  //     const formData = new FormData();
-  //     formData.append(imageName, {
-  //       uri: resp?.assets?.[0]?.uri,
-  //       type: resp?.assets?.[0].type,
-  //       name: imageName
-  //     });
-
-  //     setImageFile(formData);
-  //   });
-  // };
-
-  const takePhotoFromGallery = () => {
-    launchImageLibrary({ mediaType: 'photo', quality: 0.5 }, (resp) => {
-      if (resp.didCancel) return;
-      if (!resp.assets?.[0].uri) return;
-
-      const formData = new FormData();
-      formData.append(imageName, {
-        uri: resp?.assets?.[0]?.uri,
-        type: resp?.assets?.[0].type,
-        name: imageName
-      });
-
-      setImageFile(formData);
+  const takePhoto = async () => {
+    const result: ImagePickerResponse = await launchCamera({
+      mediaType: 'photo',
+      includeBase64: true,
+      quality: 0.5,
     });
+    if (result.assets) {
+      const { type, base64, fileName: name } = result.assets[0];
+      setImageFile({ type, base64, name } as { type: string, base64: string, name: string });
+      setIsModalOpen(false);
+    }
+  };
+
+  const takePhotoFromGallery = async () => {
+    const result: ImagePickerResponse = await launchImageLibrary({
+      mediaType: 'photo',
+      includeBase64: true,
+      quality: 0.5,
+    });
+    if (result.assets) {
+      const { type, base64, fileName: name } = result.assets[0];
+      setImageFile({ type, base64, name } as { type: string, base64: string, name: string });
+      setIsModalOpen(false);
+    }
   };
 
   return (
@@ -50,18 +48,29 @@ const SetPhoto = ({ title, isNotTitle, imageName, imageFile, setImageFile }: Pro
       </Text>
 
       <View className='w-[48%] flex-row items-center rounded-lg pl-2 bg-lightList' style={{ height: wp(10) }}>
-        <TouchableOpacity onPress={takePhotoFromGallery} className='flex-1 flex-row items-center justify-between'>
+        <TouchableOpacity onPress={() => setIsModalOpen(true)} className='flex-1 flex-row items-center justify-between'>
           <Text className='w-[80%] font-normal text-center pl-2 italic text-typography' 
-            style={{ fontSize: wp(5), textDecorationLine: imageFile?._parts ? 'underline' : 'none' }}
+            style={{ fontSize: wp(5), textDecorationLine: imageFile.name ? 'underline' : 'none' }}
             numberOfLines={1}
           >
-            {imageFile?._parts ? imageName : '- - -'}
+            {imageFile.name ? imageName : '- - -'}
           </Text>
           <Image style={{ width: wp(8), height: wp(8) }} resizeMode='cover'
             source={require('../../assets/camera.png')}
           />
         </TouchableOpacity>
       </View>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <View className='w-72 p-5 space-y-5 rounded-3xl' style={{ backgroundColor: '#312c29' }}>
+          <TouchableOpacity onPress={takePhoto}>
+            <Text className='text-white' style={{ fontSize: wp(5) }}>Tomar foto</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={takePhotoFromGallery}>
+            <Text className='text-white' style={{ fontSize: wp(5) }}>Elegir foto</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };

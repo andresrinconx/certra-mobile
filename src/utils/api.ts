@@ -2,7 +2,7 @@ import axios from 'axios';
 import { LOCAL_API_URL, API_URL } from '@env';
 import { OrderInterface } from '../utils/interfaces';
 
-const apiBaseUrl = LOCAL_API_URL;
+const apiBaseUrl = 'http://192.168.230.19/proteoerp/sincro';
 
 // -----------------------------------------------
 // ENDPOINTS
@@ -19,7 +19,7 @@ const psicotropicosEndpoint = () => `${apiBaseUrl}/appSinv/psicotropicos/1`;
 
 // PROFILE
 const profileDataEndpoint = (params: { code: string, table: string }) => `${apiBaseUrl}/${params.table}/${params.code}`;
-const psicotropicosInfoEndpoint = () => `${apiBaseUrl}/appSinv/imagenes`;
+const psicotropicosInfoEndpoint = () => `${apiBaseUrl}/appSinv/img`;
 
 // ITINERARY
 const itineraryEndpoint = (params: { salesperson: string, year: string, month: string }) => `${apiBaseUrl}/appItinerario/itinerarioP2/${params.salesperson}/${params.year}/${params.month}`;
@@ -49,12 +49,13 @@ const rangeSalespersonCustomerEndpoint = (params: { customer: string, code: stri
 // API CALL
 // -----------------------------------------------
 
-const apiCall = async (endpoint: string, method: Uppercase<string>, data?: unknown) => {
+const apiCall = async (endpoint: string, method: Uppercase<string>, data?: unknown, headers?: Record<string, string>) => {
   try {
     const response = await axios.request({
       method,
       url: endpoint,
-      data: data ? data : { }
+      data: data ? data : { },
+      headers: headers ? headers : { }
     });
     return response.data;
   } catch(error) {
@@ -94,8 +95,8 @@ export const fetchPsicotropicos = () => {
 export const fetchProfileData = async (params: { code: string, table: string }) => {
   return apiCall(profileDataEndpoint(params), 'GET');
 };
-export const fetchPsicotropicosInfo = (data: any) => {
-  return apiCall(psicotropicosInfoEndpoint(), 'POST', data);
+export const fetchPsicotropicosInfo = async (data: any) => {
+  return apiCall(psicotropicosInfoEndpoint(), 'POST', data, { 'Content-Type': 'multipart/form-data' });
 };
 
 // ITINERARY

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { View, Image, FlatList, StatusBar, Text, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -20,10 +21,26 @@ const Profile = () => {
   const [endDateSolvence, setEndDateSolvence] = useState<string | Date>('');
   const [startDateWorking, setStartDateWorking] = useState<string | Date>('');
   const [endDateWorking, setEndDateWorking] = useState<string | Date>('');
-  const [solvenceFile, setSolvenceFile] = useState({});
-  const [permissionFile, setPermissionFile] = useState({});
-  const [titleFile, setTitleFile] = useState({});
-  const [idCardFile, setIdCardFile] = useState({});
+  const [solvenceFile, setSolvenceFile] = useState<{ type: string, base64: string, name: string }>({
+    type: '',
+    base64: '',
+    name: ''
+  });
+  const [permissionFile, setPermissionFile] = useState<{ type: string, base64: string, name: string }>({
+    type: '',
+    base64: '',
+    name: ''
+  });
+  const [titleFile, setTitleFile] = useState<{ type: string, base64: string, name: string }>({
+    type: '',
+    base64: '',
+    name: ''
+  });
+  const [idCardFile, setIdCardFile] = useState<{ type: string, base64: string, name: string }>({
+    type: '',
+    base64: '',
+    name: ''
+  });
 
   const { background } = themeColors;
   const { myUser: { access: { customerAccess, labAccess, salespersonAccess }, cliente, cedula, clipro, image_url, us_codigo, conexion } } = useLogin();
@@ -60,34 +77,53 @@ const Profile = () => {
   const saveInfo = async () => {
     setIsSending(true);
     try {
-      const res = await fetchPsicotropicosInfo({
-        cliente,
-        startDateSolvence,
-        endDateSolvence,
-        startDateWorking,
-        endDateWorking,
+      const res: any = await fetchPsicotropicosInfo({ 
+        // cliente,
+        // startDateSolvence,
+        // endDateSolvence,
+        // startDateWorking,
+        // endDateWorking,
         solvenceFile,
-        permissionFile,
-        titleFile,
-        idCardFile,
+        // permissionFile,
+        // titleFile,
+        // idCardFile,
       });
-
-      if (res) {
+      console.log(res);
+      
+      if (res?.success) {
         setIsSending(false);
         setIsPsicotropicosModalOpen(false);
         setStartDateSolvence('');
         setEndDateSolvence('');
         setStartDateWorking('');
         setEndDateWorking('');
-        setSolvenceFile({});
-        setPermissionFile({});
-        setTitleFile({});
-        setIdCardFile({});
+        setSolvenceFile({
+          type: '',
+          base64: '',
+          name: ''
+        });
+        setPermissionFile({
+          type: '',
+          base64: '',
+          name: ''
+        });
+        setTitleFile({
+          type: '',
+          base64: '',
+          name: ''
+        });
+        setIdCardFile({
+          type: '',
+          base64: '',
+          name: ''
+        });
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const disabled = [startDateSolvence, endDateSolvence, startDateWorking, endDateWorking].includes('') || [solvenceFile, permissionFile, titleFile, idCardFile].some(obj => obj.name === '');
 
   const groups = [
     // main info
@@ -335,8 +371,11 @@ const Profile = () => {
           </View>
 
           <View className='items-center pt-4'>
-            <View className='w-[70%] flex-row justify-center items-center rounded-xl bg-darkTurquoise'>
-              <TouchableOpacity onPress={saveInfo} className='w-full h-full py-3'>
+            <View className={`w-[70%] flex-row justify-center items-center rounded-xl ${disabled ? 'bg-processBtn' : 'bg-darkTurquoise'}`}>
+              <TouchableOpacity className='w-full h-full py-3'
+                // disabled={disabled} 
+                onPress={saveInfo} 
+              >
                 {isSending ? (
                   <Loader color='white' size={wp(7.5)} />
                 ) : (
